@@ -284,6 +284,45 @@ class KnowledgeGraph:
             "confidence": confidence,
         })
 
+    # === Strategies (new unified strategy storage) ===
+
+    def store_strategy(
+        self,
+        strategy_id: str,
+        plan_json: str = "{}",
+        success: bool = True,
+        confidence: float = 1.0,
+        gse_id: str = "",
+    ) -> None:
+        """Store or update a processing strategy in Neo4j."""
+        from scruticell.knowledge.schema import CREATE_PARSE_STRATEGY
+        self._run(CREATE_PARSE_STRATEGY, {
+            "strategy_id": strategy_id,
+            "gse_pattern": strategy_id,
+            "strategy_json": plan_json if isinstance(plan_json, dict) else {"plan": plan_json},
+            "success_count": 1 if success else 0,
+            "fail_count": 0 if success else 1,
+            "avg_confidence": confidence,
+            "gse_id": gse_id,
+        })
+
+    def update_strategy_stats(
+        self, strategy_id: str, success: bool = True
+    ) -> None:
+        """Update success/fail counters for an existing strategy."""
+        from scruticell.knowledge.schema import UPDATE_STRATEGY_STATS
+        self._run(UPDATE_STRATEGY_STATS, {
+            "strategy_id": strategy_id,
+            "increment_success": 1 if success else 0,
+            "increment_fail": 0 if success else 1,
+        })
+
+    def find_similar_strategies(
+        self, signature_hash: str, limit: int = 5
+    ) -> list[dict]:
+        """Find strategies matching a fingerprint signature."""
+        return self.find_best_strategies("", signature_hash)
+
     def __enter__(self):
         self.connect()
         return self
@@ -316,6 +355,7 @@ class LocalKnowledgeBase:
         """Create local SQLite tables mirroring Neo4j schema."""
         cursor = self._conn.cursor()
         cursor.executescript("""
+            -- ▸ Seed tables (keep unchanged)
             CREATE TABLE IF NOT EXISTS field_synonyms (
                 name TEXT PRIMARY KEY,
                 canonical_name TEXT NOT NULL,
@@ -334,56 +374,128 @@ class LocalKnowledgeBase:
                 occurrence_count INTEGER DEFAULT 1,
                 PRIMARY KEY (source_id, source_system)
             );
-            CREATE TABLE IF NOT EXISTS gse_records (
-                gse_id TEXT PRIMARY KEY,
-                title TEXT DEFAULT '',
-                organism TEXT DEFAULT '',
-                assay_type TEXT DEFAULT '',
-                n_cells INTEGER DEFAULT 0,
-                n_genes INTEGER DEFAULT 0,
-                n_samples INTEGER DEFAULT 0,
-                pubmed_id TEXT DEFAULT '',
-                processed_at TEXT DEFAULT CURRENT_TIMESTAMP
+
+            -- ▸ GSE runs (one row per execute invocation)
+            CREATE TABLE IF NOT EXISTS gse_runs (
+                run_id        TEXT PRIMARY KEY,
+                gse_id        TEXT NOT NULL,
+                version       TEXT DEFAULT '0.1.0',
+                success       INTEGER DEFAULT 0,
+                confidence    REAL DEFAULT 1.0,
+                n_cells       INTEGER DEFAULT 0,
+                n_genes       INTEGER DEFAULT 0,
+                n_batches     INTEGER DEFAULT 0,
+                started_at    TEXT DEFAULT CURRENT_TIMESTAMP,
+                finished_at   TEXT
             );
-            CREATE TABLE IF NOT EXISTS parse_strategies (
-                strategy_id TEXT PRIMARY KEY,
-                gse_id TEXT NOT NULL,
-                gse_pattern TEXT DEFAULT '',
-                strategy_json TEXT DEFAULT '{}',
-                success_count INTEGER DEFAULT 0,
-                fail_count INTEGER DEFAULT 0,
-                avg_confidence REAL DEFAULT 1.0
+            CREATE INDEX IF NOT EXISTS idx_runs_gse ON gse_runs(gse_id);
+
+            -- ▸ Inspection reports (one per inspect run)
+            CREATE TABLE IF NOT EXISTS inspect_reports (
+                report_id           TEXT PRIMARY KEY,
+                gse_id              TEXT NOT NULL,
+                organism            TEXT DEFAULT '',
+                matrix_formats      TEXT DEFAULT '',
+                gsm_count           INTEGER DEFAULT 0,
+                matrix_file_count   INTEGER DEFAULT 0,
+                total_cells         INTEGER DEFAULT 0,
+                total_genes         INTEGER DEFAULT 0,
+                field_names         TEXT DEFAULT '',
+                signature_hash      TEXT NOT NULL,
+                raw_json            TEXT DEFAULT '{}',
+                created_at          TEXT DEFAULT CURRENT_TIMESTAMP
             );
+            CREATE INDEX IF NOT EXISTS idx_reports_hash ON inspect_reports(signature_hash);
+            CREATE INDEX IF NOT EXISTS idx_reports_organism ON inspect_reports(organism);
+
+            -- ▸ Processing plans (one per plan run)
+            CREATE TABLE IF NOT EXISTS processing_plans (
+                plan_id             TEXT PRIMARY KEY,
+                gse_id              TEXT NOT NULL,
+                signature_hash      TEXT NOT NULL,
+                plan_json           TEXT DEFAULT '{}',
+                processing_code     TEXT DEFAULT '',
+                assembly_code       TEXT DEFAULT '',
+                plan_confidence     REAL DEFAULT 1.0,
+                strategy_notes      TEXT DEFAULT '',
+                kb_match_count      INTEGER DEFAULT 0,
+                field_mapping_count INTEGER DEFAULT 0,
+                created_at          TEXT DEFAULT CURRENT_TIMESTAMP
+            );
+            CREATE INDEX IF NOT EXISTS idx_plans_hash ON processing_plans(signature_hash);
+            CREATE INDEX IF NOT EXISTS idx_plans_gse ON processing_plans(gse_id);
+
+            -- ▸ Field mappings (one per raw→canonical pair per plan)
+            CREATE TABLE IF NOT EXISTS field_mappings (
+                mapping_id   INTEGER PRIMARY KEY AUTOINCREMENT,
+                plan_id      TEXT NOT NULL,
+                raw_field    TEXT NOT NULL,
+                canonical    TEXT NOT NULL,
+                source       TEXT DEFAULT '',
+                note         TEXT DEFAULT '',
+                FOREIGN KEY (plan_id) REFERENCES processing_plans(plan_id)
+            );
+            CREATE INDEX IF NOT EXISTS idx_mappings_canonical ON field_mappings(canonical);
+            CREATE INDEX IF NOT EXISTS idx_mappings_plan ON field_mappings(plan_id);
+
+            -- ▸ Execution steps (one per step per run)
+            CREATE TABLE IF NOT EXISTS execution_steps (
+                step_id      INTEGER PRIMARY KEY AUTOINCREMENT,
+                run_id       TEXT NOT NULL,
+                step_name    TEXT NOT NULL,
+                status       TEXT NOT NULL,
+                step_index   INTEGER DEFAULT 0,
+                details_json TEXT DEFAULT '{}',
+                error        TEXT DEFAULT '',
+                started_at   TEXT,
+                finished_at  TEXT,
+                FOREIGN KEY (run_id) REFERENCES gse_runs(run_id)
+            );
+            CREATE INDEX IF NOT EXISTS idx_steps_run ON execution_steps(run_id);
+
+            -- ▸ Batch outputs (one per .h5ad file per run)
+            CREATE TABLE IF NOT EXISTS batch_outputs (
+                batch_id     INTEGER PRIMARY KEY AUTOINCREMENT,
+                run_id       TEXT NOT NULL,
+                batch_label  TEXT NOT NULL,
+                file_name    TEXT NOT NULL,
+                n_cells      INTEGER DEFAULT 0,
+                n_genes      INTEGER DEFAULT 0,
+                metadata_json TEXT DEFAULT '{}',
+                FOREIGN KEY (run_id) REFERENCES gse_runs(run_id)
+            );
+            CREATE INDEX IF NOT EXISTS idx_batches_run ON batch_outputs(run_id);
+
+            -- ▸ Strategies (accumulated success/fail by signature)
+            CREATE TABLE IF NOT EXISTS strategies (
+                strategy_id     TEXT PRIMARY KEY,
+                plan_json       TEXT DEFAULT '{}',
+                success_count   INTEGER DEFAULT 0,
+                fail_count      INTEGER DEFAULT 0,
+                avg_confidence  REAL DEFAULT 0.0,
+                first_seen_at   TEXT DEFAULT CURRENT_TIMESTAMP,
+                last_seen_at    TEXT DEFAULT CURRENT_TIMESTAMP
+            );
+
+            -- ▸ Failure cases (only actual failures)
             CREATE TABLE IF NOT EXISTS failure_cases (
-                case_id TEXT PRIMARY KEY,
+                case_id         TEXT PRIMARY KEY,
+                run_id          TEXT,
                 error_signature TEXT NOT NULL,
-                gse_id TEXT DEFAULT '',
-                pipeline_stage TEXT DEFAULT '',
-                error_message TEXT DEFAULT '',
-                fix_strategy TEXT DEFAULT '',
-                fixed INTEGER DEFAULT 0,
-                success_count INTEGER DEFAULT 0,
-                fail_count INTEGER DEFAULT 0,
-                created_at TEXT DEFAULT CURRENT_TIMESTAMP
+                gse_id          TEXT DEFAULT '',
+                pipeline_stage  TEXT DEFAULT '',
+                error_message   TEXT DEFAULT '',
+                fix_strategy    TEXT DEFAULT '',
+                fixed           INTEGER DEFAULT 0,
+                created_at      TEXT DEFAULT CURRENT_TIMESTAMP
             );
             CREATE INDEX IF NOT EXISTS idx_failures_signature
                 ON failure_cases(error_signature, pipeline_stage);
-            CREATE INDEX IF NOT EXISTS idx_synonyms_canonical
-                ON field_synonyms(canonical_name);
-            CREATE INDEX IF NOT EXISTS idx_gene_mappings_symbol
-                ON gene_mappings(target_symbol);
-            CREATE INDEX IF NOT EXISTS idx_strategies_organism
-                ON gse_records(organism, assay_type);
+
+            -- ▸ Legacy table cleanup
+            DROP TABLE IF EXISTS gse_records;
+            DROP TABLE IF EXISTS parse_strategies;
         """)
-        # Migration: add columns if they don't exist
-        try:
-            cursor.execute("ALTER TABLE failure_cases ADD COLUMN success_count INTEGER DEFAULT 0")
-        except Exception:
-            pass
-        try:
-            cursor.execute("ALTER TABLE failure_cases ADD COLUMN fail_count INTEGER DEFAULT 0")
-        except Exception:
-            pass
         self._conn.commit()
 
     def connect(self) -> None:
@@ -445,85 +557,272 @@ class LocalKnowledgeBase:
         row = cursor.fetchone()
         return dict(row) if row else None
 
-    def store_gse(self, gse_id: str, **kwargs) -> None:
-        fields = ["gse_id", "title", "organism", "assay_type",
-                   "n_cells", "n_genes", "n_samples", "pubmed_id"]
-        values = [gse_id] + [kwargs.get(f, "") for f in fields[1:]]
+    # === Inspect Reports ===
+
+    def store_inspect_report(self, report_id: str, gse_id: str,
+                              organism: str, matrix_formats: str,
+                              gsm_count: int, matrix_file_count: int,
+                              total_cells: int, total_genes: int,
+                              field_names: str, signature_hash: str,
+                              raw_json: str = "{}") -> None:
         self._conn.execute(
-            f"""INSERT INTO gse_records ({','.join(fields)})
-                VALUES ({','.join(['?']*len(fields))})
-                ON CONFLICT(gse_id) DO UPDATE SET
-                title=excluded.title, organism=excluded.organism,
-                assay_type=excluded.assay_type, n_cells=excluded.n_cells,
-                n_genes=excluded.n_genes, n_samples=excluded.n_samples,
-                pubmed_id=excluded.pubmed_id""",
-            values,
+            """INSERT OR REPLACE INTO inspect_reports
+               (report_id, gse_id, organism, matrix_formats, gsm_count,
+                matrix_file_count, total_cells, total_genes, field_names,
+                signature_hash, raw_json)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            (report_id, gse_id, organism, matrix_formats, gsm_count,
+             matrix_file_count, total_cells, total_genes, field_names,
+             signature_hash, raw_json),
         )
         self._conn.commit()
 
-    def find_similar_gse(self, organism: str, assay_type: str, gse_id: str = "") -> list[dict]:
+    def find_similar_reports(self, signature_hash: str, organism: str = "",
+                              matrix_formats: str = "", gsm_count: int = 0,
+                              limit: int = 10) -> list[dict]:
         cursor = self._conn.execute(
-            """SELECT gse_id, title, n_cells, n_genes
-               FROM gse_records
-               WHERE organism = ? AND assay_type = ? AND gse_id <> ?
-               ORDER BY processed_at DESC LIMIT 10""",
-            (organism, assay_type, gse_id),
+            """SELECT report_id, gse_id, organism, matrix_formats, gsm_count,
+                      total_cells, total_genes, field_names, signature_hash, raw_json
+               FROM inspect_reports
+               WHERE signature_hash = ?
+                  OR (organism = ? AND matrix_formats = ? AND gsm_count = ?)
+               ORDER BY total_cells DESC
+               LIMIT ?""",
+            (signature_hash, organism, matrix_formats, gsm_count, limit),
         )
         return [dict(row) for row in cursor.fetchall()]
+
+    def find_reports_by_hash(self, signature_hash: str, limit: int = 10) -> list[dict]:
+        cursor = self._conn.execute(
+            """SELECT report_id, gse_id, signature_hash, gsm_count, raw_json
+               FROM inspect_reports
+               WHERE signature_hash = ?
+               ORDER BY created_at DESC LIMIT ?""",
+            (signature_hash, limit),
+        )
+        return [dict(row) for row in cursor.fetchall()]
+
+    # === Processing Plans ===
+
+    def store_plan(self, plan_id: str, gse_id: str, signature_hash: str,
+                   plan_json: str = "{}", processing_code: str = "",
+                   assembly_code: str = "", plan_confidence: float = 1.0,
+                   strategy_notes: str = "", kb_match_count: int = 0,
+                   field_mapping_count: int = 0) -> None:
+        self._conn.execute(
+            """INSERT OR REPLACE INTO processing_plans
+               (plan_id, gse_id, signature_hash, plan_json, processing_code,
+                assembly_code, plan_confidence, strategy_notes,
+                kb_match_count, field_mapping_count)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            (plan_id, gse_id, signature_hash, plan_json, processing_code,
+             assembly_code, plan_confidence, strategy_notes,
+             kb_match_count, field_mapping_count),
+        )
+        self._conn.commit()
+
+    def find_plans_by_hash(self, signature_hash: str, limit: int = 5) -> list[dict]:
+        cursor = self._conn.execute(
+            """SELECT plan_id, gse_id, plan_json, processing_code,
+                      assembly_code, plan_confidence, strategy_notes,
+                      kb_match_count, created_at
+               FROM processing_plans
+               WHERE signature_hash = ?
+               ORDER BY created_at DESC LIMIT ?""",
+            (signature_hash, limit),
+        )
+        return [dict(row) for row in cursor.fetchall()]
+
+    # === Field Mappings ===
+
+    def store_field_mappings(self, plan_id: str,
+                              mappings: list[dict]) -> None:
+        for m in mappings:
+            self._conn.execute(
+                """INSERT INTO field_mappings
+                   (plan_id, raw_field, canonical, source, note)
+                   VALUES (?, ?, ?, ?, ?)""",
+                (plan_id, m.get("raw_field", ""), m.get("canonical", ""),
+                 m.get("source", ""), m.get("note", "")),
+            )
+        self._conn.commit()
+
+    def find_mappings_by_canonical(self, canonical: str, limit: int = 20) -> list[dict]:
+        cursor = self._conn.execute(
+            """SELECT fm.raw_field, fm.canonical, fm.source, fm.note, p.gse_id
+               FROM field_mappings fm
+               JOIN processing_plans p ON fm.plan_id = p.plan_id
+               WHERE fm.canonical = ?
+               ORDER BY p.created_at DESC LIMIT ?""",
+            (canonical, limit),
+        )
+        return [dict(row) for row in cursor.fetchall()]
+
+    # === GSE Runs ===
+
+    def store_run(self, run_id: str, gse_id: str, success: bool = False,
+                  confidence: float = 1.0, n_cells: int = 0,
+                  n_genes: int = 0, n_batches: int = 0) -> None:
+        self._conn.execute(
+            """INSERT OR REPLACE INTO gse_runs
+               (run_id, gse_id, success, confidence, n_cells, n_genes, n_batches, finished_at)
+               VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'))""",
+            (run_id, gse_id, int(success), confidence, n_cells, n_genes, n_batches),
+        )
+        self._conn.commit()
+
+    # === Execution Steps ===
+
+    def store_execution_step(self, run_id: str, step_name: str, status: str,
+                              step_index: int = 0, details_json: str = "{}",
+                              error: str = "", started_at: str = "",
+                              finished_at: str = "") -> None:
+        self._conn.execute(
+            """INSERT INTO execution_steps
+               (run_id, step_name, status, step_index, details_json, error, started_at, finished_at)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+            (run_id, step_name, status, step_index, details_json, error, started_at, finished_at),
+        )
+        self._conn.commit()
+
+    def find_steps_by_run(self, run_id: str) -> list[dict]:
+        cursor = self._conn.execute(
+            """SELECT step_name, status, step_index, details_json, error, started_at, finished_at
+               FROM execution_steps
+               WHERE run_id = ?
+               ORDER BY step_index ASC""",
+            (run_id,),
+        )
+        return [dict(row) for row in cursor.fetchall()]
+
+    # === Batch Outputs ===
+
+    def store_batch_output(self, run_id: str, batch_label: str,
+                            file_name: str, n_cells: int, n_genes: int,
+                            metadata_json: str = "{}") -> None:
+        self._conn.execute(
+            """INSERT INTO batch_outputs
+               (run_id, batch_label, file_name, n_cells, n_genes, metadata_json)
+               VALUES (?, ?, ?, ?, ?, ?)""",
+            (run_id, batch_label, file_name, n_cells, n_genes, metadata_json),
+        )
+        self._conn.commit()
+
+    # === Strategies ===
+
+    def store_strategy(self, strategy_id: str, plan_json: str = "{}",
+                        success: bool = True, confidence: float = 1.0) -> None:
+        existing = self._conn.execute(
+            "SELECT success_count, fail_count, avg_confidence FROM strategies WHERE strategy_id = ?",
+            (strategy_id,),
+        ).fetchone()
+        sc = 0
+        fc = 0
+        if existing:
+            sc = existing["success_count"]
+            fc = existing["fail_count"]
+        if success:
+            sc += 1
+        else:
+            fc += 1
+        total = sc + fc
+        avg = ((confidence + (existing["avg_confidence"] or 0) * (total - 1)) / total) if total > 1 else confidence
+        self._conn.execute(
+            """INSERT OR REPLACE INTO strategies
+               (strategy_id, plan_json, success_count, fail_count, avg_confidence, last_seen_at)
+               VALUES (?, ?, ?, ?, ?, datetime('now'))""",
+            (strategy_id, plan_json, sc, fc, avg),
+        )
+        self._conn.commit()
+
+    def find_similar_strategies(self, signature_hash: str, limit: int = 5) -> list[dict]:
+        cursor = self._conn.execute(
+            """SELECT strategy_id, plan_json, success_count, fail_count, avg_confidence
+               FROM strategies
+               WHERE strategy_id = ? OR strategy_id LIKE ?
+               ORDER BY success_count DESC, last_seen_at DESC
+               LIMIT ?""",
+            (signature_hash, signature_hash[:8] + "%", limit),
+        )
+        return [dict(row) for row in cursor.fetchall()]
+
+    def update_strategy_stats(self, strategy_id: str, success: bool = True) -> None:
+        existing = self._conn.execute(
+            "SELECT success_count, fail_count FROM strategies WHERE strategy_id = ?",
+            (strategy_id,),
+        ).fetchone()
+        if existing:
+            sc = existing["success_count"] + (1 if success else 0)
+            fc = existing["fail_count"] + (0 if success else 1)
+        else:
+            sc = 1 if success else 0
+            fc = 0 if success else 1
+        self._conn.execute(
+            """INSERT OR REPLACE INTO strategies
+               (strategy_id, success_count, fail_count, last_seen_at)
+               VALUES (?, ?, ?, datetime('now'))""",
+            (strategy_id, sc, fc),
+        )
+        self._conn.commit()
+
+    # === Failure Cases ===
 
     def store_failure_case(self, case_id: str, error_signature: str, gse_id: str,
                             pipeline_stage: str = "", error_message: str = "",
                             fix_strategy: str = "", fixed: bool = False,
-                            success_count: int = 0, fail_count: int = 0) -> None:
-        # Upsert with incremental counters for existing records
-        existing = self._conn.execute(
-            "SELECT success_count, fail_count FROM failure_cases WHERE case_id = ?",
-            (case_id,),
-        ).fetchone()
-        if existing:
-            success_count += existing["success_count"]
-            fail_count += existing["fail_count"]
+                            run_id: str = "") -> None:
         self._conn.execute(
             """INSERT OR REPLACE INTO failure_cases
-               (case_id, error_signature, gse_id, pipeline_stage,
-                error_message, fix_strategy, fixed, success_count, fail_count)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-            (case_id, error_signature, gse_id, pipeline_stage,
-             error_message, fix_strategy, int(fixed), success_count, fail_count),
+               (case_id, run_id, error_signature, gse_id, pipeline_stage,
+                error_message, fix_strategy, fixed)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+            (case_id, run_id, error_signature, gse_id, pipeline_stage,
+             error_message, fix_strategy, int(fixed)),
         )
         self._conn.commit()
 
-
-    def find_similar_failures(self, error_signature: str, pipeline_stage: str = "") -> list[dict]:
+    def find_similar_failures(self, error_signature: str,
+                               pipeline_stage: str = "") -> list[dict]:
         cursor = self._conn.execute(
-            """SELECT case_id, fix_strategy, fixed, error_message, gse_id,
-                      COALESCE(success_count, 0) AS success_count,
-                      COALESCE(fail_count, 0) AS fail_count
+            """SELECT case_id, fix_strategy, fixed, error_message, gse_id
                FROM failure_cases
                WHERE error_signature = ? AND pipeline_stage = ?
-               ORDER BY success_count DESC, created_at DESC LIMIT 5""",
+               ORDER BY created_at DESC LIMIT 5""",
             (error_signature, pipeline_stage),
         )
         return [dict(row) for row in cursor.fetchall()]
 
     def find_all_by_stage(self, pipeline_stage: str) -> list[dict]:
-        """Return all stored strategies for a given pipeline stage."""
+        """Return all failure cases for a given pipeline stage."""
         cursor = self._conn.execute(
-            """SELECT case_id, fix_strategy, fixed, error_message, gse_id,
-                      COALESCE(success_count, 0) AS success_count,
-                      COALESCE(fail_count, 0) AS fail_count
+            """SELECT case_id, fix_strategy, fixed, error_message, gse_id
                FROM failure_cases
                WHERE pipeline_stage = ?
-               ORDER BY success_count DESC, created_at DESC""",
+               ORDER BY created_at DESC""",
             (pipeline_stage,),
         )
         return [dict(row) for row in cursor.fetchall()]
 
-    def clear_failures(self) -> int:
-        """Delete all failure case records. Returns count of deleted rows."""
-        cursor = self._conn.execute("DELETE FROM failure_cases")
+    # === Clear All ===
+
+    def clear_all(self) -> dict[str, int]:
+        """Delete all strategy/run/plan data. Returns counts per table.
+        Does NOT clear field_synonyms or gene_mappings."""
+        tables = [
+            "failure_cases", "strategies", "execution_steps",
+            "batch_outputs", "field_mappings", "processing_plans",
+            "inspect_reports", "gse_runs",
+        ]
+        counts: dict[str, int] = {}
+        for table in tables:
+            cursor = self._conn.execute(f"DELETE FROM {table}")
+            counts[table] = cursor.rowcount
         self._conn.commit()
-        return cursor.rowcount
+        return counts
+
+    def clear_failures(self) -> int:
+        """Legacy: clear only failure_cases."""
+        return self.clear_all()["failure_cases"]
 
     def __enter__(self):
         return self

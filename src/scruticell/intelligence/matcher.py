@@ -158,7 +158,7 @@ class StrategyMatcher:
     def store_strategy(
         self, report: GseReport, plan_json: str, success: bool = True
     ) -> None:
-        """Store a generated plan in the knowledge graph (upsert with counters)."""
+        """Store a generated plan as a reusable strategy in the knowledge base."""
         if self._kb is None:
             return
 
@@ -166,19 +166,14 @@ class StrategyMatcher:
         signature = fp.to_signature()
 
         try:
-            if hasattr(self._kb, "store_failure_case"):
-                self._kb.store_failure_case(
-                    case_id=f"{report.gse_id}_{signature[:8]}",
-                    error_signature=signature,
-                    gse_id=report.gse_id,
-                    pipeline_stage="planning",
-                    error_message=json.dumps(fp.to_dict()),
-                    fix_strategy=plan_json,
-                    fixed=success,
-                    success_count=0,
-                    fail_count=0,
+            if hasattr(self._kb, "store_strategy"):
+                self._kb.store_strategy(
+                    strategy_id=signature,
+                    plan_json=plan_json,
+                    success=success,
+                    confidence=0.85,
                 )
-                logger.info("Stored strategy for %s in KB", report.gse_id)
+                logger.info("Stored strategy %s in KB", signature)
         except Exception as exc:
             logger.warning("Failed to store strategy: %s", exc)
 
@@ -191,36 +186,38 @@ class StrategyMatcher:
 
         fp = self.fingerprint(report)
         signature = fp.to_signature()
-        case_id = f"{report.gse_id}_{signature[:8]}"
 
         try:
-            if hasattr(self._kb, "store_failure_case"):
-                self._kb.store_failure_case(
-                    case_id=case_id,
-                    error_signature=signature,
-                    gse_id=report.gse_id,
-                    pipeline_stage="planning",
-                    error_message=json.dumps(fp.to_dict()),
-                    fix_strategy="{}",
-                    fixed=success,
-                    success_count=1 if success else 0,
-                    fail_count=0 if success else 1,
+            if hasattr(self._kb, "update_strategy_stats"):
+                self._kb.update_strategy_stats(
+                    strategy_id=signature,
+                    success=success,
                 )
                 logger.info(
-                    "Updated strategy stats for %s: success=%d fail=%d",
-                    report.gse_id, 1 if success else 0, 0 if success else 1,
+                    "Updated strategy stats for %s: success=%s",
+                    signature, success,
                 )
         except Exception as exc:
             logger.warning("Failed to update strategy stats: %s", exc)
 
     def _query_kb(self, fp: GseFingerprint) -> list[dict[str, Any]]:
-        """Query the knowledge graph for similar fingerprints."""
+        """Query the knowledge graph for similar strategies."""
+        # Primary: strategies table with accumulated stats
+        if hasattr(self._kb, "find_similar_strategies"):
+            results = self._kb.find_similar_strategies(fp.to_signature(), limit=5)
+            if results:
+                return [
+                    {
+                        "gse_id": "",
+                        "fix_strategy": r.get("plan_json", "{}"),
+                        "success_count": r.get("success_count", 0),
+                        "fail_count": r.get("fail_count", 0),
+                    }
+                    for r in results
+                ]
+        # Fallback: failure_cases table (for reflexion lookup)
         if hasattr(self._kb, "find_all_by_stage"):
             return self._kb.find_all_by_stage("planning")
-        if hasattr(self._kb, "find_similar_failures"):
-            return self._kb.find_similar_failures(fp.to_signature(), "planning")
-        if hasattr(self._kb, "find_best_strategies"):
-            return self._kb.find_best_strategies(fp.organism, ";".join(fp.matrix_formats))
         return []
 
     def _compute_similarity(self, fp: GseFingerprint, record: dict[str, Any]) -> float:

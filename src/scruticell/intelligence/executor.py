@@ -525,6 +525,41 @@ class PlanExecutor:
             except Exception as exc:
                 logger.warning("Failed to build origin trace report: %s", exc)
 
+            # 11. Store run + steps + batches in knowledge base
+            try:
+                from scruticell.knowledge.graph import LocalKnowledgeBase
+                kb = LocalKnowledgeBase()
+                run_id = f"{report.gse_id}_{int(time.time())}"
+                kb.store_run(
+                    run_id=run_id,
+                    gse_id=report.gse_id,
+                    success=result.success,
+                    confidence=float(n_total_cells > 0),
+                    n_cells=result.n_cells,
+                    n_genes=result.n_genes,
+                    n_batches=result.n_batches,
+                )
+                for i, s in enumerate(result.steps):
+                    kb.store_execution_step(
+                        run_id=run_id,
+                        step_name=s.step,
+                        status=s.status,
+                        step_index=i,
+                        details_json=json.dumps(s.details) if s.details else "{}",
+                        error=s.error,
+                    )
+                for bm in result.batch_metadata:
+                    kb.store_batch_output(
+                        run_id=run_id,
+                        batch_label=bm.get("file", ""),
+                        file_name=bm.get("file", ""),
+                        n_cells=int(bm.get("cells", 0)),
+                        n_genes=int(bm.get("genes", 0)),
+                        metadata_json=json.dumps(bm, ensure_ascii=False),
+                    )
+            except Exception as exc:
+                logger.warning("Failed to store run in KB: %s", exc)
+
         except Exception as exc:
             logger.exception("Execution failed: %s", exc)
             result.errors.append(str(exc))

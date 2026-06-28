@@ -302,13 +302,21 @@ def config() -> None:
 
 
 @main.command()
-@click.confirmation_option(prompt="Delete all failure case records from knowledge base?")
+@click.confirmation_option(prompt="Delete all strategy/run/plan records from knowledge base?")
 def db_clear() -> None:
-    """Clear all stored strategy/failure records from the knowledge base."""
+    """Clear all stored strategies, runs, plans, steps, and batches from the knowledge base.
+    Does NOT clear field_synonyms or gene_mappings tables."""
     kb, _ = _get_knowledge_base()
-    if hasattr(kb, "clear_failures"):
+    if hasattr(kb, "clear_all"):
+        counts = kb.clear_all()
+        total = sum(counts.values())
+        click.echo(f"Deleted {total} record(s) from knowledge base:")
+        for tbl, cnt in sorted(counts.items()):
+            if cnt > 0:
+                click.echo(f"  {tbl}: {cnt}")
+    elif hasattr(kb, "clear_failures"):
         n = kb.clear_failures()
-        click.echo(f"Deleted {n} failure case record(s) from knowledge base.")
+        click.echo(f"Deleted {n} failure case record(s).")
     else:
         click.echo("Knowledge base backend does not support clear operation.")
 
@@ -567,6 +575,53 @@ def plan(
         output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(plan_json, encoding="utf-8")
     click.echo(f"\n  Plan written to: {output_path}")
+
+    # Store inspect report + plan + field mappings in knowledge base
+    try:
+        from scruticell.intelligence.matcher import StrategyMatcher
+        import time
+        kb_plan, _ = _get_knowledge_base()
+        sm = StrategyMatcher(kb_plan)
+        fp = sm.fingerprint(gse_report)
+        sig = fp.to_signature()
+        ts = str(int(time.time()))
+        # Inspect report
+        if hasattr(kb_plan, "store_inspect_report"):
+            kb_plan.store_inspect_report(
+                report_id=f"{gse_id}_{ts}",
+                gse_id=gse_id,
+                organism=fp.organism,
+                matrix_formats=";".join(fp.matrix_formats),
+                gsm_count=fp.gsm_count,
+                matrix_file_count=fp.matrix_file_count,
+                total_cells=fp.total_cells,
+                total_genes=fp.total_genes,
+                field_names=";".join(fp.field_names),
+                signature_hash=sig,
+            )
+        # Processing plan
+        if hasattr(kb_plan, "store_plan"):
+            plan_data = json.loads(plan_json)
+            kb_plan.store_plan(
+                plan_id=f"{gse_id}_{ts}",
+                gse_id=gse_id,
+                signature_hash=sig,
+                plan_json=plan_json,
+                processing_code=plan_data.get("processing_code", ""),
+                assembly_code=plan_data.get("assembly_code", ""),
+                plan_confidence=plan_data.get("confidence", 0.85),
+                strategy_notes=plan_data.get("strategy_notes", ""),
+                kb_match_count=len(matches),
+                field_mapping_count=len(plan_data.get("field_mappings", [])),
+            )
+        # Field mappings
+        if hasattr(kb_plan, "store_field_mappings"):
+            from scruticell.config import DATA_DIR
+            fm_list = plan_data.get("field_mappings", [])
+            if fm_list:
+                kb_plan.store_field_mappings(f"{gse_id}_{ts}", fm_list)
+    except Exception:
+        pass  # KB write is best-effort, don't fail the command
 
     click.echo(f"\n{'='*60}")
 

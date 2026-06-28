@@ -135,6 +135,12 @@ RETURN ps.strategy_id, ps.strategy_json, ps.success_count,
 ORDER BY ps.success_count DESC LIMIT 10
 """
 
+UPDATE_STRATEGY_STATS = """
+MATCH (ps:ParseStrategy {strategy_id: $strategy_id})
+SET ps.success_count = COALESCE(ps.success_count, 0) + $increment_success,
+    ps.fail_count = COALESCE(ps.fail_count, 0) + $increment_fail
+"""
+
 LINK_FAILURE_TO_STRATEGY = """
 MATCH (fc:FailureCase {case_id: $case_id})
 MATCH (ps:ParseStrategy {strategy_id: $strategy_id})

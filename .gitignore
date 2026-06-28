@@ -20,9 +20,6 @@ test_output/
 
 # Downloaded GEO datasets
 batch/
-GSE243292/
-GSE285606/
-GSE334035/
 
 # Office temp files
 ~$*
