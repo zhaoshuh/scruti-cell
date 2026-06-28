@@ -1,0 +1,18 @@
+上传计划
+需要先初始化本地 git 仓库再 push：
+# 1. 先从计划模式退出，然后我来执行
+cd E:\Scruti-Cell
+
+# 2. 创建 .gitignore（排除不应上传的文件）
+git init
+git remote add origin https://github.com/zhaoshuh/scruti-cell.git
+
+# 3. 配置认证
+git config user.email "zshbdfdc@163.com"
+
+# 4. 添加并提交
+git add .
+git commit -m "Initial commit: Scrut-Cell v0.1"
+
+# 5. 推送到 GitHub
+git push -u origin main

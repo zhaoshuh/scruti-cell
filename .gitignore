@@ -1,0 +1,50 @@
+# Python virtual environment
+venv/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+
+# npm
+node_modules/
+
+# Test caches
+.pytest_cache/
+.ruff_cache/
+.pytest_tmp/
+
+# Output data (generated h5ad, reports, downloads)
+output/
+test_output/
+
+# Downloaded GEO datasets
+batch/
+GSE243292/
+GSE285606/
+GSE334035/
+
+# Office temp files
+~$*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment / secrets
+.env
+.env.*
+
+# OpenCode sessions
+.opencode/sessions/
+session-*.md
+
+# Excel test files
+test_gse.xlsx
+P0-P3任务清单-20260627.xlsx
