@@ -21,6 +21,12 @@
 
 **总计: 195 个测试，全部通过**
 
+> **前置环境修复**：运行测试前，确保 numpy 2.x 兼容性（否则 scanpy/anndata/h5py 栈崩溃）：
+> ```bash
+> pip install --force-reinstall h5py pyarrow numexpr bottleneck dask[array] xarray
+> ```
+> 验证：`python -c "import scanpy; print('OK')"`
+
 | 测试文件 | 数量 | 覆盖内容 |
 |---------|------|---------|
 | `tests/test_literature.py` | 39 | 文献提取：平台检测、批次数、归一化、细胞数、物种、组织、barcode、疾病、基因组等 11 组正则规则 |

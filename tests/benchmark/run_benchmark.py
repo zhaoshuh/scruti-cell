@@ -1,0 +1,383 @@
+#!/usr/bin/env python
+"""
+Scrut-Cell Batch Benchmark Runner
+==================================
+一脚本完成：清空 KB → 逐个测试 GSE → 记录日志 → 汇总报告
+
+Usage:
+    python tests/benchmark/run_benchmark.py              # 跑全部
+    python tests/benchmark/run_benchmark.py --resume     # 断点续跑
+    python tests/benchmark/run_benchmark.py --keep-data  # 保留下载数据
+"""
+
+from __future__ import annotations
+
+import json
+import subprocess
+import sys
+import time
+from datetime import datetime
+from pathlib import Path
+from typing import Any
+
+# ---- 配置 ----
+
+PROJECT_ROOT = Path(__file__).parent.parent.parent
+
+# 测试数据集（阶段 0 + 阶段 1：15 个推荐 GSE）
+# 格式: {id: gse_id, label: 描述, features: 特征标签, category: 分类}
+DATASETS: list[dict[str, Any]] = [
+    # === 已验证（冒烟测试） ===
+    {"id": "T01_v", "gse_id": "GSE334035", "label": "3 GSM×3 h5, APOE Alzheimer",
+     "category": "基础集", "features": "A1-B2-C1-D1-E1-F1-G1"},
+    {"id": "T02_v", "gse_id": "GSE243292", "label": "已验证数据集",
+     "category": "基础集", "features": "A1-B1-C1-D1-E1-F1-G1"},
+    {"id": "T03_v", "gse_id": "GSE285606", "label": "已验证数据集",
+     "category": "基础集", "features": "A1-B1-C1-D1-E1-F1-G1"},
+
+    # === 基础集（按格式覆盖） ===
+    {"id": "T01", "gse_id": "GSE130430", "label": "单样本 10X h5, 人类PBMC",
+     "category": "基础集", "features": "A1-B1-C1-D1-E1-F1-G1"},
+    {"id": "T02", "gse_id": "GSE184882", "label": "h5ad 格式, 肾细胞癌",
+     "category": "基础集", "features": "A2-B1-C2-D1-E1-F1-G1"},
+    {"id": "T03", "gse_id": "GSE150861", "label": "MTX 格式, COVID-19 PBMC 多批次",
+     "category": "基础集", "features": "A3-B3-C1-D1-E1-F1-G1"},
+    {"id": "T04", "gse_id": "GSE137710", "label": "CSV/TSV 矩阵, 小鼠",
+     "category": "基础集", "features": "A4-B1-C1-D1-E1-F1-G1"},
+    {"id": "T05", "gse_id": "GSE136831", "label": "RDS 格式 (Seurat), 人肺",
+     "category": "基础集", "features": "A5-B1-C1-D1-E1-F1-G1"},
+    {"id": "T07", "gse_id": "GSE118257", "label": "3 GSM 独立 h5, 小鼠脑",
+     "category": "基础集", "features": "A1-B2-C1-D1-E1-F1-G1"},
+
+    # === 元信息挑战集 ===
+    {"id": "T11", "gse_id": "GSE138665", "label": "复合字段, 人肝癌",
+     "category": "元信息挑战", "features": "A1-B2-C2-D1-E1-F1-G1"},
+    {"id": "T12", "gse_id": "GSE146512", "label": "缩写字段, 肿瘤微环境",
+     "category": "元信息挑战", "features": "A1-B2-C3-D1-E1-F1-G1"},
+
+    # === 文件结构挑战集 ===
+    {"id": "T19", "gse_id": "GSE129785", "label": "多层子目录矩阵",
+     "category": "文件结构", "features": "A1-B2-C1-D1-E1-F1-G3"},
+    {"id": "T20", "gse_id": "GSE132465", "label": "tar.gz 内嵌 h5",
+     "category": "文件结构", "features": "A1-B2-C1-D1-E1-F1-G2"},
+
+    # === KB 复用测试 ===
+    {"id": "T28", "gse_id": "GSE136337", "label": "同结构复用 — 标准 10X h5",
+     "category": "KB复用", "features": "A1-B1-C1-D1-E1-F1-G1"},
+    {"id": "T29", "gse_id": "GSE135893", "label": "同结构复用 — 多样本",
+     "category": "KB复用", "features": "A1-B2-C1-D1-E1-F1-G1"},
+]
+
+# 运行配置
+TIMEOUT_PER_GSE = 1800   # 每个 GSE 最长 30 分钟
+SCRUTICELL_BIN = "scruticell"
+RESULTS_DIR = PROJECT_ROOT / "tests" / "benchmark" / "results"
+
+
+# ---- 工具函数 ----
+
+def run_cmd(cmd: list[str], timeout: int = 600) -> tuple[int, str, str]:
+    """运行命令，返回 (returncode, stdout, stderr)。"""
+    try:
+        proc = subprocess.run(
+            cmd, capture_output=True, text=True, timeout=timeout,
+            cwd=str(PROJECT_ROOT), encoding="utf-8", errors="replace",
+        )
+        return proc.returncode, proc.stdout, proc.stderr
+    except subprocess.TimeoutExpired:
+        return -1, "", f"TIMEOUT after {timeout}s"
+    except Exception as e:
+        return -2, "", str(e)
+
+
+def clear_kb() -> str:
+    """清空知识库中的策略数据。返回输出文本。"""
+    rc, out, err = run_cmd([SCRUTICELL_BIN, "db-clear", "--yes"], timeout=30)
+    return (out + err).strip()
+
+
+def test_one_gse(gse_id: str, keep_data: bool = False) -> dict[str, Any]:
+    """测试单个 GSE，返回结果字典。"""
+    result: dict[str, Any] = {
+        "gse_id": gse_id,
+        "success": False,
+        "returncode": -1,
+        "started_at": datetime.now().isoformat(),
+        "stages": {},
+        "metrics": {},
+        "errors": [],
+    }
+
+    t0 = time.time()
+    cmd = [SCRUTICELL_BIN, "run", gse_id]
+    if keep_data:
+        cmd.append("--keep-data")
+
+    rc, stdout, stderr = run_cmd(cmd, timeout=TIMEOUT_PER_GSE)
+    result["returncode"] = rc
+    result["duration_s"] = round(time.time() - t0, 1)
+    result["stdout"] = stdout
+    result["stderr"] = stderr
+
+    # 解析输出，提取各阶段的摘要信息
+    result["success"] = "Pipeline complete" in stdout
+    result["stages"]["inspect"] = _parse_stage(stdout, "INSPECT")
+    result["stages"]["plan"] = _parse_stage(stdout, "PLAN")
+    result["stages"]["execute"] = _parse_stage(stdout, "EXECUTE")
+
+    # 从 execute.json 提取指标
+    execute_json = PROJECT_ROOT / "output" / gse_id / "execute.json"
+    if execute_json.exists():
+        try:
+            ej = json.loads(execute_json.read_text(encoding="utf-8"))
+            result["metrics"]["cells"] = ej.get("cells", 0)
+            result["metrics"]["genes"] = ej.get("genes", 0)
+            result["metrics"]["batches"] = ej.get("batches", 0)
+            result["metrics"]["success"] = ej.get("success", False)
+            result["metrics"]["errors"] = ej.get("errors", [])
+            result["metrics"]["warnings"] = ej.get("warnings", [])
+        except Exception:
+            pass
+
+    # 从 plan.json 提取置信度
+    plan_json = PROJECT_ROOT / "output" / gse_id / "plan.json"
+    if plan_json.exists():
+        try:
+            pj = json.loads(plan_json.read_text(encoding="utf-8"))
+            result["metrics"]["confidence"] = pj.get("confidence", 0)
+            result["metrics"]["field_mappings"] = len(pj.get("field_mappings", []))
+            result["metrics"]["batch_separation_strategy"] = pj.get(
+                "batch_separation_strategy", ""
+            )
+            result["metrics"]["kb_match_count"] = pj.get("kb_match_count", 0)
+        except Exception:
+            pass
+
+    # 从 inspect.json 提取基本统计
+    inspect_json = PROJECT_ROOT / "output" / gse_id / "inspect.json"
+    if inspect_json.exists():
+        try:
+            ij = json.loads(inspect_json.read_text(encoding="utf-8"))
+            result["metrics"]["total_files"] = ij.get("total_files", 0)
+            result["metrics"]["gsm_entries"] = len(ij.get("gsm_entries", []))
+            result["metrics"]["data_files"] = len(ij.get("data_files", []))
+        except Exception:
+            pass
+
+    # 错误收集
+    if not result["success"]:
+        for line in (stdout + stderr).split("\n"):
+            low = line.lower()
+            if any(kw in low for kw in ["error", "fail", "traceback", "exception"]):
+                if len(line) > 10:
+                    result["errors"].append(line.strip()[:200])
+
+    return result
+
+
+def _parse_stage(stdout: str, stage: str) -> dict[str, str]:
+    """从 CLI 输出中提取某个阶段的摘要行。"""
+    for line in stdout.split("\n"):
+        if f"[{stage}]" in line.upper() or stage.lower() in line.lower():
+            return {"summary": line.strip()[:200]}
+    return {}
+
+
+def grade_result(r: dict[str, Any]) -> str:
+    """根据指标评定等级：S / A / B / C / D / F。"""
+    if not r["success"]:
+        return "D"
+    conf = r["metrics"].get("confidence", 0)
+    warnings = len(r["metrics"].get("warnings", []))
+    errors = len(r["metrics"].get("errors", []))
+    if conf >= 0.9 and warnings == 0 and errors == 0:
+        return "S"
+    if conf >= 0.7:
+        return "A"
+    if conf >= 0.5:
+        return "B"
+    if r["returncode"] == 0:
+        return "C"
+    return "F"
+
+
+# ---- 主入口 ----
+
+def main() -> None:
+    global TIMEOUT_PER_GSE
+    import argparse
+
+    p = argparse.ArgumentParser(description="Scrut-Cell Batch Benchmark")
+    p.add_argument("--resume", action="store_true", help="跳过已有结果的数据集")
+    p.add_argument("--keep-data", action="store_true", help="保留下载文件和 .h5ad")
+    p.add_argument("--timeout", type=int, default=TIMEOUT_PER_GSE, help="每个 GSE 超时秒数")
+    args = p.parse_args()
+
+    run_dir = RESULTS_DIR / datetime.now().strftime("%Y-%m-%d_%H%M%S")
+    run_dir.mkdir(parents=True, exist_ok=True)
+    TIMEOUT_PER_GSE = args.timeout
+
+    log_file = run_dir / "_full.log"
+    log = open(str(log_file), "w", encoding="utf-8")
+
+    def log_print(msg: str) -> None:
+        print(msg)
+        log.write(msg + "\n")
+        log.flush()
+
+    log_print("=" * 60)
+    log_print(f"  Scrut-Cell Batch Benchmark")
+    log_print(f"  Datasets: {len(DATASETS)}")
+    log_print(f"  Results:  {run_dir}")
+    log_print(f"  Time:     {datetime.now().isoformat()}")
+    log_print("=" * 60)
+
+    # Step 1: 清空 KB
+    log_print("\n>>> Clearing knowledge base...")
+    kb_out = clear_kb()
+    log_print(kb_out or "(done)")
+
+    # Step 2: 逐个测试
+    results: list[dict[str, Any]] = []
+    for i, ds in enumerate(DATASETS, 1):
+        gse_id = ds["gse_id"]
+        ds_id = ds["id"]
+        ds_dir = run_dir / ds_id
+        ds_dir.mkdir(parents=True, exist_ok=True)
+
+        # 断点续跑
+        if args.resume and (ds_dir / "_result.json").exists():
+            log_print(f"\n[{i}/{len(DATASETS)}] SKIP {ds_id} ({gse_id}) — already done")
+            try:
+                results.append(json.loads((ds_dir / "_result.json").read_text()))
+            except Exception:
+                pass
+            continue
+
+        log_print(f"\n{'─'*50}")
+        log_print(f"  [{i}/{len(DATASETS)}] {ds_id} — {gse_id}")
+        log_print(f"  Category: {ds['category']} | {ds['label']}")
+        log_print(f"  Features: {ds['features']}")
+
+        result = test_one_gse(gse_id, keep_data=args.keep_data)
+        result.update({"id": ds_id, "category": ds["category"],
+                        "label": ds["label"], "features": ds["features"]})
+        result["grade"] = grade_result(result)
+        results.append(result)
+
+        # 写 per-GSE 日志
+        gse_log = ds_dir / f"{gse_id}.log"
+        gse_log.write_text(
+            f"=== STDOUT ===\n{result['stdout']}\n\n=== STDERR ===\n{result['stderr']}",
+            encoding="utf-8",
+        )
+        (ds_dir / "_result.json").write_text(
+            json.dumps({k: v for k, v in result.items() if k not in ("stdout", "stderr")},
+                       indent=2, ensure_ascii=False),
+            encoding="utf-8",
+        )
+
+        grade = result["grade"]
+        status = "PASS" if result["success"] else "FAIL"
+        log_print(f"  Result: {status} | Grade: {grade} | "
+                  f"C={result['metrics'].get('cells','?')} "
+                  f"G={result['metrics'].get('genes','?')} "
+                  f"B={result['metrics'].get('batches','?')} | "
+                  f"{result['duration_s']}s")
+
+    # Step 3: 汇总报告
+    log_print(f"\n\n{'='*60}")
+    log_print(f"  BENCHMARK SUMMARY")
+    log_print(f"{'='*60}")
+
+    total = len(results)
+    passed = sum(1 for r in results if r["success"])
+    grades = {g: sum(1 for r in results if r["grade"] == g)
+              for g in ["S", "A", "B", "C", "D", "F"]}
+
+    log_print(f"\n  Total:   {total}")
+    log_print(f"  Passed:  {passed} ({passed / total:.0%})" if total else "  Passed: 0")
+    log_print(f"  Grades:  S={grades['S']} A={grades['A']} B={grades['B']} "
+              f"C={grades['C']} D={grades['D']} F={grades['F']}")
+
+    # 按类别分析
+    cats: dict[str, list[dict]] = {}
+    for r in results:
+        cats.setdefault(r["category"], []).append(r)
+
+    log_print(f"\n{'─'*40}")
+    log_print(f"  By Category:")
+    for cat_name, cat_results in sorted(cats.items()):
+        cat_pass = sum(1 for r in cat_results if r["success"])
+        confs = [r["metrics"].get("confidence", 0) for r in cat_results if r["success"]]
+        avg_conf = sum(confs) / len(confs) if confs else 0
+        log_print(f"    {cat_name:12s}: {cat_pass}/{len(cat_results)} passed "
+                  f"({cat_pass/len(cat_results):.0%}) avg_conf={avg_conf:.0%}")
+
+    # 失败列表
+    failures = [r for r in results if not r["success"]]
+    if failures:
+        log_print(f"\n{'─'*40}")
+        log_print(f"  Failures ({len(failures)}):")
+        for r in failures:
+            errs = "; ".join(r["errors"][:2]) if r["errors"] else "(no error details)"
+            log_print(f"    {r['gse_id']} ({r['id']}): {errs[:150]}")
+
+    # 每个数据集的详细表
+    log_print(f"\n{'─'*40}")
+    log_print(f"  Detail:")
+    header = f"  {'ID':6s} {'GSE':12s} {'Grade':5s} {'Cells':>8s} {'Genes':>8s} {'Bat':>3s} {'Conf':>5s} {'Time':>6s}  {'Category':12s}"
+    log_print(header)
+    log_print("  " + "-" * (len(header) - 2))
+    for r in results:
+        m = r["metrics"]
+        log_print(
+            f"  {r['id']:6s} {r['gse_id']:12s} {r['grade']:5s} "
+            f"{str(m.get('cells','?')):>8s} {str(m.get('genes','?')):>8s} "
+            f"{str(m.get('batches','?')):>3s} "
+            f"{str(round(m.get('confidence',0)*100))+'%':>5s} "
+            f"{str(r['duration_s'])+'s':>6s}  {r['category']:12s}"
+        )
+
+    # 写 JSON 汇总
+    summary = {
+        "timestamp": datetime.now().isoformat(),
+        "total": total, "passed": passed, "pass_rate": f"{passed/total:.0%}" if total else "0%",
+        "grades": grades,
+        "by_category": {c: {"total": len(cr), "passed": sum(1 for r in cr if r["success"]),
+                             "pass_rate": f"{sum(1 for r in cr if r['success'])/len(cr):.0%}"
+                             if cr else "0%"}
+                        for c, cr in cats.items()},
+        "failures": [{"id": r["id"], "gse_id": r["gse_id"], "errors": r["errors"]}
+                     for r in failures],
+        "results": [
+            {k: v for k, v in r.items() if k not in ("stdout", "stderr")}
+            for r in results
+        ],
+    }
+    (run_dir / "summary.json").write_text(
+        json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
+
+    # 创建 latest 软链接
+    latest_link = RESULTS_DIR / "latest"
+    if latest_link.exists() or latest_link.is_symlink():
+        latest_link.unlink(missing_ok=True)
+    try:
+        latest_link.symlink_to(run_dir.name, target_is_directory=True)
+    except OSError:
+        pass  # Windows 需要管理员权限创建 symlink，忽略
+
+    log_print(f"\n{'='*60}")
+    log_print(f"  Report saved: {run_dir / 'summary.json'}")
+    log_print(f"{'='*60}")
+    log.close()
+
+    # 控制台简要输出
+    print(f"\nResults: {passed}/{total} passed | Grades: "
+          f"S={grades['S']} A={grades['A']} B={grades['B']} "
+          f"C={grades['C']} D={grades['D']} F={grades['F']}")
+
+
+if __name__ == "__main__":
+    main()
