@@ -230,7 +230,7 @@ Now produce the final structure that identifies and assembles the expression mat
 OUTPUT: JSON with:
 {{
   "matrices": [{{"file_key": "EXACT ancestry key from report", "format": "h5", "orientation": "gene_x_cell", "transpose": false, "note": "..."}}],
-  "batches": [{{"gsm_id": "GSM9779490", "file_keys": ["exact key"], "cell_count": 21305, "barcode_prefix": "", "note": "..."}}],
+  "batches": [{{"gsm_id": "GSM9779490", "file_keys": ["exact key"], "cell_count": 21305, "barcode_prefix": "", "note": "reason for this batch", "batch_label": "Control_WT", "reasoning": "Explain WHY a separate batch here.", "defining_fields": ["condition"]}}],
   "assembly_code": "def assemble_data(adatas, gsm_map):\\n    # adatas is dict of {{gsm_id: adata}}\\n    # gsm_map is dict of {{gsm_id: batch_name}}\\n    # Clean and return EACH adata individually. Do NOT merge.\\n    # Return: dict[str, AnnData] where keys are batch labels\\n    # End with: return {{batch_label: adata for batch_label, adata in adatas.items()}}",
   "gene_id_system": "symbol",
   "normalize_genes": true,
@@ -271,6 +271,17 @@ If gsm_file_map in the DATA is present and non-empty:
 If gsm_file_map is empty or absent:
 - All cells go into a single batch
 - Flag batch_separation as "unavailable" in strategy_notes
+
+*** BATCH REASONING (NEW) ***
+For EACH batch in the output, you MUST provide a batch_label, reasoning, and defining_fields:
+- batch_label: human-readable short name combining key distinguishing info (e.g., "APOE4_Day7")
+- reasoning: WHY this forms a separate batch — explain in biological/experimental terms.
+  Example: "Different treatment: DMSO control vs Drug X; all other metadata identical"
+  Example: "Independent patient sample; different donor_id, same tissue and protocol"
+  Example: "Different timepoint (Day 0 vs Day 7) from same patient cohort"
+- defining_fields: which GSM characteristic fields DIFFER across batches (e.g., ["treatment", "timepoint"])
+Also output "batch_separation_strategy" at top level:
+  "per_sample" / "per_condition" / "per_timepoint" / "per_treatment" / "by_gsm_file_map" / "single_batch"
 
 Return ONLY the JSON. No extra text."""
 

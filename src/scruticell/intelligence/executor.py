@@ -482,6 +482,13 @@ class PlanExecutor:
                     "cells": adata.n_obs,
                     "genes": adata.n_vars,
                 }
+                # Inject batch reasoning from plan if available
+                for b in (plan.batches or []):
+                    if getattr(b, "gsm_id", "") == batch_label and getattr(b, "reasoning", ""):
+                        meta["batch_split_reason"] = b.reasoning
+                        if getattr(b, "defining_fields", []):
+                            meta["diff_in"] = ", ".join(b.defining_fields)
+                        break
                 for col in adata.obs.columns:
                     vals = adata.obs[col].dropna().unique()
                     if 0 < len(vals) <= 20:

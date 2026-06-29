@@ -839,20 +839,35 @@ def execute(
         metadata_path = output_dir / "metadata.md"
         # Collect all obs keys across batches for table header
         all_keys: list[str] = []
+        has_reasoning = any("batch_split_reason" in bm for bm in batch_meta)
+        has_diff_in = any("diff_in" in bm for bm in batch_meta)
         for bm in batch_meta:
             for k in bm:
-                if k not in ("file", "cells", "genes") and k not in all_keys:
+                if k not in ("file", "cells", "genes", "batch_split_reason", "diff_in") and k not in all_keys:
                     all_keys.append(k)
-        header_cols = ["File", "Cells", "Genes"] + all_keys
+        header_cols = ["File", "Cells", "Genes"]
+        if has_reasoning:
+            header_cols.append("Why This Batch?")
+        if has_diff_in:
+            header_cols.append("Differs In")
+        header_cols += all_keys
         lines = [
             f"# {gse_id} — Metadata Summary",
             "",
-            "| " + " | ".join(header_cols) + " |",
-            "|" + "|".join(["------"] * len(header_cols)) + "|",
         ]
+        if plan.batch_separation_strategy:
+            lines.append(f"**Batch Separation Strategy**: {plan.batch_separation_strategy}")
+            lines.append("")
+        lines.append("| " + " | ".join(header_cols) + " |")
+        lines.append("|" + "|".join(["------"] * len(header_cols)) + "|")
         for bm in batch_meta:
-            row = [str(bm.get(c, "")) for c in ["file", "cells", "genes"] + all_keys]
-            lines.append("| " + " | ".join(row) + " |")
+            row_vals = [str(bm.get(c, "")) for c in ["file", "cells", "genes"]]
+            if has_reasoning:
+                row_vals.append(str(bm.get("batch_split_reason", ""))[:120])
+            if has_diff_in:
+                row_vals.append(str(bm.get("diff_in", "")))
+            row_vals += [str(bm.get(c, "")) for c in all_keys]
+            lines.append("| " + " | ".join(row_vals) + " |")
         lines.append("")
         lines.append(
             f"**Total**: {len(batch_meta)} batches | "

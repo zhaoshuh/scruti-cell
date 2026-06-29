@@ -167,6 +167,25 @@ class PlanValidator:
             if not assigned:
                 issues.append(f"Matrix '{m.file_key}' not assigned to any batch")
 
+        # 2b. Every batch should have a reasoning (soft check)
+        missing_reasoning = [b.gsm_id for b in plan.batches if not b.reasoning]
+        if missing_reasoning:
+            issues.append(
+                f"Batch(es) {', '.join(missing_reasoning)} missing 'reasoning' — "
+                f"explain why each batch is separate"
+            )
+
+        # 2c. Batch separation strategy should be set
+        valid_strategies = {
+            "per_sample", "per_condition", "per_timepoint",
+            "per_treatment", "by_gsm_file_map", "single_batch", "",
+        }
+        if (plan.batch_separation_strategy
+                and plan.batch_separation_strategy not in valid_strategies):
+            issues.append(
+                f"Unknown batch_separation_strategy: '{plan.batch_separation_strategy}'"
+            )
+
         # 3. GSM IDs in batches should exist in report
         report_gsm_ids = {g.gsm_id for g in report.gsm_entries}
         for b in plan.batches:

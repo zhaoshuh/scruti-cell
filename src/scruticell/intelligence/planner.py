@@ -23,12 +23,16 @@ class MatrixMapping:
 
 @dataclass
 class BatchMapping:
-    """How cells are assigned to batches."""
+    """How cells are assigned to batches — with LLM reasoning."""
     gsm_id: str
-    file_keys: list[str] = field(default_factory=list)  # matrix files belonging to this GSM
+    file_keys: list[str] = field(default_factory=list)
     cell_count: int = 0
     barcode_prefix: str = ""
     note: str = ""
+    # LLM batch reasoning (NEW)
+    batch_label: str = ""          # human-readable short name (e.g., "Control_Day0")
+    reasoning: str = ""            # WHY this forms a separate batch (biological explanation)
+    defining_fields: list[str] = field(default_factory=list)  # which obs columns differ across batches
 
 
 @dataclass
@@ -85,6 +89,7 @@ class ProcessingPlan:
 
     # Overall strategy
     strategy_notes: str = ""
+    batch_separation_strategy: str = ""  # "per_sample", "per_condition", etc.
     confidence: float = 0.0
     requires_literature_check: bool = False
     literature_check_reason: str = ""
@@ -119,6 +124,9 @@ class ProcessingPlan:
                     cell_count=b.get("cell_count") or 0,
                     barcode_prefix=b.get("barcode_prefix", ""),
                     note=b.get("note", ""),
+                    batch_label=b.get("batch_label", ""),
+                    reasoning=b.get("reasoning", ""),
+                    defining_fields=b.get("defining_fields", []),
                 )
                 for b in data.get("batches", [])
             ],
@@ -134,6 +142,7 @@ class ProcessingPlan:
             normalization=data.get("normalization", ""),
             is_raw_counts=data.get("is_raw_counts", False),
             strategy_notes=data.get("strategy_notes", ""),
+            batch_separation_strategy=data.get("batch_separation_strategy", ""),
             confidence=data.get("confidence", 0.0),
             requires_literature_check=data.get("requires_literature_check", False),
             literature_check_reason=data.get("literature_check_reason", ""),
@@ -158,6 +167,7 @@ class ProcessingPlan:
             "normalization": self.normalization,
             "is_raw_counts": self.is_raw_counts,
             "strategy_notes": self.strategy_notes,
+            "batch_separation_strategy": self.batch_separation_strategy,
             "confidence": self.confidence,
             "requires_literature_check": self.requires_literature_check,
             "literature_check_reason": self.literature_check_reason,
@@ -265,8 +275,18 @@ Before planning, you MUST extract metadata from ALL of these sources:
    d. H5 files with shapes >100x100 ARE matrices
    e. MTX format: if barcode + feature files present, the .mtx.gz file (not .tsv.gz companions) is the matrix
 
-2.2 **MAP TO BATCHES**: Map each matrix to its GSM based on filename-GSM matching.
+2.2 **MAP TO BATCHES WITH REASONING**: Map each matrix to its GSM based on filename-GSM matching.
    Every matrix belongs to exactly ONE GSM. Populate the "batches" array.
+   For EACH batch, you MUST also provide:
+   - "batch_label": human-readable short name combining key distinguishing info (e.g. "APOE4_Day7")
+   - "reasoning": WHY this forms a separate batch. Explain in biological/experimental terms.
+     Example: "Different treatment: DMSO control vs Drug X; all other metadata identical"
+     Example: "Independent patient sample; different donor but same tissue and protocol"
+     Example: "Different timepoint (Day 0 vs Day 7) from same patient cohort"
+   - "defining_fields": which GSM characteristic fields DIFFER across batches (e.g. ["treatment", "timepoint"])
+
+   Also output "batch_separation_strategy" at top level:
+   "per_sample" / "per_condition" / "per_timepoint" / "per_treatment" / "by_gsm_file_map" / "single_batch"
 
 2.3 **FIELD STANDARDIZATION**: Add field_mappings for raw GEO field name → canonical name.
    Canonical names: tissue, cell_type, treatment, genotype, disease, sex, age, timepoint, 
@@ -292,7 +312,9 @@ The code must:
 
 Return ONLY the JSON object with: matrices, batches, field_mappings, gene_id_system,
 normalize_genes, drop_duplicate_genes, normalization, is_raw_counts, processing_code,
-strategy_notes, confidence, requires_literature_check, literature_check_reason.
+strategy_notes, batch_separation_strategy, confidence, requires_literature_check,
+literature_check_reason. Within each batch object, include: gsm_id, file_keys,
+cell_count, barcode_prefix, note, batch_label, reasoning, defining_fields.
 No other text."""
 
 

@@ -47,6 +47,8 @@ class BatchTrace:
     gene_id_system: str
     metadata_injected: list[MetadataTrace] = dataclasses.field(default_factory=list)
     warnings: list[str] = dataclasses.field(default_factory=list)
+    batch_reasoning: str = ""           # LLM explanation of why this is a separate batch
+    defining_fields: list[str] = dataclasses.field(default_factory=list)
 
 
 @dataclasses.dataclass
@@ -71,6 +73,7 @@ class TraceReport:
     overall_confidence: float = 0.0
     total_cells: int = 0
     total_genes: int = 0
+    batch_separation_strategy: str = ""   # from plan
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -103,6 +106,10 @@ class TraceReport:
 
         for b in self.batches:
             lines.append(f"\n  -- BATCH: {b.gsm_id} --")
+            if b.batch_reasoning:
+                lines.append(f"  Why batch: {b.batch_reasoning}")
+            if b.defining_fields:
+                lines.append(f"  Differs in: {', '.join(b.defining_fields)}")
             lines.append(f"  Matrix: {b.matrix_file[-60:]}")
             lines.append(f"  Format: {b.matrix_format} | Orientation: {b.orientation}")
             lines.append(f"  Cells: {b.cells} | Genes: {b.genes} (pruned: {b.genes_pruned})")
@@ -153,6 +160,10 @@ class TraceReport:
 
         for b in self.batches:
             md.append(f"## Batch: {b.gsm_id}\n")
+            if b.batch_reasoning:
+                md.append(f"**Why this batch:** {b.batch_reasoning}\n")
+            if b.defining_fields:
+                md.append(f"**Differs in:** {', '.join(b.defining_fields)}\n")
             md.append(f"| Property | Value |")
             md.append(f"|----------|-------|")
             md.append(f"| Matrix file | `{b.matrix_file}` |")
@@ -218,6 +229,9 @@ class ProvenanceBuilder:
     def build(self) -> TraceReport:
         report = TraceReport(gse_id=self._report.gse_id)
         report.overall_confidence = self._state.overall_confidence()
+        report.batch_separation_strategy = getattr(
+            self._plan, "batch_separation_strategy", ""
+        ) or ""
 
         # ── Verification log
         report.verification = self._build_verification()
@@ -332,6 +346,8 @@ class ProvenanceBuilder:
             genes=final_genes,
             genes_pruned=genes_pruned,
             gene_id_system=_safe_get(plan, "gene_id_system", "?") or "?",
+            batch_reasoning=_safe_get(batch_def, "reasoning", "") if batch_def else "",
+            defining_fields=_safe_get(batch_def, "defining_fields", []) if batch_def else [],
         )
 
         # Metadata trace
