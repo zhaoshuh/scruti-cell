@@ -128,20 +128,77 @@ scruticell config
 
 ## 命令行接口
 
-Scrut-Cell 提供 6 个子命令：
+Scrut-Cell 提供 7 个子命令：
 
 ```
-scruticell parse <GSE_ID>      规则管道：一站式 GSE→AnnData
-scruticell config              查看当前配置
-scruticell inspect <GSE_ID>    智能管道-勘查：生成结构化报告
-scruticell plan <GSE_ID>       智能管道-规划：LLM 生成处理方案
-scruticell execute <GSE_ID>    智能管道-执行：按方案生成 AnnData
-scruticell version             显示版本号
+scruticell run <GSE_ID>       一键管道：inspect + plan + execute
+scruticell parse <GSE_ID>     规则管道：一站式 GSE→AnnData
+scruticell inspect <GSE_ID>   智能管道-勘查：生成结构化报告
+scruticell plan <GSE_ID>      智能管道-规划：LLM 生成处理方案
+scruticell execute <GSE_ID>   智能管道-执行：按方案生成 AnnData
+scruticell config             查看当前配置
+scruticell db-clear           清空知识库
+scruticell --version          显示版本号
 ```
 
 ---
 
-## 规则管道：一条命令出结果
+## 一键管道：一条命令出结果
+
+**推荐用法**。自动完成勘查→规划→执行三步，适合所有数据集。
+
+```bash
+# 最简单用法
+scruticell run GSE334035
+
+# 指定输出目录
+scruticell run GSE334035 -o ./my_results
+
+# 跳过 LLM（仅 KB 匹配，不调用 LLM）
+scruticell run GSE334035 --no-llm
+
+# 保留下载的原始数据
+scruticell run GSE334035 --keep-data
+```
+
+**参数说明**：
+
+```
+Usage: scruticell run [OPTIONS] GSE_ID
+
+Options:
+  -o, --output PATH      输出目录（默认：output/<GSE_ID>/）
+  --llm-model TEXT       LLM 模型名称
+  --llm-api-key TEXT     LLM API Key
+  --no-download          跳过下载，使用已有缓存
+  --no-llm               跳过 LLM 规划，仅显示 KB 匹配
+  --keep-data            保留下载文件和输出 .h5ad
+  -v, --verbose          显示详细日志
+```
+
+**输出结构**：
+
+```
+output/<GSE_ID>/
+├── inspect.json                                     # 勘查报告
+├── plan.json                                        # 处理方案
+├── execute.json                                     # 执行汇总
+├── metadata.md                                      # 批次元数据表
+├── <GSE>_<batch>_scruticell.h5ad                    # 每批次 AnnData
+└── ...
+```
+
+**分步执行**：如果需要查看中间结果（如 LLM 生成的 plan 代码），可以分三步运行：
+
+```bash
+scruticell inspect GSE334035   # → output/GSE334035/inspect.json
+scruticell plan GSE334035      # → output/GSE334035/plan.json
+scruticell execute GSE334035   # → output/GSE334035/execute.json + .h5ad
+```
+
+---
+
+## 规则管道：一条命令出结果（旧版）
 
 适合结构标准的数据集（单样本、标准 10X h5 格式）。
 

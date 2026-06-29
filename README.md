@@ -27,13 +27,16 @@ pip install -e ".[dev]"
 # Set API key
 export DEEPSEEK_API_KEY="sk-xxx"
 
-# Standard pipeline — one command
-scruticell parse GSE334035 -o ./output
+# One-command pipeline (recommended)
+scruticell run GSE334035
 
-# Intelligent pipeline — inspect → plan → execute
+# Or step-by-step for inspection
 scruticell inspect GSE334035
 scruticell plan GSE334035
 scruticell execute GSE334035
+
+# Rule pipeline (no LLM, fixed heuristics)
+scruticell parse GSE334035 -o ./output
 ```
 
 ---
@@ -103,13 +106,26 @@ Strategies accumulate: every successful processing plan is stored by fingerprint
 
 | Command | Description |
 |---------|-------------|
-| `scruticell parse <GSE>` | Rule pipeline: one-shot GSE → AnnData |
+| `scruticell run <GSE>` | **One-command pipeline**: inspect → plan → execute |
+| `scruticell parse <GSE>` | Rule pipeline: one-shot GSE → AnnData (fixed heuristics) |
 | `scruticell inspect <GSE>` | M1: Download + inspect, generate structured report |
 | `scruticell plan <GSE>` | M2: KB match + LLM plan generation |
 | `scruticell execute <GSE>` | M3: Execute plan → AnnData files |
 | `scruticell config` | Show current configuration |
-| `scruticell db-clear` | Clear failure case records from knowledge base |
+| `scruticell db-clear` | Clear stored strategies from knowledge base |
 | `scruticell --version` | Print version |
+
+### `run` options
+
+```
+-o, --output PATH        Output directory (default: output/<GSE>/)
+--llm-model TEXT         LLM model
+--llm-api-key TEXT       API key
+--no-download            Skip download, use cache
+--no-llm                 Skip LLM, KB matching only
+--keep-data              Keep downloaded files and .h5ad
+-v, --verbose            Verbose output
+```
 
 ### `parse` options
 

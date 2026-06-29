@@ -936,5 +936,324 @@ def execute(
         click.echo(f"  Preserved: plan.json, execute.json, report.json")
 
 
+@main.command()
+@click.argument("gse_id")
+@click.option(
+    "--output", "-o",
+    type=click.Path(path_type=Path),
+    default=None,
+    help="Output directory (default: output/<GSE_ID>/).",
+)
+@click.option(
+    "--llm-model",
+    default=None,
+    help="LLM model (default: from config).",
+)
+@click.option(
+    "--llm-api-key",
+    default=None,
+    help="API key for LLM provider (env: DEEPSEEK_API_KEY).",
+)
+@click.option(
+    "--no-download",
+    is_flag=True,
+    help="Skip download, use cached data.",
+)
+@click.option(
+    "--no-llm",
+    is_flag=True,
+    help="Skip LLM plan generation; only show KB matches.",
+)
+@click.option(
+    "--keep-data",
+    is_flag=True,
+    help="Keep downloaded files and output .h5ad.",
+)
+@click.option(
+    "--verbose", "-v",
+    is_flag=True,
+    help="Enable verbose output.",
+)
+def run(
+    gse_id: str,
+    output: Optional[Path],
+    llm_model: Optional[str],
+    llm_api_key: Optional[str],
+    no_download: bool,
+    no_llm: bool,
+    keep_data: bool,
+    verbose: bool,
+) -> None:
+    """One-command GSE → AnnData pipeline: inspect + plan + execute.
+
+    Equivalent to running:
+        scruticell inspect <GSE>
+        scruticell plan <GSE>
+        scruticell execute <GSE>
+
+    If --no-llm is set, stops after KB matching (plan generation skipped).
+    Use the step-by-step commands if you need to inspect intermediate results.
+    """
+    import json
+    import time
+
+    if verbose:
+        logging.getLogger("scruticell").setLevel(logging.DEBUG)
+
+    import scruticell.config as cfg
+    if llm_model:
+        cfg.LLM_MODEL = llm_model
+    if llm_api_key:
+        cfg.LLM_API_KEY = llm_api_key
+
+    output_dir = output or (Path.cwd() / "output" / gse_id)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    from scruticell.config import DATA_DIR
+    from scruticell.pipeline.state import PipelineState
+    from scruticell.pipeline.nodes.download import download_node
+    from scruticell.pipeline.nodes.parse import parse_soft_node
+    from scruticell.intelligence import (
+        Reporter, PlanOrchestrator, StrategyMatcher, PlanExecutor,
+        ExecutionMonitor, ProcessingPlan, GseReport,
+    )
+
+    click.echo(f"\n{'='*60}")
+    click.echo(f"  Scrut-Cell Full Pipeline: {gse_id}")
+    click.echo(f"  Output: {output_dir}")
+    click.echo(f"{'='*60}")
+
+    # ========== STEP 1: INSPECT ==========
+    click.echo("\n  [1/3] INSPECT — downloading + inspecting...")
+    state = PipelineState(gse_id=gse_id, output_dir=output_dir)
+    if not no_download:
+        click.echo("    Downloading...", nl=False)
+        result = download_node(state)
+        for k, v in result.items():
+            setattr(state, k, v)
+        if state.download_errors:
+            for err in state.download_errors:
+                click.echo(f"\n    ⚠ {err}")
+        click.echo(" OK")
+
+        click.echo("    Parsing SOFT...", nl=False)
+        try:
+            result = parse_soft_node(state)
+            for k, v in result.items():
+                setattr(state, k, v)
+            click.echo(" OK")
+        except Exception as exc:
+            click.echo(f" WARNING: {exc}")
+    else:
+        state.download_dir = Path.cwd() / "output" / gse_id / "download"
+        if not state.download_dir.exists():
+            state.download_dir = output_dir / "download"
+        if state.download_dir.exists():
+            _EXTS = {".h5ad", ".h5", ".mtx", ".mtx.gz", ".csv", ".csv.gz",
+                     ".tsv", ".tsv.gz", ".rds", ".rdata", ".loom", ".txt", ".txt.gz",
+                     ".tar.gz", ".tar", ".tgz", ".gz", ".zip"}
+            state.supplementary_files = [
+                p for p in state.download_dir.iterdir()
+                if p.suffix.lower() in _EXTS
+                or any(p.name.lower().endswith(ext) for ext in [".soft.gz", ".soft"])
+            ]
+            for sf in state.supplementary_files:
+                if ".soft" in sf.name.lower():
+                    state.soft_file = sf
+                    break
+            if state.soft_file:
+                try:
+                    result = parse_soft_node(state)
+                    for k, v in result.items():
+                        setattr(state, k, v)
+                except Exception:
+                    pass
+
+    click.echo("    Building report...", nl=False)
+    reporter = Reporter()
+    gse_report = reporter.build_report(
+        gse_id=gse_id,
+        download_dir=state.download_dir or (Path.cwd() / "output" / gse_id / "download"),
+        gsm_entries=state.parsed_characteristics,
+        gse_metadata=state.raw_metadata,
+        file_gsm_map=getattr(state, "file_gsm_map", {}),
+    )
+    click.echo(" OK")
+
+    # Save inspect.json
+    inspect_path = output_dir / "inspect.json"
+    inspect_path.write_text(gse_report.to_json(), encoding="utf-8")
+    click.echo(f"    Report: {inspect_path}")
+    click.echo(f"    Files: {gse_report.total_files} | GSM entries: {len(gse_report.gsm_entries)}")
+
+    # ========== STEP 2: PLAN ==========
+    click.echo(f"\n  [2/3] PLAN — knowledge base matching + LLM plan generation...")
+    kb, _ = _get_knowledge_base()
+    matcher = StrategyMatcher(kb)
+    matches = matcher.find_similar(gse_report)
+    if matches:
+        click.echo(f"    KB Matches: {len(matches)}")
+        for m in matches[:3]:
+            click.echo(f"      - {m.source_gse_id} (score: {m.similarity_score:.2f}, "
+                       f"success: {m.success_count}, fail: {m.fail_count})")
+    else:
+        click.echo(f"    KB Matches: 0")
+
+    if no_llm:
+        click.echo("    Skipping LLM plan generation (--no-llm). Pipeline stops here.")
+        return
+
+    click.echo("    Generating plan via LLM...", nl=False)
+    orch = PlanOrchestrator(matcher)
+    plan = orch.plan(gse_report)
+    if plan is None or not plan.is_valid():
+        click.echo(" FAILED: Could not generate a valid plan")
+        return
+    click.echo(" OK")
+
+    plan_path = output_dir / "plan.json"
+    plan_json = plan.to_json()
+    plan_path.write_text(plan_json, encoding="utf-8")
+    click.echo(f"    Plan:    {plan_path}")
+    click.echo(f"    Confidence: {plan.confidence:.0%} | "
+               f"Matrices: {len(plan.matrices)} | Batches: {len(plan.batches)}")
+    if plan.batch_separation_strategy:
+        click.echo(f"    Batch strategy: {plan.batch_separation_strategy}")
+
+    # Store in KB
+    try:
+        from scruticell.intelligence.matcher import StrategyMatcher as SM
+        import time as _time
+        kb_plan, _ = _get_knowledge_base()
+        sm = SM(kb_plan)
+        fp = sm.fingerprint(gse_report)
+        sig = fp.to_signature()
+        ts = str(int(_time.time()))
+        plan_data = json.loads(plan_json)
+        if hasattr(kb_plan, "store_inspect_report"):
+            kb_plan.store_inspect_report(
+                report_id=f"{gse_id}_{ts}", gse_id=gse_id,
+                organism=fp.organism, matrix_formats=";".join(fp.matrix_formats),
+                gsm_count=fp.gsm_count, matrix_file_count=fp.matrix_file_count,
+                total_cells=fp.total_cells, total_genes=fp.total_genes,
+                field_names=";".join(fp.field_names), signature_hash=sig,
+            )
+        if hasattr(kb_plan, "store_plan"):
+            kb_plan.store_plan(
+                plan_id=f"{gse_id}_{ts}", gse_id=gse_id, signature_hash=sig,
+                plan_json=plan_json, processing_code=plan_data.get("processing_code", ""),
+                assembly_code=plan_data.get("assembly_code", ""),
+                plan_confidence=plan_data.get("confidence", 0.85),
+                strategy_notes=plan_data.get("strategy_notes", ""),
+                kb_match_count=len(matches),
+                field_mapping_count=len(plan_data.get("field_mappings", [])),
+            )
+        if hasattr(kb_plan, "store_field_mappings"):
+            fm_list = plan_data.get("field_mappings", [])
+            if fm_list:
+                kb_plan.store_field_mappings(f"{gse_id}_{ts}", fm_list)
+    except Exception:
+        pass
+
+    # ========== STEP 3: EXECUTE ==========
+    click.echo(f"\n  [3/3] EXECUTE — reading matrices + building AnnData...")
+    executor = PlanExecutor()
+    result = executor.execute(gse_report, plan, output_dir, state)
+    # Fallback: if executor failed, try with ExecutionMonitor (reflection)
+    if not result.success:
+        click.echo("    Initial execution failed, attempting with LLM reflection...")
+        monitor = ExecutionMonitor()
+        result = monitor.execute_with_reflection(gse_report, plan, output_dir, state)
+
+    click.echo(f"    Execution: {'SUCCESS' if result.success else 'FAILED'}")
+    click.echo(f"    Output:   {result.output_path}")
+    click.echo(f"    Cells:    {result.n_cells} | Genes: {result.n_genes} | Batches: {result.n_batches}")
+
+    # Write execute.json
+    execute_path = output_dir / "execute.json"
+    trace_text = getattr(result, "_trace_text", "")
+    execute_data = {
+        "gse_id": gse_id, "success": result.success,
+        "output_path": str(result.output_path) if result.output_path else None,
+        "cells": result.n_cells, "genes": result.n_genes, "batches": result.n_batches,
+        "steps": [{"step": s.step, "status": s.status, "details": s.details, "error": s.error}
+                   for s in result.steps],
+        "errors": list(result.errors) if result.errors else [],
+        "warnings": list(result.warnings) if result.warnings else [],
+        "trace": trace_text if trace_text else None,
+    }
+    execute_path.write_text(
+        json.dumps(execute_data, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
+
+    # Metadata markdown
+    batch_meta = getattr(result, "batch_metadata", []) or []
+    if batch_meta:
+        metadata_path = output_dir / "metadata.md"
+        all_keys: list[str] = []
+        has_reasoning = any("batch_split_reason" in bm for bm in batch_meta)
+        has_diff_in = any("diff_in" in bm for bm in batch_meta)
+        for bm in batch_meta:
+            for k in bm:
+                if k not in ("file", "cells", "genes", "batch_split_reason", "diff_in") and k not in all_keys:
+                    all_keys.append(k)
+        header_cols = ["File", "Cells", "Genes"]
+        if has_reasoning:
+            header_cols.append("Why This Batch?")
+        if has_diff_in:
+            header_cols.append("Differs In")
+        header_cols += all_keys
+        lines = [
+            f"# {gse_id} — Metadata Summary",
+            "",
+        ]
+        if plan.batch_separation_strategy:
+            lines.append(f"**Batch Separation Strategy**: {plan.batch_separation_strategy}")
+            lines.append("")
+        lines.append("| " + " | ".join(header_cols) + " |")
+        lines.append("|" + "|".join(["------"] * len(header_cols)) + "|")
+        for bm in batch_meta:
+            row_vals = [str(bm.get(c, "")) for c in ["file", "cells", "genes"]]
+            if has_reasoning:
+                row_vals.append(str(bm.get("batch_split_reason", ""))[:120])
+            if has_diff_in:
+                row_vals.append(str(bm.get("diff_in", "")))
+            row_vals += [str(bm.get(c, "")) for c in all_keys]
+            lines.append("| " + " | ".join(row_vals) + " |")
+        lines.append("")
+        lines.append(
+            f"**Total**: {len(batch_meta)} batches | "
+            f"{result.n_cells} cells | {result.n_genes} genes"
+        )
+        metadata_path.write_text("\n".join(lines), encoding="utf-8")
+        click.echo(f"    Metadata:  {metadata_path}")
+
+    # KB stats update
+    try:
+        kb_exec, _ = _get_knowledge_base()
+        matcher_ex = StrategyMatcher(kb_exec)
+        matcher_ex.update_strategy_stats(gse_report, result.success)
+    except Exception:
+        pass
+
+    # Cleanup
+    if not keep_data:
+        import shutil
+        download_dir = Path.cwd() / "output" / gse_id / "download"
+        if download_dir.exists():
+            shutil.rmtree(download_dir, ignore_errors=True)
+        if result.output_path and Path(result.output_path).exists():
+            Path(result.output_path).unlink(missing_ok=True)
+
+    click.echo(f"\n{'='*60}")
+    click.echo(f"  Pipeline complete: {gse_id}")
+    click.echo(f"  Cells: {result.n_cells} | Genes: {result.n_genes} | "
+               f"Batches: {result.n_batches}")
+    click.echo(f"  Output: {output_dir}")
+    click.echo(f"{'='*60}")
+    if trace_text:
+        click.echo(trace_text)
+
+
 if __name__ == "__main__":
     main()
