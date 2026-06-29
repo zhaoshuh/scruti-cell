@@ -28,6 +28,33 @@ logging.basicConfig(
 logger = logging.getLogger("scruticell")
 
 
+_cleanup_registered: set[str] = set()
+
+
+def _cleanup_gse_output(gse_id: str, keep_data: bool = False) -> None:
+    """Delete download cache and .h5ad files for a GSE, keeping JSON/MD reports.
+
+    Thread-safe (idempotent): only runs once per gse_id per process.
+    Intended for atexit / finally blocks so cleanup fires even on interruption.
+    """
+    if keep_data or gse_id in _cleanup_registered:
+        return
+    _cleanup_registered.add(gse_id)
+
+    import shutil
+    output_dir = Path.cwd() / "output" / gse_id
+    download_dir = output_dir / "download"
+    if download_dir.exists():
+        shutil.rmtree(download_dir, ignore_errors=True)
+        logger.debug("Cleaned download cache: %s", download_dir)
+    for h5 in output_dir.glob("*.h5ad"):
+        try:
+            h5.unlink(missing_ok=True)
+            logger.debug("Cleaned .h5ad: %s", h5)
+        except Exception:
+            pass
+
+
 def _get_knowledge_base():
     """Return the appropriate knowledge base based on license tier."""
     from scruticell.config import NEO4J_PASSWORD, NEO4J_URI, NEO4J_USER
@@ -259,16 +286,8 @@ def parse(
     audit_path = audit.write()
     click.echo(f"  Audit log: {audit_path}\n")
 
-    # Cleanup: delete downloaded data and .h5ad
+    _cleanup_gse_output(gse_id, keep_data)
     if not keep_data:
-        import shutil
-        download_dir = Path.cwd() / "output" / gse_id / "download"
-        if download_dir.exists():
-            shutil.rmtree(download_dir, ignore_errors=True)
-            click.echo(f"  Cleaned up download cache: {download_dir}")
-        if state.output_path and Path(state.output_path).exists():
-            Path(state.output_path).unlink(missing_ok=True)
-            click.echo(f"  Cleaned up output .h5ad: {state.output_path}")
         click.echo(f"  Preserved: audit log, KB strategies")
 
 
@@ -334,10 +353,16 @@ def db_clear() -> None:
     is_flag=True,
     help="Use existing download directory (skip download).",
 )
+@click.option(
+    "--keep-data",
+    is_flag=True,
+    help="Keep downloaded files (default: delete after completion).",
+)
 def inspect(
     gse_id: str,
     output: Optional[Path],
     no_download: bool,
+    keep_data: bool,
 ) -> None:
     """Inspect a GSE dataset and generate a structured diagnostic report.
 
@@ -431,6 +456,7 @@ def inspect(
         click.echo(f"  Errors:            {len(report.errors)}")
         for err in report.errors:
             click.echo(f"    - {err}")
+    _cleanup_gse_output(gse_id, keep_data)
     click.echo(f"{'='*60}")
 
 
@@ -458,12 +484,18 @@ def inspect(
     is_flag=True,
     help="Skip LLM plan generation; only show KB matches.",
 )
+@click.option(
+    "--keep-data",
+    is_flag=True,
+    help="Keep downloaded files (default: delete after completion).",
+)
 def plan(
     gse_id: str,
     output: Optional[Path],
     report: Optional[Path],
     llm_model: Optional[str],
     no_llm: bool,
+    keep_data: bool,
 ) -> None:
     """Generate a batch-matrix-metadata processing plan using LLM.
 
@@ -622,6 +654,8 @@ def plan(
                 kb_plan.store_field_mappings(f"{gse_id}_{ts}", fm_list)
     except Exception:
         pass  # KB write is best-effort, don't fail the command
+
+    _cleanup_gse_output(gse_id, keep_data)
 
     click.echo(f"\n{'='*60}")
 
@@ -921,19 +955,9 @@ def execute(
     if trace_text:
         click.echo(trace_text)
 
-    # Cleanup: delete downloaded data and .h5ad, keep only strategies and logs
+    _cleanup_gse_output(gse_id, keep_data)
     if not keep_data:
-        import shutil
-        # Delete download directory
-        download_dir = Path.cwd() / "output" / gse_id / "download"
-        if download_dir.exists():
-            shutil.rmtree(download_dir, ignore_errors=True)
-            click.echo(f"\n  Cleaned up download cache: {download_dir}")
-        # Delete output .h5ad (keep plan/provenance/report)
-        if result.output_path and Path(result.output_path).exists():
-            Path(result.output_path).unlink(missing_ok=True)
-            click.echo(f"  Cleaned up output .h5ad: {result.output_path}")
-        click.echo(f"  Preserved: plan.json, execute.json, report.json")
+        click.echo(f"  Preserved: inspect.json, plan.json, execute.json, metadata.md")
 
 
 @main.command()
@@ -1236,14 +1260,7 @@ def run(
     except Exception:
         pass
 
-    # Cleanup
-    if not keep_data:
-        import shutil
-        download_dir = Path.cwd() / "output" / gse_id / "download"
-        if download_dir.exists():
-            shutil.rmtree(download_dir, ignore_errors=True)
-        if result.output_path and Path(result.output_path).exists():
-            Path(result.output_path).unlink(missing_ok=True)
+    _cleanup_gse_output(gse_id, keep_data)
 
     click.echo(f"\n{'='*60}")
     click.echo(f"  Pipeline complete: {gse_id}")
