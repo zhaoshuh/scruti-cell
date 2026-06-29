@@ -4,6 +4,8 @@ Scrut-Cell Batch Benchmark Runner
 ==================================
 一脚本完成：清空 KB → 逐个测试 GSE → 记录日志 → 汇总报告
 
+GSE 列表来源：test_gse.xlsx 的 gse_id 列（自动读取）
+
 Usage:
     python tests/benchmark/run_benchmark.py              # 跑全部
     python tests/benchmark/run_benchmark.py --resume     # 断点续跑
@@ -24,49 +26,57 @@ from typing import Any
 
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 
-# 测试数据集（阶段 0 + 阶段 1：15 个推荐 GSE）
-# 格式: {id: gse_id, label: 描述, features: 特征标签, category: 分类}
-DATASETS: list[dict[str, Any]] = [
-    # === 已验证（冒烟测试） ===
-    {"id": "T01_v", "gse_id": "GSE334035", "label": "3 GSM×3 h5, APOE Alzheimer",
-     "category": "基础集", "features": "A1-B2-C1-D1-E1-F1-G1"},
-    {"id": "T02_v", "gse_id": "GSE243292", "label": "已验证数据集",
-     "category": "基础集", "features": "A1-B1-C1-D1-E1-F1-G1"},
-    {"id": "T03_v", "gse_id": "GSE285606", "label": "已验证数据集",
-     "category": "基础集", "features": "A1-B1-C1-D1-E1-F1-G1"},
+# Excel 中第 7 行的注释：运行前提醒删除同一目录下的下载文件
+# 脚本已内置 kb-clear 步骤，无需额外处理
 
-    # === 基础集（按格式覆盖） ===
-    {"id": "T01", "gse_id": "GSE130430", "label": "单样本 10X h5, 人类PBMC",
-     "category": "基础集", "features": "A1-B1-C1-D1-E1-F1-G1"},
-    {"id": "T02", "gse_id": "GSE184882", "label": "h5ad 格式, 肾细胞癌",
-     "category": "基础集", "features": "A2-B1-C2-D1-E1-F1-G1"},
-    {"id": "T03", "gse_id": "GSE150861", "label": "MTX 格式, COVID-19 PBMC 多批次",
-     "category": "基础集", "features": "A3-B3-C1-D1-E1-F1-G1"},
-    {"id": "T04", "gse_id": "GSE137710", "label": "CSV/TSV 矩阵, 小鼠",
-     "category": "基础集", "features": "A4-B1-C1-D1-E1-F1-G1"},
-    {"id": "T05", "gse_id": "GSE136831", "label": "RDS 格式 (Seurat), 人肺",
-     "category": "基础集", "features": "A5-B1-C1-D1-E1-F1-G1"},
-    {"id": "T07", "gse_id": "GSE118257", "label": "3 GSM 独立 h5, 小鼠脑",
-     "category": "基础集", "features": "A1-B2-C1-D1-E1-F1-G1"},
 
-    # === 元信息挑战集 ===
-    {"id": "T11", "gse_id": "GSE138665", "label": "复合字段, 人肝癌",
-     "category": "元信息挑战", "features": "A1-B2-C2-D1-E1-F1-G1"},
-    {"id": "T12", "gse_id": "GSE146512", "label": "缩写字段, 肿瘤微环境",
-     "category": "元信息挑战", "features": "A1-B2-C3-D1-E1-F1-G1"},
+def load_datasets() -> list[dict[str, Any]]:
+    """从 test_gse.xlsx 读取 GSE 列表，返回统一格式的 DATASETS。
 
-    # === 文件结构挑战集 ===
-    {"id": "T19", "gse_id": "GSE129785", "label": "多层子目录矩阵",
-     "category": "文件结构", "features": "A1-B2-C1-D1-E1-F1-G3"},
-    {"id": "T20", "gse_id": "GSE132465", "label": "tar.gz 内嵌 h5",
-     "category": "文件结构", "features": "A1-B2-C1-D1-E1-F1-G2"},
+    如果 Excel 不存在或读取失败，回退到内置默认列表。
+    """
+    xlsx_path = PROJECT_ROOT / "test_gse.xlsx"
+    if not xlsx_path.exists():
+        print(f"[WARN] {xlsx_path} not found, using built-in defaults")
+        return _default_datasets()
 
-    # === KB 复用测试 ===
-    {"id": "T28", "gse_id": "GSE136337", "label": "同结构复用 — 标准 10X h5",
-     "category": "KB复用", "features": "A1-B1-C1-D1-E1-F1-G1"},
-    {"id": "T29", "gse_id": "GSE135893", "label": "同结构复用 — 多样本",
-     "category": "KB复用", "features": "A1-B2-C1-D1-E1-F1-G1"},
-]
+    try:
+        import openpyxl
+        wb = openpyxl.load_workbook(xlsx_path, read_only=True)
+        ws = wb[wb.sheetnames[0]]
+        datasets = []
+        for i, row in enumerate(ws.iter_rows(min_row=2, values_only=True), start=2):
+            gse = str(row[0]).strip() if row[0] and str(row[0]).strip() else ""
+            if not gse.upper().startswith("GSE"):
+                continue
+            note = str(row[1]).strip() if len(row) > 1 and row[1] else ""
+            datasets.append({
+                "id": f"T{i - 2:02d}",
+                "gse_id": gse,
+                "label": note or gse,
+                "category": "批量测试",
+                "features": "",
+            })
+        wb.close()
+        if datasets:
+            print(f"[OK] Loaded {len(datasets)} GSE IDs from {xlsx_path.name}")
+            return datasets
+    except Exception as exc:
+        print(f"[WARN] Failed to read {xlsx_path}: {exc}")
+
+    return _default_datasets()
+
+
+def _default_datasets() -> list[dict[str, Any]]:
+    """内置回退数据集列表。（仅当 Excel 不可用时使用）"""
+    return [
+        {"id": "T01", "gse_id": "GSE334035", "label": "3 GSM h5, 已验证",
+         "category": "基础集", "features": ""},
+        {"id": "T02", "gse_id": "GSE243292", "label": "已验证",
+         "category": "基础集", "features": ""},
+        {"id": "T03", "gse_id": "GSE285606", "label": "已验证",
+         "category": "基础集", "features": ""},
+    ]
 
 # 运行配置
 TIMEOUT_PER_GSE = 1800   # 每个 GSE 最长 30 分钟
@@ -217,6 +227,14 @@ def main() -> None:
     run_dir.mkdir(parents=True, exist_ok=True)
     TIMEOUT_PER_GSE = args.timeout
 
+    # 加载数据集列表（优先从 Excel）
+    datasets = load_datasets()
+    if not datasets:
+        log = open(str(run_dir / "_full.log"), "w", encoding="utf-8")
+        log.write("No datasets to test.\n"); log.close()
+        print("No datasets to test.")
+        return
+
     log_file = run_dir / "_full.log"
     log = open(str(log_file), "w", encoding="utf-8")
 
@@ -227,7 +245,7 @@ def main() -> None:
 
     log_print("=" * 60)
     log_print(f"  Scrut-Cell Batch Benchmark")
-    log_print(f"  Datasets: {len(DATASETS)}")
+    log_print(f"  Datasets: {len(datasets)}")
     log_print(f"  Results:  {run_dir}")
     log_print(f"  Time:     {datetime.now().isoformat()}")
     log_print("=" * 60)
@@ -239,7 +257,7 @@ def main() -> None:
 
     # Step 2: 逐个测试
     results: list[dict[str, Any]] = []
-    for i, ds in enumerate(DATASETS, 1):
+    for i, ds in enumerate(datasets, 1):
         gse_id = ds["gse_id"]
         ds_id = ds["id"]
         ds_dir = run_dir / ds_id
@@ -247,7 +265,7 @@ def main() -> None:
 
         # 断点续跑
         if args.resume and (ds_dir / "_result.json").exists():
-            log_print(f"\n[{i}/{len(DATASETS)}] SKIP {ds_id} ({gse_id}) — already done")
+            log_print(f"\n[{i}/{len(datasets)}] SKIP {ds_id} ({gse_id}) — already done")
             try:
                 results.append(json.loads((ds_dir / "_result.json").read_text()))
             except Exception:
@@ -255,7 +273,7 @@ def main() -> None:
             continue
 
         log_print(f"\n{'─'*50}")
-        log_print(f"  [{i}/{len(DATASETS)}] {ds_id} — {gse_id}")
+        log_print(f"  [{i}/{len(datasets)}] {ds_id} — {gse_id}")
         log_print(f"  Category: {ds['category']} | {ds['label']}")
         log_print(f"  Features: {ds['features']}")
 
