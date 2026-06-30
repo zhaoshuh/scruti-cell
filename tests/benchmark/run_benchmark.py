@@ -130,7 +130,12 @@ def test_one_gse(gse_id: str, keep_data: bool = False) -> dict[str, Any]:
     result["stderr"] = stderr
 
     # 解析输出，提取各阶段的摘要信息
-    result["success"] = "Pipeline complete" in stdout
+    # 真正的成功 = CLI 显示完成 + execute.json 标记 success + cells > 0
+    result["success"] = (
+        "Pipeline complete" in stdout
+        and result["metrics"].get("success", False)
+        and result["metrics"].get("cells", 0) > 0
+    )
     result["stages"]["inspect"] = _parse_stage(stdout, "INSPECT")
     result["stages"]["plan"] = _parse_stage(stdout, "PLAN")
     result["stages"]["execute"] = _parse_stage(stdout, "EXECUTE")

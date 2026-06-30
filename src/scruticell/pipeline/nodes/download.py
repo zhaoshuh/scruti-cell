@@ -203,11 +203,6 @@ def download_node(state: PipelineState) -> dict[str, Any]:
     geo = None
     try:
         geo = GEOparse.get_GEO(geo=gse_id, destdir=str(download_dir), silent=True)
-    except GEOparse.GEOParseError as e:
-        logger.error("GEOparse error for %s: %s", gse_id, e)
-        return {"download_dir": download_dir, "soft_file": None,
-                "supplementary_files": [], "download_errors": [f"GEOparse error: {e}"],
-                "file_gsm_map": {}}
     except OSError as e:
         logger.error("Network error downloading %s: %s", gse_id, e)
         return {"download_dir": download_dir, "soft_file": None,

@@ -134,9 +134,6 @@ def download_soft(gse_id: str, output_dir: Path) -> Path:
 
     try:
         geo = GEOparse.get_GEO(geo=gse_id, destdir=str(output_dir), silent=True)
-    except GEOparse.GEOParseError as e:
-        logger.error("GEOparse error downloading %s: %s", gse_id, e)
-        raise
     except OSError as e:
         logger.error("Network/IO error downloading %s: %s", gse_id, e)
         raise
