@@ -258,8 +258,17 @@ to determine the true batch boundaries. Consider these priority-ordered signals:
    - Used in cellranger aggr where 1 file = multiple samples
 
 4. LITERATURE CONTEXT:
-   - If Step 1 flowcharts or pubmed description explicitly defines experimental groups,
-     your batch separation should reflect those groups
+   - Step 1 flowcharts were built from GSE summary text describing experimental design.
+     Revisit them — the authors often explicitly state group structure there.
+   - If LITERATURE VERIFICATION RESULTS appear above (from the paper's methods section),
+     pay special attention to:
+     a. Any explicit group definitions in verified metadata (e.g., "n=3 per condition")
+     b. The disease_context, tissue_context, or treatment_context from the paper
+     c. Any resolved abbreviations that clarify group labels (e.g., "E3"→"APOE3 genotype")
+   - Ask yourself: "Based on the paper's description, how many groups are there?
+     What factor(s) define the groups? Which GSMs belong to which group?"
+   - If the paper mentions a specific experimental design (e.g., "paired design",
+     "randomized controlled trial", "case-control"), that should inform batch structure.
 
 5. FIELD COMBINATIONS:
    - Sometimes no single field defines batches, but a COMBINATION does
@@ -381,9 +390,13 @@ class MultiStepExtractor:
             self._context["file_extract"] = _parse_json_or_none(resp) or {}
             messages.append(("ai", resp))
 
-            # ---- Literature Verification (NEW) ----
+            # ---- Literature Verification ----
+            gsm_count = len(report.gsm_entries)
             needs_verification = self._has_unresolved()
-            if needs_verification:
+            # Also check literature when PMID exists and multi-GSM (design info)
+            has_pmid = bool(report.gse_info.pubmed_id or report.gse_info.title)
+            check_design = has_pmid and gsm_count > 1
+            if needs_verification or check_design:
                 pubmed_id = report.gse_info.pubmed_id
                 title = report.gse_info.title
                 if pubmed_id or title:
@@ -696,6 +709,23 @@ class MultiStepExtractor:
                             ),
                         })
 
+        # Add experimental design question when multi-GSM (batch discovery aid)
+        items.append({
+            "raw_value": "experimental_design",
+            "best_guess": "",
+            "confidence": 0.5,
+            "gsm_id": "",
+            "source_field": "_experimental_design",
+            "source_step": "step5_batch",
+            "context": (
+                "From the paper's methods section, determine the experimental group "
+                "structure: How many groups? What defines each group (treatment, "
+                "timepoint, genotype)? Which samples/GSMs belong to which group? "
+                "Is it a paired/crossover/factorial design? "
+                "This information is critical for correct batch assignment."
+            ),
+        })
+
         return {"items": items}
 
     def _build_verification_context(self, result: dict) -> str:
@@ -730,4 +760,8 @@ class MultiStepExtractor:
                 lines.append(f"  - {key}: {value}")
             lines.append("")
         lines.append("Use this verified information in the following steps.")
+        lines.append("")
+        lines.append("USE THIS FOR BATCH GROUPING: The experimental design described")
+        lines.append("above determines how samples should be grouped into batches.")
+        lines.append("In Step 5, align your batch_separation_strategy with this design.")
         return "\n".join(lines)
