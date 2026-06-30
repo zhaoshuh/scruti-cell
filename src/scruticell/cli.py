@@ -1057,7 +1057,7 @@ def run(
             setattr(state, k, v)
         if state.download_errors:
             for err in state.download_errors:
-                click.echo(f"\n    ⚠ {err}")
+                click.echo(f"\n    [WARN] {err}")
         click.echo(" OK")
 
         click.echo("    Parsing SOFT...", nl=False)
