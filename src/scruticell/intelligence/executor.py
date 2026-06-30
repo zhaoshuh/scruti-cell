@@ -350,13 +350,22 @@ class PlanExecutor:
                 n_cells = len(cell_barcodes) if cell_barcodes else 0
 
                 if matrix.shape[0] != n_cells:
-                    logger.error(
-                        "Skipping matrix for GSM %s: cell count mismatch "
-                        "(matrix has %d cells, %d barcodes found). "
-                        "This sample's supplementary files may be corrupted.",
-                        gsm_id, matrix.shape[0], n_cells
-                    )
-                    continue
+                    # Try transposing — orientation may be reversed
+                    flipped = matrix.T.tocsr() if sp.issparse(matrix) else matrix.T
+                    if flipped.shape[0] == n_cells:
+                        logger.warning(
+                            "Fixed orientation for GSM %s: transposed %s → %s",
+                            gsm_id, matrix.shape, flipped.shape,
+                        )
+                        matrix = flipped
+                    else:
+                        logger.error(
+                            "Skipping matrix for GSM %s: cell count mismatch "
+                            "(matrix has %d cells, %d barcodes found). "
+                            "This sample's supplementary files may be corrupted.",
+                            gsm_id, matrix.shape[0], n_cells,
+                        )
+                        continue
 
                 # Sparse cell×gene matrix: enforce csr for AnnData
                 if sp.issparse(matrix):

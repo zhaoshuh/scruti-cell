@@ -45,7 +45,11 @@ def read_h5ad(filepath: str | Path) -> dict[str, Any]:
 
     if filepath.suffix.lower() == ".h5":
         logger.info("Detected 10X .h5 format — using scanpy.read_10x_h5")
-        adata = _read_10x_h5(filepath)
+        try:
+            adata = _read_10x_h5(filepath)
+        except Exception:
+            logger.info("Not a 10X .h5, falling back to anndata.read_h5ad")
+            adata = anndata.read_h5ad(filepath)
     else:
         adata = anndata.read_h5ad(filepath)
 
