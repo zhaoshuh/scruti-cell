@@ -147,7 +147,11 @@ Extract all embedded information from filenames using delimiter patterns (unders
 - "Ctrl1_RNASeq_rep2.csv.gz" → group="Ctrl1", assay="RNASeq", replicate="rep2"
 
 *** ORIENTATION AND AXIS METADATA — CRITICAL ***
-For each expression matrix file, analyze the preview data (preview_rows, columns, h5_shape, n_rows, n_cols) to determine:
+For each expression matrix file, analyze the preview data to determine:
+preview_rows is a COLUMNAR format: a list of row arrays, where each row array's
+elements correspond to the columns list by position. Example:
+  columns=["gene","count","cell_type"]  →  preview_rows=[["ACTB","5","neuron"],...]
+So preview_rows[0][0] is the first row's "gene" value, etc.
 1. ORIENTATION: Is the matrix gene×cell or cell×gene?
    - Look at preview row/column labels. Gene names look like: BRCA1, TP53, ENSG00000..., ENSMUSG00000... etc.
    - Cell barcodes look like: AAACCCAAGAAACTCA-1 (14-16bp ACGT sequences with optional -N suffix).
@@ -479,10 +483,13 @@ class MultiStepExtractor:
     def _build_gsm_json(self, report: GseReport) -> list[dict]:
         result = []
         for gsm in report.gsm_entries:
+            chars = {}
+            for k, v in gsm.characteristics.items():
+                chars[k] = str(v)[:150] if v else ""
             result.append({
                 "gsm_id": gsm.gsm_id,
-                "characteristics": gsm.characteristics,
-                "source_name": gsm.source_name,
+                "characteristics": chars,
+                "source_name": gsm.source_name[:150],
                 "description": gsm.description[:200] if gsm.description else "",
             })
         return result
@@ -495,16 +502,17 @@ class MultiStepExtractor:
                 continue
             cols = v.get("columns", [])[:50]
             rows = v.get("preview_rows", [])
-            truncated_rows = [
-                {c: str(row.get(c, ""))[:100] for c in cols}
-                for row in rows[:50]
-            ]
+            # Columnar format: avoid repeating column names per row (~50% token saving)
+            row_arrays = []
+            for row in rows[:50]:
+                row_arrays.append([str(row.get(c, ""))[:50] for c in cols])
             previews[k] = {
                 "filename": v.get("filename", k),
                 "file_type": v.get("file_type", "?"),
                 "extension": v.get("extension", ""),
                 "n_rows": v.get("n_rows"), "n_cols": v.get("n_cols"),
-                "columns": cols, "preview_rows": truncated_rows,
+                "columns": cols,
+                "preview_rows": row_arrays,
                 "h5_shape": v.get("h5_shape"),
                 "h5_sparse": v.get("h5_sparse"),
                 "barcode_format": v.get("barcode_format", ""),
