@@ -178,7 +178,8 @@ class PlanValidator:
         # 2c. Batch separation strategy should be set
         valid_strategies = {
             "per_sample", "per_condition", "per_timepoint",
-            "per_treatment", "by_gsm_file_map", "single_batch", "",
+            "per_treatment", "per_patient", "by_gsm_file_map",
+            "by_barcode_prefix", "field_combination", "single_batch", "",
         }
         if (plan.batch_separation_strategy
                 and plan.batch_separation_strategy not in valid_strategies):
@@ -318,6 +319,14 @@ class PlanOrchestrator:
             gsm_extract = extractor._context.get("gsm_extract", {})
             if isinstance(gsm_extract, dict) and not plan_data.get("field_mappings"):
                 plan_data["field_mappings"] = gsm_extract.get("field_mappings", [])
+
+            # Inject Step 2 batch_keys as defining_fields hints for batches
+            if isinstance(gsm_extract, dict):
+                batch_keys = gsm_extract.get("batch_keys", [])
+                if batch_keys and not any(b.get("defining_fields") for b in plan_data.get("batches", [])):
+                    for b in plan_data.get("batches", []):
+                        if not b.get("defining_fields"):
+                            b["defining_fields"] = batch_keys
 
             # Inject Step 3 filename_extractions and axis_metadata
             file_extract = extractor._context.get("file_extract", {})

@@ -275,18 +275,32 @@ Before planning, you MUST extract metadata from ALL of these sources:
    d. H5 files with shapes >100x100 ARE matrices
    e. MTX format: if barcode + feature files present, the .mtx.gz file (not .tsv.gz companions) is the matrix
 
-2.2 **MAP TO BATCHES WITH REASONING**: Map each matrix to its GSM based on filename-GSM matching.
-   Every matrix belongs to exactly ONE GSM. Populate the "batches" array.
+2.2 **MAP TO BATCHES — DISCOVER, DON'T JUST MAP**: GSM_ID does NOT always equal batch.
+   Analyze ALL metadata fields across GSMs to determine true batch boundaries.
+
+   Batch discovery signals, in priority order:
+   a. **Metadata differences**: Fields whose values differ across GSMs (e.g. treatment,
+      timepoint, donor_id) may define batches. If 3 GSMs share donor_id=P01 but differ
+      in timepoint, consider timepoint-based batching. If 2 GSMs have the same condition
+      and tissue, consider merging them into one batch.
+   b. **File patterns**: If gsm_file_map maps each GSM to its own file, that's a STARTING
+      POINT but you may GROUP or SPLIT based on metadata.
+   c. **Barcode prefixes**: Multiple barcode prefixes in one matrix file → separate sample
+      sources (cellranger aggr merge). Split into different batches.
+   d. **Field combinations**: Sometimes no single field defines batches, but a COMBINATION
+      does. Example: donor_id + timepoint together define batches.
+
    For EACH batch, you MUST also provide:
-   - "batch_label": human-readable short name combining key distinguishing info (e.g. "APOE4_Day7")
-   - "reasoning": WHY this forms a separate batch. Explain in biological/experimental terms.
-     Example: "Different treatment: DMSO control vs Drug X; all other metadata identical"
-     Example: "Independent patient sample; different donor but same tissue and protocol"
-     Example: "Different timepoint (Day 0 vs Day 7) from same patient cohort"
-   - "defining_fields": which GSM characteristic fields DIFFER across batches (e.g. ["treatment", "timepoint"])
+   - "batch_label": human-readable short name (e.g. "P01_Day0", "Control_Lung")
+   - "reasoning": WHY this is a separate batch, referencing specific metadata fields.
+     Example: "Different treatment: DMSO vs Drug X; all other metadata identical"
+     Example: "Independent patient P03; different donor, same tissue and protocol"
+   - "defining_fields": which GSM fields DIFFER across batches (e.g. ["treatment", "timepoint"])
 
    Also output "batch_separation_strategy" at top level:
-   "per_sample" / "per_condition" / "per_timepoint" / "per_treatment" / "by_gsm_file_map" / "single_batch"
+   "per_sample" / "per_condition" / "per_timepoint" / "per_patient" /
+   "per_treatment" / "by_gsm_file_map" / "by_barcode_prefix" /
+   "field_combination" / "single_batch"
 
 2.3 **FIELD STANDARDIZATION**: Add field_mappings for raw GEO field name → canonical name.
    Canonical names: tissue, cell_type, treatment, genotype, disease, sex, age, timepoint, 

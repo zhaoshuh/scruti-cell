@@ -170,7 +170,13 @@ Cross-reference file features with gsm_summary to validate assignments.
 
 *** FILE-SAMPLE MAPPING (gsm_file_map) ***
 If gsm_file_map is present and non-empty, each GSM ID with its own file(s)
-represents one batch. Per-GSM files take priority over any GSE-level merged file.
+represents one batch BY DEFAULT — but you may override this in Step 5 if
+GSM-level metadata suggests merging or splitting.
+
+*** BARCODE PREFIX AS BATCH CLUE ***
+If barcode_prefix_summary has >1 distinct prefix, these represent
+different sample sources merged via cellranger aggr or similar.
+Note this as a potential batch boundary signal for Step 5.
 
 DATA:
 {files_json}
@@ -227,21 +233,74 @@ You have now seen:
 
 Now produce the final structure that identifies and assembles the expression matrices.
 
-OUTPUT: JSON with:
+=== BATCH DISCOVERY ===
+GSM_ID does NOT always equal batch. You MUST analyze ALL available clues
+to determine the true batch boundaries. Consider these priority-ordered signals:
+
+1. GSM METADATA DIFFERENCES (strongest signal):
+   Review the varying_fields list above. Fields whose values differ across GSMs
+   may define batches. But also consider:
+   - Should GSMs with different values of a field be SEPARATE batches?
+     Example: treatment=Control vs treatment=Drug → YES, separate
+   - Should GSMs with the same field value be MERGED into one batch?
+     Example: 3 GSMs all tissue=brain → maybe merge into batch "brain"
+   - Are there GSMs that share a common donor/patient but differ in timepoint?
+     → group by patient, with timepoint as a batch subdivision
+
+2. FILE PATTERNS:
+   - If gsm_file_map maps each GSM to its own file(s), that's a STARTING POINT
+     but you may GROUP multiple GSM batches together if metadata justifies it
+   - If one matrix file serves multiple GSMs, use barcode_prefixes to split them
+   - If filename contains sample identifiers (from Step 3), cross-reference with GSM metadata
+
+3. BARCODE PREFIXES:
+   - If barcode_prefix_summary has >1 distinct prefix, each prefix = separate sample source
+   - Used in cellranger aggr where 1 file = multiple samples
+
+4. LITERATURE CONTEXT:
+   - If Step 1 flowcharts or pubmed description explicitly defines experimental groups,
+     your batch separation should reflect those groups
+
+5. FIELD COMBINATIONS:
+   - Sometimes no single field defines batches, but a COMBINATION does
+   - Example: donor_id + timepoint together define batches (Patient_A_Day0 vs Patient_B_Day0)
+   - batch_label should encode the combination: "P01_Day0", "P01_Day7", etc.
+
+GSM Comparison Table (for reference):
+{gsm_comparison}
+
+=== GSM-FILE MAPPING ===
+{gsm_file_map_text}
+
+=== BARCODE PREFIX SUMMARY ===
+{barcode_prefix_text}
+
+=== OUTPUT SCHEMA ===
 {{
   "matrices": [{{"file_key": "EXACT ancestry key from report", "format": "h5", "orientation": "gene_x_cell", "transpose": false, "note": "..."}}],
-  "batches": [{{"gsm_id": "GSM9779490", "file_keys": ["exact key"], "cell_count": 21305, "barcode_prefix": "", "note": "reason for this batch", "batch_label": "Control_WT", "reasoning": "Explain WHY a separate batch here.", "defining_fields": ["condition"]}}],
-  "assembly_code": "def assemble_data(adatas, gsm_map):\\n    # adatas is dict of {{gsm_id: adata}}\\n    # gsm_map is dict of {{gsm_id: batch_name}}\\n    # Clean and return EACH adata individually. Do NOT merge.\\n    # Return: dict[str, AnnData] where keys are batch labels\\n    # End with: return {{batch_label: adata for batch_label, adata in adatas.items()}}",
+  "batches": [{{"gsm_id": "GSM9779490", "file_keys": ["exact key"], "cell_count": 21305, "barcode_prefix": "", "note": "...", "batch_label": "Control_WT", "reasoning": "Explain WHY a separate batch here — reference specific metadata fields, files, or barcode patterns.", "defining_fields": ["treatment"]}}],
+  "assembly_code": "def assemble_data(adatas, gsm_map):\\n    ...",
   "gene_id_system": "symbol",
   "normalize_genes": true,
   "drop_duplicate_genes": true,
   "normalization": "raw_counts",
   "is_raw_counts": true,
-  "strategy_notes": "summary of all findings",
+  "strategy_notes": "Explain your OVERALL batch strategy here (e.g., split by treatment, merged all controls, etc.)",
+  "batch_separation_strategy": "per_condition|per_patient|per_timepoint|per_sample|by_gsm_file_map|by_barcode_prefix|single_batch",
   "confidence": 0.95,
   "requires_literature_check": false,
   "literature_check_reason": ""
 }}
+
+batch_separation_strategy options (pick the BEST description):
+  "per_sample" — each GSM is a separate biological sample
+  "per_condition" — grouped by treatment/disease/condition field
+  "per_patient" — grouped by donor/patient field
+  "per_timepoint" — split by time/visit field
+  "by_gsm_file_map" — one batch per GSM→file mapping
+  "by_barcode_prefix" — split by cell barcode prefix
+  "single_batch" — all cells in one batch
+  "field_combination" — multiple fields together define batches
 
 IMPORTANT for matrices.orientation:
 Use the orientation you determined in Step 3 ("gene_x_cell" or "cell_x_gene"). Do NOT use "auto".
@@ -249,39 +308,26 @@ If orientation is "cell_x_gene", set "transpose": true to flip to gene×cell int
 
 IMPORTANT for matrices.file_key and batches.file_keys:
 Use the EXACT ancestry key from the report's file_summaries.
-Do not use short filenames — look them up in the report data you received before.
-
-IMPORTANT for barcode_prefix:
-Only fill if actual prefixes were detected. For standard 10X data with empty barcode_prefixes, use "".
+Do not use short filenames.
 
 IMPORTANT for assembly_code:
-Each adata in the `adatas` dict is a raw AnnData object with .X as GENE x CELL (rows=genes, cols=cells).
+Each adata in the `adatas` dict is a raw AnnData object with .X as GENE x CELL.
 Write code that cleans/filters each adata individually.
 The function MUST return a dict[str, AnnData] — one adata per batch. Do NOT merge matrices together.
 Each dict entry will be saved as a separate .h5ad file.
-When creating sc.AnnData() or accessing adata.obs/.var, use adata.T or matrix.T to convert to cell×gene first.
-Example: adata = sc.AnnData(expression_matrix.T, obs=obs, var=var)
+When creating sc.AnnData(), use adata.T or matrix.T to convert to cell×gene first.
 Do NOT call sc.read_10x_h5, sc.read_10x_mtx, or any file reading functions.
-Do NOT call sc.concat, np.hstack, or sp.hstack to merge adatas. Keep them separate.
+Do NOT call sc.concat, np.hstack, or sp.hstack to merge adatas.
 
-*** BATCH SPLITTING PRIORITY ***
-If gsm_file_map in the DATA is present and non-empty:
-- Each GSM ID with its own file(s) = one batch
-- Do NOT use GSE-level merged files if per-GSM files exist
-If gsm_file_map is empty or absent:
-- All cells go into a single batch
-- Flag batch_separation as "unavailable" in strategy_notes
-
-*** BATCH REASONING (NEW) ***
-For EACH batch in the output, you MUST provide a batch_label, reasoning, and defining_fields:
-- batch_label: human-readable short name combining key distinguishing info (e.g., "APOE4_Day7")
+*** BATCH REASONING (REQUIRED) ***
+For EACH batch, you MUST provide:
+- batch_label: human-readable short name (e.g., "P01_Day0", "Control_Lung")
 - reasoning: WHY this forms a separate batch — explain in biological/experimental terms.
-  Example: "Different treatment: DMSO control vs Drug X; all other metadata identical"
-  Example: "Independent patient sample; different donor_id, same tissue and protocol"
-  Example: "Different timepoint (Day 0 vs Day 7) from same patient cohort"
-- defining_fields: which GSM characteristic fields DIFFER across batches (e.g., ["treatment", "timepoint"])
-Also output "batch_separation_strategy" at top level:
-  "per_sample" / "per_condition" / "per_timepoint" / "per_treatment" / "by_gsm_file_map" / "single_batch"
+  Reference SPECIFIC metadata fields, files, or barcode patterns you observed.
+  Example: "Different treatment: DMSO vs Drug X; all other metadata identical"
+  Example: "Independent patient P03; different donor but same tissue and protocol"
+  Example: "Split by barcode prefix AAACCCA-1 vs GGGTTTA-2; same matrix file"
+- defining_fields: which GSM fields DIFFER across batches (e.g., ["treatment", "timepoint"])
 
 Return ONLY the JSON. No extra text."""
 
@@ -379,7 +425,16 @@ class MultiStepExtractor:
 
             # ---- Step 5: Matrix/batch assembly ----
             logger.info("Step 5/5: matrix/batch assembly plan...")
-            messages.append(("human", STEP5_USER))
+            # Build GSM comparison table + file map text for explicit injection
+            gsm_comp_text = self._format_gsm_comparison(files_json)
+            gsm_map_text = self._format_gsm_file_map(files_json.get("gsm_file_map", {}))
+            barcode_text = self._format_barcode_summary(files_json.get("barcode_prefix_summary", {}))
+            step5_prompt = STEP5_USER.format(
+                gsm_comparison=gsm_comp_text,
+                gsm_file_map_text=gsm_map_text,
+                barcode_prefix_text=barcode_text,
+            )
+            messages.append(("human", step5_prompt))
             resp = _extract_code_blocks(str(llm.invoke(messages).content))
             self._context["final_plan"] = _parse_json_or_none(resp) or {}
 
@@ -444,19 +499,105 @@ class MultiStepExtractor:
                 "barcode_prefixes": v.get("barcode_prefixes", []),
                 "barcode_prefix_counts": v.get("barcode_prefix_counts", {}),
             }
+        # Dynamic GSM summary: collect ALL fields across all GSMs
+        all_fields = set()
+        for gsm in report.gsm_entries:
+            all_fields.update(gsm.characteristics.keys())
         gsm_summary = []
         for gsm in report.gsm_entries:
-            chars = gsm.characteristics
-            gsm_summary.append({
-                "gsm_id": gsm.gsm_id,
-                "source_name": gsm.source_name[:100],
-                "treatment": chars.get("treatment", chars.get("treatment_protocol_ch1", ""))[:100],
-                "genotype": chars.get("genotype", "")[:50],
-                "tissue": chars.get("tissue", "")[:100],
-                "cell_type": chars.get("cell type", chars.get("cell_type", ""))[:100],
-            })
-        return {"data_files": data_files, "previews": previews, "gsm_summary": gsm_summary,
-                "gsm_file_map": report.gsm_file_map}
+            row = {"gsm_id": gsm.gsm_id}
+            for f in sorted(all_fields):
+                row[f] = gsm.characteristics.get(f, "")[:150]
+            gsm_summary.append(row)
+        # Cross-GSM comparison: detect fields that differ
+        varying_fields = []
+        identical_fields = []
+        for f in sorted(all_fields):
+            vals = set()
+            for gsm in report.gsm_entries:
+                v = gsm.characteristics.get(f, "")
+                vals.add(v)
+            if len(vals) > 1:
+                varying_fields.append(f)
+            else:
+                identical_fields.append(f)
+        # Barcode prefix summary
+        barcode_prefixes_all = {}
+        for _k, v in report.file_summaries.items():
+            for pfx, cnt in (v.get("barcode_prefix_counts", {}) or {}).items():
+                barcode_prefixes_all[pfx] = barcode_prefixes_all.get(pfx, 0) + cnt
+        return {
+            "data_files": data_files, "previews": previews,
+            "gsm_summary": gsm_summary,
+            "gsm_full_fields": sorted(all_fields),
+            "varying_fields": varying_fields,
+            "identical_fields": identical_fields,
+            "gsm_file_map": report.gsm_file_map,
+            "barcode_prefix_summary": barcode_prefixes_all,
+        }
+
+    # ---- Step 5 data formatters ----
+
+    @staticmethod
+    def _format_gsm_comparison(files_json: dict) -> str:
+        """Build a human-readable GSM comparison table showing field differences."""
+        gsm_summary = files_json.get("gsm_summary", [])
+        varying = files_json.get("varying_fields", [])
+        identical = files_json.get("identical_fields", [])
+        all_fields = files_json.get("gsm_full_fields", [])
+
+        if not gsm_summary:
+            return "(no GSM data)"
+
+        lines = ["**Fields that DIFFER across GSMs (batch-defining candidates):**"]
+        if varying:
+            for f in varying:
+                vals = []
+                for g in gsm_summary:
+                    vals.append(f"  {g['gsm_id']}={g.get(f, '?')}")
+                lines.append(f"  {f}:")
+                lines.extend(vals)
+        else:
+            lines.append("  (none — all fields identical across GSMs)")
+
+        lines.append("")
+        lines.append("**Fields IDENTICAL across all GSMs:**")
+        if identical:
+            for f in identical:
+                v = gsm_summary[0].get(f, "?") if gsm_summary else "?"
+                lines.append(f"  {f}: {v}")
+        else:
+            lines.append("  (none)")
+        return "\n".join(lines)
+
+    @staticmethod
+    def _format_gsm_file_map(gsm_file_map: dict) -> str:
+        """Format the GSM→file mapping as readable text."""
+        if not gsm_file_map:
+            return "(empty — no per-GSM file mapping available. "
+            "All sample-level data is in shared/multi-sample files. "
+            "Use metadata fields to determine batches.)"
+        lines = ["Each GSM has its own file(s):"]
+        for gsm_id, files in sorted(gsm_file_map.items()):
+            file_list = files if isinstance(files, list) else [files]
+            lines.append(f"  {gsm_id} → {', '.join(str(f) for f in file_list[:3])}")
+        return "\n".join(lines)
+
+    @staticmethod
+    def _format_barcode_summary(prefixes: dict) -> str:
+        """Format barcode prefix summary."""
+        if not prefixes:
+            return "(none — no barcode prefixes detected. "
+            "If GSM-level files exist, each file likely corresponds to one sample. "
+            "If only one matrix file exists and no barcode prefixes, "
+            "the entire matrix is a single batch.)"
+        lines = ["Barcode prefix distribution (possible multi-sample merge):"]
+        for pfx, cnt in sorted(prefixes.items(), key=lambda x: -x[1]):
+            lines.append(f"  {pfx}: {cnt} cells")
+        if len(prefixes) > 1:
+            lines.append(f"  → {len(prefixes)} distinct prefixes found — "
+                          "each likely a separate sample source.")
+        return "\n".join(lines)
 
     def _has_unresolved(self) -> bool:
         """Check if Step 2 or Step 3 produced low-confidence results."""
