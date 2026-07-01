@@ -1154,27 +1154,35 @@ def run(
         result = monitor.execute_with_reflection(gse_report, plan, output_dir, state)
 
     # Post-execution batch verification + re-plan loop
+    vreport = None  # scope guarantee for later use
     max_verify_retries = 2
-    from scruticell.intelligence.verifier import BatchVerifier
+    from scruticell.intelligence.verifier import BatchVerifier, VerificationReport, BatchMismatch
     verifier = BatchVerifier()
-    for vretry in range(max_verify_retries + 1):
-        vreport = verifier.verify(plan, output_dir, gse_id)
-        if vreport.passed:
-            break
-        if vretry >= max_verify_retries:
-            click.echo(f"    Batch verification failed after {max_verify_retries} retries")
-            break
-        click.echo(f"    Batch mismatch detected (retry {vretry + 1}), re-planning...")
-        orch = PlanOrchestrator(matcher)
-        revised = orch.plan(gse_report, mismatch_context=vreport.summary)
-        if revised is None or not revised.is_valid():
-            click.echo("    Re-plan failed")
-            break
-        plan = revised
-        result = executor.execute(gse_report, plan, output_dir, state)
-        if not result.success:
-            click.echo("    Re-execution failed")
-            break
+    if result.success:
+        for vretry in range(max_verify_retries + 1):
+            vreport = verifier.verify(plan, output_dir, gse_id)
+            if vreport.passed:
+                break
+            if vretry >= max_verify_retries:
+                click.echo(f"    Batch verification failed after {max_verify_retries} retries")
+                break
+            click.echo(f"    Batch mismatch detected (retry {vretry + 1}), re-planning...")
+            # Reuse orch instance to benefit from cached extractor
+            revised = orch.plan(gse_report, mismatch_context=vreport.summary)
+            if revised is None or not revised.is_valid():
+                click.echo("    Re-plan failed")
+                break
+            plan = revised
+            plan_json = plan.to_json()  # keep in sync with plan object
+            result = executor.execute(gse_report, plan, output_dir, state)
+            if not result.success:
+                click.echo("    Re-execution failed")
+                break
+    else:
+        vreport = VerificationReport(gse_id=gse_id, passed=False,
+                                      mismatches=[BatchMismatch(issue_type="empty_output",
+                                         detail="Execution failed before verification.")])
+        vretry = 0
 
     click.echo(f"    Execution: {'SUCCESS' if result.success else 'FAILED'}")
     click.echo(f"    Output:   {result.output_path}")
