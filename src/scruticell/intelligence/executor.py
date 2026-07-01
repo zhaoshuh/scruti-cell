@@ -440,7 +440,8 @@ class PlanExecutor:
                 self._apply_field_mappings_to_adata(adata, plan)
             self._recorder.record("apply_field_mappings", "completed")
 
-            # 7. Run assembly_code (Step 5: LLM-generated, now returns dict)
+            # 7. Run assembly_code (Step 5: LLM-generated)
+            _raw_per_batch = dict(per_batch)  # backup before assembly
             if plan.assembly_code:
                 self._recorder.record("assembly_code", "started")
                 try:
@@ -449,6 +450,11 @@ class PlanExecutor:
                 except Exception as exc:
                     logger.warning("Assembly code failed: %s", exc)
                     self._recorder.record("assembly_code", "failed", error=str(exc))
+
+            # Fallback: assembly produced empty result → use raw per_batch
+            if not per_batch and _raw_per_batch:
+                logger.warning("Assembly code produced empty result, using raw per-batch data")
+                per_batch = _raw_per_batch
 
             state.per_batch_adatas = per_batch
 

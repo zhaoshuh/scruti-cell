@@ -1039,7 +1039,6 @@ def run(
     from scruticell.pipeline.nodes.parse import parse_soft_node
     from scruticell.intelligence import (
         Reporter, PlanOrchestrator, StrategyMatcher, PlanExecutor,
-        ExecutionMonitor, ProcessingPlan, GseReport,
     )
 
     click.echo(f"\n{'='*60}")
@@ -1144,45 +1143,57 @@ def run(
     if plan.batch_separation_strategy:
         click.echo(f"    Batch strategy: {plan.batch_separation_strategy}")
 
-    # ========== STEP 3: EXECUTE + VERIFY ==========
+    # ========== STEP 3: EXECUTE + VERIFY (unified loop) ==========
     click.echo(f"\n  [3/3] EXECUTE — reading matrices + building AnnData...")
-    executor = PlanExecutor()
-    result = executor.execute(gse_report, plan, output_dir, state)
-    if not result.success:
-        click.echo("    Initial execution failed, attempting with LLM reflection...")
-        monitor = ExecutionMonitor()
-        result = monitor.execute_with_reflection(gse_report, plan, output_dir, state)
-
-    # Post-execution batch verification + re-plan loop
-    vreport = None  # scope guarantee for later use
-    max_verify_retries = 2
     from scruticell.intelligence.verifier import BatchVerifier, VerificationReport, BatchMismatch
+    executor = PlanExecutor()
     verifier = BatchVerifier()
-    if result.success:
-        for vretry in range(max_verify_retries + 1):
-            vreport = verifier.verify(plan, output_dir, gse_id)
-            if vreport.passed:
+    vreport = None
+    max_total_attempts = 5
+    for attempt in range(max_total_attempts):
+        result = executor.execute(gse_report, plan, output_dir, state)
+        if not result.success:
+            # Classify error: local fix or LLM fix?
+            errors_text = " ".join(result.errors or [])
+            low = errors_text.lower()
+            if any(k in low for k in [
+                "download", "timeout", "no matrices could be read",
+                "memory", "allocate", "not found"
+            ]):
+                click.echo(f"    Unrecoverable error (attempt {attempt+1}), stopping")
                 break
-            if vretry >= max_verify_retries:
-                click.echo(f"    Batch verification failed after {max_verify_retries} retries")
-                break
-            click.echo(f"    Batch mismatch detected (retry {vretry + 1}), re-planning...")
-            # Reuse orch instance to benefit from cached extractor
+            # LLM-recoverable: re-plan with error context
+            if attempt < max_total_attempts - 1:
+                click.echo(f"    Execution failed (attempt {attempt+1}), re-planning...")
+                ctx = "EXECUTION FAILED — fix the following:\n" + "\n".join(
+                    result.errors[:5] if result.errors else ["(no error details)"]
+                )
+                revised = orch.plan(gse_report, mismatch_context=ctx)
+                if revised and revised.is_valid():
+                    plan = revised
+                    plan_json = plan.to_json()
+                    continue
+            break
+
+        # Execute succeeded — verify batch separation
+        vreport = verifier.verify(plan, output_dir, gse_id)
+        if vreport.passed:
+            break
+        if attempt < max_total_attempts - 1:
+            click.echo(f"    Batch mismatch (attempt {attempt+1}), re-planning...")
             revised = orch.plan(gse_report, mismatch_context=vreport.summary)
-            if revised is None or not revised.is_valid():
-                click.echo("    Re-plan failed")
-                break
-            plan = revised
-            plan_json = plan.to_json()  # keep in sync with plan object
-            result = executor.execute(gse_report, plan, output_dir, state)
-            if not result.success:
-                click.echo("    Re-execution failed")
-                break
-    else:
+            if revised and revised.is_valid():
+                plan = revised
+                plan_json = plan.to_json()
+                continue
+        break
+
+    if vreport is None:
         vreport = VerificationReport(gse_id=gse_id, passed=False,
                                       mismatches=[BatchMismatch(issue_type="empty_output",
                                          detail="Execution failed before verification.")])
-        vretry = 0
+    else:
+        pass  # already set
 
     click.echo(f"    Execution: {'SUCCESS' if result.success else 'FAILED'}")
     click.echo(f"    Output:   {result.output_path}")
@@ -1193,7 +1204,7 @@ def run(
         plan_data = json.loads(plan_json)
         plan_data["_batch_verification"] = {
             "passed": vreport.passed,
-            "retries": vretry + 1,
+            "retries": attempt + 1,
             "mismatches": [
                 {
                     "issue_type": m.issue_type,
