@@ -161,9 +161,7 @@ class BatchVerifier:
         plan_batches = getattr(plan, "batches", []) or []
 
         for i, (batch_def, bd) in enumerate(
-            zip(plan_batches, batch_data)
-            if len(plan_batches) == len(batch_data)
-            else zip(plan_batches, batch_data * len(plan_batches))
+            zip(plan_batches, batch_data[:len(plan_batches)])
         ):
             gsm_id = getattr(batch_def, "gsm_id", "")
             batch_label = getattr(batch_def, "batch_label", gsm_id) or gsm_id
@@ -219,6 +217,13 @@ class BatchVerifier:
                 for v in values:
                     v_str = str(v)
                     field_value_to_batches[field].setdefault(v_str, []).append(i)
+
+        # Guard: no batches have defining_fields → warn
+        if plan_batches and not field_value_to_batches:
+            report.warnings.append(
+                "No batches have defining_fields set — cannot verify 1:1 "
+                "relationship. The LLM may not have identified batch boundaries."
+            )
 
         # Cross-batch redundancy: same defining value in multiple batches
         for field, vmap in field_value_to_batches.items():
