@@ -360,7 +360,7 @@ class MultiStepExtractor:
         self._context: dict[str, Any] = {}
         self._metadata_code: str = ""
 
-    def extract_all(self, report: GseReport) -> dict[str, Any]:
+    def extract_all(self, report: GseReport, mismatch_context: str = "") -> dict[str, Any]:
         """Run all 5 steps in one continuous LLM conversation."""
         self._context = {"gse_id": report.gse_id}
 
@@ -439,6 +439,10 @@ class MultiStepExtractor:
                 if m:
                     self._metadata_code = m.group(1)
             messages.append(("ai", resp))
+
+            # ---- Re-plan context injection (from prior verification failure) ----
+            if mismatch_context:
+                messages.append(("human", mismatch_context))
 
             # ---- Step 5: Matrix/batch assembly ----
             logger.info("Step 5/5: matrix/batch assembly plan...")

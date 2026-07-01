@@ -1179,15 +1179,37 @@ def run(
     except Exception:
         pass
 
-    # ========== STEP 3: EXECUTE ==========
+    # ========== STEP 3: EXECUTE + VERIFY ==========
     click.echo(f"\n  [3/3] EXECUTE — reading matrices + building AnnData...")
     executor = PlanExecutor()
     result = executor.execute(gse_report, plan, output_dir, state)
-    # Fallback: if executor failed, try with ExecutionMonitor (reflection)
     if not result.success:
         click.echo("    Initial execution failed, attempting with LLM reflection...")
         monitor = ExecutionMonitor()
         result = monitor.execute_with_reflection(gse_report, plan, output_dir, state)
+
+    # Post-execution batch verification + re-plan loop
+    max_verify_retries = 2
+    from scruticell.intelligence.verifier import BatchVerifier
+    verifier = BatchVerifier()
+    for vretry in range(max_verify_retries + 1):
+        vreport = verifier.verify(plan, output_dir, gse_id)
+        if vreport.passed:
+            break
+        if vretry >= max_verify_retries:
+            click.echo(f"    Batch verification failed after {max_verify_retries} retries")
+            break
+        click.echo(f"    Batch mismatch detected (retry {vretry + 1}), re-planning...")
+        orch = PlanOrchestrator(matcher)
+        revised = orch.plan(gse_report, mismatch_context=vreport.summary)
+        if revised is None or not revised.is_valid():
+            click.echo("    Re-plan failed")
+            break
+        plan = revised
+        result = executor.execute(gse_report, plan, output_dir, state)
+        if not result.success:
+            click.echo("    Re-execution failed")
+            break
 
     click.echo(f"    Execution: {'SUCCESS' if result.success else 'FAILED'}")
     click.echo(f"    Output:   {result.output_path}")

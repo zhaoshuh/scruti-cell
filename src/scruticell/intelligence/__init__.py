@@ -27,6 +27,7 @@ from scruticell.intelligence.executor import (
     ProvenanceRecorder,
 )
 from scruticell.intelligence.extractors import MultiStepExtractor
+from scruticell.intelligence.verifier import BatchVerifier, VerificationReport, BatchMismatch
 
 __all__ = [
     # M1
@@ -41,4 +42,6 @@ __all__ = [
     # M3
     "PlanExecutor", "ExecutionMonitor",
     "ExecutionResult", "ExecutionStep", "ProvenanceRecorder",
+    # Verification
+    "BatchVerifier", "VerificationReport", "BatchMismatch",
 ]

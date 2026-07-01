@@ -286,24 +286,29 @@ class PlanOrchestrator:
         self._validator = PlanValidator()
 
     @traceable(name="PlanOrchestrator.plan", tags=["intelligence", "orchestration"])
-    def plan(self, report: GseReport, use_multi_step: bool = True) -> ProcessingPlan | None:
-        """Generate and validate a plan. Uses 6-step extraction by default.
+    def plan(
+        self, report: GseReport, use_multi_step: bool = True,
+        mismatch_context: str = "",
+    ) -> ProcessingPlan | None:
+        """Generate and validate a plan.
 
         Args:
             report: GseReport from inspection.
             use_multi_step: True = 5 sub-task extraction + 1 final plan (default).
-                           False = single monolithic prompt (fallback).
+                            False = single monolithic prompt (fallback).
+            mismatch_context: If provided, inject batch verification failures
+                             so the LLM can revise its batch separation strategy.
         """
         if use_multi_step:
-            return self._plan_multi_step(report)
+            return self._plan_multi_step(report, mismatch_context)
         else:
-            return self._plan_single_prompt(report)
+            return self._plan_single_prompt(report, mismatch_context)
 
-    def _plan_multi_step(self, report: GseReport) -> ProcessingPlan | None:
+    def _plan_multi_step(self, report: GseReport, mismatch_context: str = "") -> ProcessingPlan | None:
         """Multi-step: 5-step continuous conversation → final plan."""
         try:
             extractor = MultiStepExtractor()
-            extractor.extract_all(report)         # Steps 1-5, one conversation
+            extractor.extract_all(report, mismatch_context=mismatch_context)  # Steps 1-5
 
             plan_data = extractor.generate_final_plan(report)  # Step 5 output
 
@@ -421,9 +426,12 @@ class PlanOrchestrator:
             logger.warning("Multi-step extraction failed, falling back to single prompt: %s", exc)
             return self._plan_single_prompt(report)
 
-    def _plan_single_prompt(self, report: GseReport) -> ProcessingPlan | None:
+    def _plan_single_prompt(self, report: GseReport, mismatch_context: str = "") -> ProcessingPlan | None:
         """Fallback: single monolithic prompt (original behavior)."""
-        plan = self._generator.generate(report)
+        if mismatch_context:
+            plan = self._generator.generate(report, mismatch_context=mismatch_context)
+        else:
+            plan = self._generator.generate(report)
         if plan is None:
             return None
 
