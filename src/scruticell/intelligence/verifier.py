@@ -21,7 +21,7 @@ class BatchMismatch:
     """A detected inconsistency between plan and actual data."""
     gsm_id: str = ""
     batch_label: str = ""
-    issue_type: str = ""   # "missing_field", "wrong_strategy", "extra_batches", "empty_output"
+    issue_type: str = ""   # "missing_field", "wrong_strategy", "extra_batches", "empty_output", "mixed_values", "redundant_batches"
     field: str = ""
     expected: str = ""
     actual: str = ""
@@ -49,6 +49,10 @@ class BatchMismatch:
                 f"Batch '{self.batch_label}' (GSM {self.gsm_id}): "
                 f"output h5ad has 0 cells. {self.detail}"
             )
+        if self.issue_type == "mixed_values":
+            return self.detail
+        if self.issue_type == "redundant_batches":
+            return self.detail
         return self.detail
  
  
@@ -82,8 +86,14 @@ class VerificationReport:
  
  
 class BatchVerifier:
-    """Verify batch separation plan against actual h5ad output."""
- 
+    """Verify batch separation plan against actual h5ad output.
+
+    Core test: defining_fields values must have a 1:1 relationship
+    with batches.  If "treatment"="Drug_A" appears in batch 1,
+    it must NOT appear in any other batch, and batch 1 must NOT
+    also contain "Drug_B".
+    """
+
     def verify(
         self,
         plan: Any,
@@ -96,14 +106,14 @@ class BatchVerifier:
         except Exception:
             logger.warning("scanpy not available, skipping batch verification")
             return VerificationReport(gse_id=gse_id, passed=True)
- 
+
         report = VerificationReport(gse_id=gse_id)
- 
+
         # Find all h5ad files
         h5ad_files = sorted(output_dir.glob(f"{gse_id}_*_scruticell.h5ad"))
         if not h5ad_files:
             h5ad_files = sorted(output_dir.glob("*.h5ad"))
- 
+
         # Check 1: batch count vs expected
         expected_batches = len(getattr(plan, "batches", []) or [])
         actual_batches = len(h5ad_files)
@@ -121,94 +131,119 @@ class BatchVerifier:
                 actual=str(actual_batches),
                 detail=f"Plan declares {expected_batches} but found {actual_batches} files.",
             ))
- 
-        # Check 2: per-batch field verification
-        per_batch_adatas = {}
+
+        # Load all h5ad files (lightweight: only need obs)
+        batch_data: list[dict] = []
         for h5 in h5ad_files:
             try:
                 adata = sc.read_h5ad(h5)
-                per_batch_adatas[h5.name] = adata
-            except Exception as exc:
-                logger.warning("Cannot read %s: %s", h5, exc)
- 
-        for batch_def in (getattr(plan, "batches", []) or []):
-            gsm_id = getattr(batch_def, "gsm_id", "")
-            batch_label = getattr(batch_def, "batch_label", gsm_id)
-            defining = getattr(batch_def, "defining_fields", []) or []
-            reasoning = getattr(batch_def, "reasoning", "") or ""
- 
-            # Find matching h5ad file
-            matched_adata = None
-            matched_name = ""
-            for name, adata in per_batch_adatas.items():
-                if gsm_id in name or batch_label in name:
-                    matched_adata = adata
-                    matched_name = name
-                    break
-            if matched_adata is None and per_batch_adatas:
-                matched_adata = next(iter(per_batch_adatas.values()))
-                matched_name = next(iter(per_batch_adatas.keys()))
- 
-            if matched_adata is None:
-                report.mismatches.append(BatchMismatch(
-                    gsm_id=gsm_id, batch_label=batch_label,
-                    issue_type="empty_output",
-                    detail=f"No h5ad file found matching this batch.",
-                ))
-                continue
- 
-            obs_cols = list(matched_adata.obs.columns)
- 
-            # Check defining_fields exist in obs
-            for field in defining:
-                if field == "batch":
-                    continue  # batch column always exists
-                if field not in obs_cols:
-                    report.mismatches.append(BatchMismatch(
-                        gsm_id=gsm_id, batch_label=batch_label,
-                        issue_type="missing_field",
-                        field=field,
-                        actual=", ".join(obs_cols[:15]),
-                    ))
- 
-            # Check if batch_label contains metadata values that aren't in obs
-            # e.g., batch_label="Control_WT" but there's no "Control" in obs
-            parts = batch_label.replace("-", "_").split("_")
-            for part in parts:
-                if len(part) < 3:
-                    continue
-                found = False
-                for col in obs_cols:
+                obs_vals: dict[str, set[str]] = {}
+                for col in adata.obs.columns:
                     try:
-                        vals = matched_adata.obs[col].astype(str).unique()
-                        if any(str(part).lower() in str(v).lower() for v in vals[:10]):
-                            found = True
-                            break
+                        uv = set(adata.obs[col].astype(str).unique())
+                        if len(uv) <= 50:
+                            obs_vals[col] = uv
                     except Exception:
                         pass
-                if not found and len(parts) == 1:
+                batch_data.append({
+                    "file": h5.name,
+                    "n_cells": adata.n_obs,
+                    "n_genes": adata.n_vars,
+                    "obs_unique": obs_vals,
+                    "obs_cols": list(adata.obs.columns),
+                })
+            except Exception as exc:
+                logger.warning("Cannot read %s: %s", h5, exc)
+
+        # Check 2: 1:1 relationship between defining_fields values and batches
+        # Collect (field, value) → batch_index mapping
+        field_value_to_batches: dict[str, dict[str, list[int]]] = {}
+        plan_batches = getattr(plan, "batches", []) or []
+
+        for i, (batch_def, bd) in enumerate(
+            zip(plan_batches, batch_data)
+            if len(plan_batches) == len(batch_data)
+            else zip(plan_batches, batch_data * len(plan_batches))
+        ):
+            gsm_id = getattr(batch_def, "gsm_id", "")
+            batch_label = getattr(batch_def, "batch_label", gsm_id) or gsm_id
+            defining = getattr(batch_def, "defining_fields", []) or []
+
+            if not defining:
+                continue
+
+            obs = bd.get("obs_unique", {})
+            obs_cols = bd.get("obs_cols", [])
+
+            for field in defining:
+                if field == "batch":
+                    continue
+
+                # Field not in obs → warning, not mismatch
+                if field not in obs_cols:
+                    similar = [c for c in obs_cols if field in c or c in field]
                     report.warnings.append(
-                        f"Batch '{batch_label}': label part '{part}' not found in any obs column"
+                        f"Batch '{batch_label}': defining_field '{field}' not found "
+                        f"in obs columns. Similar fields: {similar or 'none'}."
                     )
- 
-            # Check reasoning mentions treatment/genotype but obs doesn't have those
-            reasoning_lower = reasoning.lower()
-            for keyword, synonyms in [
-                ("treatment", ["treatment", "treated", "drug", "therapy"]),
-                ("genotype", ["genotype", "genetic", "mutation"]),
-                ("timepoint", ["timepoint", "time", "day", "hour"]),
-                ("condition", ["condition", "group"]),
-            ]:
-                if keyword in reasoning_lower:
-                    found = any(
-                        any(s in c.lower() for s in synonyms) for c in obs_cols
+                    continue
+
+                values = obs.get(field, set())
+                n_vals = len(values)
+
+                if n_vals == 0:
+                    report.warnings.append(
+                        f"Batch '{batch_label}': field '{field}' exists but is empty."
                     )
-                    if not found:
-                        report.warnings.append(
-                            f"Batch '{batch_label}': reasoning mentions '{keyword}' "
-                            f"but no matching column found in obs ({','.join(obs_cols[:10])})"
+                    continue
+
+                # Boundary check: one batch = one value per defining field
+                if n_vals > 1:
+                    report.mismatches.append(BatchMismatch(
+                        gsm_id=gsm_id,
+                        batch_label=batch_label,
+                        issue_type="mixed_values",
+                        field=field,
+                        actual=", ".join(sorted(values)[:5]),
+                        detail=(
+                            f"Batch '{batch_label}' has {n_vals} different values "
+                            f"for defining_field '{field}': {', '.join(sorted(values)[:5])}. "
+                            f"Batch boundary is wrong — this batch contains data from "
+                            f"multiple groups."
+                        ),
+                    ))
+
+                # Track for cross-batch redundancy check
+                if field not in field_value_to_batches:
+                    field_value_to_batches[field] = {}
+                for v in values:
+                    v_str = str(v)
+                    field_value_to_batches[field].setdefault(v_str, []).append(i)
+
+        # Cross-batch redundancy: same defining value in multiple batches
+        for field, vmap in field_value_to_batches.items():
+            for value, batch_indices in vmap.items():
+                if len(batch_indices) > 1:
+                    labels = []
+                    for bi in batch_indices:
+                        bd = plan_batches[bi] if bi < len(plan_batches) else None
+                        labels.append(
+                            getattr(bd, "batch_label", "")
+                            or getattr(bd, "gsm_id", f"batch_{bi}")
                         )
- 
+                    report.mismatches.append(BatchMismatch(
+                        issue_type="redundant_batches",
+                        field=field,
+                        expected="unique per batch",
+                        actual="same in multiple",
+                        detail=(
+                            f"Field '{field}' value '{value}' appears in "
+                            f"{len(batch_indices)} batches: {', '.join(labels)}. "
+                            f"These batches should be merged — they share the same "
+                            f"defining characteristic."
+                        ),
+                    ))
+
         # Check 3: batch_separation_strategy consistency
         strategy = getattr(plan, "batch_separation_strategy", "") or ""
         if strategy == "single_batch" and actual_batches > 1:
@@ -219,14 +254,14 @@ class BatchVerifier:
                 detail="Plan expects single batch but multiple files produced.",
             ))
         if strategy in ("per_sample", "per_condition", "per_timepoint", "per_patient"):
-            if actual_batches == 1 and len(getattr(plan, "batches", []) or []) > 1:
+            if actual_batches == 1 and len(plan_batches) > 1:
                 report.mismatches.append(BatchMismatch(
                     issue_type="wrong_strategy",
                     expected=strategy,
                     actual="1 file",
-                    detail=f"Plan declares {strategy} with {len(plan.batches)} batches but only 1 file.",
+                    detail=f"Plan declares {strategy} with {len(plan_batches)} batches but only 1 file.",
                 ))
- 
+
         report.passed = len(report.mismatches) == 0
         if report.passed:
             logger.info("Batch verification PASSED for %s (%d batches)", gse_id, actual_batches)

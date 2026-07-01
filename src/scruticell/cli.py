@@ -1308,7 +1308,7 @@ def run(
             matcher_ex.update_strategy_stats(gse_report, True)
         except Exception:
             pass
-    elif not result.success:
+    else:
         try:
             kb_fail, _ = _get_knowledge_base()
             StrategyMatcher(kb_fail).update_strategy_stats(gse_report, False)
