@@ -307,8 +307,15 @@ class PlanOrchestrator:
     def _plan_multi_step(self, report: GseReport, mismatch_context: str = "") -> ProcessingPlan | None:
         """Multi-step: 5-step continuous conversation → final plan."""
         try:
-            extractor = MultiStepExtractor()
-            extractor.extract_all(report, mismatch_context=mismatch_context)  # Steps 1-5
+            if mismatch_context and hasattr(self, "_cached_extractor"):
+                extractor = self._cached_extractor
+                extractor.extract_all(
+                    report, mismatch_context=mismatch_context, skip_steps_1to4=True,
+                )
+            else:
+                extractor = MultiStepExtractor()
+                extractor.extract_all(report)  # Steps 1-5
+                self._cached_extractor = extractor
 
             plan_data = extractor.generate_final_plan(report)  # Step 5 output
 

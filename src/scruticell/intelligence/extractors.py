@@ -359,9 +359,18 @@ class MultiStepExtractor:
     def __init__(self):
         self._context: dict[str, Any] = {}
         self._metadata_code: str = ""
+        self._cached_messages: list = []  # preserved across extract_all calls
+        self._cached_files_json: dict = {}
 
-    def extract_all(self, report: GseReport, mismatch_context: str = "") -> dict[str, Any]:
-        """Run all 5 steps in one continuous LLM conversation."""
+    def extract_all(
+        self, report: GseReport, mismatch_context: str = "",
+        skip_steps_1to4: bool = False,
+    ) -> dict[str, Any]:
+        """Run all 5 steps in one continuous LLM conversation.
+
+        When skip_steps_1to4=True, preserves the cached conversation from
+        a previous run and only re-invokes Step 5 with mismatch context.
+        """
         self._context = {"gse_id": report.gse_id}
 
         # Build data payloads
@@ -369,8 +378,32 @@ class MultiStepExtractor:
         gsm_json = self._build_gsm_json(report)
         files_json = self._build_files_json(report)
 
+        # cache for potential re-use
+        self._cached_files_json = files_json
+
         try:
             llm = _build_llm()
+
+            # ---- Fast-path: skip Steps 1-4, re-run only Step 5 ----
+            if skip_steps_1to4 and self._cached_messages:
+                logger.info("Skipping Steps 1-4, re-running Step 5 with mismatch context")
+                messages = list(self._cached_messages)
+                if mismatch_context:
+                    messages.append(("human", mismatch_context))
+                gsm_comp_text = self._format_gsm_comparison(files_json)
+                gsm_map_text = self._format_gsm_file_map(files_json.get("gsm_file_map", {}))
+                barcode_text = self._format_barcode_summary(files_json.get("barcode_prefix_summary", {}))
+                step5_prompt = STEP5_USER.format(
+                    gsm_comparison=gsm_comp_text,
+                    gsm_file_map_text=gsm_map_text,
+                    barcode_prefix_text=barcode_text,
+                )
+                messages.append(("human", step5_prompt))
+                resp = _extract_code_blocks(str(llm.invoke(messages).content))
+                self._context["final_plan"] = _parse_json_or_none(resp) or {}
+                return self._context
+
+            # ---- Full pipeline: Steps 1-5 ----
             messages = [("system", SYSTEM_PROMPT)]
 
             # ---- Step 1: Flowcharts ----
@@ -458,6 +491,9 @@ class MultiStepExtractor:
             messages.append(("human", step5_prompt))
             resp = _extract_code_blocks(str(llm.invoke(messages).content))
             self._context["final_plan"] = _parse_json_or_none(resp) or {}
+
+            # Cache conversation for potential re-plan (skip Steps 1-4)
+            self._cached_messages = list(messages)
 
             return self._context
 

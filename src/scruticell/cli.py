@@ -1144,41 +1144,6 @@ def run(
     if plan.batch_separation_strategy:
         click.echo(f"    Batch strategy: {plan.batch_separation_strategy}")
 
-    # Store in KB
-    try:
-        from scruticell.intelligence.matcher import StrategyMatcher as SM
-        import time as _time
-        kb_plan, _ = _get_knowledge_base()
-        sm = SM(kb_plan)
-        fp = sm.fingerprint(gse_report)
-        sig = fp.to_signature()
-        ts = str(int(_time.time()))
-        plan_data = json.loads(plan_json)
-        if hasattr(kb_plan, "store_inspect_report"):
-            kb_plan.store_inspect_report(
-                report_id=f"{gse_id}_{ts}", gse_id=gse_id,
-                organism=fp.organism, matrix_formats=";".join(fp.matrix_formats),
-                gsm_count=fp.gsm_count, matrix_file_count=fp.matrix_file_count,
-                total_cells=fp.total_cells, total_genes=fp.total_genes,
-                field_names=";".join(fp.field_names), signature_hash=sig,
-            )
-        if hasattr(kb_plan, "store_plan"):
-            kb_plan.store_plan(
-                plan_id=f"{gse_id}_{ts}", gse_id=gse_id, signature_hash=sig,
-                plan_json=plan_json, processing_code=plan_data.get("processing_code", ""),
-                assembly_code=plan_data.get("assembly_code", ""),
-                plan_confidence=plan_data.get("confidence", 0.85),
-                strategy_notes=plan_data.get("strategy_notes", ""),
-                kb_match_count=len(matches),
-                field_mapping_count=len(plan_data.get("field_mappings", [])),
-            )
-        if hasattr(kb_plan, "store_field_mappings"):
-            fm_list = plan_data.get("field_mappings", [])
-            if fm_list:
-                kb_plan.store_field_mappings(f"{gse_id}_{ts}", fm_list)
-    except Exception:
-        pass
-
     # ========== STEP 3: EXECUTE + VERIFY ==========
     click.echo(f"\n  [3/3] EXECUTE — reading matrices + building AnnData...")
     executor = PlanExecutor()
@@ -1274,13 +1239,50 @@ def run(
         metadata_path.write_text("\n".join(lines), encoding="utf-8")
         click.echo(f"    Metadata:  {metadata_path}")
 
-    # KB stats update
-    try:
-        kb_exec, _ = _get_knowledge_base()
-        matcher_ex = StrategyMatcher(kb_exec)
-        matcher_ex.update_strategy_stats(gse_report, result.success)
-    except Exception:
-        pass
+    # Unified KB store: plan data + strategy stats (only after verify passed)
+    if result.success and vreport.passed:
+        try:
+            import time as _time
+            from scruticell.intelligence.matcher import StrategyMatcher as SM
+            kb_u, _ = _get_knowledge_base()
+            sm_u = SM(kb_u)
+            fp = sm_u.fingerprint(gse_report)
+            sig = fp.to_signature()
+            ts = str(int(_time.time()))
+            plan_data = json.loads(plan_json)
+            if hasattr(kb_u, "store_inspect_report"):
+                kb_u.store_inspect_report(
+                    report_id=f"{gse_id}_{ts}", gse_id=gse_id,
+                    organism=fp.organism, matrix_formats=";".join(fp.matrix_formats),
+                    gsm_count=fp.gsm_count, matrix_file_count=fp.matrix_file_count,
+                    total_cells=fp.total_cells, total_genes=fp.total_genes,
+                    field_names=";".join(fp.field_names), signature_hash=sig,
+                )
+            if hasattr(kb_u, "store_plan"):
+                kb_u.store_plan(
+                    plan_id=f"{gse_id}_{ts}", gse_id=gse_id, signature_hash=sig,
+                    plan_json=plan_json, processing_code=plan_data.get("processing_code", ""),
+                    assembly_code=plan_data.get("assembly_code", ""),
+                    plan_confidence=plan_data.get("confidence", 0.85),
+                    strategy_notes=plan_data.get("strategy_notes", ""),
+                    kb_match_count=len(matches),
+                    field_mapping_count=len(plan_data.get("field_mappings", [])),
+                )
+            if hasattr(kb_u, "store_field_mappings"):
+                fm_list = plan_data.get("field_mappings", [])
+                if fm_list:
+                    kb_u.store_field_mappings(f"{gse_id}_{ts}", fm_list)
+            # Strategy stats
+            matcher_ex = StrategyMatcher(kb_u)
+            matcher_ex.update_strategy_stats(gse_report, True)
+        except Exception:
+            pass
+    elif not result.success:
+        try:
+            kb_fail, _ = _get_knowledge_base()
+            StrategyMatcher(kb_fail).update_strategy_stats(gse_report, False)
+        except Exception:
+            pass
 
     _cleanup_gse_output(gse_id, keep_data)
 
