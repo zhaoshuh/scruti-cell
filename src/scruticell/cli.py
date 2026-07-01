@@ -1180,6 +1180,29 @@ def run(
     click.echo(f"    Output:   {result.output_path}")
     click.echo(f"    Cells:    {result.n_cells} | Genes: {result.n_genes} | Batches: {result.n_batches}")
 
+    # Append batch verification results to plan.json
+    try:
+        plan_data = json.loads(plan_json)
+        plan_data["_batch_verification"] = {
+            "passed": vreport.passed,
+            "retries": vretry + 1,
+            "mismatches": [
+                {
+                    "issue_type": m.issue_type,
+                    "batch_label": m.batch_label,
+                    "gsm_id": m.gsm_id,
+                    "detail": m.format(),
+                }
+                for m in vreport.mismatches
+            ],
+            "warnings": vreport.warnings,
+            "final_strategy": getattr(plan, "batch_separation_strategy", ""),
+        }
+        plan_json = json.dumps(plan_data, indent=2, ensure_ascii=False)
+        plan_path.write_text(plan_json, encoding="utf-8")
+    except Exception:
+        pass
+
     # Write execute.json
     execute_path = output_dir / "execute.json"
     trace_text = getattr(result, "_trace_text", "")
