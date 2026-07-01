@@ -16,7 +16,7 @@ from scruticell.pipeline.state import PipelineState
 logger = logging.getLogger(__name__)
 
 _MAX_RETRIES = 5
-_ARIA2_ARGS = ["--max-connection-per-server=3", "--split=3", "--min-split-size=1M",
+_ARIA2_ARGS = ["--max-connection-per-server=1", "--split=2", "--min-split-size=4M",
                "--min-tls-version=TLSv1.2",
                "--console-log-level=error", "--summary-interval=0",
                "--check-certificate=false"]
@@ -51,7 +51,7 @@ def _aria2_download(url: str, dest_dir: Path, filename: str) -> bool:
     ]
     for attempt in range(1, _MAX_RETRIES + 1):
         try:
-            subprocess.run(cmd, check=True, timeout=3600)
+            subprocess.run(cmd, check=True, timeout=300)
             if dest.exists() and dest.stat().st_size > 0:
                 logger.info("Downloaded: %s (%s bytes)", filename, dest.stat().st_size)
                 return True
@@ -67,7 +67,7 @@ def _aria2_download(url: str, dest_dir: Path, filename: str) -> bool:
     logger.info("aria2c all failed, falling back to httpx for %s", filename)
     try:
         import httpx
-        with httpx.Client(timeout=600, verify=False, follow_redirects=True) as client:
+        with httpx.Client(timeout=300, verify=False, follow_redirects=True) as client:
             with client.stream("GET", url) as response:
                 response.raise_for_status()
                 with open(dest, "wb") as f:
