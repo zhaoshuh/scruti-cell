@@ -150,19 +150,13 @@ def _collect_supplementary_urls(geo) -> list[tuple[str, str, str]]:
                     results.append((entity_id, https_url, filename))
                 i += 1
 
-    # GSE-level supplementary files
+    # GSE-level supplementary files only (RAW.tar contains all GSM data)
     gse_meta = getattr(geo, "metadata", {})
     gse_id = geo.name
     _extract(gse_meta, f"__GSE__{gse_id}")
 
-    # GSM-level supplementary files
-    gsms = getattr(geo, "gsms", {})
-    for gsm_id in gsms:
-        gsm_meta = getattr(gsms[gsm_id], "metadata", {})
-        _extract(gsm_meta, gsm_id)
-
-    logger.info("Found %d supplementary files from %d entities (GSE+GSM)",
-                len(results), 1 + len(gsms))
+    logger.info("Found %d supplementary files from GSE %s",
+                len(results), gse_id)
     return results
 
 
@@ -179,7 +173,7 @@ def _extract_supplementary_refs(gse_id: str) -> list[dict[str, str]]:
     dest = str(Path.cwd() / "output" / gse_id / "download")
     geo = GEOparse.get_GEO(geo=gse_id, destdir=dest, silent=True)
     suppl_urls = _collect_supplementary_urls(geo)
-    return [{"filename": filename, "gsm": entity_id.replace("__GSE__", gse_id)}
+    return [{"filename": filename, "gsm": entity_id.replace(f"__GSE__{gse_id}", gse_id)}
             for entity_id, _url, filename in suppl_urls]
 
 
