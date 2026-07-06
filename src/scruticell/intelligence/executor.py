@@ -398,6 +398,8 @@ class PlanExecutor:
                 obs = pd.DataFrame(index=cell_barcodes)
                 obs["batch"] = gsm_id
 
+                verified_mappings = plan._verified_field_mappings or plan.field_mappings
+
                 # Inject filename-derived metadata (Step 3, by base filename)
                 skip_fe = {"gsm_id", "role", "file_type", "format", "extension"}
                 file_basename = fk.rsplit("/", 1)[-1] if "/" in fk else fk
