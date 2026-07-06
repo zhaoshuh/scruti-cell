@@ -5,17 +5,17 @@ batch separation strategy matches the actual output data.
 On mismatch, carry structured context back to the plan phase
 for re-planning.
 """
- 
+
 from __future__ import annotations
- 
+
 import dataclasses
 import logging
 from pathlib import Path
 from typing import Any
- 
+
 logger = logging.getLogger(__name__)
- 
- 
+
+
 @dataclasses.dataclass
 class BatchMismatch:
     """A detected inconsistency between plan and actual data."""
@@ -26,7 +26,7 @@ class BatchMismatch:
     expected: str = ""
     actual: str = ""
     detail: str = ""
- 
+
     def format(self) -> str:
         if self.issue_type == "missing_field":
             return (
@@ -54,8 +54,8 @@ class BatchMismatch:
         if self.issue_type == "redundant_batches":
             return self.detail
         return self.detail
- 
- 
+
+
 @dataclasses.dataclass
 class VerificationReport:
     """Complete post-execution verification result."""
@@ -63,7 +63,7 @@ class VerificationReport:
     passed: bool = False
     mismatches: list[BatchMismatch] = dataclasses.field(default_factory=list)
     warnings: list[str] = dataclasses.field(default_factory=list)
- 
+
     @property
     def summary(self) -> str:
         """Human-readable context suitable for injecting into plan prompt."""
@@ -83,8 +83,8 @@ class VerificationReport:
             "3) Do batch_labels reflect actual metadata values?"
         )
         return "\n".join(lines)
- 
- 
+
+
 class BatchVerifier:
     """Verify batch separation plan against actual h5ad output.
 
@@ -110,7 +110,7 @@ class BatchVerifier:
         report = VerificationReport(gse_id=gse_id)
 
         # Find all h5ad files
-        h5ad_files = sorted(output_dir.glob(f"{gse_id}_*_scruticell.h5ad"))
+        h5ad_files = sorted(output_dir.glob("batch_*/matrix.h5ad"))
         if not h5ad_files:
             h5ad_files = sorted(output_dir.glob("*.h5ad"))
 
@@ -168,15 +168,28 @@ class BatchVerifier:
             defining = getattr(batch_def, "defining_fields", []) or []
 
             if not defining:
+                report.mismatches.append(BatchMismatch(
+                    gsm_id=gsm_id,
+                    batch_label=batch_label,
+                    issue_type="missing_field",
+                    field="defining_fields",
+                    expected="non-empty list",
+                    actual="empty",
+                    detail=(
+                        f"Batch '{batch_label}' (GSM {gsm_id}) has no defining_fields. "
+                        f"Every batch MUST declare defining_fields that uniquely "
+                        f"identify this batch across the dataset."
+                    ),
+                ))
                 continue
 
             obs = bd.get("obs_unique", {})
             obs_cols = bd.get("obs_cols", [])
 
             for field in defining:
-                if field == "batch":
-                    continue
-
+                # Auto-map "batch" → "batch_label" (common LLM output)
+                if field == "batch" and field not in obs_cols and "batch_label" in obs_cols:
+                    field = "batch_label"
                 # Field not in obs → warning, not mismatch
                 if field not in obs_cols:
                     similar = [c for c in obs_cols if field in c or c in field]
@@ -225,29 +238,59 @@ class BatchVerifier:
                 "relationship. The LLM may not have identified batch boundaries."
             )
 
-        # Cross-batch redundancy: same defining value in multiple batches
-        for field, vmap in field_value_to_batches.items():
-            for value, batch_indices in vmap.items():
-                if len(batch_indices) > 1:
-                    labels = []
-                    for bi in batch_indices:
-                        bd = plan_batches[bi] if bi < len(plan_batches) else None
-                        labels.append(
-                            getattr(bd, "batch_label", "")
-                            or getattr(bd, "gsm_id", f"batch_{bi}")
-                        )
+        # Cross-batch redundancy: check unique COMBINATION of defining_fields per batch
+        # Individual field values naturally overlap in multi-condition experiments
+        # (e.g. genotype=APOE4 appears in Vehicle AND Ceria-TPP batches).
+        # Only a truly duplicated COMBINATION (same values for ALL defining_fields)
+        # indicates batches that should be merged.
+        if len(plan_batches) >= 2:
+            combo_to_batch: dict[tuple, int] = {}
+            for i, batch_def in enumerate(plan_batches):
+                defining = getattr(batch_def, "defining_fields", []) or []
+                if not defining:
+                    # No defining_fields → skip cross-batch check for this batch
+                    continue
+                if i >= len(batch_data):
+                    continue
+                bd = batch_data[i]
+                obs = bd.get("obs_unique", {})
+                combo_parts: list[tuple[str, str]] = []
+                for field in sorted(defining):
+                    # Auto-map "batch" → "batch_label" (same as per-batch loop)
+                    if field == "batch" and field not in obs and "batch_label" in obs:
+                        field = "batch_label"
+                    vals = obs.get(field, set())
+                    if not vals:
+                        continue
+                    v_str = sorted(vals)[0]
+                    combo_parts.append((field, v_str))
+                if not combo_parts:
+                    continue
+                combo = tuple(combo_parts)
+                if combo in combo_to_batch:
+                    prev_i = combo_to_batch[combo]
+                    prev_label = (
+                        getattr(plan_batches[prev_i], "batch_label", "")
+                        or getattr(plan_batches[prev_i], "gsm_id", f"batch_{prev_i}")
+                    )
+                    curr_label = (
+                        getattr(batch_def, "batch_label", "")
+                        or getattr(batch_def, "gsm_id", f"batch_{i}")
+                    )
                     report.mismatches.append(BatchMismatch(
                         issue_type="redundant_batches",
-                        field=field,
-                        expected="unique per batch",
+                        field="+".join(f for f, _ in combo_parts),
+                        expected="unique combination per batch",
                         actual="same in multiple",
                         detail=(
-                            f"Field '{field}' value '{value}' appears in "
-                            f"{len(batch_indices)} batches: {', '.join(labels)}. "
-                            f"These batches should be merged — they share the same "
-                            f"defining characteristic."
+                            f"Field combination {dict(combo)} appears in "
+                            f"both batch '{prev_label}' and '{curr_label}'. "
+                            f"These batches have identical defining characteristics "
+                            f"and should be merged."
                         ),
                     ))
+                else:
+                    combo_to_batch[combo] = i
 
         # Check 3: batch_separation_strategy consistency
         strategy = getattr(plan, "batch_separation_strategy", "") or ""

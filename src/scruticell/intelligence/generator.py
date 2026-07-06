@@ -22,6 +22,7 @@ from scruticell.intelligence.planner import (
     build_validation_prompt,
 )
 from scruticell.intelligence.reporter import GseReport
+from scruticell.utils.tokens import invoke_and_track
 from scruticell.utils.tracing import traceable
 
 logger = logging.getLogger(__name__)
@@ -48,9 +49,10 @@ class PlanGenerator:
         report: GseReport,
         model: str | None = None,
         temperature: float = 0.0,
+        mismatch_context: str = "",
     ) -> ProcessingPlan | None:
         """Generate a processing plan. Traced via LangSmith."""
-        return self._generate_impl(report, model, temperature)
+        return self._generate_impl(report, model, temperature, mismatch_context)
 
     @traceable(name="PlanGenerator.generate", tags=["intelligence", "planning"])
     def _generate_impl(
@@ -58,6 +60,7 @@ class PlanGenerator:
         report: GseReport,
         model: str | None = None,
         temperature: float = 0.0,
+        mismatch_context: str = "",
     ) -> ProcessingPlan | None:
         # 1. Find similar strategies
         matched: list[MatchedStrategy] = []
@@ -76,6 +79,9 @@ class PlanGenerator:
                 for m in matched[:3]
             )
             prompt += f"\n\nPAST SIMILAR CASES (use as reference):\n{strategies_text}"
+
+        if mismatch_context:
+            prompt += f"\n\nBATCH VERIFICATION FAILURES (fix these):\n{mismatch_context}"
 
         # 3. LLM call
         response = self._call_llm(prompt, model, temperature)
@@ -115,7 +121,9 @@ class PlanGenerator:
                 ("system", PLAN_GENERATION_SYSTEM_PROMPT),
                 ("human", prompt),
             ]
-            response = llm.invoke(messages)
+            response = invoke_and_track(
+                llm, messages, "plan_generate", model=model or LLM_MODEL,
+            )
             content = str(response.content).strip()
 
             if content.startswith("```"):
@@ -175,6 +183,17 @@ class PlanValidator:
                 f"explain why each batch is separate"
             )
 
+        # 2c. Every batch MUST have defining_fields
+        missing_defining = [
+            b.gsm_id or b.batch_label or f"batch_{i}"
+            for i, b in enumerate(plan.batches) if not b.defining_fields
+        ]
+        if missing_defining:
+            issues.append(
+                f"Batch(es) {', '.join(missing_defining)} missing 'defining_fields' — "
+                f"each batch must declare which metadata fields uniquely identify it"
+            )
+
         # 2c. Batch separation strategy should be set
         valid_strategies = {
             "per_sample", "per_condition", "per_timepoint",
@@ -190,8 +209,11 @@ class PlanValidator:
         # 3. GSM IDs in batches should exist in report
         report_gsm_ids = {g.gsm_id for g in report.gsm_entries}
         for b in plan.batches:
-            if b.gsm_id not in report_gsm_ids:
-                issues.append(f"Batch GSM '{b.gsm_id}' not found in report GSM entries")
+            gsm_id = b.gsm_id
+            if isinstance(gsm_id, list):
+                gsm_id = gsm_id[0] if gsm_id else ""
+            if not isinstance(gsm_id, str) or gsm_id not in report_gsm_ids:
+                issues.append(f"Batch GSM '{gsm_id}' not found in report GSM entries")
 
         # 4. Cell counts should be positive
         for b in plan.batches:
@@ -206,9 +228,9 @@ class PlanValidator:
                         break
 
         # 5. Gene ID system should be plausible
-        valid_systems = {"symbol", "ensembl_gene", "ensembl", "ensembl_gene_id", "entrez", "unknown", ""}
+        valid_systems = {"symbol", "ensembl_gene_id", "entrez_id", ""}
         if plan.gene_id_system not in valid_systems:
-            issues.append(f"Unknown gene_id_system: '{plan.gene_id_system}'")
+            issues.append(f"Unknown gene_id_system: '{plan.gene_id_system}' (use symbol|ensembl_gene_id|entrez_id)")
 
         # 6. Confidence should be reasonable
         if plan.confidence < 0.0 or plan.confidence > 1.0:
@@ -248,7 +270,9 @@ class PlanValidator:
                 llm_kwargs["openai_api_key"] = LLM_API_KEY
 
             llm = ChatOpenAI(**llm_kwargs)
-            response = llm.invoke(prompt)
+            response = invoke_and_track(
+                llm, prompt, "plan_validate", model=model or LLM_MODEL,
+            )
             content = str(response.content).strip()
 
             if content.startswith("```"):
@@ -319,6 +343,45 @@ class PlanOrchestrator:
 
             plan_data = extractor.generate_final_plan(report)  # Step 5 output
 
+            # ── Normalize defining_fields to actual obs column names ──
+            if isinstance(plan_data, dict) and plan_data.get("batches"):
+                field_mappings = plan_data.get("field_mappings", [])
+                canonical_map: dict[str, str] = {}
+                for fm in field_mappings:
+                    raw = fm.get("raw_field", "")
+                    canonical = fm.get("canonical", "")
+                    if raw and canonical:
+                        canonical_map[raw] = canonical
+                strategy = plan_data.get("batch_separation_strategy", "")
+                use_batch_col = strategy in ("per_sample", "by_gsm_file_map")
+                for b in plan_data.get("batches", []):
+                    raw_fields = b.get("defining_fields", [])
+                    if use_batch_col:
+                        b["defining_fields"] = ["batch"]
+                    elif raw_fields:
+                        b["defining_fields"] = [
+                            canonical_map.get(rf, rf) for rf in raw_fields
+                        ]
+
+            # ── Inject reader_path from inspect stage into plan matrices ──
+            if isinstance(plan_data, dict) and plan_data.get("matrices"):
+                for m in plan_data.get("matrices", []):
+                    fk = m.get("file_key", "")
+                    fs = report.file_summaries.get(fk, {})
+                    rp = fs.get("reader_path", "") if isinstance(fs, dict) else ""
+                    if rp:
+                        m["reader_path"] = rp
+
+            # ── Inject reader_path into metadata_files too ──
+            if isinstance(plan_data, dict) and plan_data.get("metadata_files"):
+                for mf in plan_data.get("metadata_files", []):
+                    if mf.get("reader_path"):
+                        continue  # LLM already set it
+                    for fk, fs in report.file_summaries.items():
+                        if isinstance(fs, dict) and fs.get("reader_path"):
+                            mf["reader_path"] = fs["reader_path"]
+                            break
+
             if plan_data is None or not isinstance(plan_data, dict):
                 logger.error("Multi-step extraction failed to produce valid plan")
                 return None
@@ -327,8 +390,18 @@ class PlanOrchestrator:
             if extractor.metadata_code and "processing_code" not in plan_data:
                 plan_data["processing_code"] = extractor.metadata_code
 
-            # Inject Step 2 field_mappings into the plan (LLM context only, not in output schema)
+            # Inject Step 2 results into the plan
             gsm_extract = extractor._context.get("gsm_extract", {})
+
+            # Inject extraction_code (Step 2 function-based metadata extraction)
+            if isinstance(gsm_extract, dict) and not plan_data.get("extraction_code"):
+                plan_data["extraction_code"] = gsm_extract.get("extraction_code", "")
+
+            # Inject gsm_meta_extractions (legacy per-field extraction, for backward compat)
+            if isinstance(gsm_extract, dict) and not plan_data.get("gsm_meta_extractions"):
+                plan_data["gsm_meta_extractions"] = gsm_extract.get("gsm_meta_extractions", {})
+
+            # Inject Step 2 field_mappings (legacy, kept for backward compat)
             if isinstance(gsm_extract, dict) and not plan_data.get("field_mappings"):
                 plan_data["field_mappings"] = gsm_extract.get("field_mappings", [])
 
@@ -379,6 +452,7 @@ class PlanOrchestrator:
                     })
 
             # Fallback: old-style Step 4 abbreviation resolution
+            _seen_keys = {(fm.get("raw_field", ""), fm.get("canonical", "")) for fm in verified}
             verified_abbrs = lit_verified.get("abbreviations", {}) if isinstance(lit_verified, dict) else {}
             for abbr in (gsm_extract.get("ambiguous_abbreviations", [])
                          if isinstance(gsm_extract, dict) else []):
@@ -421,24 +495,24 @@ class PlanOrchestrator:
             )
 
             plan = self._validate_loop(plan, report, "multi_step")
-            if plan and plan.is_valid():
-                self._matcher.store_strategy(report, plan.to_json(), success=True)
 
-            if plan and (plan.requires_literature_check or report.gse_info.pubmed_id or report.gse_info.title):
-                plan = self._enrich_with_literature(plan, report)
+            if plan and report.gse_info.pubmed_id:
+                try:
+                    plan = self._enrich_with_literature(plan, report)
+                except Exception as exc:
+                    logger.warning(
+                        "Literature enrichment failed, using unenriched plan: %s", exc
+                    )
 
             return plan
 
         except Exception as exc:
-            logger.warning("Multi-step extraction failed, falling back to single prompt: %s", exc)
+            logger.warning("Multi-step extraction failed, falling back to single prompt", exc_info=True)
             return self._plan_single_prompt(report)
 
     def _plan_single_prompt(self, report: GseReport, mismatch_context: str = "") -> ProcessingPlan | None:
         """Fallback: single monolithic prompt (original behavior)."""
-        if mismatch_context:
-            plan = self._generator.generate(report, mismatch_context=mismatch_context)
-        else:
-            plan = self._generator.generate(report)
+        plan = self._generator.generate(report, mismatch_context=mismatch_context)
         if plan is None:
             return None
 
@@ -446,8 +520,7 @@ class PlanOrchestrator:
         if plan is None:
             return None
 
-        if plan.requires_literature_check \
-           or (report.gse_info.pubmed_id or report.gse_info.title):
+        if report.gse_info.pubmed_id:
             plan = self._enrich_with_literature(plan, report)
 
         return plan
@@ -459,8 +532,6 @@ class PlanOrchestrator:
         for round_idx in range(_MAX_VALIDATION_ROUNDS):
             issues = self._validator.validate(plan, report)
             if not issues:
-                if round_idx == 0 and stage == "initial":
-                    self._matcher.store_strategy(report, plan.to_json(), success=True)
                 logger.info("Plan validated successfully (%s, round %d)", stage, round_idx + 1)
                 return plan
 
@@ -506,36 +577,30 @@ class PlanOrchestrator:
         return self._validate_loop(revised, report, "literature_enriched") or revised
 
     def _fetch_literature_enrichment(self, report: GseReport) -> dict | None:
-        """Fetch PubMed record and LLM-extract structured metadata."""
+        """Fetch PubMed record and LLM-extract structured metadata.
+
+        Only runs when pubmed_id exists AND paper is open access (has PMCID).
+        """
         try:
             from scruticell.literature.extractor import extract_metadata_from_text
-            from scruticell.literature.pubmed import fetch_pubmed_record, search_pubmed
+            from scruticell.literature.pubmed import fetch_pubmed_record
 
             pubmed_id = report.gse_info.pubmed_id
-            if not pubmed_id and report.gse_info.title:
-                ids = search_pubmed(report.gse_info.title, retmax=1)
-                if not ids:
-                    # Full title may have unicode/suffix that breaks PubMed search.
-                    # Fallback: strip brackets, truncate at last complete word.
-                    import re
-                    clean = re.sub(r'\[.*?\]|\(.*?\)', '', report.gse_info.title)
-                    clean = re.sub(r'\s+', ' ', clean).strip()
-                    # Truncate to 80 chars at last word boundary
-                    truncated = clean[:80].rsplit(' ', 1)[0] if len(clean) > 80 else clean
-                    ids = search_pubmed(truncated, retmax=3)
-                if ids:
-                    pubmed_id = ids[0]
-                    logger.info("Found PubMed ID by title search: %s", pubmed_id)
-                else:
-                    logger.warning("No PubMed record found for title: %s", report.gse_info.title[:80])
-                    return None
-
             if not pubmed_id:
                 return None
 
             record = fetch_pubmed_record(pubmed_id)
             if not record or not record.get("abstract"):
                 logger.warning("No abstract found for PubMed ID %s", pubmed_id)
+                return None
+
+            # Only proceed if paper is open access (has PMCID)
+            pmcid = record.get("pmcid", "")
+            if not pmcid:
+                logger.info(
+                    "PMID %s has no PMCID — not open access, skipping enrichment",
+                    pubmed_id,
+                )
                 return None
 
             text = f"Title: {record.get('title', '')}\n\nAbstract: {record.get('abstract', '')}"
@@ -624,7 +689,7 @@ Return ONLY the revised JSON plan. Keep validated parts unchanged."""
                 llm_kwargs["openai_api_key"] = LLM_API_KEY
 
             llm = ChatOpenAI(**llm_kwargs)
-            response = llm.invoke(prompt)
+            response = invoke_and_track(llm, prompt, "plan_literature")
             content = str(response.content).strip()
             if content.startswith("```"):
                 lines = content.split("\n")

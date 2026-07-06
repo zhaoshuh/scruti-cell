@@ -385,11 +385,15 @@ class ProvenanceBuilder:
             "step4_code": "processing code",
         }
 
-        # Derived columns from processing_code (known patterns)
-        _derived_parents = {
-            "drug": "treatment", "dose": "treatment", "duration": "treatment",
-            "cell_source": "tissue", "batch_key": "batch",
-        }
+        # Derived columns from verified_field_mappings' value_split
+        _derived_parents: dict[str, str] = {}
+        for fm in verified_mappings:
+            vs = fm.get("value_split", {}) if isinstance(fm, dict) else getattr(fm, "value_split", {})
+            if vs and isinstance(vs, dict):
+                parent = fm.get("raw_field", "") if isinstance(fm, dict) else getattr(fm, "raw_field", "")
+                if parent:
+                    for child in vs:
+                        _derived_parents[child] = parent
 
         # Also check filename_extractions
         filename_comps: dict[str, Any] = {}
@@ -435,7 +439,7 @@ class ProvenanceBuilder:
                 source_path = ["GSM: GSM characteristics"]
             elif col in _derived_parents:
                 parent = _derived_parents[col]
-                source_path = ["processing code"]
+                source_path = ["GSM: compound split"]
                 extraction_method = "compound_split"
                 if parent in canonical_src:
                     derived_from = parent

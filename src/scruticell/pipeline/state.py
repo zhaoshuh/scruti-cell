@@ -38,6 +38,7 @@ class PipelineState:
     raw_metadata: dict[str, Any] = field(default_factory=dict)
     gsm_entries: dict[str, dict[str, Any]] = field(default_factory=dict)
     parsed_characteristics: dict[str, dict[str, Any]] = field(default_factory=dict)
+    raw_gsm_entries: dict[str, dict[str, Any]] = field(default_factory=dict)
     organism: str = ""
     platform_ids: list[str] = field(default_factory=list)
 

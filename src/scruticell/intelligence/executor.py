@@ -30,6 +30,210 @@ logger = logging.getLogger(__name__)
 _MAX_EXECUTION_RETRIES = 2
 
 
+# ─── Module-level extraction helpers ────────────────────────────
+
+import ast as _ast
+
+def _get_char_from_raw(gsm_entry: Any, key: str, default: str = "") -> str:
+    """Extract a characteristic value from raw GSM data by key name."""
+    raw = getattr(gsm_entry, "_raw", None) or {}
+    chars = raw.get("characteristics_ch1", [])
+    if isinstance(chars, str):
+        chars = [chars]
+    if not isinstance(chars, list):
+        return str(default)
+    key_lower = key.lower().strip()
+    for item in chars:
+        item_str = str(item).strip()
+        if not item_str:
+            continue
+        if ": " in item_str:
+            k, v = item_str.split(": ", 1)
+        elif ":" in item_str:
+            k, v = item_str.split(":", 1)
+        else:
+            continue
+        if k.strip().lower() == key_lower:
+            return v.strip()
+    return str(default)
+
+
+def _safe_eval_extraction(code: str, gsm_entry: Any) -> Any:
+    SAFE_NAMES = {"gsm_entry", "str", "getattr", "list", "len", "int", "bool",
+                   "None", "True", "False", "get_char", "literal_eval", "join"}
+    SAFE_FUNCS = {"str", "getattr", "list", "len", "int", "bool", "literal_eval", "join", "get_char"}
+    tree = _ast.parse(code, mode="eval")
+    for node in _ast.walk(tree):
+        if isinstance(node, _ast.Name) and node.id not in SAFE_NAMES:
+            raise ValueError(f"Disallowed name: {node.id}")
+        if isinstance(node, _ast.Call):
+            if isinstance(node.func, _ast.Attribute):
+                continue
+            if isinstance(node.func, _ast.Name) and node.func.id not in SAFE_FUNCS:
+                raise ValueError(f"Disallowed function: {node.func.id}")
+        if isinstance(node, (_ast.Import, _ast.ImportFrom)):
+            raise ValueError("Imports not allowed")
+    ns = {
+        "gsm_entry": gsm_entry,
+        "str": str, "getattr": getattr,
+        "list": list, "len": len, "int": int, "bool": bool,
+        "literal_eval": _ast.literal_eval,
+        "join": lambda sep, items: sep.join(str(x) for x in items),
+        "get_char": lambda gsm, key, default="": _get_char_from_raw(gsm, key, default),
+    }
+    return eval(compile(tree, "<extraction>", "eval"), {"__builtins__": {}}, ns)
+
+
+def _run_extraction_function_impl(
+    extraction_code: str, gsm_entry: Any, gsm_id: str,
+) -> dict[str, str]:
+    """Execute the LLM-generated extract_metadata() function in a sandbox."""
+    import re as _re
+
+    sandbox: dict[str, Any] = {
+        "re": _re,
+        "get_char": lambda gsm, key, default="": _get_char_from_raw(gsm, key, default),
+        "__builtins__": {
+            "True": True, "False": False, "None": None,
+            "int": int, "float": float, "str": str, "bool": bool,
+            "list": list, "dict": dict, "set": set, "tuple": tuple,
+            "len": len, "range": range, "enumerate": enumerate,
+            "zip": zip, "map": map, "filter": filter,
+            "print": print, "isinstance": isinstance,
+            "Exception": Exception, "ValueError": ValueError,
+            "TypeError": TypeError, "KeyError": KeyError,
+            "__import__": __import__,
+        },
+    }
+
+    code = extraction_code.strip()
+    if code.startswith("```"):
+        lines = code.split("\n")
+        code = "\n".join(lines[1:-1] if lines[-1].strip() == "```" else lines[1:])
+
+    local_ns: dict = {}
+    try:
+        exec(code, sandbox, local_ns)
+    except SyntaxError as exc:
+        logger.warning("extraction_code syntax error for %s: %s", gsm_id, exc)
+        code = _repair_syntax_error(code, gsm_id, str(exc))
+        if code:
+            try:
+                exec(code, sandbox, local_ns)
+            except Exception as exc2:
+                logger.warning("Syntax-repaired code still failed for %s: %s", gsm_id, exc2)
+    except Exception as exc:
+        logger.warning("extraction_code exec failed for %s: %s", gsm_id, exc)
+        return {}
+
+    extract_fn = local_ns.get("extract_metadata")
+    if extract_fn is None:
+        logger.warning("No extract_metadata() found for %s", gsm_id)
+        return {}
+
+    try:
+        result = extract_fn(gsm_entry)
+        if isinstance(result, dict):
+            return {str(k): str(v) for k, v in result.items() if v}
+    except Exception as exc:
+        logger.warning("extract_metadata() runtime error for %s: %s", gsm_id, exc)
+        code = _repair_runtime_error(code, gsm_entry, gsm_id, str(exc))
+        if code:
+            try:
+                exec(code, sandbox, local_ns)
+            except Exception as exc3:
+                logger.warning("Runtime-repaired code exec failed for %s: %s", gsm_id, exc3)
+            extract_fn = local_ns.get("extract_metadata")
+            if extract_fn:
+                try:
+                    result = extract_fn(gsm_entry)
+                    if isinstance(result, dict):
+                        return {str(k): str(v) for k, v in result.items() if v}
+                except Exception as exc4:
+                    logger.warning("Extraction retry still failed for %s: %s", gsm_id, exc4)
+
+    return {}
+
+
+def _repair_syntax_error(code: str, gsm_id: str, error_msg: str) -> str:
+    from langchain_openai import ChatOpenAI
+    from scruticell.config import LLM_API_KEY, LLM_BASE_URL, LLM_MODEL
+
+    prompt = (
+        "Fix the SyntaxError in this Python function. Return ONLY the corrected "
+        "function code, no explanation.\n\n"
+        f"GSM: {gsm_id}\n"
+        f"SyntaxError: {error_msg}\n\n"
+        "Broken code:\n"
+        f"{code[:3000]}\n\n"
+        "Return the fixed function starting with: def extract_metadata(gsm_entry):"
+    )
+    try:
+        kwargs: dict[str, Any] = {"model": LLM_MODEL, "temperature": 0}
+        if LLM_BASE_URL:
+            kwargs["openai_api_base"] = LLM_BASE_URL
+        if LLM_API_KEY:
+            kwargs["openai_api_key"] = LLM_API_KEY
+        llm = ChatOpenAI(**kwargs)
+        resp = str(llm.invoke(prompt).content).strip()
+        if resp.startswith("```"):
+            lines = resp.split("\n")
+            resp = "\n".join(lines[1:-1] if lines[-1].strip() == "```" else lines[1:])
+        if resp.startswith("def extract_metadata"):
+            logger.info("extraction_code syntax repaired for %s", gsm_id)
+            return resp
+    except Exception:
+        pass
+    return ""
+
+
+def _repair_runtime_error(
+    code: str, gsm_entry: Any, gsm_id: str, error_msg: str,
+) -> str:
+    from langchain_openai import ChatOpenAI
+    from scruticell.config import LLM_API_KEY, LLM_BASE_URL, LLM_MODEL
+
+    raw = getattr(gsm_entry, "_raw", {}) or {}
+    gsm_text_parts: list[str] = []
+    for k, v in raw.items():
+        if v:
+            if isinstance(v, list):
+                val_str = "\n".join(str(x)[:500] for x in v)
+            else:
+                val_str = str(v)[:500]
+            gsm_text_parts.append(f"{k}: {val_str}")
+    gsm_text = "\n".join(gsm_text_parts[:30])
+
+    prompt = (
+        "Fix the RuntimeError in this Python function using the GSM's raw data below. "
+        "Return ONLY the corrected function code, no explanation.\n\n"
+        f"GSM: {gsm_id}\n"
+        f"RuntimeError: {error_msg}\n\n"
+        "Original code:\n"
+        f"{code[:2500]}\n\n"
+        "GSM raw data:\n"
+        f"{gsm_text[:2000]}\n\n"
+        "Return the fixed function starting with: def extract_metadata(gsm_entry):"
+    )
+    try:
+        kwargs: dict[str, Any] = {"model": LLM_MODEL, "temperature": 0}
+        if LLM_BASE_URL:
+            kwargs["openai_api_base"] = LLM_BASE_URL
+        if LLM_API_KEY:
+            kwargs["openai_api_key"] = LLM_API_KEY
+        llm = ChatOpenAI(**kwargs)
+        resp = str(llm.invoke(prompt).content).strip()
+        if resp.startswith("```"):
+            lines = resp.split("\n")
+            resp = "\n".join(lines[1:-1] if lines[-1].strip() == "```" else lines[1:])
+        if resp.startswith("def extract_metadata"):
+            logger.info("extraction_code runtime repaired for %s", gsm_id)
+            return resp
+    except Exception:
+        pass
+    return ""
+
+
 @dataclass
 class ExecutionStep:
     """One step in the execution provenance trace."""
@@ -127,15 +331,12 @@ class PlanExecutor:
         if state is None:
             state = PipelineState(gse_id=plan.gse_id, output_dir=output_dir)
 
+        self._output_dir = output_dir
+
         result = ExecutionResult(success=False)
         result.steps = []
 
         try:
-            self._recorder.record("execution", "started", {
-                "gse_id": plan.gse_id,
-                "strategy_notes": plan.strategy_notes,
-                "confidence": plan.confidence,
-            })
             self._recorder.record("execution", "started", {
                 "gse_id": plan.gse_id,
                 "strategy_notes": plan.strategy_notes,
@@ -197,39 +398,17 @@ class PlanExecutor:
                 obs = pd.DataFrame(index=cell_barcodes)
                 obs["batch"] = gsm_id
 
-                # Inject GSM characteristics into obs (whitelisted by verified_field_mappings)
-                verified_mappings = plan._verified_field_mappings or plan.field_mappings
-                allowed_raw = set()
-                for fm in verified_mappings:
-                    raw = fm.raw_field if hasattr(fm, "raw_field") else fm.get("raw_field", "")
-                    # Strip LLM prefixes like "characteristics.", "gsm.", "obs."
-                    for prefix in ("characteristics.", "gsm.", "obs.", "meta."):
-                        if raw.startswith(prefix):
-                            raw = raw[len(prefix):]
-                            break
-                    allowed_raw.add(raw)
-                allowed_raw.update({"source_name", "description"})
-                for gsm_entry in report.gsm_entries:
-                    if gsm_entry.gsm_id == gsm_id:
-                        for k, v in gsm_entry.characteristics.items():
-                            if k in allowed_raw:
-                                obs[k] = str(v) if v else ""
-                        if "source_name" in allowed_raw:
-                            obs["source_name"] = gsm_entry.source_name
-                        obs_desc = gsm_entry.description[:200] if gsm_entry.description else ""
-                        if "description" in allowed_raw:
-                            obs["description"] = obs_desc
-                        break
-
-                # Inject filename-derived metadata (Step 3, per-GSM)
-                _skip_fe = {"gsm_id", "role", "file_type", "format", "extension"}
-                for fe in plan._filename_extractions:
+                # Inject filename-derived metadata (Step 3, by base filename)
+                skip_fe = {"gsm_id", "role", "file_type", "format", "extension"}
+                file_basename = fk.rsplit("/", 1)[-1] if "/" in fk else fk
+                file_basename = file_basename.rsplit("\\", 1)[-1] if "\\" in file_basename else file_basename
+                for fe in (plan._filename_extractions or []):
                     if not isinstance(fe, dict):
                         continue
-                    fe_comps = fe.get("components", {})
-                    if fe_comps.get("gsm_id") == gsm_id:
-                        for k, v in fe_comps.items():
-                            if v and k not in _skip_fe and k not in obs.columns:
+                    fe_fname = fe.get("filename", "")
+                    if fe_fname == file_basename or Path(fe_fname).stem == Path(file_basename).stem:
+                        for k, v in fe.get("components", {}).items():
+                            if v and k not in skip_fe and k not in obs.columns:
                                 obs[k] = str(v)
                         break
 
@@ -375,6 +554,39 @@ class PlanExecutor:
 
                 per_batch[gsm_id] = adata
 
+            # Extract GSM metadata via extraction_code → save gsm_meta.json
+            gsm_meta_per_gsm: dict[str, dict[str, str]] = {}
+            if plan.extraction_code:
+                for gsm_entry in report.gsm_entries:
+                    gsm_meta = _run_extraction_function_impl(
+                        plan.extraction_code, gsm_entry, gsm_entry.gsm_id,
+                    )
+                    if gsm_meta:
+                        gsm_meta_per_gsm[gsm_entry.gsm_id] = gsm_meta
+            # Legacy: per-field extraction
+            elif plan.gsm_meta_extractions:
+                for gsm_entry in report.gsm_entries:
+                    row: dict[str, str] = {}
+                    for meta_name, meta_conf in plan.gsm_meta_extractions.items():
+                        code = meta_conf.get("code", "") if isinstance(meta_conf, dict) else ""
+                        if not code:
+                            continue
+                        try:
+                            val = _safe_eval_extraction(code, gsm_entry)
+                            if val is not None and val != "":
+                                row[meta_name] = str(val)
+                        except Exception:
+                            pass
+                    if row:
+                        gsm_meta_per_gsm[gsm_entry.gsm_id] = row
+            if gsm_meta_per_gsm:
+                gsm_meta_path = output_dir / "gsm_meta.json"
+                gsm_meta_path.write_text(
+                    json.dumps(gsm_meta_per_gsm, indent=2, ensure_ascii=False),
+                    encoding="utf-8",
+                )
+                logger.info("Saved gsm_meta to %s (%d GSMs)", gsm_meta_path, len(gsm_meta_per_gsm))
+
             state.per_batch_adatas = per_batch
             n_total_cells = sum(a.n_obs for a in per_batch.values())
             logger.info("Built %d per-batch AnnData objects (%d total cells)", len(per_batch), n_total_cells)
@@ -422,15 +634,19 @@ class PlanExecutor:
             self._recorder.record("unify_genes", "completed")
 
             # 5. Custom processing code (LLM-generated, dataset-specific)
-            #    Runs BEFORE field_mappings so processing_code sees original column names
+            #    Runs BEFORE field_mappings. Skip when code is strip_axis_metadata
             if plan.processing_code:
-                self._recorder.record("custom_code", "started")
-                try:
-                    per_batch = self._execute_processing_code_per_batch(per_batch, plan)
-                    self._recorder.record("custom_code", "completed")
-                except Exception as exc:
-                    logger.warning("Custom processing code failed: %s", exc)
-                    self._recorder.record("custom_code", "failed", error=str(exc))
+                skip_standalone = "def strip_axis_metadata" in plan.processing_code or "def inject_file_metadata" in plan.processing_code
+                if not skip_standalone:
+                    self._recorder.record("custom_code", "started")
+                    try:
+                        per_batch = self._execute_processing_code_per_batch(per_batch, plan)
+                        self._recorder.record("custom_code", "completed")
+                    except Exception as exc:
+                        logger.warning("Custom processing code failed: %s", exc)
+                        self._recorder.record("custom_code", "failed", error=str(exc))
+                else:
+                    logger.info("Skipping standalone processing_code (strip_axis_metadata handled by executor)")
 
             # 6. Apply field mappings — final standardization on processed adatas
             self._recorder.record("apply_field_mappings", "started", {
@@ -457,6 +673,15 @@ class PlanExecutor:
                 per_batch = _raw_per_batch
 
             state.per_batch_adatas = per_batch
+
+            # Inject batch metadata from gsm_meta.json
+            self._recorder.record("inject_metadata", "started")
+            try:
+                self._inject_batch_metadata(per_batch, plan, report, output_dir)
+                self._recorder.record("inject_metadata", "completed")
+            except Exception as exc:
+                logger.warning("Metadata injection failed: %s", exc)
+                self._recorder.record("inject_metadata", "failed", error=str(exc))
 
             # 8. Validate
             self._recorder.record("validate", "started")
@@ -704,6 +929,53 @@ class PlanExecutor:
 
         # .h5 / .h5ad / .mtx.gz / .csv / .rds / .loom: return as-is
         return actual_file
+
+    def _inject_batch_metadata(
+        self, per_batch: dict[str, Any], plan: ProcessingPlan,
+        report: Any, output_dir: Path,
+    ) -> None:
+        """Inject GSM-level metadata from gsm_meta.json into per_batch adata.obs."""
+        import json as _json
+
+        gsm_meta_path = output_dir / "gsm_meta.json"
+        gsm_meta_data: dict[str, dict[str, str]] = {}
+        if gsm_meta_path.exists():
+            try:
+                gsm_meta_data = _json.loads(gsm_meta_path.read_text(encoding="utf-8"))
+            except Exception:
+                pass
+
+        lit_meta_path = output_dir / "literature_meta.json"
+        lit_meta_data: dict[str, str] = {}
+        if lit_meta_path.exists():
+            try:
+                lit_meta_data = _json.loads(lit_meta_path.read_text(encoding="utf-8"))
+            except Exception:
+                pass
+
+        n_injected = 0
+        for batch_label, adata in per_batch.items():
+            # Find matching GSM by scanning plan.batches
+            gsm_id = ""
+            for b in (plan.batches or []):
+                if (b.batch_label or b.gsm_id) == batch_label or b.gsm_id == batch_label:
+                    gsm_id = b.gsm_id
+                    break
+
+            # Inject gsm_meta from JSON
+            meta = gsm_meta_data.get(gsm_id, {}) or gsm_meta_data.get(batch_label, {})
+            for field, value in meta.items():
+                if value and field not in adata.obs.columns:
+                    adata.obs[field] = str(value)
+                    n_injected += 1
+
+            # Inject literature meta
+            for field, value in lit_meta_data.items():
+                if value and field not in adata.obs.columns:
+                    adata.obs[field] = str(value)
+                    n_injected += 1
+
+        logger.info("Injected batch metadata (%d fields across %d batches)", n_injected, len(per_batch))
 
     def _merge_matrices(
         self,
@@ -1262,13 +1534,18 @@ class PlanExecutor:
         sandbox = {
             "sc": sc, "pd": pd, "np": np, "re": re,
             "adatas": adatas, "gsm_map": gsm_map,
+            "fk_to_batch": {},  # placeholder for LLM compatibility
             "__builtins__": {
                 "True": True, "False": False, "None": None,
                 "int": int, "float": float, "str": str, "bool": bool,
                 "list": list, "dict": dict, "set": set, "tuple": tuple,
                 "len": len, "range": range, "enumerate": enumerate,
                 "zip": zip, "print": print, "isinstance": isinstance,
+                "map": map, "filter": filter,
+                "next": next, "sorted": sorted,
                 "Exception": Exception, "ValueError": ValueError,
+                "KeyError": KeyError, "TypeError": TypeError,
+                "IndexError": IndexError, "OSError": OSError,
                 "__import__": __import__,
             },
         }
@@ -1278,7 +1555,7 @@ class PlanExecutor:
             lines = code.split("\n")
             code = "\n".join(lines[1:-1] if lines[-1].strip() == "```" else lines[1:])
 
-        # Make processing_code's process_metadata available to assembly_code
+        # Make processing_code available to assembly_code
         if plan.processing_code:
             try:
                 exec(plan.processing_code.strip(), sandbox)

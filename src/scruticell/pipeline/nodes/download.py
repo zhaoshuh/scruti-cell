@@ -1,8 +1,13 @@
-"""Download node: fetches GEO SOFT files and supplementary data via HTTPS."""
+"""Download node: fetches GEO SOFT files and supplementary data via HTTPS.
+
+Uses Aspera ascp (fasp protocol) for high-speed downloads when available,
+with HTTP Range requests (206 Partial Content) as fallback.
+"""
 
 from __future__ import annotations
 
 import logging
+import os
 import random
 import subprocess
 import time
@@ -11,12 +16,28 @@ from typing import Any
 
 import GEOparse
 
+from scruticell.config import (
+    ASPERA_BINARY,
+    ASPERA_ENABLED,
+    ASPERA_HOST,
+    ASPERA_KEY_PATH,
+    ASPERA_SPEED_LIMIT,
+    ASPERA_TIMEOUT,
+    ASPERA_USER,
+    BROWSER_HEADERS,
+    DOWNLOAD_MODE,
+    RANGE_CHUNK_SIZE,
+    RANGE_DOWNLOAD_ENABLED,
+    RANGE_MAX_CONNECTIONS,
+)
 from scruticell.pipeline.state import PipelineState
+from scruticell.utils.aria2c import download_file_aria2c
+from scruticell.utils.download import download_file_range
 
 logger = logging.getLogger(__name__)
 
 _MAX_RETRIES = 5
-_ARIA2_ARGS = ["--max-connection-per-server=1", "--split=2", "--min-split-size=4M",
+_ARIA2_ARGS = ["--max-connection-per-server=1", "--split=1",
                "--min-tls-version=TLSv1.2",
                "--console-log-level=error", "--summary-interval=0",
                "--check-certificate=false"]
@@ -31,6 +52,19 @@ def _backoff_sleep(attempt: int) -> None:
     base = min(2 ** attempt, 120)
     jitter = random.uniform(0, base * 0.3)
     time.sleep(base + jitter)
+
+
+def _probe_suppl_size(url: str) -> int:
+    """Quick HEAD probe to get file size. Returns bytes or 0 on failure."""
+    try:
+        import httpx
+        with httpx.Client(timeout=10, follow_redirects=True,
+                          headers=dict(BROWSER_HEADERS)) as client:
+            resp = client.head(url)
+            resp.raise_for_status()
+            return int(resp.headers.get("Content-Length", 0))
+    except Exception:
+        return 0
 
 
 # ──────────────────────────────────────────────
@@ -63,24 +97,84 @@ def _aria2_download(url: str, dest_dir: Path, filename: str) -> bool:
         if attempt < _MAX_RETRIES:
             _backoff_sleep(attempt)
 
-    # Fallback: single-connection HTTPS via httpx
-    logger.info("aria2c all failed, falling back to httpx for %s", filename)
+    # Fallback: range-based HTTPS download (simulates browser 206 Partial Content)
+    logger.info("aria2c all failed, falling back to range-download for %s", filename)
     try:
-        import httpx
-        with httpx.Client(timeout=300, verify=False, follow_redirects=True) as client:
-            with client.stream("GET", url) as response:
-                response.raise_for_status()
-                with open(dest, "wb") as f:
-                    for chunk in response.iter_bytes(chunk_size=1048576):
-                        f.write(chunk)
+        download_file_range(
+            url=url,
+            output_path=dest,
+            chunk_size=RANGE_CHUNK_SIZE,
+            max_connections=RANGE_MAX_CONNECTIONS,
+        )
         if dest.exists() and dest.stat().st_size > 0:
-            logger.info("Downloaded via httpx: %s (%s bytes)", filename, dest.stat().st_size)
+            logger.info("Range-downloaded: %s (%s bytes)", filename, dest.stat().st_size)
             return True
     except Exception as e:
-        logger.error("httpx fallback also failed for %s: %s", filename, e)
+        logger.error("Range-download fallback also failed for %s: %s", filename, e)
 
-    logger.error("All %d aria2c attempts + httpx fallback failed for %s", _MAX_RETRIES, filename)
+    logger.error("All %d aria2c attempts + range fallback failed for %s", _MAX_RETRIES, filename)
     return False
+
+
+def _aspera_download(url: str, dest_dir: Path, filename: str) -> bool:
+    """Download via Aspera ascp (fasp protocol, high-speed).
+
+    NCBI supports Aspera downloads at ~100-300 Mbps vs HTTP at ~2-10 Mbps.
+    Falls back silently if ascp is not installed or key file is missing.
+
+    Returns True on success, False on failure.
+    """
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    dest = dest_dir / filename
+    if dest.exists():
+        dest.unlink()
+
+    # Check if ascp is available
+    ascp = ASPERA_BINARY
+    try:
+        subprocess.run([ascp, "--version"], capture_output=True, timeout=5)
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        logger.debug("Aspera ascp not found, skip")
+        return False
+
+    # Check if key file exists
+    key_path = Path(os.path.expandvars(ASPERA_KEY_PATH))
+    if not key_path.exists():
+        logger.debug("Aspera key not found at %s, skip", key_path)
+        return False
+
+    # Convert NCBI HTTPS URL to Aspera remote path
+    # https://ftp.ncbi.nlm.nih.gov/geo/series/GSE334nnn/GSE334035/suppl/...
+    # → /geo/series/GSE334nnn/GSE334035/suppl/...
+    remote_path = url.replace("https://ftp.ncbi.nlm.nih.gov", "")
+
+    cmd = [
+        ascp,
+        "-i", str(key_path),
+        "-k1",                   # resume partially transferred files
+        "-Tr",                   # no encryption (faster, data is public)
+        "-l", ASPERA_SPEED_LIMIT,  # bandwidth cap
+        f"{ASPERA_USER}@{ASPERA_HOST}:{remote_path}",
+        str(dest_dir),
+    ]
+
+    try:
+        logger.info("Downloading via Aspera: %s -> %s", filename, dest_dir)
+        result = subprocess.run(cmd, timeout=ASPERA_TIMEOUT, capture_output=True, text=True)
+        if result.returncode != 0:
+            logger.warning("Aspera download failed (exit %d): %s", result.returncode,
+                           result.stderr[:200] if result.stderr else "")
+            return False
+        if dest.exists() and dest.stat().st_size > 0:
+            logger.info("Aspera downloaded: %s (%s bytes)", filename, dest.stat().st_size)
+            return True
+        return False
+    except subprocess.TimeoutExpired:
+        logger.warning("Aspera download timed out for %s", filename)
+        return False
+    except Exception as e:
+        logger.warning("Aspera download error for %s: %s", filename, e)
+        return False
 
 
 def _needs_download(filename: str) -> bool:
@@ -95,6 +189,83 @@ def _needs_download(filename: str) -> bool:
         if any(indicator in fname_lower for indicator in indicators):
             return True
     return False
+
+
+def _should_skip_gz_decompress(gz_file: Path) -> bool:
+    """Check if a .gz file should NOT be decompressed.
+
+    Skips decompression when:
+    - It's a 10X companion file (barcodes/features/genes + matrix present)
+    - The 10X matrix itself when companion files exist
+    - Raw sequencing/alignment files (.fastq, .bam, .sam)
+    - The decompressed sibling already exists
+    """
+    name = gz_file.name.lower()
+    parent = gz_file.parent
+
+    # Archive handled by tar.extractall
+    if name.endswith((".tar.gz", ".tgz")):
+        return True
+
+    # Already decompressed
+    if (parent / gz_file.stem).exists():
+        return True
+
+    # Raw data — never decompress
+    if name.endswith((".fastq.gz", ".fq.gz", ".bam.gz", ".sam.gz")):
+        return True
+
+    # 10X companion files when matrix is present nearby
+    if name.endswith(".tsv.gz") and any(
+        f.name.lower().endswith(".mtx.gz") and "matrix" in f.name.lower()
+        for f in parent.iterdir() if f.is_file()
+    ):
+        return True
+
+    # 10X matrix when companion files exist nearby
+    if "matrix" in name and name.endswith(".mtx.gz"):
+        has_companion = any(
+            tag in f.name.lower() and f.name.lower().endswith(".tsv.gz")
+            for tag in ("barcodes", "features", "genes")
+            for f in parent.iterdir() if f.is_file()
+        )
+        if has_companion:
+            return True
+
+    return False
+
+
+# ──────────────────────────────────────────────
+# Range-based download (primary method, simulates browser 206 Partial Content)
+# ──────────────────────────────────────────────
+
+def _range_download(url: str, dest_dir: Path, filename: str) -> bool:
+    """Download supplementary file, preferring Aspera ascp over HTTP.
+
+    Flow: Aspera (fasp) → HTTP Range (206) → aria2c
+    """
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    dest = dest_dir / filename
+
+    # 1. Try Aspera first (high-speed fasp protocol)
+    if ASPERA_ENABLED:
+        if _aspera_download(url, dest_dir, filename):
+            return True
+
+    # 2. Fall back to HTTP Range requests
+    try:
+        download_file_range(
+            url=url,
+            output_path=dest,
+            chunk_size=RANGE_CHUNK_SIZE,
+            max_connections=RANGE_MAX_CONNECTIONS,
+        )
+        if dest.exists() and dest.stat().st_size > 0:
+            logger.info("Range-downloaded: %s (%s bytes)", filename, dest.stat().st_size)
+            return True
+    except Exception as e:
+        logger.warning("Range-download failed for %s: %s, falling back to aria2c", filename, e)
+        return _aria2_download(url, dest_dir, filename)
 
 
 # ──────────────────────────────────────────────
@@ -170,8 +341,12 @@ def _extract_supplementary_refs(gse_id: str) -> list[dict[str, str]]:
     Used by the inspect command when --no-download is specified.
     Returns list of {filename, gsm} dicts.
     """
-    dest = str(Path.cwd() / "output" / gse_id / "download")
-    geo = GEOparse.get_GEO(geo=gse_id, destdir=dest, silent=True)
+    dest = Path.cwd() / "output" / gse_id / "download"
+    soft_gz_path = dest / f"{gse_id}_family.soft.gz"
+    if not soft_gz_path.exists():
+        logger.warning("SOFT file not cached for %s, cannot extract supplementary refs", gse_id)
+        return []
+    geo = GEOparse.get_GEO(filepath=str(soft_gz_path), silent=True)
     suppl_urls = _collect_supplementary_urls(geo)
     return [{"filename": filename, "gsm": entity_id.replace(f"__GSE__{gse_id}", gse_id)}
             for entity_id, _url, filename in suppl_urls]
@@ -193,10 +368,27 @@ def download_node(state: PipelineState) -> dict[str, Any]:
     supplementary_files: list[Path] = []
     file_gsm_map: dict[str, str] = {}
 
-    # ── SOFT file + supplementary URLs via GEOparse ──
+    # ── SOFT file: download with Aspera (preferred) or HTTP Range, then parse locally ──
     geo = None
+    soft_gz_path = download_dir / f"{gse_id}_family.soft.gz"
     try:
-        geo = GEOparse.get_GEO(geo=gse_id, destdir=str(download_dir), silent=True)
+        from scruticell.parsing.soft import _build_soft_url
+        soft_url = _build_soft_url(gse_id)
+        soft_filename = f"{gse_id}_family.soft.gz"
+
+        # Try Aspera first for SOFT file, then selected download mode
+        soft_ok = False
+        if ASPERA_ENABLED:
+            soft_ok = _aspera_download(soft_url, download_dir, soft_filename)
+        if not soft_ok:
+            if DOWNLOAD_MODE == "aria2c":
+                soft_ok = download_file_aria2c(soft_url, soft_gz_path)
+            else:
+                download_file_range(url=soft_url, output_path=soft_gz_path)
+                soft_ok = True
+
+        if soft_ok:
+            geo = GEOparse.get_GEO(filepath=str(soft_gz_path), silent=True)
     except OSError as e:
         logger.error("Network error downloading %s: %s", gse_id, e)
         return {"download_dir": download_dir, "soft_file": None,
@@ -232,8 +424,31 @@ def download_node(state: PipelineState) -> dict[str, Any]:
         except Exception as e:
             logger.warning("Failed to extract supplementary URLs: %s", e)
 
+    # ── Check total supplementary size, skip if > 2 GB ──
+    _max_suppl_size = 2 * 1024 * 1024 * 1024  # 2 GB
+    suppl_total_size = 0
+    for _entity_id, https_url, filename in suppl_urls:
+        size = _probe_suppl_size(https_url)
+        if size > 0:
+            suppl_total_size += size
+            logger.debug("Probed %s: %d bytes", filename, size)
+    if suppl_total_size > _max_suppl_size:
+        import click as _click
+        gb = suppl_total_size / (1024 * 1024 * 1024)
+        msg = (
+            f"GSE {gse_id}: supplementary files too large "
+            f"({gb:.1f} GB > 2 GB). Download skipped."
+        )
+        logger.error(msg)
+        raise _click.Abort(msg)
+
     for entity_id, https_url, filename in suppl_urls:
-        ok = _aria2_download(https_url, download_dir, filename)
+        if DOWNLOAD_MODE == "aria2c":
+            ok = download_file_aria2c(https_url, download_dir / filename)
+        elif RANGE_DOWNLOAD_ENABLED:
+            ok = _range_download(https_url, download_dir, filename)
+        else:
+            ok = _aria2_download(https_url, download_dir, filename)
         if ok:
             supplementary_files.append(download_dir / filename)
             if entity_id.startswith("__GSE__"):
@@ -254,32 +469,45 @@ def download_node(state: PipelineState) -> dict[str, Any]:
         extracted_dir = sf.parent / f"{sf.stem}_extracted"
         try:
             if sf_str.endswith((".tar.gz", ".tgz", ".tar")) and not extracted_dir.exists():
-                logger.info("Extracting archive: %s", sf.name)
+                size_mb = sf.stat().st_size / (1024 * 1024)
+                logger.info("Extracting archive (%d MB): %s", size_mb, sf.name)
                 extracted_dir.mkdir(parents=True, exist_ok=True)
                 with _tarfile.open(sf, "r:*") as tf:
                     tf.extractall(path=extracted_dir)
+                file_count = 0
                 for p in extracted_dir.rglob("*"):
                     if p.is_file():
                         supplementary_files.append(p)
+                        file_count += 1
+                logger.info("Extracted %d files from %s", file_count, sf.name)
             elif sf_str.endswith(".zip") and not extracted_dir.exists():
-                logger.info("Extracting archive: %s", sf.name)
+                size_mb = sf.stat().st_size / (1024 * 1024)
+                logger.info("Extracting archive (%d MB): %s", size_mb, sf.name)
                 extracted_dir.mkdir(parents=True, exist_ok=True)
                 with _zipfile.ZipFile(sf, "r") as zf:
                     zf.extractall(path=extracted_dir)
+                file_count = 0
                 for p in extracted_dir.rglob("*"):
                     if p.is_file():
                         supplementary_files.append(p)
+                        file_count += 1
+                logger.info("Extracted %d files from %s", file_count, sf.name)
             elif sf_str.endswith(".gz") and not sf_str.endswith((".tar.gz", ".tgz")):
-                # Single-file gzip (e.g., .h5ad.gz, .csv.gz) — decompress to sibling without .gz
+                if _should_skip_gz_decompress(sf):
+                    logger.debug("Skipping decompress (companion/existing): %s", sf.name)
+                    continue
                 decompressed = sf.parent / sf.stem
                 if not decompressed.exists():
-                    logger.info("Decompressing: %s", sf.name)
+                    size_mb = sf.stat().st_size / (1024 * 1024)
+                    logger.info("Decompressing (%d MB): %s", size_mb, sf.name)
                     with _gzip.open(sf, "rb") as gz_in:
                         with open(decompressed, "wb") as raw_out:
                             _shutil.copyfileobj(gz_in, raw_out)
                     supplementary_files.append(decompressed)
         except Exception as exc:
             logger.warning("Extract failed %s: %s", sf.name, exc)
+
+    logger.info("Total supplementary files after extraction: %d", len(supplementary_files))
 
     return {
         "download_dir": download_dir,

@@ -230,6 +230,8 @@ def _check_batch_validity(
 
     actual_col = batch_col if batch_col in obs.columns else "batch"
     if actual_col not in obs.columns:
+        actual_col = "batch_label" if "batch_label" in obs.columns else actual_col
+    if actual_col not in obs.columns:
         errors.append("No batch column found in obs")
         return 0.0
 

@@ -7,6 +7,7 @@ falls back to SQLite-based local storage.
 
 from __future__ import annotations
 
+import json
 import logging
 from pathlib import Path
 from typing import Any, Optional
@@ -205,16 +206,6 @@ class KnowledgeGraph:
             "gse_id": gse_id,
         })
 
-    def find_best_strategies(
-        self, organism: str, assay_type: str
-    ) -> list[dict]:
-        """Find highest-confidence parse strategies for similar datasets."""
-        from scruticell.knowledge.schema import FIND_BEST_STRATEGY
-        return self._run(FIND_BEST_STRATEGY, {
-            "organism": organism,
-            "assay_type": assay_type,
-        })
-
     # === Failure Cases ===
 
     def store_failure_case(
@@ -284,7 +275,7 @@ class KnowledgeGraph:
             "confidence": confidence,
         })
 
-    # === Strategies (new unified strategy storage) ===
+    # === Strategies (graph-decomposed storage) ===
 
     def store_strategy(
         self,
@@ -294,17 +285,140 @@ class KnowledgeGraph:
         confidence: float = 1.0,
         gse_id: str = "",
     ) -> None:
-        """Store or update a processing strategy in Neo4j."""
-        from scruticell.knowledge.schema import CREATE_PARSE_STRATEGY
+        """Store a processing strategy by decomposing it into graph nodes.
+
+        The plan JSON is parsed and decomposed into linked nodes:
+          ParseStrategy → BatchStrategy → MatrixStrategy
+                       → ProcessingCode
+                       → AssemblyCode
+                       → FieldMappingStrategy
+
+        Falls back to storing as a flat JSON blob if parsing fails.
+        """
+        from scruticell.knowledge.schema import (
+            CREATE_ASSEMBLY_CODE,
+            CREATE_BATCH_STRATEGY,
+            CREATE_FIELD_MAPPING_STRATEGY,
+            CREATE_MATRIX_STRATEGY,
+            CREATE_PARSE_STRATEGY,
+            CREATE_PROCESSING_CODE,
+            DELETE_STRATEGY_CASCADE,
+            LINK_BATCH_TO_MATRIX,
+        )
+
+        # Parse plan JSON
+        try:
+            plan = json.loads(plan_json) if isinstance(plan_json, str) else plan_json
+        except (json.JSONDecodeError, TypeError):
+            plan = {"plan": plan_json}
+
+        if not isinstance(plan, dict):
+            plan = {"plan": str(plan)}
+
+        # ── Delete any existing strategy with this ID (cascade) ──
+        try:
+            self._run(DELETE_STRATEGY_CASCADE, {"strategy_id": strategy_id})
+        except Exception:
+            pass
+
+        # ── Create ParseStrategy root node ──
         self._run(CREATE_PARSE_STRATEGY, {
             "strategy_id": strategy_id,
             "gse_pattern": strategy_id,
-            "strategy_json": plan_json if isinstance(plan_json, dict) else {"plan": plan_json},
+            "gene_id_system": plan.get("gene_id_system", "symbol"),
+            "normalize_genes": plan.get("normalize_genes", True),
+            "drop_duplicate_genes": plan.get("drop_duplicate_genes", True),
+            "normalization": plan.get("normalization", "raw_counts"),
+            "is_raw_counts": plan.get("is_raw_counts", True),
+            "batch_separation_strategy": plan.get("batch_separation_strategy", ""),
+            "strategy_notes": plan.get("strategy_notes", ""),
+            "confidence": confidence,
             "success_count": 1 if success else 0,
             "fail_count": 0 if success else 1,
             "avg_confidence": confidence,
             "gse_id": gse_id,
         })
+
+        # ── Create BatchStrategy nodes ──
+        matrix_id_to_batch: dict[str, str] = {}
+        for b in plan.get("batches", []) or []:
+            batch_id = f"{strategy_id}_{b.get('gsm_id', '')}"
+            self._run(CREATE_BATCH_STRATEGY, {
+                "batch_id": batch_id,
+                "gsm_id": b.get("gsm_id", ""),
+                "batch_label": b.get("batch_label", ""),
+                "cell_count": b.get("cell_count", 0),
+                "barcode_prefix": b.get("barcode_prefix", ""),
+                "note": b.get("note", ""),
+                "reasoning": b.get("reasoning", ""),
+                "defining_fields": b.get("defining_fields", []),
+                "strategy_id": strategy_id,
+            })
+            for fk in b.get("file_keys", []) or []:
+                matrix_id_to_batch[fk] = batch_id
+
+        # ── Create MatrixStrategy nodes (ps-level matrices) ──
+        for i, m in enumerate(plan.get("matrices", []) or []):
+            matrix_id = f"{strategy_id}_m{i}"
+            self._run(CREATE_MATRIX_STRATEGY, {
+                "matrix_id": matrix_id,
+                "file_key": m.get("file_key", ""),
+                "format": m.get("format", ""),
+                "orientation": m.get("orientation", "auto"),
+                "transpose": m.get("transpose", False),
+                "note": m.get("note", ""),
+                "strategy_id": strategy_id,
+            })
+
+        # ── Link batches to their matrices ──
+        for fk, batch_id in matrix_id_to_batch.items():
+            for i, m in enumerate(plan.get("matrices", []) or []):
+                if m.get("file_key") == fk:
+                    matrix_id = f"{strategy_id}_m{i}"
+                    try:
+                        self._run(LINK_BATCH_TO_MATRIX, {
+                            "batch_id": batch_id,
+                            "matrix_id": matrix_id,
+                        })
+                    except Exception:
+                        pass
+
+        # ── Create ProcessingCode node ──
+        proc_code = plan.get("processing_code", "")
+        if proc_code:
+            code_id = f"{strategy_id}_proc"
+            self._run(CREATE_PROCESSING_CODE, {
+                "code_id": code_id,
+                "code": proc_code,
+                "strategy_id": strategy_id,
+            })
+
+        # ── Create AssemblyCode node ──
+        asm_code = plan.get("assembly_code", "")
+        if asm_code:
+            code_id = f"{strategy_id}_asm"
+            self._run(CREATE_ASSEMBLY_CODE, {
+                "code_id": code_id,
+                "code": asm_code,
+                "strategy_id": strategy_id,
+            })
+
+        # ── Create FieldMappingStrategy nodes ──
+        for i, fm in enumerate(plan.get("field_mappings", []) or []):
+            mapping_id = f"{strategy_id}_fm{i}"
+            self._run(CREATE_FIELD_MAPPING_STRATEGY, {
+                "mapping_id": mapping_id,
+                "raw_field": fm.get("raw_field", ""),
+                "canonical": fm.get("canonical", ""),
+                "source": fm.get("source", ""),
+                "note": fm.get("note", ""),
+                "strategy_id": strategy_id,
+            })
+
+        logger.info("Stored strategy %s as graph with %d batches, %d matrices",
+                     strategy_id,
+                     len(plan.get("batches", []) or []),
+                     len(plan.get("matrices", []) or []))
 
     def update_strategy_stats(
         self, strategy_id: str, success: bool = True
@@ -320,8 +434,128 @@ class KnowledgeGraph:
     def find_similar_strategies(
         self, signature_hash: str, limit: int = 5
     ) -> list[dict]:
-        """Find strategies matching a fingerprint signature."""
-        return self.find_best_strategies("", signature_hash)
+        """Find strategies matching a fingerprint signature hash.
+
+        Reconstructs the full plan JSON from graph nodes for each matched strategy.
+        """
+        from scruticell.knowledge.schema import (
+            FIND_STRATEGIES_BY_SIGNATURE,
+            RECONSTRUCT_STRATEGY_PLAN,
+        )
+
+        results = self._run(FIND_STRATEGIES_BY_SIGNATURE, {
+            "strategy_id": signature_hash,
+            "prefix": signature_hash[:8],
+            "limit": limit,
+        })
+
+        output: list[dict] = []
+        seen: set[str] = set()
+
+        for row in results:
+            sid = row.get("strategy_id", "")
+            if sid in seen:
+                continue
+            seen.add(sid)
+
+            # Reconstruct full plan from graph
+            graph_data = self._run(RECONSTRUCT_STRATEGY_PLAN, {
+                "strategy_id": sid,
+            })
+            if graph_data:
+                full_plan = _reconstruct_plan_from_graph(graph_data[0])
+            else:
+                full_plan = {}
+
+            output.append({
+                "strategy_id": sid,
+                "plan_json": json.dumps(full_plan, ensure_ascii=False),
+                "success_count": row.get("success_count", 0),
+                "fail_count": row.get("fail_count", 0),
+                "avg_confidence": row.get("avg_confidence", 0.0),
+                "gse_id": "",
+            })
+
+        return output
+
+    def find_best_strategies(
+        self, organism: str, assay_type: str
+    ) -> list[dict]:
+        """Find highest-confidence parse strategies for similar datasets.
+
+        Reconstructs full plan JSON from graph traversal for each match.
+        """
+        from scruticell.knowledge.schema import (
+            FIND_BEST_STRATEGY,
+            RECONSTRUCT_STRATEGY_PLAN,
+        )
+
+        results = self._run(FIND_BEST_STRATEGY, {
+            "organism": organism,
+            "assay_type": assay_type,
+        })
+
+        output: list[dict] = []
+        seen: set[str] = set()
+
+        for row in results:
+            sid = row.get("strategy_id", "")
+            if sid in seen:
+                continue
+            seen.add(sid)
+
+            graph_data = self._run(RECONSTRUCT_STRATEGY_PLAN, {
+                "strategy_id": sid,
+            })
+            if graph_data:
+                full_plan = _reconstruct_plan_from_graph(graph_data[0])
+            else:
+                full_plan = {}
+
+            output.append({
+                "strategy_id": sid,
+                "strategy_json": json.dumps(full_plan, ensure_ascii=False),
+                "success_count": row.get("success_count", 0),
+                "fail_count": row.get("fail_count", 0),
+                "avg_confidence": row.get("avg_confidence", 0.0),
+            })
+
+        return output
+
+    def clear_all(self) -> dict[str, int]:
+        """Delete all strategy/run/plan data. Returns counts per table."""
+        if not self._driver:
+            self.connect()
+        tables = [
+            "gse_runs", "inspect_reports", "processing_plans",
+            "field_mappings", "execution_steps", "batch_outputs",
+            "strategies", "failure_cases",
+        ]
+        cypher_labels = {
+            "gse_runs": "GseRun",
+            "inspect_reports": "InspectReport",
+            "processing_plans": "ProcessingPlan",
+            "field_mappings": "FieldMapping",
+            "execution_steps": "ExecutionStep",
+            "batch_outputs": "BatchOutput",
+            "strategies": "ParseStrategy",
+            "failure_cases": "FailureCase",
+        }
+        counts: dict[str, int] = {}
+        with self._driver.session() as session:
+            for table, label in cypher_labels.items():
+                count_result = session.run(
+                    f"MATCH (n:{label}) RETURN count(n) AS c"
+                )
+                record = count_result.single()
+                counts[table] = record["c"] if record else 0
+                if counts[table] > 0:
+                    session.run(f"MATCH (n:{label}) DETACH DELETE n")
+        return counts
+
+    def clear_failures(self) -> int:
+        """Legacy: clear only failure_cases."""
+        return self.clear_all()["failure_cases"]
 
     def __enter__(self):
         self.connect()
@@ -815,8 +1049,11 @@ class LocalKnowledgeBase:
         ]
         counts: dict[str, int] = {}
         for table in tables:
-            cursor = self._conn.execute(f"DELETE FROM {table}")
-            counts[table] = cursor.rowcount
+            try:
+                cursor = self._conn.execute(f"DELETE FROM {table}")
+                counts[table] = cursor.rowcount
+            except Exception:
+                counts[table] = 0
         self._conn.commit()
         return counts
 
@@ -829,3 +1066,105 @@ class LocalKnowledgeBase:
 
     def __exit__(self, *args):
         self.close()
+
+
+# ────────────────────────────────────────────────────────────────────
+# Helper: reconstruct full plan JSON from graph traversal result
+# ────────────────────────────────────────────────────────────────────
+
+def _reconstruct_plan_from_graph(graph_row: dict[str, Any]) -> dict[str, Any]:
+    """Rebuild a ProcessingPlan-compatible JSON dict from Neo4j graph nodes.
+
+    Args:
+        graph_row: Result from RECONSTRUCT_STRATEGY_PLAN query.
+
+    Returns:
+        Dict suitable for ProcessingPlan.from_llm_response().
+    """
+    ps = graph_row.get("ps", {})
+    plan: dict[str, Any] = {
+        "gene_id_system": ps.get("gene_id_system", "symbol"),
+        "normalize_genes": ps.get("normalize_genes", True),
+        "drop_duplicate_genes": ps.get("drop_duplicate_genes", True),
+        "normalization": ps.get("normalization", "raw_counts"),
+        "is_raw_counts": ps.get("is_raw_counts", True),
+        "batch_separation_strategy": ps.get("batch_separation_strategy", ""),
+        "strategy_notes": ps.get("strategy_notes", ""),
+        "confidence": ps.get("confidence", 0.0),
+        "matrices": [],
+        "batches": [],
+        "field_mappings": [],
+        "processing_code": "",
+        "assembly_code": "",
+    }
+
+    # Matrices from ParseStrategy-level USES_MATRIX
+    matrices = graph_row.get("matrices", []) or []
+    batch_matrices = graph_row.get("batch_matrices", []) or []
+
+    # Build batch -> file_keys mapping from BatchStrategy -> MatrixStrategy links
+    all_matrix_nodes = set()
+    for bm in (batch_matrices or []):
+        if bm:
+            all_matrix_nodes.add(bm.get("matrix_id", ""))
+
+    # ParseStrategy-level matrices
+    for m in (matrices or []):
+        if m is None:
+            continue
+        all_matrix_nodes.add(m.get("matrix_id", ""))
+        plan["matrices"].append({
+            "file_key": m.get("file_key", ""),
+            "format": m.get("format", ""),
+            "orientation": m.get("orientation", "auto"),
+            "transpose": m.get("transpose", False),
+            "note": m.get("note", ""),
+        })
+
+    # Batches
+    batches = graph_row.get("batches", []) or []
+    for b in (batches or []):
+        if b is None:
+            continue
+        batch_entry = {
+            "gsm_id": b.get("gsm_id", ""),
+            "batch_label": b.get("batch_label", ""),
+            "cell_count": b.get("cell_count", 0),
+            "barcode_prefix": b.get("barcode_prefix", ""),
+            "note": b.get("note", ""),
+            "reasoning": b.get("reasoning", ""),
+            "defining_fields": b.get("defining_fields", []),
+            "file_keys": [],
+        }
+        plan["batches"].append(batch_entry)
+
+    # TODO: batch-file_keys linking requires a separate query;
+    # for now file_keys come from matrices list which are shared
+
+    # Processing code
+    proc_codes = graph_row.get("processing_codes", []) or []
+    for pc in (proc_codes or []):
+        if pc and pc.get("code"):
+            plan["processing_code"] = pc.get("code", "")
+            break
+
+    # Assembly code
+    asm_codes = graph_row.get("assembly_codes", []) or []
+    for ac in (asm_codes or []):
+        if ac and ac.get("code"):
+            plan["assembly_code"] = ac.get("code", "")
+            break
+
+    # Field mappings
+    mappings = graph_row.get("field_mappings", []) or []
+    for fm in (mappings or []):
+        if fm is None:
+            continue
+        plan["field_mappings"].append({
+            "raw_field": fm.get("raw_field", ""),
+            "canonical": fm.get("canonical", ""),
+            "source": fm.get("source", ""),
+            "note": fm.get("note", ""),
+        })
+
+    return plan

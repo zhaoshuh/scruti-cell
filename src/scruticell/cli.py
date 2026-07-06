@@ -25,6 +25,8 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
     datefmt="%H:%M:%S",
 )
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logging.getLogger("httpcore").setLevel(logging.WARNING)
 logger = logging.getLogger("scruticell")
 
 
@@ -93,7 +95,7 @@ def main() -> None:
 @click.option(
     "--llm-model",
     default=None,
-    help="LLM model to use (default: deepseek-chat).",
+    help="LLM model to use (default: deepseek-v4-pro).",
 )
 @click.option(
     "--llm-api-key",
@@ -433,6 +435,7 @@ def inspect(
         gsm_entries=state.parsed_characteristics,
         gse_metadata=state.raw_metadata,
         file_gsm_map=getattr(state, "file_gsm_map", {}),
+        raw_gsm_entries=getattr(state, "raw_gsm_entries", {}),
     )
 
     json_str = report.to_json()
@@ -557,6 +560,7 @@ def plan(
                 download_dir=state.download_dir or (Path.cwd() / "output" / gse_id / "download"),
                 gsm_entries=state.parsed_characteristics,
                 gse_metadata=state.raw_metadata,
+                raw_gsm_entries=getattr(state, "raw_gsm_entries", {}),
             )
 
     click.echo(f"\n{'='*60}")
@@ -959,6 +963,10 @@ def execute(
     if not keep_data:
         click.echo(f"  Preserved: inspect.json, plan.json, execute.json, metadata.md")
 
+    from scruticell.utils.tokens import TokenTracker
+    click.echo(TokenTracker().report())
+    TokenTracker().to_csv(str(output_dir / "token_usage.csv"))
+
 
 @main.command()
 @click.argument("gse_id")
@@ -1033,6 +1041,18 @@ def run(
     output_dir = output or (Path.cwd() / "output" / gse_id)
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    # Save full log to output/{gse_id}/run.log
+    run_log_path = output_dir / "run.log"
+    file_handler = logging.FileHandler(str(run_log_path), encoding="utf-8")
+    file_handler.setLevel(logging.INFO)
+    file_handler.setFormatter(logging.Formatter(
+        "%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+        datefmt="%H:%M:%S",
+    ))
+    root_logger = logging.getLogger()
+    root_logger.addHandler(file_handler)
+    logger.info("Run log started for %s -> %s", gse_id, run_log_path)
+
     from scruticell.config import DATA_DIR
     from scruticell.pipeline.state import PipelineState
     from scruticell.pipeline.nodes.download import download_node
@@ -1050,23 +1070,45 @@ def run(
     click.echo("\n  [1/3] INSPECT — downloading + inspecting...")
     state = PipelineState(gse_id=gse_id, output_dir=output_dir)
     if not no_download:
-        click.echo("    Downloading...", nl=False)
-        result = download_node(state)
-        for k, v in result.items():
-            setattr(state, k, v)
-        if state.download_errors:
-            for err in state.download_errors:
-                click.echo(f"\n    [WARN] {err}")
-        click.echo(" OK")
+        download_dir = Path.cwd() / "output" / gse_id / "download"
+        if not download_dir.exists():
+            download_dir = output_dir / "download"
 
-        click.echo("    Parsing SOFT...", nl=False)
-        try:
-            result = parse_soft_node(state)
+        if download_dir.exists() and any(download_dir.iterdir()):
+            click.echo("    Downloading... SKIPPED (already cached)")
+            state.download_dir = download_dir
+            _EXTS = {".h5ad", ".h5", ".mtx", ".mtx.gz", ".csv", ".csv.gz",
+                     ".tsv", ".tsv.gz", ".rds", ".rdata", ".loom", ".txt", ".txt.gz",
+                     ".tar.gz", ".tar", ".tgz", ".gz", ".zip"}
+            state.supplementary_files = [
+                p for p in download_dir.iterdir()
+                if p.suffix.lower() in _EXTS
+                or any(p.name.lower().endswith(ext) for ext in [".soft.gz", ".soft"])
+            ]
+            for sf in state.supplementary_files:
+                if ".soft" in sf.name.lower():
+                    state.soft_file = sf
+                    break
+            state.download_errors = []
+        else:
+            click.echo("    Downloading...", nl=False)
+            result = download_node(state)
             for k, v in result.items():
                 setattr(state, k, v)
+            if state.download_errors:
+                for err in state.download_errors:
+                    click.echo(f"\n    [WARN] {err}")
             click.echo(" OK")
-        except Exception as exc:
-            click.echo(f" WARNING: {exc}")
+
+        if state.soft_file or state.download_dir:
+            click.echo("    Parsing SOFT...", nl=False)
+            try:
+                result = parse_soft_node(state)
+                for k, v in result.items():
+                    setattr(state, k, v)
+                click.echo(" OK")
+            except Exception as exc:
+                click.echo(f" WARNING: {exc}")
     else:
         state.download_dir = Path.cwd() / "output" / gse_id / "download"
         if not state.download_dir.exists():
@@ -1100,8 +1142,21 @@ def run(
         gsm_entries=state.parsed_characteristics,
         gse_metadata=state.raw_metadata,
         file_gsm_map=getattr(state, "file_gsm_map", {}),
+        raw_gsm_entries=getattr(state, "raw_gsm_entries", {}),
     )
     click.echo(" OK")
+
+    # Generate reader code + validate + update accurate previews
+    click.echo("    Generating reader code...", nl=False)
+    try:
+        reporter.generate_and_validate_readers(
+            gse_report, output_dir,
+            download_dir=state.download_dir or (
+                Path.cwd() / "output" / gse_id / "download"),
+        )
+        click.echo(" OK")
+    except Exception as exc:
+        click.echo(f" WARNING: {exc}")
 
     # Save inspect.json
     inspect_path = output_dir / "inspect.json"
@@ -1149,7 +1204,7 @@ def run(
     executor = PlanExecutor()
     verifier = BatchVerifier()
     vreport = None
-    max_total_attempts = 5
+    max_total_attempts = 3
     for attempt in range(max_total_attempts):
         result = executor.execute(gse_report, plan, output_dir, state)
         if not result.success:
@@ -1317,6 +1372,7 @@ def run(
             # Strategy stats
             matcher_ex = StrategyMatcher(kb_u)
             matcher_ex.update_strategy_stats(gse_report, True)
+            matcher_ex.store_strategy(gse_report, plan_json, success=True)
         except Exception:
             pass
     else:
@@ -1328,6 +1384,10 @@ def run(
 
     _cleanup_gse_output(gse_id, keep_data)
 
+    from scruticell.utils.tokens import TokenTracker
+    click.echo(TokenTracker().report())
+    TokenTracker().to_csv(str(output_dir / "token_usage.csv"))
+
     click.echo(f"\n{'='*60}")
     click.echo(f"  Pipeline complete: {gse_id}")
     click.echo(f"  Cells: {result.n_cells} | Genes: {result.n_genes} | "
@@ -1336,6 +1396,10 @@ def run(
     click.echo(f"{'='*60}")
     if trace_text:
         click.echo(trace_text)
+
+    root_logger.removeHandler(file_handler)
+    file_handler.close()
+    click.echo(f"  Log:      {run_log_path}")
 
 
 if __name__ == "__main__":
