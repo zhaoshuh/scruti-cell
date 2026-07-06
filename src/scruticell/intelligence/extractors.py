@@ -1037,7 +1037,10 @@ class MultiStepExtractor:
             # Columnar format: avoid repeating column names per row (~50% token saving)
             row_arrays = []
             for row in rows[:50]:
-                row_arrays.append([str(row.get(c, ""))[:50] for c in cols])
+                if isinstance(row, dict):
+                    row_arrays.append([str(row.get(c, ""))[:50] for c in cols])
+                elif isinstance(row, list):
+                    row_arrays.append([str(v)[:50] for v in row[:50]])
             previews[k] = {
                 "filename": v.get("filename", k),
                 "file_type": v.get("file_type", "?"),

@@ -329,9 +329,16 @@ class Reporter:
                                 if reresult.get("columns"):
                                     fs["columns"] = [str(c) for c in reresult["columns"][:30]]
                                 if reresult.get("preview_rows"):
-                                    fs["preview_rows"] = [
-                                        [str(v) for v in row] for row in reresult["preview_rows"]
-                                    ]
+                                    raw_rows = reresult["preview_rows"]
+                                    if raw_rows and isinstance(raw_rows[0], dict):
+                                        fs["preview_rows"] = [
+                                            {str(k): str(v) for k, v in row.items()}
+                                            for row in raw_rows
+                                        ]
+                                    else:
+                                        fs["preview_rows"] = [
+                                            [str(v) for v in row] for row in raw_rows
+                                        ]
                                 if reresult.get("n_rows"):
                                     fs["n_rows"] = int(reresult["n_rows"])
                                 if reresult.get("n_cols"):
