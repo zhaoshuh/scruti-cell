@@ -15,9 +15,21 @@ from typing import Any
 
 import GEOparse
 
+from scruticell.config import BROWSER_HEADERS
+from scruticell.utils.download import download_file_range
+
 logger = logging.getLogger(__name__)
 
 _NEEDED_EXTENSIONS = {".h5ad", ".mtx", ".csv", ".tsv", ".tsv.gz", ".rds", ".loom"}
+
+
+def _build_soft_url(gse_id: str) -> str:
+    """Build the NCBI HTTPS URL for a GSE SOFT family file."""
+    group = gse_id[3:6]  # "GSE303943" → "303"
+    return (
+        f"https://ftp.ncbi.nlm.nih.gov/geo/series/"
+        f"GSE{group}nnn/{gse_id}/soft/{gse_id}_family.soft.gz"
+    )
 
 
 def parse_soft_file(filepath: Path) -> dict[str, Any]:
@@ -119,7 +131,8 @@ def parse_soft_file(filepath: Path) -> dict[str, Any]:
 def download_soft(gse_id: str, output_dir: Path) -> Path:
     """Download SOFT family file for a GSE accession.
 
-    Uses GEOparse.get_GEO() internally with retry logic.
+    Uses browser-simulated HTTP Range requests (206 Partial Content)
+    to download the SOFT file from NCBI, then parses locally with GEOparse.
 
     Args:
         gse_id: GEO Series accession (e.g., "GSE12345").
@@ -132,22 +145,17 @@ def download_soft(gse_id: str, output_dir: Path) -> Path:
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    try:
-        geo = GEOparse.get_GEO(geo=gse_id, destdir=str(output_dir), silent=True)
-    except OSError as e:
-        logger.error("Network/IO error downloading %s: %s", gse_id, e)
-        raise
+    url = _build_soft_url(gse_id)
+    dest_path = output_dir / f"{gse_id}_family.soft.gz"
 
-    soft_path = output_dir / f"{gse_id}_family.soft"
-    if soft_path.exists():
-        return soft_path
+    if not dest_path.exists():
+        try:
+            download_file_range(url=url, output_path=dest_path)
+        except Exception as e:
+            logger.error("Failed to download SOFT file for %s: %s", gse_id, e)
+            raise OSError(f"Network error downloading SOFT for {gse_id}") from e
 
-    soft_gz_path = output_dir / f"{gse_id}_family.soft.gz"
-    if soft_gz_path.exists():
-        return soft_gz_path
-
-    candidates = sorted(output_dir.glob(f"{gse_id}*.soft*"))
-    if candidates:
-        return candidates[0]
+    if dest_path.exists():
+        return dest_path
 
     raise FileNotFoundError(f"SOFT file not found after download for {gse_id} in {output_dir}")

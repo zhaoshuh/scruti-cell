@@ -1,0 +1,27 @@
+{
+  "gse_id": "GSE335070",
+  "success": false,
+  "returncode": -1,
+  "started_at": "2026-07-03T04:47:50.546205",
+  "stages": {
+    "inspect": {},
+    "plan": {},
+    "execute": {}
+  },
+  "metrics": {
+    "confidence": 0.99,
+    "field_mappings": 11,
+    "batch_separation_strategy": "per_sample",
+    "kb_match_count": 0,
+    "total_files": 122,
+    "gsm_entries": 75,
+    "data_files": 121
+  },
+  "errors": [],
+  "duration_s": 1800.0,
+  "id": "T49",
+  "category": "重测失败",
+  "label": "GSE335070",
+  "features": "",
+  "grade": "D"
+}

@@ -1,0 +1,19 @@
+{
+  "gse_id": "GSE317309",
+  "success": false,
+  "returncode": -1,
+  "started_at": "2026-07-02T03:13:47.209443",
+  "stages": {
+    "inspect": {},
+    "plan": {},
+    "execute": {}
+  },
+  "metrics": {},
+  "errors": [],
+  "duration_s": 1800.0,
+  "id": "T08",
+  "category": "批量测试",
+  "label": "GSE317309",
+  "features": "",
+  "grade": "D"
+}

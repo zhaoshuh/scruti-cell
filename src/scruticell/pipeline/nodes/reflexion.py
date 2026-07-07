@@ -15,6 +15,7 @@ import logging
 from typing import Any
 
 from scruticell.pipeline.state import PipelineState
+from scruticell.utils.tokens import invoke_and_track
 from scruticell.utils.tracing import traceable
 
 logger = logging.getLogger(__name__)
@@ -172,7 +173,7 @@ def _try_llm_strategy(
         if LLM_API_KEY:
             llm_kwargs["openai_api_key"] = LLM_API_KEY
         llm = ChatOpenAI(**llm_kwargs)
-        response = llm.invoke(prompt)
+        response = invoke_and_track(llm, prompt, "reflexion_llm")
         content = str(response.content).strip()
 
         if content.startswith("```"):

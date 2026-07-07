@@ -21,6 +21,8 @@ from typing import Any
 
 import numpy as np
 
+from scruticell.utils.tokens import invoke_and_track
+
 logger = logging.getLogger(__name__)
 
 _CACHE_ROOT = Path("G:/scruticell/cache/pdf")
@@ -345,12 +347,13 @@ ANSWER:"""
 
     def _download_pmc_pdf(self, pmcid: str) -> bytes | None:
         import httpx
-        from scruticell.config import NCBI_API_KEY
+        from scruticell.config import BROWSER_HEADERS, NCBI_API_KEY
         url = f"https://www.ncbi.nlm.nih.gov/pmc/articles/{pmcid}/pdf/"
         try:
-            headers = {"User-Agent": "Scrut-Cell/0.1 (mailto:scruticell@example.com)"}
-            params = {"api_key": NCBI_API_KEY}
-            with httpx.Client(timeout=30, follow_redirects=True, headers=headers) as client:
+            params = {"api_key": NCBI_API_KEY} if NCBI_API_KEY else {}
+            with httpx.Client(
+                timeout=30, follow_redirects=True, headers=BROWSER_HEADERS,
+            ) as client:
                 resp = client.get(url, params=params)
                 resp.raise_for_status()
                 content_type = resp.headers.get("content-type", "")
@@ -362,14 +365,13 @@ ANSWER:"""
 
     def _download_pmc_xml(self, pmcid: str) -> str | None:
         import httpx
-        from scruticell.config import NCBI_API_KEY
+        from scruticell.config import BROWSER_HEADERS, NCBI_API_KEY
         url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
         params = {"db": "pmc", "id": pmcid, "rettype": "xml", "retmode": "text",
                   "api_key": NCBI_API_KEY}
         try:
             time.sleep(0.34)
-            headers = {"User-Agent": "Scrut-Cell/0.1 (mailto:scruticell@example.com)"}
-            with httpx.Client(timeout=30, headers=headers) as client:
+            with httpx.Client(timeout=30, headers=BROWSER_HEADERS) as client:
                 resp = client.get(url, params=params)
                 resp.raise_for_status()
                 return resp.text
@@ -467,7 +469,7 @@ ANSWER:"""
             if LLM_API_KEY:
                 llm_kwargs["openai_api_key"] = LLM_API_KEY
             llm = ChatOpenAI(**llm_kwargs)
-            response = llm.invoke(prompt)
+            response = invoke_and_track(llm, prompt, "literature_rag")
             return str(response.content).strip()
         except Exception as exc:
             logger.warning("LLM call failed in PDFAgent: %s", exc)

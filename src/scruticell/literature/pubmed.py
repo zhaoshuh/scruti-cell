@@ -10,6 +10,8 @@ import logging
 import time
 from typing import Any, Optional
 
+from scruticell.config import BROWSER_HEADERS
+
 logger = logging.getLogger(__name__)
 
 PUBMED_EFETCH_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
@@ -65,7 +67,8 @@ def _fetch_pubmed_xml(pubmed_id: str, email: str = "") -> Optional[str]:
             params = {"db": "pubmed", "id": pubmed_id, "rettype": "xml", "retmode": "text",
                       "api_key": api_key}
             time.sleep(0.34)
-            with httpx.Client(timeout=30) as client:
+            import httpx
+            with httpx.Client(timeout=30, headers=BROWSER_HEADERS) as client:
                 resp = client.get(PUBMED_EFETCH_URL, params=params)
                 resp.raise_for_status()
                 return resp.text
@@ -178,7 +181,8 @@ def search_pubmed(
             params = {"db": "pubmed", "term": query, "retmax": str(retmax), "retmode": "json",
                       "api_key": api_key}
             time.sleep(0.34)
-            with httpx.Client(timeout=30) as client:
+            import httpx
+            with httpx.Client(timeout=30, headers=BROWSER_HEADERS) as client:
                 resp = client.get(PUBMED_ESEARCH_URL, params=params)
                 resp.raise_for_status()
                 data = resp.json()

@@ -1,0 +1,38 @@
+{
+  "gse_id": "GSE304657",
+  "success": false,
+  "returncode": 0,
+  "started_at": "2026-07-05T08:09:39.481846",
+  "stages": {
+    "inspect": {
+      "summary": "[1/3] INSPECT �� downloading + inspecting..."
+    },
+    "plan": {
+      "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+    },
+    "execute": {}
+  },
+  "metrics": {
+    "total_files": 1,
+    "gsm_entries": 0,
+    "data_files": 0
+  },
+  "errors": [
+    "Generating plan via LLM... FAILED: Could not generate a valid plan",
+    "08:09:47 [ERROR] scruticell.pipeline.nodes.parse: No SOFT file available for GSE304657",
+    "08:09:49 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+    "08:09:49 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+    "08:09:49 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+    "08:09:49 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+    "08:09:49 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+    "08:09:49 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`",
+    "08:09:58 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+    "08:09:58 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+  ],
+  "duration_s": 19.8,
+  "id": "T46",
+  "category": "批量测试",
+  "label": "GSE304657",
+  "features": "",
+  "grade": "D"
+}

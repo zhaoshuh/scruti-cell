@@ -1,0 +1,37 @@
+{
+  "gse_id": "GSE335070",
+  "success": false,
+  "returncode": 0,
+  "started_at": "2026-07-02T12:31:25.311799",
+  "stages": {
+    "inspect": {
+      "summary": "[1/3] INSPECT �� downloading + inspecting..."
+    },
+    "plan": {
+      "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+    },
+    "execute": {}
+  },
+  "metrics": {
+    "total_files": 122,
+    "gsm_entries": 75,
+    "data_files": 121
+  },
+  "errors": [
+    "Generating plan via LLM... FAILED: Could not generate a valid plan",
+    "12:43:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+    "12:43:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+    "12:43:02 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+    "12:43:02 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+    "12:43:02 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+    "12:43:02 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`",
+    "12:46:56 [WARNING] scruticell.intelligence.generator: LLM validation failed: Expecting value: line 1 column 1 (char 0)",
+    "12:46:56 [ERROR] scruticell.intelligence.generator: LLM revision failed on literature_enriched round 1"
+  ],
+  "duration_s": 932.3,
+  "id": "T49",
+  "category": "批量测试",
+  "label": "GSE335070",
+  "features": "",
+  "grade": "D"
+}

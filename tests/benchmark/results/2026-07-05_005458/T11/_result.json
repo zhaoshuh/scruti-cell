@@ -1,0 +1,36 @@
+{
+  "gse_id": "GSE284443",
+  "success": false,
+  "returncode": 0,
+  "started_at": "2026-07-05T02:26:02.072676",
+  "stages": {
+    "inspect": {
+      "summary": "[1/3] INSPECT �� downloading + inspecting..."
+    },
+    "plan": {
+      "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+    },
+    "execute": {}
+  },
+  "metrics": {
+    "total_files": 1,
+    "gsm_entries": 0,
+    "data_files": 0
+  },
+  "errors": [
+    "Generating plan via LLM... FAILED: Could not generate a valid plan",
+    "02:26:10 [ERROR] scruticell.pipeline.nodes.parse: No SOFT file available for GSE284443",
+    "02:26:12 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+    "02:26:12 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+    "02:26:12 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+    "02:26:12 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+    "02:26:12 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+    "02:26:12 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`"
+  ],
+  "duration_s": 43.4,
+  "id": "T11",
+  "category": "批量测试",
+  "label": "GSE284443",
+  "features": "",
+  "grade": "D"
+}

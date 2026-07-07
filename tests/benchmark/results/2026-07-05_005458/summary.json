@@ -1,0 +1,2716 @@
+{
+  "timestamp": "2026-07-05T08:40:56.171486",
+  "total": 50,
+  "passed": 9,
+  "pass_rate": "18%",
+  "grades": {
+    "S": 8,
+    "A": 1,
+    "B": 0,
+    "C": 0,
+    "D": 41,
+    "F": 0
+  },
+  "by_category": {
+    "批量测试": {
+      "total": 50,
+      "passed": 9,
+      "pass_rate": "18%"
+    }
+  },
+  "failures": [
+    {
+      "id": "T00",
+      "gse_id": "GSE312357",
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "01:00:58 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM934",
+        "01:00:58 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM934",
+        "01:00:58 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM934",
+        "01:00:58 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM934",
+        "01:00:58 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM934",
+        "01:00:58 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM934",
+        "01:00:58 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM934",
+        "01:00:58 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM934",
+        "01:01:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:01:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:05:15 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM9344289_TC1cntl_d3_1_filtered_feature_bc_matrix.tar_extracted\\filt",
+        "01:05:15 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM9344290_TC1cntl_d3_2_filtered_feature_bc_matrix.tar_extracted\\filt",
+        "01:05:16 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM9344291_TC1cntl_d7_1_filtered_feature_bc_matrix.tar_extracted\\filt",
+        "01:05:16 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM9344292_TC1cntl_d7_2_filtered_feature_bc_matrix.tar_extracted\\filt",
+        "01:05:16 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM9344293_TC1aAVC_d3_1_filtered_feature_bc_matrix.tar_extracted\\filt",
+        "01:05:16 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM9344294_TC1aAVC_d3_2_filtered_feature_bc_matrix.tar_extracted\\filt",
+        "01:05:16 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM9344295_TC1aAVC_d7_1_filtered_feature_bc_matrix.tar_extracted\\filt",
+        "01:05:16 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM9344296_TC1aAVC_d7_2_filtered_feature_bc_matrix.tar_extracted\\filt",
+        "01:05:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:05:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ]
+    },
+    {
+      "id": "T04",
+      "gse_id": "GSE290746",
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "01:31:37 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:31:37 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:36:44 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE290746\\download\\GSE290746_RAW_extracted\\GSM8821132_SNL_CMV_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "01:36:44 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE290746\\download\\GSE290746_RAW_extracted\\GSM8821133_SNL_CMV_NGFR_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "01:36:44 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE290746\\download\\GSE290746_RAW_extracted\\GSM8821134_SNL_CCSP_S1_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "01:36:44 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE290746\\download\\GSE290746_RAW_extracted\\GSM8821135_SNL_CCSP_NGFR_S2_matrix.mtx.gz: Unknown matrix format: 10x",
+        "01:36:44 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE290746\\download\\GSE290746_RAW_extracted\\GSM8821136_NGFR_TO_neg_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "01:36:44 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE290746\\download\\GSE290746_RAW_extracted\\GSM8821137_NGFR_TO_pos_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "01:36:44 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE290746\\download\\GSE290746_RAW_extracted\\GSM8821138_NGFR_TO_pos_outgrowth_matrix.mtx.gz: Unknown matrix format",
+        "01:36:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:36:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ]
+    },
+    {
+      "id": "T05",
+      "gse_id": "GSE269042",
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "01:41:24 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8305449_Ctrl1-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW",
+        "01:41:24 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8305450_Ctrl2-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW",
+        "01:41:25 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8305451_Ctrl3-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW",
+        "01:41:25 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8305452_AML1-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_",
+        "01:41:25 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8305453_AML2-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_",
+        "01:41:25 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8305454_AML3-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_",
+        "01:41:27 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:41:27 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:45:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_extracted\\GSM8305449_Ctrl1-matrix.mtx_extracted\\GSM8305449_Ctrl1-matrix.mtx: Un",
+        "01:45:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_extracted\\GSM8305450_Ctrl2-matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "01:45:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_extracted\\GSM8305451_Ctrl3-matrix.mtx_extracted\\GSM8305451_Ctrl3-matrix.mtx: Un",
+        "01:45:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_extracted\\GSM8305452_AML1-matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "01:45:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_extracted\\GSM8305453_AML2-matrix.mtx_extracted\\GSM8305453_AML2-matrix.mtx: Unkn",
+        "01:45:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_extracted\\GSM8305454_AML3-matrix.mtx_extracted\\GSM8305454_AML3-matrix.mtx: Unkn",
+        "01:45:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:45:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ]
+    },
+    {
+      "id": "T06",
+      "gse_id": "GSE303943",
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "01:50:11 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM9139390_CON_barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE303943\\download\\GSE303943_RAW_e",
+        "01:50:11 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM9139391_PKCi_barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE303943\\download\\GSE303943_RAW_",
+        "01:50:13 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:50:13 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:53:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE303943\\download\\GSE303943_RAW_extracted\\GSM9139390_CON_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "01:53:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE303943\\download\\GSE303943_RAW_extracted\\GSM9139391_PKCi_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "01:53:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:53:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ]
+    },
+    {
+      "id": "T07",
+      "gse_id": "GSE284668",
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "01:57:21 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:57:21 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "02:00:11 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE284668\\download\\GSE284668_RAW_extracted\\GSM8690315_MYSC112_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "02:00:11 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE284668\\download\\GSE284668_RAW_extracted\\GSM8690316_MYSC113_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "02:00:13 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "02:00:13 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ]
+    },
+    {
+      "id": "T08",
+      "gse_id": "GSE317309",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "02:00:24 [ERROR] scruticell.pipeline.nodes.parse: No SOFT file available for GSE317309",
+        "02:00:26 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "02:00:26 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "02:00:26 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+        "02:00:26 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+        "02:00:26 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+        "02:00:26 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`"
+      ]
+    },
+    {
+      "id": "T11",
+      "gse_id": "GSE284443",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "02:26:10 [ERROR] scruticell.pipeline.nodes.parse: No SOFT file available for GSE284443",
+        "02:26:12 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "02:26:12 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "02:26:12 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+        "02:26:12 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+        "02:26:12 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+        "02:26:12 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`"
+      ]
+    },
+    {
+      "id": "T12",
+      "gse_id": "GSE297632",
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "02:32:52 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8995911_Control_GEX_barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE297632\\download\\GSE2976",
+        "02:32:52 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8995912_PD_1_treatment_GEX_barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE297632\\download\\",
+        "02:32:54 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "02:32:54 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "02:35:45 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE297632\\download\\GSE297632_RAW_extracted\\GSM8995911_Control_GEX_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "02:35:45 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE297632\\download\\GSE297632_RAW_extracted\\GSM8995912_PD_1_treatment_GEX_matrix.mtx.gz: Unknown matrix format: 1",
+        "02:35:47 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "02:35:47 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ]
+    },
+    {
+      "id": "T13",
+      "gse_id": "GSE312138",
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "02:41:01 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "02:41:01 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "02:45:15 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE312138\\download\\GSE312138_RAW_extracted\\GSM9338309_Sham_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "02:45:15 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE312138\\download\\GSE312138_RAW_extracted\\GSM9338309_ProAgio_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "02:45:15 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE312138\\download\\GSE312138_RAW_extracted\\GSM9338309_Gemcitabine_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "02:45:15 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE312138\\download\\GSE312138_RAW_extracted\\GSM9338309_Gem_ProAgio_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "02:45:17 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "02:45:17 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ]
+    },
+    {
+      "id": "T15",
+      "gse_id": "GSE276139",
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "03:25:42 [WARNING] scruticell.utils.download: Range request bytes=587202560-603979775 failed: peer closed connection without sending complete message body (received 11319479 bytes, expected 16777216)",
+        "03:28:51 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8491849_CSFLUAD1-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_",
+        "03:28:51 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8491850_CSFLUAD2-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_",
+        "03:28:51 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8491851_CSFLUAD3-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_",
+        "03:28:51 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM950",
+        "03:28:51 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM950",
+        "03:28:51 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM950",
+        "03:28:53 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "03:28:53 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "03:32:21 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM8491849_CSFLUAD1-matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "03:32:21 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM8491850_CSFLUAD2-matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "03:32:21 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM8491851_CSFLUAD3-matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "03:32:21 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM9505951_CWB.tar_extracted\\CWB\\matrix.mtx.gz: Unknown matrix format",
+        "03:32:21 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM9505952_WLC.tar_extracted\\WLC\\matrix.mtx.gz: Unknown matrix format",
+        "03:32:21 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM9505953_ZRQ.tar_extracted\\ZRQ\\matrix.mtx.gz: Unknown matrix format",
+        "03:32:24 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "03:32:24 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ]
+    },
+    {
+      "id": "T16",
+      "gse_id": "GSE304864",
+      "errors": [
+        "03:40:18 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE304864\\download\\GSE304864_LLC-Thy1.1_PBA9_raw_",
+        "03:40:20 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "03:40:20 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "03:46:23 [WARNING] scruticell.intelligence.generator: Multi-step extraction failed, falling back to single prompt: unhashable type: 'list'",
+        "Traceback (most recent call last):",
+        "TypeError: unhashable type: 'list'",
+        "During handling of the above exception, another exception occurred:",
+        "Traceback (most recent call last):",
+        "TypeError: unhashable type: 'list'"
+      ]
+    },
+    {
+      "id": "T17",
+      "gse_id": "GSE295518",
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "03:53:08 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "03:53:08 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "03:56:06 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE295518\\download\\GSE295518_RAW_extracted\\GSM8951823_A_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "03:56:06 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE295518\\download\\GSE295518_RAW_extracted\\GSM8951824_B_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "03:56:08 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "03:56:08 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ]
+    },
+    {
+      "id": "T18",
+      "gse_id": "GSE294490",
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "03:59:51 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "03:59:51 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "04:02:41 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE294490\\download\\GSE294490_RAW_extracted\\GSM8907867_PBS_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "04:02:41 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE294490\\download\\GSE294490_RAW_extracted\\GSM8907868_CAR_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "04:02:43 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "04:02:43 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ]
+    },
+    {
+      "id": "T19",
+      "gse_id": "GSE285606",
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "04:07:39 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "04:07:39 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "04:11:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE285606\\download\\GSE285606_RAW_extracted\\GSM8705589_140P-IgG-T1.matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "04:11:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE285606\\download\\GSE285606_RAW_extracted\\GSM8705590_140P-IgG-T2.matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "04:11:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE285606\\download\\GSE285606_RAW_extracted\\GSM8705591_WT-IgG-T1.matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "04:11:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE285606\\download\\GSE285606_RAW_extracted\\GSM8705592_WT-IgG-T2.matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "04:11:31 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "04:11:31 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ]
+    },
+    {
+      "id": "T22",
+      "gse_id": "GSE336234",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "04:59:32 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "04:59:32 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "05:04:25 [WARNING] scruticell.intelligence.generator: Multi-step extraction failed, falling back to single prompt: unhashable type: 'list'",
+        "05:06:36 [WARNING] scruticell.intelligence.generator: Failed to parse LLM plan: FieldMapping.__init__() missing 1 required positional argument: 'raw_field'"
+      ]
+    },
+    {
+      "id": "T23",
+      "gse_id": "GSE330011",
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "05:09:44 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "05:09:44 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "05:14:14 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE330011\\download\\GSE330011_RAW_extracted\\GSM9715166_tumor_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "05:14:16 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "05:14:16 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ]
+    },
+    {
+      "id": "T24",
+      "gse_id": "GSE327101",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "05:14:30 [ERROR] scruticell.pipeline.nodes.parse: No SOFT file available for GSE327101",
+        "05:14:32 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "05:14:32 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "05:14:32 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+        "05:14:32 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+        "05:14:32 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+        "05:14:32 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`"
+      ]
+    },
+    {
+      "id": "T25",
+      "gse_id": "GSE320221",
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "05:20:11 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "05:20:11 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "05:24:14 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE320221\\download\\GSE320221_RAW_extracted\\GSM9537953_FNA_1_A_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "05:24:14 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE320221\\download\\GSE320221_RAW_extracted\\GSM9537954_FNA_1_C_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "05:24:14 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE320221\\download\\GSE320221_RAW_extracted\\GSM9537955_FNA_R_A_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "05:24:14 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE320221\\download\\GSE320221_RAW_extracted\\GSM9537956_FNA_R_C_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "05:24:16 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "05:24:16 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ]
+    },
+    {
+      "id": "T27",
+      "gse_id": "GSE300932",
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "05:56:43 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "05:56:43 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072393_Brain_GEX_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072394_Brain_TCR_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072395_MLN_GEX_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072396_MLN_TCR_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072397_Smal_intestine_GEX_matrix.mtx.gz: Unknown matrix format: 1",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072398_Smal_intestine_TCR_matrix.mtx.gz: Unknown matrix format: 1",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072399_Spleen_GEX_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072400_Spleen_TCR_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072401_Brain2_GEX_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072402_Brain2_TCR_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072403_MLN2_GEX_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072404_MLN2_TCR_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072405_Small_intestine2_GEX_matrix.mtx.gz: Unknown matrix format:",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072406_Small_intestine2_TCR_matrix.mtx.gz: Unknown matrix format:",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072407_Spleen2_GEX_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072408_Spleen2_TCR_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "06:01:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:01:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ]
+    },
+    {
+      "id": "T28",
+      "gse_id": "GSE289335",
+      "errors": [
+        "Execution failed (attempt 2), re-planning...",
+        "Execution: FAILED",
+        "06:02:22 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:02:22 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:02:22 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+        "06:02:22 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+        "06:02:22 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+        "06:02:22 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`",
+        "06:10:03 [INFO] scruticell.pipeline.nodes.validation: Validation: overall=1.00, passed=True, errors=0, warnings=0",
+        "06:10:04 [WARNING] scruticell.intelligence.verifier: Batch verification FAILED for GSE289335: 1 mismatches",
+        "06:14:21 [WARNING] scruticell.intelligence.executor: Assembly code failed: 'download/GSE289335_E8.5_RNAseq_counts.txt.gz/GSE289335_E8.5_RNAseq_counts.txt'",
+        "06:14:21 [INFO] scruticell.pipeline.nodes.validation: Validation: overall=0.92, passed=True, errors=0, warnings=3",
+        "06:14:21 [ERROR] scruticell.intelligence.executor: Execution failed: [Errno 2] Unable to synchronously create file (unable to open file: name = 'E:\\Scruti-Cell\\output\\GSE289335\\GSE289335_GSM8789399,GS",
+        "Traceback (most recent call last):",
+        "File \"E:\\Scruti-Cell\\venv\\Lib\\site-packages\\anndata\\_io\\utils.py\", line 349, in raise_error_if_dataset_2d_present",
+        "FileNotFoundError: [Errno 2] Unable to synchronously create file (unable to open file: name = 'E:\\Scruti-Cell\\output\\GSE289335\\GSE289335_GSM8789399,GSM8789400,GSM8789401,GSM8789402,GSM8789403,GSM87894",
+        "06:14:22 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "06:14:22 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan",
+        "06:14:24 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:14:24 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ]
+    },
+    {
+      "id": "T29",
+      "gse_id": "GSE278526",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "06:20:42 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "06:20:44 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:20:44 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:20:44 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "06:20:44 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ]
+    },
+    {
+      "id": "T30",
+      "gse_id": "GSE336609",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "06:21:25 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "06:21:28 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:21:28 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:21:28 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "06:21:28 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ]
+    },
+    {
+      "id": "T31",
+      "gse_id": "GSE333617",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "06:34:10 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "06:34:13 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:34:13 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:34:13 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "06:34:13 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ]
+    },
+    {
+      "id": "T32",
+      "gse_id": "GSE303768",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "06:39:50 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "06:39:52 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:39:52 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:39:53 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "06:39:53 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ]
+    },
+    {
+      "id": "T33",
+      "gse_id": "GSE290316",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "06:51:59 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "06:52:01 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:52:01 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:52:01 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+        "06:52:01 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+        "06:52:01 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+        "06:52:01 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`",
+        "06:52:02 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "06:52:02 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ]
+    },
+    {
+      "id": "T34",
+      "gse_id": "GSE336281",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "06:53:27 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "06:53:29 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:53:29 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:53:29 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "06:53:29 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ]
+    },
+    {
+      "id": "T35",
+      "gse_id": "GSE335943",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "06:54:07 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "06:54:09 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:54:09 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:54:10 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "06:54:10 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ]
+    },
+    {
+      "id": "T36",
+      "gse_id": "GSE335657",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "06:54:58 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "06:55:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:55:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:55:01 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "06:55:01 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ]
+    },
+    {
+      "id": "T37",
+      "gse_id": "GSE326338",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "06:56:15 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:56:15 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:56:24 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "06:56:24 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ]
+    },
+    {
+      "id": "T38",
+      "gse_id": "GSE308594",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "07:03:46 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "07:03:48 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:03:48 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:03:48 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "07:03:48 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ]
+    },
+    {
+      "id": "T39",
+      "gse_id": "GSE304429",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "07:06:40 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "07:06:42 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:06:42 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:06:42 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "07:06:42 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ]
+    },
+    {
+      "id": "T40",
+      "gse_id": "GSE316025",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "07:21:33 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:21:36 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "07:21:36 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ]
+    },
+    {
+      "id": "T41",
+      "gse_id": "GSE314885",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "07:26:09 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "07:26:11 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:26:11 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:26:11 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "07:26:11 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ]
+    },
+    {
+      "id": "T42",
+      "gse_id": "GSE300724",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "07:37:48 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "07:37:50 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:37:50 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:37:50 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "07:37:50 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ]
+    },
+    {
+      "id": "T43",
+      "gse_id": "GSE336034",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "07:46:43 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "07:46:45 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:46:45 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:46:45 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "07:46:45 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ]
+    },
+    {
+      "id": "T44",
+      "gse_id": "GSE320131",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "07:48:21 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "07:48:23 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:48:23 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:48:24 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "07:48:24 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ]
+    },
+    {
+      "id": "T45",
+      "gse_id": "GSE314571",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "08:09:34 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "08:09:36 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "08:09:36 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "08:09:37 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "08:09:37 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ]
+    },
+    {
+      "id": "T46",
+      "gse_id": "GSE304657",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "08:09:47 [ERROR] scruticell.pipeline.nodes.parse: No SOFT file available for GSE304657",
+        "08:09:49 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "08:09:49 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "08:09:49 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+        "08:09:49 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+        "08:09:49 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+        "08:09:49 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`",
+        "08:09:58 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "08:09:58 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ]
+    },
+    {
+      "id": "T47",
+      "gse_id": "GSE284038",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "08:20:28 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "08:20:28 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "08:20:36 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "08:20:36 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ]
+    },
+    {
+      "id": "T48",
+      "gse_id": "GSE250124",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "08:27:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "08:27:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "08:27:09 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "08:27:09 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ]
+    },
+    {
+      "id": "T49",
+      "gse_id": "GSE335070",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "08:40:51 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "08:40:53 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "08:40:53 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "08:40:53 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+        "08:40:53 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+        "08:40:53 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+        "08:40:53 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`",
+        "08:40:53 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "08:40:53 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ]
+    }
+  ],
+  "results": [
+    {
+      "gse_id": "GSE312357",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T00:55:03.237526",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 0,
+        "genes": 0,
+        "batches": 0,
+        "success": false,
+        "errors": [
+          "No matrices could be read"
+        ],
+        "warnings": [],
+        "confidence": 0.99,
+        "field_mappings": 5,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 121,
+        "gsm_entries": 8,
+        "data_files": 120
+      },
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "01:00:58 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM934",
+        "01:00:58 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM934",
+        "01:00:58 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM934",
+        "01:00:58 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM934",
+        "01:00:58 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM934",
+        "01:00:58 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM934",
+        "01:00:58 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM934",
+        "01:00:58 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM934",
+        "01:01:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:01:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:05:15 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM9344289_TC1cntl_d3_1_filtered_feature_bc_matrix.tar_extracted\\filt",
+        "01:05:15 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM9344290_TC1cntl_d3_2_filtered_feature_bc_matrix.tar_extracted\\filt",
+        "01:05:16 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM9344291_TC1cntl_d7_1_filtered_feature_bc_matrix.tar_extracted\\filt",
+        "01:05:16 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM9344292_TC1cntl_d7_2_filtered_feature_bc_matrix.tar_extracted\\filt",
+        "01:05:16 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM9344293_TC1aAVC_d3_1_filtered_feature_bc_matrix.tar_extracted\\filt",
+        "01:05:16 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM9344294_TC1aAVC_d3_2_filtered_feature_bc_matrix.tar_extracted\\filt",
+        "01:05:16 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM9344295_TC1aAVC_d7_1_filtered_feature_bc_matrix.tar_extracted\\filt",
+        "01:05:16 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE312357\\download\\GSE312357_RAW_extracted\\GSM9344296_TC1aAVC_d7_2_filtered_feature_bc_matrix.tar_extracted\\filt",
+        "01:05:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:05:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ],
+      "duration_s": 617.6,
+      "id": "T00",
+      "category": "批量测试",
+      "label": "GSE312357",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE327093",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-05T01:05:20.861147",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 33554,
+        "genes": 31019,
+        "batches": 4,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 4,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 9,
+        "gsm_entries": 4,
+        "data_files": 8
+      },
+      "errors": [],
+      "duration_s": 367.5,
+      "id": "T01",
+      "category": "批量测试",
+      "label": "GSE327093",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE333438",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-05T01:11:28.400969",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 5363,
+        "genes": 32248,
+        "batches": 2,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 5,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 5,
+        "gsm_entries": 2,
+        "data_files": 4
+      },
+      "errors": [],
+      "duration_s": 250.8,
+      "id": "T02",
+      "category": "批量测试",
+      "label": "GSE333438",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE297558",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-05T01:15:39.168374",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 9507,
+        "genes": 32245,
+        "batches": 4,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.85,
+        "field_mappings": 5,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 9,
+        "gsm_entries": 4,
+        "data_files": 8
+      },
+      "errors": [],
+      "duration_s": 268.5,
+      "id": "T03",
+      "category": "批量测试",
+      "label": "GSE297558",
+      "features": "",
+      "grade": "A"
+    },
+    {
+      "gse_id": "GSE290746",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T01:20:07.706550",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 0,
+        "genes": 0,
+        "batches": 0,
+        "success": false,
+        "errors": [
+          "No matrices could be read"
+        ],
+        "warnings": [],
+        "confidence": 0.99,
+        "field_mappings": 7,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 64,
+        "gsm_entries": 7,
+        "data_files": 63
+      },
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "01:31:37 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:31:37 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:36:44 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE290746\\download\\GSE290746_RAW_extracted\\GSM8821132_SNL_CMV_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "01:36:44 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE290746\\download\\GSE290746_RAW_extracted\\GSM8821133_SNL_CMV_NGFR_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "01:36:44 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE290746\\download\\GSE290746_RAW_extracted\\GSM8821134_SNL_CCSP_S1_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "01:36:44 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE290746\\download\\GSE290746_RAW_extracted\\GSM8821135_SNL_CCSP_NGFR_S2_matrix.mtx.gz: Unknown matrix format: 10x",
+        "01:36:44 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE290746\\download\\GSE290746_RAW_extracted\\GSM8821136_NGFR_TO_neg_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "01:36:44 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE290746\\download\\GSE290746_RAW_extracted\\GSM8821137_NGFR_TO_pos_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "01:36:44 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE290746\\download\\GSE290746_RAW_extracted\\GSM8821138_NGFR_TO_pos_outgrowth_matrix.mtx.gz: Unknown matrix format",
+        "01:36:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:36:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ],
+      "duration_s": 999.8,
+      "id": "T04",
+      "category": "批量测试",
+      "label": "GSE290746",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE269042",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T01:36:47.539188",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 0,
+        "genes": 0,
+        "batches": 0,
+        "success": false,
+        "errors": [
+          "No matrices could be read"
+        ],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 2,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 55,
+        "gsm_entries": 6,
+        "data_files": 54
+      },
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "01:41:24 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8305449_Ctrl1-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW",
+        "01:41:24 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8305450_Ctrl2-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW",
+        "01:41:25 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8305451_Ctrl3-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW",
+        "01:41:25 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8305452_AML1-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_",
+        "01:41:25 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8305453_AML2-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_",
+        "01:41:25 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8305454_AML3-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_",
+        "01:41:27 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:41:27 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:45:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_extracted\\GSM8305449_Ctrl1-matrix.mtx_extracted\\GSM8305449_Ctrl1-matrix.mtx: Un",
+        "01:45:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_extracted\\GSM8305450_Ctrl2-matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "01:45:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_extracted\\GSM8305451_Ctrl3-matrix.mtx_extracted\\GSM8305451_Ctrl3-matrix.mtx: Un",
+        "01:45:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_extracted\\GSM8305452_AML1-matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "01:45:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_extracted\\GSM8305453_AML2-matrix.mtx_extracted\\GSM8305453_AML2-matrix.mtx: Unkn",
+        "01:45:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_extracted\\GSM8305454_AML3-matrix.mtx_extracted\\GSM8305454_AML3-matrix.mtx: Unkn",
+        "01:45:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:45:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ],
+      "duration_s": 524.1,
+      "id": "T05",
+      "category": "批量测试",
+      "label": "开始之前删除相同目录重新下载",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE303943",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T01:45:31.682873",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 0,
+        "genes": 0,
+        "batches": 0,
+        "success": false,
+        "errors": [
+          "No matrices could be read"
+        ],
+        "warnings": [],
+        "confidence": 0.98,
+        "field_mappings": 6,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 19,
+        "gsm_entries": 2,
+        "data_files": 18
+      },
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "01:50:11 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM9139390_CON_barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE303943\\download\\GSE303943_RAW_e",
+        "01:50:11 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM9139391_PKCi_barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE303943\\download\\GSE303943_RAW_",
+        "01:50:13 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:50:13 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:53:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE303943\\download\\GSE303943_RAW_extracted\\GSM9139390_CON_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "01:53:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE303943\\download\\GSE303943_RAW_extracted\\GSM9139391_PKCi_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "01:53:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:53:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ],
+      "duration_s": 480.6,
+      "id": "T06",
+      "category": "批量测试",
+      "label": "GSE303943",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE284668",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T01:53:32.258817",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 0,
+        "genes": 0,
+        "batches": 0,
+        "success": false,
+        "errors": [
+          "No matrices could be read"
+        ],
+        "warnings": [],
+        "confidence": 1.0,
+        "field_mappings": 5,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 19,
+        "gsm_entries": 2,
+        "data_files": 18
+      },
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "01:57:21 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "01:57:21 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "02:00:11 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE284668\\download\\GSE284668_RAW_extracted\\GSM8690315_MYSC112_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "02:00:11 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE284668\\download\\GSE284668_RAW_extracted\\GSM8690316_MYSC113_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "02:00:13 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "02:00:13 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ],
+      "duration_s": 402.5,
+      "id": "T07",
+      "category": "批量测试",
+      "label": "GSE284668",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE317309",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T02:00:14.717407",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 1,
+        "gsm_entries": 0,
+        "data_files": 0
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "02:00:24 [ERROR] scruticell.pipeline.nodes.parse: No SOFT file available for GSE317309",
+        "02:00:26 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "02:00:26 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "02:00:26 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+        "02:00:26 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+        "02:00:26 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+        "02:00:26 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`"
+      ],
+      "duration_s": 54.0,
+      "id": "T08",
+      "category": "批量测试",
+      "label": "GSE317309",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE328098",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-05T02:01:08.723948",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 159303,
+        "genes": 32245,
+        "batches": 1,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 4,
+        "batch_separation_strategy": "single_batch",
+        "kb_match_count": 0,
+        "total_files": 2,
+        "gsm_entries": 8,
+        "data_files": 1
+      },
+      "errors": [],
+      "duration_s": 1194.4,
+      "id": "T09",
+      "category": "批量测试",
+      "label": "GSE328098",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE294571",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-05T02:21:03.091020",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 12312,
+        "genes": 32247,
+        "batches": 2,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.99,
+        "field_mappings": 6,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 5,
+        "gsm_entries": 2,
+        "data_files": 4
+      },
+      "errors": [],
+      "duration_s": 299.0,
+      "id": "T10",
+      "category": "批量测试",
+      "label": "GSE294571",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE284443",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T02:26:02.072676",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 1,
+        "gsm_entries": 0,
+        "data_files": 0
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "02:26:10 [ERROR] scruticell.pipeline.nodes.parse: No SOFT file available for GSE284443",
+        "02:26:12 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "02:26:12 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "02:26:12 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+        "02:26:12 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+        "02:26:12 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+        "02:26:12 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`"
+      ],
+      "duration_s": 43.4,
+      "id": "T11",
+      "category": "批量测试",
+      "label": "GSE284443",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE297632",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T02:26:45.449580",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 0,
+        "genes": 0,
+        "batches": 0,
+        "success": false,
+        "errors": [
+          "No matrices could be read"
+        ],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 3,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 19,
+        "gsm_entries": 2,
+        "data_files": 18
+      },
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "02:32:52 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8995911_Control_GEX_barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE297632\\download\\GSE2976",
+        "02:32:52 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8995912_PD_1_treatment_GEX_barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE297632\\download\\",
+        "02:32:54 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "02:32:54 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "02:35:45 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE297632\\download\\GSE297632_RAW_extracted\\GSM8995911_Control_GEX_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "02:35:45 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE297632\\download\\GSE297632_RAW_extracted\\GSM8995912_PD_1_treatment_GEX_matrix.mtx.gz: Unknown matrix format: 1",
+        "02:35:47 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "02:35:47 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ],
+      "duration_s": 543.3,
+      "id": "T12",
+      "category": "批量测试",
+      "label": "GSE297632",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE312138",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T02:35:48.719553",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 0,
+        "genes": 0,
+        "batches": 0,
+        "success": false,
+        "errors": [
+          "No matrices could be read"
+        ],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 3,
+        "batch_separation_strategy": "per_condition",
+        "kb_match_count": 0,
+        "total_files": 37,
+        "gsm_entries": 1,
+        "data_files": 36
+      },
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "02:41:01 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "02:41:01 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "02:45:15 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE312138\\download\\GSE312138_RAW_extracted\\GSM9338309_Sham_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "02:45:15 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE312138\\download\\GSE312138_RAW_extracted\\GSM9338309_ProAgio_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "02:45:15 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE312138\\download\\GSE312138_RAW_extracted\\GSM9338309_Gemcitabine_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "02:45:15 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE312138\\download\\GSE312138_RAW_extracted\\GSM9338309_Gem_ProAgio_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "02:45:17 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "02:45:17 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ],
+      "duration_s": 569.7,
+      "id": "T13",
+      "category": "批量测试",
+      "label": "GSE312138",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE295600",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-05T02:45:18.422423",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 48275,
+        "genes": 36601,
+        "batches": 18,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 1.0,
+        "field_mappings": 7,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 55,
+        "gsm_entries": 18,
+        "data_files": 54
+      },
+      "errors": [],
+      "duration_s": 1451.8,
+      "id": "T14",
+      "category": "批量测试",
+      "label": "GSE295600",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE276139",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T03:09:37.857613",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 0,
+        "genes": 0,
+        "batches": 0,
+        "success": false,
+        "errors": [
+          "No matrices could be read"
+        ],
+        "warnings": [],
+        "confidence": 0.99,
+        "field_mappings": 7,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 73,
+        "gsm_entries": 6,
+        "data_files": 72
+      },
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "03:25:42 [WARNING] scruticell.utils.download: Range request bytes=587202560-603979775 failed: peer closed connection without sending complete message body (received 11319479 bytes, expected 16777216)",
+        "03:28:51 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8491849_CSFLUAD1-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_",
+        "03:28:51 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8491850_CSFLUAD2-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_",
+        "03:28:51 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8491851_CSFLUAD3-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_",
+        "03:28:51 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM950",
+        "03:28:51 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM950",
+        "03:28:51 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM950",
+        "03:28:53 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "03:28:53 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "03:32:21 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM8491849_CSFLUAD1-matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "03:32:21 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM8491850_CSFLUAD2-matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "03:32:21 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM8491851_CSFLUAD3-matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "03:32:21 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM9505951_CWB.tar_extracted\\CWB\\matrix.mtx.gz: Unknown matrix format",
+        "03:32:21 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM9505952_WLC.tar_extracted\\WLC\\matrix.mtx.gz: Unknown matrix format",
+        "03:32:21 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM9505953_ZRQ.tar_extracted\\ZRQ\\matrix.mtx.gz: Unknown matrix format",
+        "03:32:24 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "03:32:24 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ],
+      "duration_s": 1367.9,
+      "id": "T15",
+      "category": "批量测试",
+      "label": "GSE276139",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE304864",
+      "success": false,
+      "returncode": 1,
+      "started_at": "2026-07-05T03:32:25.796565",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 23,
+        "gsm_entries": 11,
+        "data_files": 22
+      },
+      "errors": [
+        "03:40:18 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE304864\\download\\GSE304864_LLC-Thy1.1_PBA9_raw_",
+        "03:40:20 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "03:40:20 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "03:46:23 [WARNING] scruticell.intelligence.generator: Multi-step extraction failed, falling back to single prompt: unhashable type: 'list'",
+        "Traceback (most recent call last):",
+        "TypeError: unhashable type: 'list'",
+        "During handling of the above exception, another exception occurred:",
+        "Traceback (most recent call last):",
+        "TypeError: unhashable type: 'list'"
+      ],
+      "duration_s": 996.3,
+      "id": "T16",
+      "category": "批量测试",
+      "label": "GSE304864",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE295518",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T03:49:02.174852",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 0,
+        "genes": 0,
+        "batches": 0,
+        "success": false,
+        "errors": [
+          "No matrices could be read"
+        ],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 4,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 19,
+        "gsm_entries": 2,
+        "data_files": 18
+      },
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "03:53:08 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "03:53:08 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "03:56:06 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE295518\\download\\GSE295518_RAW_extracted\\GSM8951823_A_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "03:56:06 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE295518\\download\\GSE295518_RAW_extracted\\GSM8951824_B_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "03:56:08 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "03:56:08 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ],
+      "duration_s": 427.3,
+      "id": "T17",
+      "category": "批量测试",
+      "label": "GSE295518",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE294490",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T03:56:09.484996",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 0,
+        "genes": 0,
+        "batches": 0,
+        "success": false,
+        "errors": [
+          "No matrices could be read"
+        ],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 7,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 19,
+        "gsm_entries": 2,
+        "data_files": 18
+      },
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "03:59:51 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "03:59:51 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "04:02:41 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE294490\\download\\GSE294490_RAW_extracted\\GSM8907867_PBS_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "04:02:41 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE294490\\download\\GSE294490_RAW_extracted\\GSM8907868_CAR_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "04:02:43 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "04:02:43 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ],
+      "duration_s": 395.7,
+      "id": "T18",
+      "category": "批量测试",
+      "label": "GSE294490",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE285606",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T04:02:45.155135",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 0,
+        "genes": 0,
+        "batches": 0,
+        "success": false,
+        "errors": [
+          "No matrices could be read"
+        ],
+        "warnings": [],
+        "confidence": 0.99,
+        "field_mappings": 2,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 37,
+        "gsm_entries": 4,
+        "data_files": 36
+      },
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "04:07:39 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "04:07:39 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "04:11:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE285606\\download\\GSE285606_RAW_extracted\\GSM8705589_140P-IgG-T1.matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "04:11:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE285606\\download\\GSE285606_RAW_extracted\\GSM8705590_140P-IgG-T2.matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "04:11:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE285606\\download\\GSE285606_RAW_extracted\\GSM8705591_WT-IgG-T1.matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "04:11:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE285606\\download\\GSE285606_RAW_extracted\\GSM8705592_WT-IgG-T2.matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "04:11:31 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "04:11:31 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ],
+      "duration_s": 527.1,
+      "id": "T19",
+      "category": "批量测试",
+      "label": "GSE285606",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE254205",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-05T04:11:32.302055",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 121165,
+        "genes": 33538,
+        "batches": 1,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 9,
+        "batch_separation_strategy": "field_combination",
+        "kb_match_count": 0,
+        "total_files": 41,
+        "gsm_entries": 102,
+        "data_files": 40
+      },
+      "errors": [],
+      "duration_s": 1591.7,
+      "id": "T20",
+      "category": "批量测试",
+      "label": "GSE254205",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE243292",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-05T04:38:04.035706",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 15529,
+        "genes": 17012,
+        "batches": 1,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.9,
+        "field_mappings": 4,
+        "batch_separation_strategy": "field_combination",
+        "kb_match_count": 0,
+        "total_files": 8,
+        "gsm_entries": 15,
+        "data_files": 7
+      },
+      "errors": [],
+      "duration_s": 1105.2,
+      "id": "T21",
+      "category": "批量测试",
+      "label": "GSE243292",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE336234",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T04:56:29.270708",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 25,
+        "gsm_entries": 4,
+        "data_files": 24
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "04:59:32 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "04:59:32 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "05:04:25 [WARNING] scruticell.intelligence.generator: Multi-step extraction failed, falling back to single prompt: unhashable type: 'list'",
+        "05:06:36 [WARNING] scruticell.intelligence.generator: Failed to parse LLM plan: FieldMapping.__init__() missing 1 required positional argument: 'raw_field'"
+      ],
+      "duration_s": 608.8,
+      "id": "T22",
+      "category": "批量测试",
+      "label": "GSE336234",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE330011",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T05:06:38.185561",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 0,
+        "genes": 0,
+        "batches": 0,
+        "success": false,
+        "errors": [
+          "No matrices could be read"
+        ],
+        "warnings": [],
+        "confidence": 0.99,
+        "field_mappings": 2,
+        "batch_separation_strategy": "single_batch",
+        "kb_match_count": 0,
+        "total_files": 14,
+        "gsm_entries": 2,
+        "data_files": 13
+      },
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "05:09:44 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "05:09:44 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "05:14:14 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE330011\\download\\GSE330011_RAW_extracted\\GSM9715166_tumor_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "05:14:16 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "05:14:16 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ],
+      "duration_s": 459.1,
+      "id": "T23",
+      "category": "批量测试",
+      "label": "GSE330011",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE327101",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T05:14:17.319961",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 1,
+        "gsm_entries": 0,
+        "data_files": 0
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "05:14:30 [ERROR] scruticell.pipeline.nodes.parse: No SOFT file available for GSE327101",
+        "05:14:32 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "05:14:32 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "05:14:32 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+        "05:14:32 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+        "05:14:32 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+        "05:14:32 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`"
+      ],
+      "duration_s": 47.1,
+      "id": "T24",
+      "category": "批量测试",
+      "label": "GSE327101",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE320221",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T05:15:04.438932",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 0,
+        "genes": 0,
+        "batches": 0,
+        "success": false,
+        "errors": [
+          "No matrices could be read"
+        ],
+        "warnings": [],
+        "confidence": 1.0,
+        "field_mappings": 5,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 37,
+        "gsm_entries": 4,
+        "data_files": 36
+      },
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "05:20:11 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "05:20:11 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "05:24:14 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE320221\\download\\GSE320221_RAW_extracted\\GSM9537953_FNA_1_A_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "05:24:14 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE320221\\download\\GSE320221_RAW_extracted\\GSM9537954_FNA_1_C_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "05:24:14 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE320221\\download\\GSE320221_RAW_extracted\\GSM9537955_FNA_R_A_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "05:24:14 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE320221\\download\\GSE320221_RAW_extracted\\GSM9537956_FNA_R_C_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "05:24:16 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "05:24:16 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ],
+      "duration_s": 553.3,
+      "id": "T25",
+      "category": "批量测试",
+      "label": "GSE320221",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE300982",
+      "success": true,
+      "returncode": 1,
+      "started_at": "2026-07-05T05:24:17.695776",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 147591,
+        "genes": 27937,
+        "batches": 12,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 6,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 24,
+        "gsm_entries": 16,
+        "data_files": 23
+      },
+      "errors": [],
+      "duration_s": 1391.0,
+      "id": "T26",
+      "category": "批量测试",
+      "label": "GSE300982",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE300932",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T05:47:28.709102",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 0,
+        "genes": 0,
+        "batches": 0,
+        "success": false,
+        "errors": [
+          "No matrices could be read"
+        ],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 4,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 145,
+        "gsm_entries": 16,
+        "data_files": 144
+      },
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "05:56:43 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "05:56:43 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072393_Brain_GEX_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072394_Brain_TCR_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072395_MLN_GEX_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072396_MLN_TCR_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072397_Smal_intestine_GEX_matrix.mtx.gz: Unknown matrix format: 1",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072398_Smal_intestine_TCR_matrix.mtx.gz: Unknown matrix format: 1",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072399_Spleen_GEX_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072400_Spleen_TCR_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072401_Brain2_GEX_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072402_Brain2_TCR_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072403_MLN2_GEX_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072404_MLN2_TCR_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072405_Small_intestine2_GEX_matrix.mtx.gz: Unknown matrix format:",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072406_Small_intestine2_TCR_matrix.mtx.gz: Unknown matrix format:",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072407_Spleen2_GEX_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072408_Spleen2_TCR_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+        "06:01:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:01:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ],
+      "duration_s": 815.7,
+      "id": "T27",
+      "category": "批量测试",
+      "label": "GSE300932",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE289335",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T06:01:04.430040",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 0,
+        "genes": 0,
+        "batches": 0,
+        "success": false,
+        "errors": [
+          "[Errno 2] Unable to synchronously create file (unable to open file: name = 'E:\\Scruti-Cell\\output\\GSE289335\\GSE289335_GSM8789399,GSM8789400,GSM8789401,GSM8789402,GSM8789403,GSM8789404,GSM8789405,GSM8789406,GSM8789407,GSM8789408,GSM8789409,GSM8789410,GSM8789411,GSM8789412,GSM8789413,GSM8789414,GSM8789415,GSM8789416,GSM8789417,GSM8789418,GSM8789419,GSM8789420,GSM8789421,GSM8789422,GSM8789423,GSM8789424,GSM8789425,GSM8789426,GSM8789427,GSM8789428_scruticell.h5ad', errno = 2, error message = 'No such file or directory', flags = 13, o_flags = 302)"
+        ],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 0,
+        "batch_separation_strategy": "",
+        "kb_match_count": 0,
+        "total_files": 7,
+        "gsm_entries": 127,
+        "data_files": 6
+      },
+      "errors": [
+        "Execution failed (attempt 2), re-planning...",
+        "Execution: FAILED",
+        "06:02:22 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:02:22 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:02:22 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+        "06:02:22 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+        "06:02:22 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+        "06:02:22 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`",
+        "06:10:03 [INFO] scruticell.pipeline.nodes.validation: Validation: overall=1.00, passed=True, errors=0, warnings=0",
+        "06:10:04 [WARNING] scruticell.intelligence.verifier: Batch verification FAILED for GSE289335: 1 mismatches",
+        "06:14:21 [WARNING] scruticell.intelligence.executor: Assembly code failed: 'download/GSE289335_E8.5_RNAseq_counts.txt.gz/GSE289335_E8.5_RNAseq_counts.txt'",
+        "06:14:21 [INFO] scruticell.pipeline.nodes.validation: Validation: overall=0.92, passed=True, errors=0, warnings=3",
+        "06:14:21 [ERROR] scruticell.intelligence.executor: Execution failed: [Errno 2] Unable to synchronously create file (unable to open file: name = 'E:\\Scruti-Cell\\output\\GSE289335\\GSE289335_GSM8789399,GS",
+        "Traceback (most recent call last):",
+        "File \"E:\\Scruti-Cell\\venv\\Lib\\site-packages\\anndata\\_io\\utils.py\", line 349, in raise_error_if_dataset_2d_present",
+        "FileNotFoundError: [Errno 2] Unable to synchronously create file (unable to open file: name = 'E:\\Scruti-Cell\\output\\GSE289335\\GSE289335_GSM8789399,GSM8789400,GSM8789401,GSM8789402,GSM8789403,GSM87894",
+        "06:14:22 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "06:14:22 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan",
+        "06:14:24 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:14:24 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ],
+      "duration_s": 800.8,
+      "id": "T28",
+      "category": "批量测试",
+      "label": "GSE289335",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE278526",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T06:14:25.206661",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 37,
+        "gsm_entries": 4,
+        "data_files": 36
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "06:20:42 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "06:20:44 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:20:44 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:20:44 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "06:20:44 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ],
+      "duration_s": 380.5,
+      "id": "T29",
+      "category": "批量测试",
+      "label": "GSE278526",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE336609",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T06:20:46.002196",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 9,
+        "gsm_entries": 22,
+        "data_files": 8
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "06:21:25 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "06:21:28 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:21:28 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:21:28 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "06:21:28 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ],
+      "duration_s": 43.5,
+      "id": "T30",
+      "category": "批量测试",
+      "label": "GSE336609",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE333617",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T06:21:29.557697",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 221,
+        "gsm_entries": 26,
+        "data_files": 163
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "06:34:10 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "06:34:13 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:34:13 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:34:13 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "06:34:13 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ],
+      "duration_s": 765.8,
+      "id": "T31",
+      "category": "批量测试",
+      "label": "GSE333617",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE303768",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T06:34:16.028513",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 73,
+        "gsm_entries": 6,
+        "data_files": 72
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "06:39:50 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "06:39:52 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:39:52 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:39:53 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "06:39:53 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ],
+      "duration_s": 338.3,
+      "id": "T32",
+      "category": "批量测试",
+      "label": "GSE303768",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE290316",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T06:39:54.729609",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 34,
+        "gsm_entries": 39,
+        "data_files": 29
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "06:51:59 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "06:52:01 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:52:01 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:52:01 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+        "06:52:01 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+        "06:52:01 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+        "06:52:01 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`",
+        "06:52:02 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "06:52:02 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ],
+      "duration_s": 728.5,
+      "id": "T33",
+      "category": "批量测试",
+      "label": "GSE290316",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE336281",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T06:52:03.711962",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 6,
+        "gsm_entries": 4,
+        "data_files": 5
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "06:53:27 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "06:53:29 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:53:29 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:53:29 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "06:53:29 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ],
+      "duration_s": 87.0,
+      "id": "T34",
+      "category": "批量测试",
+      "label": "GSE336281",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE335943",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T06:53:30.716949",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 10,
+        "gsm_entries": 1,
+        "data_files": 9
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "06:54:07 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "06:54:09 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:54:09 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:54:10 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "06:54:10 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ],
+      "duration_s": 40.8,
+      "id": "T35",
+      "category": "批量测试",
+      "label": "GSE335943",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE335657",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T06:54:11.493952",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 7,
+        "gsm_entries": 2,
+        "data_files": 6
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "06:54:58 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "06:55:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:55:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:55:01 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "06:55:01 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ],
+      "duration_s": 51.0,
+      "id": "T36",
+      "category": "批量测试",
+      "label": "GSE335657",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE326338",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T06:55:02.479145",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 9,
+        "gsm_entries": 4,
+        "data_files": 8
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "06:56:15 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:56:15 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "06:56:24 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "06:56:24 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ],
+      "duration_s": 82.9,
+      "id": "T37",
+      "category": "批量测试",
+      "label": "GSE326338",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE308594",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T06:56:25.425384",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 28,
+        "gsm_entries": 3,
+        "data_files": 27
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "07:03:46 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "07:03:48 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:03:48 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:03:48 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "07:03:48 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ],
+      "duration_s": 444.4,
+      "id": "T38",
+      "category": "批量测试",
+      "label": "GSE308594",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE304429",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T07:03:50.107469",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 19,
+        "gsm_entries": 2,
+        "data_files": 18
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "07:06:40 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "07:06:42 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:06:42 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:06:42 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "07:06:42 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ],
+      "duration_s": 173.6,
+      "id": "T39",
+      "category": "批量测试",
+      "label": "GSE304429",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE316025",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T07:06:43.787525",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 64,
+        "gsm_entries": 21,
+        "data_files": 63
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "07:21:33 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:21:36 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "07:21:36 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ],
+      "duration_s": 894.2,
+      "id": "T40",
+      "category": "批量测试",
+      "label": "GSE316025",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE314885",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T07:21:38.436273",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 109,
+        "gsm_entries": 12,
+        "data_files": 108
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "07:26:09 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "07:26:11 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:26:11 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:26:11 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "07:26:11 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ],
+      "duration_s": 274.4,
+      "id": "T41",
+      "category": "批量测试",
+      "label": "GSE314885",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE300724",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T07:26:13.166419",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 55,
+        "gsm_entries": 6,
+        "data_files": 54
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "07:37:48 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "07:37:50 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:37:50 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:37:50 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "07:37:50 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ],
+      "duration_s": 698.5,
+      "id": "T42",
+      "category": "批量测试",
+      "label": "GSE300724",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE336034",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T07:37:52.171675",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 55,
+        "gsm_entries": 6,
+        "data_files": 54
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "07:46:43 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "07:46:45 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:46:45 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:46:45 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "07:46:45 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ],
+      "duration_s": 534.9,
+      "id": "T43",
+      "category": "批量测试",
+      "label": "GSE336034",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE320131",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T07:46:47.471320",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 7,
+        "gsm_entries": 4,
+        "data_files": 6
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "07:48:21 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "07:48:23 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:48:23 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "07:48:24 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "07:48:24 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ],
+      "duration_s": 97.8,
+      "id": "T44",
+      "category": "批量测试",
+      "label": "GSE320131",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE314571",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T07:48:25.335246",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 73,
+        "gsm_entries": 6,
+        "data_files": 72
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "08:09:34 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "08:09:36 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "08:09:36 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "08:09:37 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "08:09:37 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ],
+      "duration_s": 1273.2,
+      "id": "T45",
+      "category": "批量测试",
+      "label": "GSE314571",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE304657",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T08:09:39.481846",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 1,
+        "gsm_entries": 0,
+        "data_files": 0
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "08:09:47 [ERROR] scruticell.pipeline.nodes.parse: No SOFT file available for GSE304657",
+        "08:09:49 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "08:09:49 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "08:09:49 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+        "08:09:49 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+        "08:09:49 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+        "08:09:49 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`",
+        "08:09:58 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "08:09:58 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ],
+      "duration_s": 19.8,
+      "id": "T46",
+      "category": "批量测试",
+      "label": "GSE304657",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE284038",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T08:09:59.250851",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 25,
+        "gsm_entries": 6,
+        "data_files": 24
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "08:20:28 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "08:20:28 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "08:20:36 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "08:20:36 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ],
+      "duration_s": 638.8,
+      "id": "T47",
+      "category": "批量测试",
+      "label": "GSE284038",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE250124",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T08:20:38.142665",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 17,
+        "gsm_entries": 4,
+        "data_files": 16
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "08:27:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "08:27:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "08:27:09 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "08:27:09 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ],
+      "duration_s": 392.3,
+      "id": "T48",
+      "category": "批量测试",
+      "label": "GSE250124",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE335070",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-05T08:27:10.493060",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 122,
+        "gsm_entries": 75,
+        "data_files": 121
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "08:40:51 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, ",
+        "08:40:53 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "08:40:53 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "08:40:53 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+        "08:40:53 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+        "08:40:53 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+        "08:40:53 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`",
+        "08:40:53 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+        "08:40:53 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+      ],
+      "duration_s": 824.7,
+      "id": "T49",
+      "category": "批量测试",
+      "label": "GSE335070",
+      "features": "",
+      "grade": "D"
+    }
+  ]
+}

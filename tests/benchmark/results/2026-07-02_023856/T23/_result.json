@@ -1,0 +1,39 @@
+{
+  "gse_id": "GSE330011",
+  "success": true,
+  "returncode": 0,
+  "started_at": "2026-07-02T06:56:14.791565",
+  "stages": {
+    "inspect": {
+      "summary": "[1/3] INSPECT �� downloading + inspecting..."
+    },
+    "plan": {
+      "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+    },
+    "execute": {
+      "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+    }
+  },
+  "metrics": {
+    "cells": 18153,
+    "genes": 32245,
+    "batches": 1,
+    "success": true,
+    "errors": [],
+    "warnings": [],
+    "confidence": 0.98,
+    "field_mappings": 8,
+    "batch_separation_strategy": "single_batch",
+    "kb_match_count": 0,
+    "total_files": 14,
+    "gsm_entries": 2,
+    "data_files": 13
+  },
+  "errors": [],
+  "duration_s": 154.8,
+  "id": "T23",
+  "category": "批量测试",
+  "label": "GSE330011",
+  "features": "",
+  "grade": "S"
+}

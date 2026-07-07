@@ -1,0 +1,450 @@
+============================================================
+  Scrut-Cell Batch Benchmark
+  Datasets: 50
+  Results:  E:\Scruti-Cell\tests\benchmark\results\2026-07-05_005458
+  Time:     2026-07-05T00:54:59.409583
+============================================================
+
+>>> Clearing knowledge base...
+Knowledge base backend does not support clear operation.
+00:55:02 [INFO] scruticell.knowledge.graph: Connected to Neo4j at bolt://localhost:7687
+00:55:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:FieldSynonym) REQUIRE (e.name) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_d9f7bc3a FOR (e:FieldSynonym) REQUIRE (e.name) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (fs:FieldSynonym) REQUIRE fs.name IS UNIQUE'
+00:55:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:GeneMapping) REQUIRE (e.source_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_97b24131 FOR (e:GeneMapping) REQUIRE (e.source_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (gm:GeneMapping) REQUIRE gm.source_id IS UNIQUE'
+00:55:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:GSE) REQUIRE (e.gse_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_8bde2949 FOR (e:GSE) REQUIRE (e.gse_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (gse:GSE) REQUIRE gse.gse_id IS UNIQUE'
+00:55:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:ParseStrategy) REQUIRE (e.strategy_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_c9435509 FOR (e:ParseStrategy) REQUIRE (e.strategy_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (ps:ParseStrategy) REQUIRE ps.strategy_id IS UNIQUE'
+00:55:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:FailureCase) REQUIRE (e.case_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_e506595e FOR (e:FailureCase) REQUIRE (e.case_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (fc:FailureCase) REQUIRE fc.case_id IS UNIQUE'
+00:55:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:BatchPattern) REQUIRE (e.pattern_name) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_9e585b6f FOR (e:BatchPattern) REQUIRE (e.pattern_name) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (bp:BatchPattern) REQUIRE bp.pattern_name IS UNIQUE'
+00:55:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:BatchStrategy) REQUIRE (e.batch_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_25e2cc3 FOR (e:BatchStrategy) REQUIRE (e.batch_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (bs:BatchStrategy) REQUIRE bs.batch_id IS UNIQUE'
+00:55:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:MatrixStrategy) REQUIRE (e.matrix_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_61005091 FOR (e:MatrixStrategy) REQUIRE (e.matrix_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (ms:MatrixStrategy) REQUIRE ms.matrix_id IS UNIQUE'
+00:55:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:ProcessingCode) REQUIRE (e.code_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_f9784487 FOR (e:ProcessingCode) REQUIRE (e.code_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (pc:ProcessingCode) REQUIRE pc.code_id IS UNIQUE'
+00:55:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:AssemblyCode) REQUIRE (e.code_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_d85e5ea FOR (e:AssemblyCode) REQUIRE (e.code_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (ac:AssemblyCode) REQUIRE ac.code_id IS UNIQUE'
+00:55:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:FieldMappingStrategy) REQUIRE (e.mapping_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_4f3b0f74 FOR (e:FieldMappingStrategy) REQUIRE (e.mapping_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (fm:FieldMappingStrategy) REQUIRE fm.mapping_id IS UNIQUE'
+00:55:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:FieldSynonym) ON (e.canonical_name)' has no effect. The index or constraint specified by 'RANGE INDEX index_4029d71a FOR (e:FieldSynonym) ON (e.canonical_name)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (fs:FieldSynonym) ON (fs.canonical_name)'
+00:55:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:GeneMapping) ON (e.target_symbol)' has no effect. The index or constraint specified by 'RANGE INDEX index_e5f90fd0 FOR (e:GeneMapping) ON (e.target_symbol)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (gm:GeneMapping) ON (gm.target_symbol)'
+00:55:03 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:GSE) ON (e.organism)' has no effect. The index or constraint specified by 'RANGE INDEX index_1fe8d2a4 FOR (e:GSE) ON (e.organism)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (gse:GSE) ON (gse.organism)'
+00:55:03 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:GSE) ON (e.assay_type)' has no effect. The index or constraint specified by 'RANGE INDEX index_38f59a2a FOR (e:GSE) ON (e.assay_type)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (gse:GSE) ON (gse.assay_type)'
+00:55:03 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:ParseStrategy) ON (e.success_count)' has no effect. The index or constraint specified by 'RANGE INDEX index_85672a78 FOR (e:ParseStrategy) ON (e.success_count)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (ps:ParseStrategy) ON (ps.success_count)'
+00:55:03 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:FailureCase) ON (e.error_signature)' has no effect. The index or constraint specified by 'RANGE INDEX index_701fbc61 FOR (e:FailureCase) ON (e.error_signature)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (fc:FailureCase) ON (fc.error_signature)'
+00:55:03 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchPattern) ON (e.detection_rule)' has no effect. The index or constraint specified by 'RANGE INDEX index_5a2fc8b8 FOR (e:BatchPattern) ON (e.detection_rule)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bp:BatchPattern) ON (bp.detection_rule)'
+00:55:03 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchStrategy) ON (e.gsm_id)' has no effect. The index or constraint specified by 'RANGE INDEX index_6fcdd738 FOR (e:BatchStrategy) ON (e.gsm_id)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.gsm_id)'
+00:55:03 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchStrategy) ON (e.genotype)' has no effect. The index or constraint specified by 'RANGE INDEX index_369c2325 FOR (e:BatchStrategy) ON (e.genotype)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.genotype)'
+00:55:03 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchStrategy) ON (e.treatment)' has no effect. The index or constraint specified by 'RANGE INDEX index_9d96a35e FOR (e:BatchStrategy) ON (e.treatment)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.treatment)'
+00:55:03 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:MatrixStrategy) ON (e.format)' has no effect. The index or constraint specified by 'RANGE INDEX index_5eea1dd4 FOR (e:MatrixStrategy) ON (e.format)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (ms:MatrixStrategy) ON (ms.format)'
+00:55:03 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:FieldMappingStrategy) ON (e.canonical)' has no effect. The index or constraint specified by 'RANGE INDEX index_281945fe FOR (e:FieldMappingStrategy) ON (e.canonical)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (fm:FieldMappingStrategy) ON (fm.canonical)'
+00:55:03 [INFO] scruticell.knowledge.graph: Neo4j schema initialized
+
+──────────────────────────────────────────────────
+  [1/50] T00 — GSE312357
+  Category: 批量测试 | GSE312357
+  Features: 
+  Result: FAIL | Grade: D | C=0 G=0 B=0 | 617.6s
+
+──────────────────────────────────────────────────
+  [2/50] T01 — GSE327093
+  Category: 批量测试 | GSE327093
+  Features: 
+  Result: PASS | Grade: S | C=33554 G=31019 B=4 | 367.5s
+
+──────────────────────────────────────────────────
+  [3/50] T02 — GSE333438
+  Category: 批量测试 | GSE333438
+  Features: 
+  Result: PASS | Grade: S | C=5363 G=32248 B=2 | 250.8s
+
+──────────────────────────────────────────────────
+  [4/50] T03 — GSE297558
+  Category: 批量测试 | GSE297558
+  Features: 
+  Result: PASS | Grade: A | C=9507 G=32245 B=4 | 268.5s
+
+──────────────────────────────────────────────────
+  [5/50] T04 — GSE290746
+  Category: 批量测试 | GSE290746
+  Features: 
+  Result: FAIL | Grade: D | C=0 G=0 B=0 | 999.8s
+
+──────────────────────────────────────────────────
+  [6/50] T05 — GSE269042
+  Category: 批量测试 | 开始之前删除相同目录重新下载
+  Features: 
+  Result: FAIL | Grade: D | C=0 G=0 B=0 | 524.1s
+
+──────────────────────────────────────────────────
+  [7/50] T06 — GSE303943
+  Category: 批量测试 | GSE303943
+  Features: 
+  Result: FAIL | Grade: D | C=0 G=0 B=0 | 480.6s
+
+──────────────────────────────────────────────────
+  [8/50] T07 — GSE284668
+  Category: 批量测试 | GSE284668
+  Features: 
+  Result: FAIL | Grade: D | C=0 G=0 B=0 | 402.5s
+
+──────────────────────────────────────────────────
+  [9/50] T08 — GSE317309
+  Category: 批量测试 | GSE317309
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 54.0s
+
+──────────────────────────────────────────────────
+  [10/50] T09 — GSE328098
+  Category: 批量测试 | GSE328098
+  Features: 
+  Result: PASS | Grade: S | C=159303 G=32245 B=1 | 1194.4s
+
+──────────────────────────────────────────────────
+  [11/50] T10 — GSE294571
+  Category: 批量测试 | GSE294571
+  Features: 
+  Result: PASS | Grade: S | C=12312 G=32247 B=2 | 299.0s
+
+──────────────────────────────────────────────────
+  [12/50] T11 — GSE284443
+  Category: 批量测试 | GSE284443
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 43.4s
+
+──────────────────────────────────────────────────
+  [13/50] T12 — GSE297632
+  Category: 批量测试 | GSE297632
+  Features: 
+  Result: FAIL | Grade: D | C=0 G=0 B=0 | 543.3s
+
+──────────────────────────────────────────────────
+  [14/50] T13 — GSE312138
+  Category: 批量测试 | GSE312138
+  Features: 
+  Result: FAIL | Grade: D | C=0 G=0 B=0 | 569.7s
+
+──────────────────────────────────────────────────
+  [15/50] T14 — GSE295600
+  Category: 批量测试 | GSE295600
+  Features: 
+  Result: PASS | Grade: S | C=48275 G=36601 B=18 | 1451.8s
+
+──────────────────────────────────────────────────
+  [16/50] T15 — GSE276139
+  Category: 批量测试 | GSE276139
+  Features: 
+  Result: FAIL | Grade: D | C=0 G=0 B=0 | 1367.9s
+
+──────────────────────────────────────────────────
+  [17/50] T16 — GSE304864
+  Category: 批量测试 | GSE304864
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 996.3s
+
+──────────────────────────────────────────────────
+  [18/50] T17 — GSE295518
+  Category: 批量测试 | GSE295518
+  Features: 
+  Result: FAIL | Grade: D | C=0 G=0 B=0 | 427.3s
+
+──────────────────────────────────────────────────
+  [19/50] T18 — GSE294490
+  Category: 批量测试 | GSE294490
+  Features: 
+  Result: FAIL | Grade: D | C=0 G=0 B=0 | 395.7s
+
+──────────────────────────────────────────────────
+  [20/50] T19 — GSE285606
+  Category: 批量测试 | GSE285606
+  Features: 
+  Result: FAIL | Grade: D | C=0 G=0 B=0 | 527.1s
+
+──────────────────────────────────────────────────
+  [21/50] T20 — GSE254205
+  Category: 批量测试 | GSE254205
+  Features: 
+  Result: PASS | Grade: S | C=121165 G=33538 B=1 | 1591.7s
+
+──────────────────────────────────────────────────
+  [22/50] T21 — GSE243292
+  Category: 批量测试 | GSE243292
+  Features: 
+  Result: PASS | Grade: S | C=15529 G=17012 B=1 | 1105.2s
+
+──────────────────────────────────────────────────
+  [23/50] T22 — GSE336234
+  Category: 批量测试 | GSE336234
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 608.8s
+
+──────────────────────────────────────────────────
+  [24/50] T23 — GSE330011
+  Category: 批量测试 | GSE330011
+  Features: 
+  Result: FAIL | Grade: D | C=0 G=0 B=0 | 459.1s
+
+──────────────────────────────────────────────────
+  [25/50] T24 — GSE327101
+  Category: 批量测试 | GSE327101
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 47.1s
+
+──────────────────────────────────────────────────
+  [26/50] T25 — GSE320221
+  Category: 批量测试 | GSE320221
+  Features: 
+  Result: FAIL | Grade: D | C=0 G=0 B=0 | 553.3s
+
+──────────────────────────────────────────────────
+  [27/50] T26 — GSE300982
+  Category: 批量测试 | GSE300982
+  Features: 
+  Result: PASS | Grade: S | C=147591 G=27937 B=12 | 1391.0s
+
+──────────────────────────────────────────────────
+  [28/50] T27 — GSE300932
+  Category: 批量测试 | GSE300932
+  Features: 
+  Result: FAIL | Grade: D | C=0 G=0 B=0 | 815.7s
+
+──────────────────────────────────────────────────
+  [29/50] T28 — GSE289335
+  Category: 批量测试 | GSE289335
+  Features: 
+  Result: FAIL | Grade: D | C=0 G=0 B=0 | 800.8s
+
+──────────────────────────────────────────────────
+  [30/50] T29 — GSE278526
+  Category: 批量测试 | GSE278526
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 380.5s
+
+──────────────────────────────────────────────────
+  [31/50] T30 — GSE336609
+  Category: 批量测试 | GSE336609
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 43.5s
+
+──────────────────────────────────────────────────
+  [32/50] T31 — GSE333617
+  Category: 批量测试 | GSE333617
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 765.8s
+
+──────────────────────────────────────────────────
+  [33/50] T32 — GSE303768
+  Category: 批量测试 | GSE303768
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 338.3s
+
+──────────────────────────────────────────────────
+  [34/50] T33 — GSE290316
+  Category: 批量测试 | GSE290316
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 728.5s
+
+──────────────────────────────────────────────────
+  [35/50] T34 — GSE336281
+  Category: 批量测试 | GSE336281
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 87.0s
+
+──────────────────────────────────────────────────
+  [36/50] T35 — GSE335943
+  Category: 批量测试 | GSE335943
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 40.8s
+
+──────────────────────────────────────────────────
+  [37/50] T36 — GSE335657
+  Category: 批量测试 | GSE335657
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 51.0s
+
+──────────────────────────────────────────────────
+  [38/50] T37 — GSE326338
+  Category: 批量测试 | GSE326338
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 82.9s
+
+──────────────────────────────────────────────────
+  [39/50] T38 — GSE308594
+  Category: 批量测试 | GSE308594
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 444.4s
+
+──────────────────────────────────────────────────
+  [40/50] T39 — GSE304429
+  Category: 批量测试 | GSE304429
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 173.6s
+
+──────────────────────────────────────────────────
+  [41/50] T40 — GSE316025
+  Category: 批量测试 | GSE316025
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 894.2s
+
+──────────────────────────────────────────────────
+  [42/50] T41 — GSE314885
+  Category: 批量测试 | GSE314885
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 274.4s
+
+──────────────────────────────────────────────────
+  [43/50] T42 — GSE300724
+  Category: 批量测试 | GSE300724
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 698.5s
+
+──────────────────────────────────────────────────
+  [44/50] T43 — GSE336034
+  Category: 批量测试 | GSE336034
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 534.9s
+
+──────────────────────────────────────────────────
+  [45/50] T44 — GSE320131
+  Category: 批量测试 | GSE320131
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 97.8s
+
+──────────────────────────────────────────────────
+  [46/50] T45 — GSE314571
+  Category: 批量测试 | GSE314571
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 1273.2s
+
+──────────────────────────────────────────────────
+  [47/50] T46 — GSE304657
+  Category: 批量测试 | GSE304657
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 19.8s
+
+──────────────────────────────────────────────────
+  [48/50] T47 — GSE284038
+  Category: 批量测试 | GSE284038
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 638.8s
+
+──────────────────────────────────────────────────
+  [49/50] T48 — GSE250124
+  Category: 批量测试 | GSE250124
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 392.3s
+
+──────────────────────────────────────────────────
+  [50/50] T49 — GSE335070
+  Category: 批量测试 | GSE335070
+  Features: 
+  Result: FAIL | Grade: D | C=? G=? B=? | 824.7s
+
+
+============================================================
+  BENCHMARK SUMMARY
+============================================================
+
+  Total:   50
+  Passed:  9 (18%)
+  Grades:  S=8 A=1 B=0 C=0 D=41 F=0
+
+────────────────────────────────────────
+  By Category:
+    批量测试        : 9/50 passed (18%) avg_conf=94%
+
+────────────────────────────────────────
+  Failures (41):
+    GSE312357 (T00): Unrecoverable error (attempt 1), stopping; Execution: FAILED
+    GSE290746 (T04): Unrecoverable error (attempt 1), stopping; Execution: FAILED
+    GSE269042 (T05): Unrecoverable error (attempt 1), stopping; Execution: FAILED
+    GSE303943 (T06): Unrecoverable error (attempt 1), stopping; Execution: FAILED
+    GSE284668 (T07): Unrecoverable error (attempt 1), stopping; Execution: FAILED
+    GSE317309 (T08): Generating plan via LLM... FAILED: Could not generate a valid plan; 02:00:24 [ERROR] scruticell.pipeline.nodes.parse: No SOFT file available for GSE31
+    GSE284443 (T11): Generating plan via LLM... FAILED: Could not generate a valid plan; 02:26:10 [ERROR] scruticell.pipeline.nodes.parse: No SOFT file available for GSE28
+    GSE297632 (T12): Unrecoverable error (attempt 1), stopping; Execution: FAILED
+    GSE312138 (T13): Unrecoverable error (attempt 1), stopping; Execution: FAILED
+    GSE276139 (T15): Unrecoverable error (attempt 1), stopping; Execution: FAILED
+    GSE304864 (T16): 03:40:18 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\Scruti-Cell\output
+    GSE295518 (T17): Unrecoverable error (attempt 1), stopping; Execution: FAILED
+    GSE294490 (T18): Unrecoverable error (attempt 1), stopping; Execution: FAILED
+    GSE285606 (T19): Unrecoverable error (attempt 1), stopping; Execution: FAILED
+    GSE336234 (T22): Generating plan via LLM... FAILED: Could not generate a valid plan; 04:59:32 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlS
+    GSE330011 (T23): Unrecoverable error (attempt 1), stopping; Execution: FAILED
+    GSE327101 (T24): Generating plan via LLM... FAILED: Could not generate a valid plan; 05:14:30 [ERROR] scruticell.pipeline.nodes.parse: No SOFT file available for GSE32
+    GSE320221 (T25): Unrecoverable error (attempt 1), stopping; Execution: FAILED
+    GSE300932 (T27): Unrecoverable error (attempt 1), stopping; Execution: FAILED
+    GSE289335 (T28): Execution failed (attempt 2), re-planning...; Execution: FAILED
+    GSE278526 (T29): Generating plan via LLM... FAILED: Could not generate a valid plan; 06:20:42 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Gener
+    GSE336609 (T30): Generating plan via LLM... FAILED: Could not generate a valid plan; 06:21:25 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Gener
+    GSE333617 (T31): Generating plan via LLM... FAILED: Could not generate a valid plan; 06:34:10 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Gener
+    GSE303768 (T32): Generating plan via LLM... FAILED: Could not generate a valid plan; 06:39:50 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Gener
+    GSE290316 (T33): Generating plan via LLM... FAILED: Could not generate a valid plan; 06:51:59 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Gener
+    GSE336281 (T34): Generating plan via LLM... FAILED: Could not generate a valid plan; 06:53:27 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Gener
+    GSE335943 (T35): Generating plan via LLM... FAILED: Could not generate a valid plan; 06:54:07 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Gener
+    GSE335657 (T36): Generating plan via LLM... FAILED: Could not generate a valid plan; 06:54:58 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Gener
+    GSE326338 (T37): Generating plan via LLM... FAILED: Could not generate a valid plan; 06:56:15 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlS
+    GSE308594 (T38): Generating plan via LLM... FAILED: Could not generate a valid plan; 07:03:46 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Gener
+    GSE304429 (T39): Generating plan via LLM... FAILED: Could not generate a valid plan; 07:06:40 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Gener
+    GSE316025 (T40): Generating plan via LLM... FAILED: Could not generate a valid plan; 07:21:33 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Gener
+    GSE314885 (T41): Generating plan via LLM... FAILED: Could not generate a valid plan; 07:26:09 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Gener
+    GSE300724 (T42): Generating plan via LLM... FAILED: Could not generate a valid plan; 07:37:48 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Gener
+    GSE336034 (T43): Generating plan via LLM... FAILED: Could not generate a valid plan; 07:46:43 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Gener
+    GSE320131 (T44): Generating plan via LLM... FAILED: Could not generate a valid plan; 07:48:21 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Gener
+    GSE314571 (T45): Generating plan via LLM... FAILED: Could not generate a valid plan; 08:09:34 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Gener
+    GSE304657 (T46): Generating plan via LLM... FAILED: Could not generate a valid plan; 08:09:47 [ERROR] scruticell.pipeline.nodes.parse: No SOFT file available for GSE30
+    GSE284038 (T47): Generating plan via LLM... FAILED: Could not generate a valid plan; 08:20:28 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlS
+    GSE250124 (T48): Generating plan via LLM... FAILED: Could not generate a valid plan; 08:27:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlS
+    GSE335070 (T49): Generating plan via LLM... FAILED: Could not generate a valid plan; 08:40:51 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Gener
+
+────────────────────────────────────────
+  Detail:
+  ID     GSE          Grade    Cells    Genes Bat  Conf   Time  Category    
+  --------------------------------------------------------------------------
+  T00    GSE312357    D            0        0   0   99% 617.6s  批量测试        
+  T01    GSE327093    S        33554    31019   4   95% 367.5s  批量测试        
+  T02    GSE333438    S         5363    32248   2   95% 250.8s  批量测试        
+  T03    GSE297558    A         9507    32245   4   85% 268.5s  批量测试        
+  T04    GSE290746    D            0        0   0   99% 999.8s  批量测试        
+  T05    GSE269042    D            0        0   0   95% 524.1s  批量测试        
+  T06    GSE303943    D            0        0   0   98% 480.6s  批量测试        
+  T07    GSE284668    D            0        0   0  100% 402.5s  批量测试        
+  T08    GSE317309    D            ?        ?   ?    0%  54.0s  批量测试        
+  T09    GSE328098    S       159303    32245   1   95% 1194.4s  批量测试        
+  T10    GSE294571    S        12312    32247   2   99% 299.0s  批量测试        
+  T11    GSE284443    D            ?        ?   ?    0%  43.4s  批量测试        
+  T12    GSE297632    D            0        0   0   95% 543.3s  批量测试        
+  T13    GSE312138    D            0        0   0   95% 569.7s  批量测试        
+  T14    GSE295600    S        48275    36601  18  100% 1451.8s  批量测试        
+  T15    GSE276139    D            0        0   0   99% 1367.9s  批量测试        
+  T16    GSE304864    D            ?        ?   ?    0% 996.3s  批量测试        
+  T17    GSE295518    D            0        0   0   95% 427.3s  批量测试        
+  T18    GSE294490    D            0        0   0   95% 395.7s  批量测试        
+  T19    GSE285606    D            0        0   0   99% 527.1s  批量测试        
+  T20    GSE254205    S       121165    33538   1   95% 1591.7s  批量测试        
+  T21    GSE243292    S        15529    17012   1   90% 1105.2s  批量测试        
+  T22    GSE336234    D            ?        ?   ?    0% 608.8s  批量测试        
+  T23    GSE330011    D            0        0   0   99% 459.1s  批量测试        
+  T24    GSE327101    D            ?        ?   ?    0%  47.1s  批量测试        
+  T25    GSE320221    D            0        0   0  100% 553.3s  批量测试        
+  T26    GSE300982    S       147591    27937  12   95% 1391.0s  批量测试        
+  T27    GSE300932    D            0        0   0   95% 815.7s  批量测试        
+  T28    GSE289335    D            0        0   0   95% 800.8s  批量测试        
+  T29    GSE278526    D            ?        ?   ?    0% 380.5s  批量测试        
+  T30    GSE336609    D            ?        ?   ?    0%  43.5s  批量测试        
+  T31    GSE333617    D            ?        ?   ?    0% 765.8s  批量测试        
+  T32    GSE303768    D            ?        ?   ?    0% 338.3s  批量测试        
+  T33    GSE290316    D            ?        ?   ?    0% 728.5s  批量测试        
+  T34    GSE336281    D            ?        ?   ?    0%  87.0s  批量测试        
+  T35    GSE335943    D            ?        ?   ?    0%  40.8s  批量测试        
+  T36    GSE335657    D            ?        ?   ?    0%  51.0s  批量测试        
+  T37    GSE326338    D            ?        ?   ?    0%  82.9s  批量测试        
+  T38    GSE308594    D            ?        ?   ?    0% 444.4s  批量测试        
+  T39    GSE304429    D            ?        ?   ?    0% 173.6s  批量测试        
+  T40    GSE316025    D            ?        ?   ?    0% 894.2s  批量测试        
+  T41    GSE314885    D            ?        ?   ?    0% 274.4s  批量测试        
+  T42    GSE300724    D            ?        ?   ?    0% 698.5s  批量测试        
+  T43    GSE336034    D            ?        ?   ?    0% 534.9s  批量测试        
+  T44    GSE320131    D            ?        ?   ?    0%  97.8s  批量测试        
+  T45    GSE314571    D            ?        ?   ?    0% 1273.2s  批量测试        
+  T46    GSE304657    D            ?        ?   ?    0%  19.8s  批量测试        
+  T47    GSE284038    D            ?        ?   ?    0% 638.8s  批量测试        
+  T48    GSE250124    D            ?        ?   ?    0% 392.3s  批量测试        
+  T49    GSE335070    D            ?        ?   ?    0% 824.7s  批量测试        
+
+============================================================
+  Report saved: E:\Scruti-Cell\tests\benchmark\results\2026-07-05_005458\summary.json
+============================================================

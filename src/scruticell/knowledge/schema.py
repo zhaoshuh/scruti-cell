@@ -1,7 +1,9 @@
 """Neo4j knowledge graph schema definition.
 
-The knowledge graph stores accumulated parsing strategies, field synonym mappings,
-gene ID cross-references, failure cases, and batch detection patterns.
+The knowledge graph stores accumulated parsing strategies as true graph data,
+decomposing each plan into linked nodes: ParseStrategy → BatchStrategy →
+MatrixStrategy, with ProcessingCode / AssemblyCode nodes for generated code.
+
 This is the long-term memory substrate for the Reflexion agent.
 """
 
@@ -12,7 +14,7 @@ from __future__ import annotations
 CONSTRAINTS: list[str] = [
     # Field Synonym uniqueness
     "CREATE CONSTRAINT IF NOT EXISTS FOR (fs:FieldSynonym) REQUIRE fs.name IS UNIQUE",
-    # Gene Mapping uniqueness (source_id + source_system) - composite unique for Community Edition
+    # Gene Mapping uniqueness (source_id + source_system)
     "CREATE CONSTRAINT IF NOT EXISTS FOR (gm:GeneMapping) REQUIRE gm.source_id IS UNIQUE",
     # GSE uniqueness
     "CREATE CONSTRAINT IF NOT EXISTS FOR (gse:GSE) REQUIRE gse.gse_id IS UNIQUE",
@@ -22,6 +24,16 @@ CONSTRAINTS: list[str] = [
     "CREATE CONSTRAINT IF NOT EXISTS FOR (fc:FailureCase) REQUIRE fc.case_id IS UNIQUE",
     # Batch Pattern uniqueness
     "CREATE CONSTRAINT IF NOT EXISTS FOR (bp:BatchPattern) REQUIRE bp.pattern_name IS UNIQUE",
+    # Batch Strategy uniqueness (composite: strategy_id + gsm_id)
+    "CREATE CONSTRAINT IF NOT EXISTS FOR (bs:BatchStrategy) REQUIRE bs.batch_id IS UNIQUE",
+    # Matrix Strategy uniqueness (composite: file_key within strategy)
+    "CREATE CONSTRAINT IF NOT EXISTS FOR (ms:MatrixStrategy) REQUIRE ms.matrix_id IS UNIQUE",
+    # Processing Code uniqueness
+    "CREATE CONSTRAINT IF NOT EXISTS FOR (pc:ProcessingCode) REQUIRE pc.code_id IS UNIQUE",
+    # Assembly Code uniqueness
+    "CREATE CONSTRAINT IF NOT EXISTS FOR (ac:AssemblyCode) REQUIRE ac.code_id IS UNIQUE",
+    # Field Mapping Strategy uniqueness
+    "CREATE CONSTRAINT IF NOT EXISTS FOR (fm:FieldMappingStrategy) REQUIRE fm.mapping_id IS UNIQUE",
 ]
 
 INDEXES: list[str] = [
@@ -32,6 +44,11 @@ INDEXES: list[str] = [
     "CREATE INDEX IF NOT EXISTS FOR (ps:ParseStrategy) ON (ps.success_count)",
     "CREATE INDEX IF NOT EXISTS FOR (fc:FailureCase) ON (fc.error_signature)",
     "CREATE INDEX IF NOT EXISTS FOR (bp:BatchPattern) ON (bp.detection_rule)",
+    "CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.gsm_id)",
+    "CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.genotype)",
+    "CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.treatment)",
+    "CREATE INDEX IF NOT EXISTS FOR (ms:MatrixStrategy) ON (ms.format)",
+    "CREATE INDEX IF NOT EXISTS FOR (fm:FieldMappingStrategy) ON (fm.canonical)",
 ]
 
 # === Node Creation Queries ===
@@ -69,11 +86,20 @@ SET gse.title = $title,
     gse.processed_at = datetime()
 """
 
+# ── Strategy Graph Nodes ──
+
 CREATE_PARSE_STRATEGY = """
 CREATE (ps:ParseStrategy {
     strategy_id: $strategy_id,
     gse_pattern: $gse_pattern,
-    strategy_json: $strategy_json,
+    gene_id_system: $gene_id_system,
+    normalize_genes: $normalize_genes,
+    drop_duplicate_genes: $drop_duplicate_genes,
+    normalization: $normalization,
+    is_raw_counts: $is_raw_counts,
+    batch_separation_strategy: $batch_separation_strategy,
+    strategy_notes: $strategy_notes,
+    confidence: $confidence,
     success_count: $success_count,
     fail_count: $fail_count,
     avg_confidence: $avg_confidence,
@@ -83,6 +109,92 @@ WITH ps
 MATCH (gse:GSE {gse_id: $gse_id})
 CREATE (gse)-[:HAS_STRATEGY]->(ps)
 """
+
+CREATE_BATCH_STRATEGY = """
+CREATE (bs:BatchStrategy {
+    batch_id: $batch_id,
+    gsm_id: $gsm_id,
+    batch_label: $batch_label,
+    cell_count: $cell_count,
+    barcode_prefix: $barcode_prefix,
+    note: $note,
+    reasoning: $reasoning,
+    defining_fields: $defining_fields
+})
+WITH bs
+MATCH (ps:ParseStrategy {strategy_id: $strategy_id})
+CREATE (ps)-[:HAS_BATCH]->(bs)
+"""
+
+CREATE_MATRIX_STRATEGY = """
+CREATE (ms:MatrixStrategy {
+    matrix_id: $matrix_id,
+    file_key: $file_key,
+    format: $format,
+    orientation: $orientation,
+    transpose: $transpose,
+    note: $note
+})
+WITH ms
+MATCH (ps:ParseStrategy {strategy_id: $strategy_id})
+CREATE (ps)-[:USES_MATRIX]->(ms)
+"""
+
+LINK_BATCH_TO_MATRIX = """
+MATCH (bs:BatchStrategy {batch_id: $batch_id})
+MATCH (ms:MatrixStrategy {matrix_id: $matrix_id})
+CREATE (bs)-[:USES_MATRIX]->(ms)
+"""
+
+CREATE_PROCESSING_CODE = """
+CREATE (pc:ProcessingCode {
+    code_id: $code_id,
+    code: $code,
+    language: 'python'
+})
+WITH pc
+MATCH (ps:ParseStrategy {strategy_id: $strategy_id})
+CREATE (ps)-[:EXECUTES]->(pc)
+"""
+
+CREATE_ASSEMBLY_CODE = """
+CREATE (ac:AssemblyCode {
+    code_id: $code_id,
+    code: $code,
+    language: 'python'
+})
+WITH ac
+MATCH (ps:ParseStrategy {strategy_id: $strategy_id})
+CREATE (ps)-[:ASSEMBLES_WITH]->(ac)
+"""
+
+CREATE_FIELD_MAPPING_STRATEGY = """
+CREATE (fm:FieldMappingStrategy {
+    mapping_id: $mapping_id,
+    raw_field: $raw_field,
+    canonical: $canonical,
+    source: $source,
+    note: $note
+})
+WITH fm
+MATCH (ps:ParseStrategy {strategy_id: $strategy_id})
+CREATE (ps)-[:MAPS_FIELD]->(fm)
+"""
+
+# ── Cleanup helper: delete old strategy + all linked sub-nodes ──
+
+DELETE_STRATEGY_CASCADE = """
+MATCH (ps:ParseStrategy {strategy_id: $strategy_id})
+OPTIONAL MATCH (ps)-[:HAS_BATCH]->(bs:BatchStrategy)
+OPTIONAL MATCH (ps)-[:USES_MATRIX]->(ms:MatrixStrategy)
+OPTIONAL MATCH (ps)-[:EXECUTES]->(pc:ProcessingCode)
+OPTIONAL MATCH (ps)-[:ASSEMBLES_WITH]->(ac:AssemblyCode)
+OPTIONAL MATCH (ps)-[:MAPS_FIELD]->(fm:FieldMappingStrategy)
+OPTIONAL MATCH (bs)-[:USES_MATRIX]->(bms:MatrixStrategy)
+DETACH DELETE bs, ms, pc, ac, fm, ps, bms
+"""
+
+# === Failure & Pattern queries ===
 
 CREATE_FAILURE_CASE = """
 MERGE (fc:FailureCase {case_id: $case_id})
@@ -130,9 +242,38 @@ LIMIT 20
 FIND_BEST_STRATEGY = """
 MATCH (ps:ParseStrategy)
 WHERE ps.organism = $organism AND ps.assay_type = $assay_type
-RETURN ps.strategy_id, ps.strategy_json, ps.success_count,
-       ps.fail_count, ps.avg_confidence
+RETURN ps.strategy_id, ps.gene_id_system, ps.strategy_notes,
+       ps.success_count, ps.fail_count, ps.avg_confidence, ps.confidence
 ORDER BY ps.success_count DESC LIMIT 10
+"""
+
+# ── Graph traversal: reconstruct full plan from linked nodes ──
+
+RECONSTRUCT_STRATEGY_PLAN = """
+MATCH (ps:ParseStrategy {strategy_id: $strategy_id})
+OPTIONAL MATCH (ps)-[:HAS_BATCH]->(bs:BatchStrategy)
+OPTIONAL MATCH (bs)-[:USES_MATRIX]->(bms:MatrixStrategy)
+OPTIONAL MATCH (ps)-[:USES_MATRIX]->(ms:MatrixStrategy)
+OPTIONAL MATCH (ps)-[:EXECUTES]->(pc:ProcessingCode)
+OPTIONAL MATCH (ps)-[:ASSEMBLES_WITH]->(ac:AssemblyCode)
+OPTIONAL MATCH (ps)-[:MAPS_FIELD]->(fm:FieldMappingStrategy)
+RETURN ps,
+       collect(DISTINCT bs) AS batches,
+       collect(DISTINCT ms) AS matrices,
+       collect(DISTINCT bms) AS batch_matrices,
+       collect(DISTINCT pc) AS processing_codes,
+       collect(DISTINCT ac) AS assembly_codes,
+       collect(DISTINCT fm) AS field_mappings
+"""
+
+FIND_STRATEGIES_BY_SIGNATURE = """
+MATCH (ps:ParseStrategy)
+WHERE ps.strategy_id = $strategy_id
+   OR ps.strategy_id STARTS WITH $prefix
+RETURN ps.strategy_id, ps.strategy_notes, ps.confidence,
+       ps.success_count, ps.fail_count, ps.avg_confidence
+ORDER BY ps.success_count DESC, ps.created_at DESC
+LIMIT $limit
 """
 
 UPDATE_STRATEGY_STATS = """

@@ -1,0 +1,23 @@
+{
+  "gse_id": "GSE317309",
+  "success": false,
+  "returncode": 1,
+  "started_at": "2026-07-07T01:35:22.151215",
+  "stages": {
+    "inspect": {
+      "summary": "[1/3] INSPECT �� downloading + inspecting..."
+    },
+    "plan": {},
+    "execute": {}
+  },
+  "metrics": {},
+  "errors": [
+    "01:35:33 [ERROR] scruticell.pipeline.nodes.download: GSE GSE317309: supplementary files too large (7.6 GB > 2 GB). Download skipped."
+  ],
+  "duration_s": 11.2,
+  "id": "T08",
+  "category": "批量测试",
+  "label": "GSE317309",
+  "features": "",
+  "grade": "D"
+}

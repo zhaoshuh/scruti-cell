@@ -12,6 +12,8 @@ import logging
 import re
 from typing import Any, Optional
 
+from scruticell.utils.tokens import invoke_and_track
+
 logger = logging.getLogger(__name__)
 
 _PLATFORM_PATTERNS = [
@@ -321,7 +323,7 @@ def _llm_extract(text: str, model: str) -> dict[str, Any]:
         if LLM_API_KEY:
             llm_kwargs["openai_api_key"] = LLM_API_KEY
         llm = ChatOpenAI(**llm_kwargs)
-        response = llm.invoke(prompt)
+        response = invoke_and_track(llm, prompt, "literature_extract")
         return _parse_llm_json(str(response.content))
     except ImportError:
         logger.warning("langchain_openai not installed, skipping LLM extraction")

@@ -1,0 +1,1396 @@
+=== STDOUT ===
+
+============================================================
+  Scrut-Cell Full Pipeline: GSE295600
+  Output: E:\Scruti-Cell\output\GSE295600
+============================================================
+
+  [1/3] INSPECT �� downloading + inspecting...
+    Downloading... OK
+    Parsing SOFT... OK
+    Building report... OK
+    Generating reader code... OK
+    Report: E:\Scruti-Cell\output\GSE295600\inspect.json
+    Files: 55 | GSM entries: 18
+
+  [2/3] PLAN �� knowledge base matching + LLM plan generation...
+    KB Matches: 0
+    Generating plan via LLM... OK
+    Plan:    E:\Scruti-Cell\output\GSE295600\plan.json
+    Confidence: 100% | Matrices: 18 | Batches: 18
+    Batch strategy: per_sample
+
+  [3/3] EXECUTE �� reading matrices + building AnnData...
+    Execution: SUCCESS
+    Output:   E:\Scruti-Cell\output\GSE295600\GSE295600_GSM8953605_scruticell.h5ad
+    Cells:    48275 | Genes: 36601 | Batches: 18
+    Metadata:  E:\Scruti-Cell\output\GSE295600\metadata.md
+
+========================================================================
+  Token Usage Report
+========================================================================
+  Step                         Calls      Input    Output      Total   Time
+  --------------------------------------------------------------------
+  step1_flowchart                  1         1K        2K         3K  25.0s
+  step2_gsm                        1        15K        3K        18K  32.3s
+  step3_file                       1       104K       10K       113K 107.5s
+  step4_metadata                   1       111K        83       111K   2.2s
+  step5a_batch                     1       135K        3K       139K  33.4s
+  step5b_matrix                    1       142K        3K       146K  33.4s
+  --------------------------------------------------------------------
+  INSPECT (5-step)                 6       508K       21K       528K 233.9s
+
+  ====================================================================
+  TOTAL                            7       639K       32K       670K 337.1s
+========================================================================
+
+============================================================
+  Pipeline complete: GSE295600
+  Cells: 48275 | Genes: 36601 | Batches: 18
+  Output: E:\Scruti-Cell\output\GSE295600
+============================================================
+
+------------------------------------------------------------
+  TRACE: GSE295600
+------------------------------------------------------------
+  LLM Steps Run: step1:flowchart, step2:gsm, step3:file, step4:lit, step5:plan
+  Literature: not available (PMID=N/A)
+  ORC Verified: 0/0 items
+  Compound Splits: 0
+  KB Matches: 0
+
+  -- BATCH: GSM8953605 --
+  Why batch: Unique patient biopsy: patient1, baseline, ovarian cancer liver metastasis. One expression matrix per GSM.
+  Differs in: batch
+  Matrix: GSM8953605_1b_counts.csv
+  Format: csv | Orientation: gene_x_cell -> cell_x_gene (transposed)
+  Cells: 7257 | Genes: 36601 (pruned: 0)
+  Gene ID system: symbol
+  Metadata injected (17 columns):
+    + batch                [executor: batch assignment]
+       value: GSM8953605
+    + library_name         [GSM: filename extraction]
+       value: 1b
+    + organism             [processing code]
+       value: Homo sapiens
+    + molecule             [processing code]
+       value: total RNA
+    + library_strategy     [processing code]
+       value: RNA-Seq
+    + instrument_model     [processing code]
+       value: Illumina HiSeq 4000
+    + taxid                [processing code]
+       value: 9606
+    + cancer_type          [processing code]
+       value: Ovarian
+    + tissue               [processing code]
+       value: Tumor
+    + patient              [processing code]
+       value: patient1
+    + time_point           [processing code]
+       value: Baseline
+    + biopsy_site          [processing code]
+       value: Liver
+    + title_patient_num    [processing code]
+       value: 1
+    + title_time           [processing code]
+       value: baseline
+    + cellranger_version   [processing code]
+       value: 4.0.0
+    + genome_assembly      [processing code]
+       value: GRCh38
+    + supplementary_files_format [processing code]
+       value: Processed gene expression raw count with Gene Symbol mapping for filtered non-ap
+
+  -- BATCH: GSM8953606 --
+  Why batch: Post-treatment (day 10) biopsy from same patient1. Separate matrix file.
+  Differs in: batch
+  Matrix: GSM8953606_1d10_counts.csv
+  Format: csv | Orientation: gene_x_cell -> cell_x_gene (transposed)
+  Cells: 2221 | Genes: 36601 (pruned: 0)
+  Gene ID system: symbol
+  Metadata injected (17 columns):
+    + batch                [executor: batch assignment]
+       value: GSM8953606
+    + library_name         [GSM: filename extraction]
+       value: 1d10
+    + organism             [processing code]
+       value: Homo sapiens
+    + molecule             [processing code]
+       value: total RNA
+    + library_strategy     [processing code]
+       value: RNA-Seq
+    + instrument_model     [processing code]
+       value: Illumina HiSeq 4000
+    + taxid                [processing code]
+       value: 9606
+    + cancer_type          [processing code]
+       value: Ovarian
+    + tissue               [processing code]
+       value: Tumor
+    + patient              [processing code]
+       value: patient1
+    + time_point           [processing code]
+       value: Treatment
+    + biopsy_site          [processing code]
+       value: Liver
+    + title_patient_num    [processing code]
+       value: 1
+    + title_time           [processing code]
+       value: day10
+    + cellranger_version   [processing code]
+       value: 4.0.0
+    + genome_assembly      [processing code]
+       value: GRCh38
+    + supplementary_files_format [processing code]
+       value: Processed gene expression raw count with Gene Symbol mapping for filtered non-ap
+
+  -- BATCH: GSM8953607 --
+  Why batch: patient3 baseline ovarian cancer, vaginal metastasis biopsy.
+  Differs in: batch
+  Matrix: GSM8953607_3b_counts.csv
+  Format: csv | Orientation: gene_x_cell -> cell_x_gene (transposed)
+  Cells: 1051 | Genes: 36601 (pruned: 0)
+  Gene ID system: symbol
+  Metadata injected (17 columns):
+    + batch                [executor: batch assignment]
+       value: GSM8953607
+    + library_name         [GSM: filename extraction]
+       value: 3b
+    + organism             [processing code]
+       value: Homo sapiens
+    + molecule             [processing code]
+       value: total RNA
+    + library_strategy     [processing code]
+       value: RNA-Seq
+    + instrument_model     [processing code]
+       value: Illumina HiSeq 4000
+    + taxid                [processing code]
+       value: 9606
+    + cancer_type          [processing code]
+       value: Ovarian
+    + tissue               [processing code]
+       value: Tumor
+    + patient              [processing code]
+       value: patient3
+    + time_point           [processing code]
+       value: Baseline
+    + biopsy_site          [processing code]
+       value: Vaginal
+    + title_patient_num    [processing code]
+       value: 3
+    + title_time           [processing code]
+       value: baseline
+    + cellranger_version   [processing code]
+       value: 4.0.0
+    + genome_assembly      [processing code]
+       value: GRCh38
+    + supplementary_files_format [processing code]
+       value: Processed gene expression raw count with Gene Symbol mapping for filtered non-ap
+
+  -- BATCH: GSM8953608 --
+  Why batch: patient6 baseline prostate cancer abdominal metastasis.
+  Differs in: batch
+  Matrix: GSM8953608_6b_counts.csv
+  Format: csv | Orientation: gene_x_cell -> cell_x_gene (transposed)
+  Cells: 116 | Genes: 36601 (pruned: 0)
+  Gene ID system: symbol
+  Metadata injected (17 columns):
+    + batch                [executor: batch assignment]
+       value: GSM8953608
+    + library_name         [GSM: filename extraction]
+       value: 6b
+    + organism             [processing code]
+       value: Homo sapiens
+    + molecule             [processing code]
+       value: total RNA
+    + library_strategy     [processing code]
+       value: RNA-Seq
+    + instrument_model     [processing code]
+       value: Illumina HiSeq 4000
+    + taxid                [processing code]
+       value: 9606
+    + cancer_type          [processing code]
+       value: Prostate
+    + tissue               [processing code]
+       value: Tumor
+    + patient              [processing code]
+       value: patient6
+    + time_point           [processing code]
+       value: Baseline
+    + biopsy_site          [processing code]
+       value: Abdominal
+    + title_patient_num    [processing code]
+       value: 6
+    + title_time           [processing code]
+       value: baseline
+    + cellranger_version   [processing code]
+       value: 4.0.0
+    + genome_assembly      [processing code]
+       value: GRCh38
+    + supplementary_files_format [processing code]
+       value: Processed gene expression raw count with Gene Symbol mapping for filtered non-ap
+
+  -- BATCH: GSM8953609 --
+  Why batch: patient6 post-treatment abdominal metastasis.
+  Differs in: batch
+  Matrix: GSM8953609_6d10_counts.csv
+  Format: csv | Orientation: gene_x_cell -> cell_x_gene (transposed)
+  Cells: 497 | Genes: 36601 (pruned: 0)
+  Gene ID system: symbol
+  Metadata injected (17 columns):
+    + batch                [executor: batch assignment]
+       value: GSM8953609
+    + library_name         [GSM: filename extraction]
+       value: 6d10
+    + organism             [processing code]
+       value: Homo sapiens
+    + molecule             [processing code]
+       value: total RNA
+    + library_strategy     [processing code]
+       value: RNA-Seq
+    + instrument_model     [processing code]
+       value: Illumina HiSeq 4000
+    + taxid                [processing code]
+       value: 9606
+    + cancer_type          [processing code]
+       value: Prostate
+    + tissue               [processing code]
+       value: Tumor
+    + patient              [processing code]
+       value: patient6
+    + time_point           [processing code]
+       value: Treatment
+    + biopsy_site          [processing code]
+       value: Abdominal
+    + title_patient_num    [processing code]
+       value: 6
+    + title_time           [processing code]
+       value: day10
+    + cellranger_version   [processing code]
+       value: 4.0.0
+    + genome_assembly      [processing code]
+       value: GRCh38
+    + supplementary_files_format [processing code]
+       value: Processed gene expression raw count with Gene Symbol mapping for filtered non-ap
+
+  -- BATCH: GSM8953610 --
+  Why batch: patient8 baseline colon cancer lymph node metastasis.
+  Differs in: batch
+  Matrix: GSM8953610_8b_counts.csv
+  Format: csv | Orientation: gene_x_cell -> cell_x_gene (transposed)
+  Cells: 240 | Genes: 36601 (pruned: 0)
+  Gene ID system: symbol
+  Metadata injected (17 columns):
+    + batch                [executor: batch assignment]
+       value: GSM8953610
+    + library_name         [GSM: filename extraction]
+       value: 8b
+    + organism             [processing code]
+       value: Homo sapiens
+    + molecule             [processing code]
+       value: total RNA
+    + library_strategy     [processing code]
+       value: RNA-Seq
+    + instrument_model     [processing code]
+       value: Illumina HiSeq 4000
+    + taxid                [processing code]
+       value: 9606
+    + cancer_type          [processing code]
+       value: Colon
+    + tissue               [processing code]
+       value: Tumor
+    + patient              [processing code]
+       value: patient8
+    + time_point           [processing code]
+       value: Baseline
+    + biopsy_site          [processing code]
+       value: Lymphnode
+    + title_patient_num    [processing code]
+       value: 8
+    + title_time           [processing code]
+       value: baseline
+    + cellranger_version   [processing code]
+       value: 4.0.0
+    + genome_assembly      [processing code]
+       value: GRCh38
+    + supplementary_files_format [processing code]
+       value: Processed gene expression raw count with Gene Symbol mapping for filtered non-ap
+
+  -- BATCH: GSM8953611 --
+  Why batch: patient10 baseline colon cancer lung metastasis.
+  Differs in: batch
+  Matrix: GSM8953611_10b_counts.csv
+  Format: csv | Orientation: gene_x_cell -> cell_x_gene (transposed)
+  Cells: 516 | Genes: 36601 (pruned: 0)
+  Gene ID system: symbol
+  Metadata injected (17 columns):
+    + batch                [executor: batch assignment]
+       value: GSM8953611
+    + library_name         [GSM: filename extraction]
+       value: 10b
+    + organism             [processing code]
+       value: Homo sapiens
+    + molecule             [processing code]
+       value: total RNA
+    + library_strategy     [processing code]
+       value: RNA-Seq
+    + instrument_model     [processing code]
+       value: Illumina HiSeq 4000
+    + taxid                [processing code]
+       value: 9606
+    + cancer_type          [processing code]
+       value: Colon
+    + tissue               [processing code]
+       value: Tumor
+    + patient              [processing code]
+       value: patient10
+    + time_point           [processing code]
+       value: Baseline
+    + biopsy_site          [processing code]
+       value: Lung
+    + title_patient_num    [processing code]
+       value: 10
+    + title_time           [processing code]
+       value: baseline
+    + cellranger_version   [processing code]
+       value: 4.0.0
+    + genome_assembly      [processing code]
+       value: GRCh38
+    + supplementary_files_format [processing code]
+       value: Processed gene expression raw count with Gene Symbol mapping for filtered non-ap
+
+  -- BATCH: GSM8953612 --
+  Why batch: patient11 baseline ovarian cancer subcutaneous metastasis.
+  Differs in: batch
+  Matrix: GSM8953612_11b_counts.csv
+  Format: csv | Orientation: gene_x_cell -> cell_x_gene (transposed)
+  Cells: 123 | Genes: 36601 (pruned: 0)
+  Gene ID system: symbol
+  Metadata injected (17 columns):
+    + batch                [executor: batch assignment]
+       value: GSM8953612
+    + library_name         [GSM: filename extraction]
+       value: 11b
+    + organism             [processing code]
+       value: Homo sapiens
+    + molecule             [processing code]
+       value: total RNA
+    + library_strategy     [processing code]
+       value: RNA-Seq
+    + instrument_model     [processing code]
+       value: Illumina HiSeq 4000
+    + taxid                [processing code]
+       value: 9606
+    + cancer_type          [processing code]
+       value: Ovarian
+    + tissue               [processing code]
+       value: Tumor
+    + patient              [processing code]
+       value: patient11
+    + time_point           [processing code]
+       value: Baseline
+    + biopsy_site          [processing code]
+       value: Subcutaneous
+    + title_patient_num    [processing code]
+       value: 11
+    + title_time           [processing code]
+       value: baseline
+    + cellranger_version   [processing code]
+       value: 4.0.0
+    + genome_assembly      [processing code]
+       value: GRCh38
+    + supplementary_files_format [processing code]
+       value: Processed gene expression raw count with Gene Symbol mapping for filtered non-ap
+
+  -- BATCH: GSM8953613 --
+  Why batch: patient11 post-treatment subcutaneous metastasis.
+  Differs in: batch
+  Matrix: GSM8953613_11d10_counts.csv
+  Format: csv | Orientation: gene_x_cell -> cell_x_gene (transposed)
+  Cells: 303 | Genes: 36601 (pruned: 0)
+  Gene ID system: symbol
+  Metadata injected (17 columns):
+    + batch                [executor: batch assignment]
+       value: GSM8953613
+    + library_name         [GSM: filename extraction]
+       value: 11d10
+    + organism             [processing code]
+       value: Homo sapiens
+    + molecule             [processing code]
+       value: total RNA
+    + library_strategy     [processing code]
+       value: RNA-Seq
+    + instrument_model     [processing code]
+       value: Illumina HiSeq 4000
+    + taxid                [processing code]
+       value: 9606
+    + cancer_type          [processing code]
+       value: Ovarian
+    + tissue               [processing code]
+       value: Tumor
+    + patient              [processing code]
+       value: patient11
+    + time_point           [processing code]
+       value: Treatment
+    + biopsy_site          [processing code]
+       value: Subcutaneous
+    + title_patient_num    [processing code]
+       value: 11
+    + title_time           [processing code]
+       value: day10
+    + cellranger_version   [processing code]
+       value: 4.0.0
+    + genome_assembly      [processing code]
+       value: GRCh38
+    + supplementary_files_format [processing code]
+       value: Processed gene expression raw count with Gene Symbol mapping for filtered non-ap
+
+  -- BATCH: GSM8953614 --
+  Why batch: patient17 post-treatment pancreatic cancer liver metastasis.
+  Differs in: batch
+  Matrix: GSM8953614_17d10_counts.csv
+  Format: csv | Orientation: gene_x_cell -> cell_x_gene (transposed)
+  Cells: 3894 | Genes: 36601 (pruned: 0)
+  Gene ID system: symbol
+  Metadata injected (17 columns):
+    + batch                [executor: batch assignment]
+       value: GSM8953614
+    + library_name         [GSM: filename extraction]
+       value: 17d10
+    + organism             [processing code]
+       value: Homo sapiens
+    + molecule             [processing code]
+       value: total RNA
+    + library_strategy     [processing code]
+       value: RNA-Seq
+    + instrument_model     [processing code]
+       value: Illumina HiSeq 4000
+    + taxid                [processing code]
+       value: 9606
+    + cancer_type          [processing code]
+       value: Pancreatic
+    + tissue               [processing code]
+       value: Tumor
+    + patient              [processing code]
+       value: patient17
+    + time_point           [processing code]
+       value: Treatment
+    + biopsy_site          [processing code]
+       value: Liver
+    + title_patient_num    [processing code]
+       value: 17
+    + title_time           [processing code]
+       value: day10
+    + cellranger_version   [processing code]
+       value: 4.0.0
+    + genome_assembly      [processing code]
+       value: GRCh38
+    + supplementary_files_format [processing code]
+       value: Processed gene expression raw count with Gene Symbol mapping for filtered non-ap
+
+  -- BATCH: GSM8953615 --
+  Why batch: patient18 baseline breast cancer liver metastasis.
+  Differs in: batch
+  Matrix: GSM8953615_18b_counts.csv
+  Format: csv | Orientation: gene_x_cell -> cell_x_gene (transposed)
+  Cells: 5980 | Genes: 36601 (pruned: 0)
+  Gene ID system: symbol
+  Metadata injected (17 columns):
+    + batch                [executor: batch assignment]
+       value: GSM8953615
+    + library_name         [GSM: filename extraction]
+       value: 18b
+    + organism             [processing code]
+       value: Homo sapiens
+    + molecule             [processing code]
+       value: total RNA
+    + library_strategy     [processing code]
+       value: RNA-Seq
+    + instrument_model     [processing code]
+       value: Illumina HiSeq 4000
+    + taxid                [processing code]
+       value: 9606
+    + cancer_type          [processing code]
+       value: Breast
+    + tissue               [processing code]
+       value: Tumor
+    + patient              [processing code]
+       value: patient18
+    + time_point           [processing code]
+       value: Baseline
+    + biopsy_site          [processing code]
+       value: Liver
+    + title_patient_num    [processing code]
+       value: 18
+    + title_time           [processing code]
+       value: baseline
+    + cellranger_version   [processing code]
+       value: 4.0.0
+    + genome_assembly      [processing code]
+       value: GRCh38
+    + supplementary_files_format [processing code]
+       value: Processed gene expression raw count with Gene Symbol mapping for filtered non-ap
+
+  -- BATCH: GSM8953616 --
+  Why batch: patient18 post-treatment breast cancer liver metastasis.
+  Differs in: batch
+  Matrix: GSM8953616_18d10_counts.csv
+  Format: csv | Orientation: gene_x_cell -> cell_x_gene (transposed)
+  Cells: 4756 | Genes: 36601 (pruned: 0)
+  Gene ID system: symbol
+  Metadata injected (17 columns):
+    + batch                [executor: batch assignment]
+       value: GSM8953616
+    + library_name         [GSM: filename extraction]
+       value: 18d10
+    + organism             [processing code]
+       value: Homo sapiens
+    + molecule             [processing code]
+       value: total RNA
+    + library_strategy     [processing code]
+       value: RNA-Seq
+    + instrument_model     [processing code]
+       value: Illumina HiSeq 4000
+    + taxid                [processing code]
+       value: 9606
+    + cancer_type          [processing code]
+       value: Breast
+    + tissue               [processing code]
+       value: Tumor
+    + patient              [processing code]
+       value: patient18
+    + time_point           [processing code]
+       value: Treatment
+    + biopsy_site          [processing code]
+       value: Liver
+    + title_patient_num    [processing code]
+       value: 18
+    + title_time           [processing code]
+       value: day10
+    + cellranger_version   [processing code]
+       value: 4.0.0
+    + genome_assembly      [processing code]
+       value: GRCh38
+    + supplementary_files_format [processing code]
+       value: Processed gene expression raw count with Gene Symbol mapping for filtered non-ap
+
+  -- BATCH: GSM8953617 --
+  Why batch: patient19 baseline ovarian cancer lymph node metastasis.
+  Differs in: batch
+  Matrix: GSM8953617_19b_counts.csv
+  Format: csv | Orientation: gene_x_cell -> cell_x_gene (transposed)
+  Cells: 912 | Genes: 36601 (pruned: 0)
+  Gene ID system: symbol
+  Metadata injected (17 columns):
+    + batch                [executor: batch assignment]
+       value: GSM8953617
+    + library_name         [GSM: filename extraction]
+       value: 19b
+    + organism             [processing code]
+       value: Homo sapiens
+    + molecule             [processing code]
+       value: total RNA
+    + library_strategy     [processing code]
+       value: RNA-Seq
+    + instrument_model     [processing code]
+       value: Illumina HiSeq 4000
+    + taxid                [processing code]
+       value: 9606
+    + cancer_type          [processing code]
+       value: Ovarian
+    + tissue               [processing code]
+       value: Tumor
+    + patient              [processing code]
+       value: patient19
+    + time_point           [processing code]
+       value: Baseline
+    + biopsy_site          [processing code]
+       value: Lymphnode
+    + title_patient_num    [processing code]
+       value: 19
+    + title_time           [processing code]
+       value: baseline
+    + cellranger_version   [processing code]
+       value: 4.0.0
+    + genome_assembly      [processing code]
+       value: GRCh38
+    + supplementary_files_format [processing code]
+       value: Processed gene expression raw count with Gene Symbol mapping for filtered non-ap
+
+  -- BATCH: GSM8953618 --
+  Why batch: patient19 post-treatment ovarian cancer lymph node metastasis.
+  Differs in: batch
+  Matrix: GSM8953618_19d10_counts.csv
+  Format: csv | Orientation: gene_x_cell -> cell_x_gene (transposed)
+  Cells: 1205 | Genes: 36601 (pruned: 0)
+  Gene ID system: symbol
+  Metadata injected (17 columns):
+    + batch                [executor: batch assignment]
+       value: GSM8953618
+    + library_name         [GSM: filename extraction]
+       value: 19d10
+    + organism             [processing code]
+       value: Homo sapiens
+    + molecule             [processing code]
+       value: total RNA
+    + library_strategy     [processing code]
+       value: RNA-Seq
+    + instrument_model     [processing code]
+       value: Illumina HiSeq 4000
+    + taxid                [processing code]
+       value: 9606
+    + cancer_type          [processing code]
+       value: Ovarian
+    + tissue               [processing code]
+       value: Tumor
+    + patient              [processing code]
+       value: patient19
+    + time_point           [processing code]
+       value: Treatment
+    + biopsy_site          [processing code]
+       value: Lymphnode
+    + title_patient_num    [processing code]
+       value: 19
+    + title_time           [processing code]
+       value: day10
+    + cellranger_version   [processing code]
+       value: 4.0.0
+    + genome_assembly      [processing code]
+       value: GRCh38
+    + supplementary_files_format [processing code]
+       value: Processed gene expression raw count with Gene Symbol mapping for filtered non-ap
+
+  -- BATCH: GSM8953619 --
+  Why batch: patient20 baseline prostate cancer lymph node metastasis.
+  Differs in: batch
+  Matrix: GSM8953619_20b_counts.csv
+  Format: csv | Orientation: gene_x_cell -> cell_x_gene (transposed)
+  Cells: 1089 | Genes: 36601 (pruned: 0)
+  Gene ID system: symbol
+  Metadata injected (17 columns):
+    + batch                [executor: batch assignment]
+       value: GSM8953619
+    + library_name         [GSM: filename extraction]
+       value: 20b
+    + organism             [processing code]
+       value: Homo sapiens
+    + molecule             [processing code]
+       value: total RNA
+    + library_strategy     [processing code]
+       value: RNA-Seq
+    + instrument_model     [processing code]
+       value: Illumina HiSeq 4000
+    + taxid                [processing code]
+       value: 9606
+    + cancer_type          [processing code]
+       value: Prostate
+    + tissue               [processing code]
+       value: Tumor
+    + patient              [processing code]
+       value: patient20
+    + time_point           [processing code]
+       value: Baseline
+    + biopsy_site          [processing code]
+       value: Lymphnode
+    + title_patient_num    [processing code]
+       value: 20
+    + title_time           [processing code]
+       value: baseline
+    + cellranger_version   [processing code]
+       value: 4.0.0
+    + genome_assembly      [processing code]
+       value: GRCh38
+    + supplementary_files_format [processing code]
+       value: Processed gene expression raw count with Gene Symbol mapping for filtered non-ap
+
+  -- BATCH: GSM8953620 --
+  Why batch: patient20 post-treatment prostate cancer lymph node metastasis.
+  Differs in: batch
+  Matrix: GSM8953620_20d10_counts.csv
+  Format: csv | Orientation: gene_x_cell -> cell_x_gene (transposed)
+  Cells: 7632 | Genes: 36601 (pruned: 0)
+  Gene ID system: symbol
+  Metadata injected (17 columns):
+    + batch                [executor: batch assignment]
+       value: GSM8953620
+    + library_name         [GSM: filename extraction]
+       value: 20d10
+    + organism             [processing code]
+       value: Homo sapiens
+    + molecule             [processing code]
+       value: total RNA
+    + library_strategy     [processing code]
+       value: RNA-Seq
+    + instrument_model     [processing code]
+       value: Illumina HiSeq 4000
+    + taxid                [processing code]
+       value: 9606
+    + cancer_type          [processing code]
+       value: Prostate
+    + tissue               [processing code]
+       value: Tumor
+    + patient              [processing code]
+       value: patient20
+    + time_point           [processing code]
+       value: Treatment
+    + biopsy_site          [processing code]
+       value: Lymphnode
+    + title_patient_num    [processing code]
+       value: 20
+    + title_time           [processing code]
+       value: day10
+    + cellranger_version   [processing code]
+       value: 4.0.0
+    + genome_assembly      [processing code]
+       value: GRCh38
+    + supplementary_files_format [processing code]
+       value: Processed gene expression raw count with Gene Symbol mapping for filtered non-ap
+
+  -- BATCH: GSM8953621 --
+  Why batch: patient22 baseline colon cancer liver metastasis.
+  Differs in: batch
+  Matrix: GSM8953621_22b_counts.csv
+  Format: csv | Orientation: gene_x_cell -> cell_x_gene (transposed)
+  Cells: 5199 | Genes: 36601 (pruned: 0)
+  Gene ID system: symbol
+  Metadata injected (17 columns):
+    + batch                [executor: batch assignment]
+       value: GSM8953621
+    + library_name         [GSM: filename extraction]
+       value: 22b
+    + organism             [processing code]
+       value: Homo sapiens
+    + molecule             [processing code]
+       value: total RNA
+    + library_strategy     [processing code]
+       value: RNA-Seq
+    + instrument_model     [processing code]
+       value: Illumina HiSeq 4000
+    + taxid                [processing code]
+       value: 9606
+    + cancer_type          [processing code]
+       value: Colon
+    + tissue               [processing code]
+       value: Tumor
+    + patient              [processing code]
+       value: patient22
+    + time_point           [processing code]
+       value: Baseline
+    + biopsy_site          [processing code]
+       value: Liver
+    + title_patient_num    [processing code]
+       value: 22
+    + title_time           [processing code]
+       value: baseline
+    + cellranger_version   [processing code]
+       value: 4.0.0
+    + genome_assembly      [processing code]
+       value: GRCh38
+    + supplementary_files_format [processing code]
+       value: Processed gene expression raw count with Gene Symbol mapping for filtered non-ap
+
+  -- BATCH: GSM8953622 --
+  Why batch: patient22 post-treatment colon cancer liver metastasis.
+  Differs in: batch
+  Matrix: GSM8953622_22d10_counts.csv
+  Format: csv | Orientation: gene_x_cell -> cell_x_gene (transposed)
+  Cells: 5284 | Genes: 36601 (pruned: 0)
+  Gene ID system: symbol
+  Metadata injected (17 columns):
+    + batch                [executor: batch assignment]
+       value: GSM8953622
+    + library_name         [GSM: filename extraction]
+       value: 22d10
+    + organism             [processing code]
+       value: Homo sapiens
+    + molecule             [processing code]
+       value: total RNA
+    + library_strategy     [processing code]
+       value: RNA-Seq
+    + instrument_model     [processing code]
+       value: Illumina HiSeq 4000
+    + taxid                [processing code]
+       value: 9606
+    + cancer_type          [processing code]
+       value: Colon
+    + tissue               [processing code]
+       value: Tumor
+    + patient              [processing code]
+       value: patient22
+    + time_point           [processing code]
+       value: Treatment
+    + biopsy_site          [processing code]
+       value: Liver
+    + title_patient_num    [processing code]
+       value: 22
+    + title_time           [processing code]
+       value: day10
+    + cellranger_version   [processing code]
+       value: 4.0.0
+    + genome_assembly      [processing code]
+       value: GRCh38
+    + supplementary_files_format [processing code]
+       value: Processed gene expression raw count with Gene Symbol mapping for filtered non-ap
+
+  -- OVERALL --
+  Cells: 48275 | Genes: 36601
+  Batches: 18 | Confidence: 99%
+------------------------------------------------------------
+  Log:      E:\Scruti-Cell\output\GSE295600\run.log
+
+
+=== STDERR ===
+02:47:13 [INFO] scruticell: Run log started for GSE295600 -> E:\Scruti-Cell\output\GSE295600\run.log
+02:47:15 [INFO] scruticell.utils.tracing: LangSmith tracing enabled (project: scruiti-cell)
+02:47:15 [INFO] scruticell.pipeline.nodes.download: Downloading data for GSE295600
+02:47:15 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE295nnn/GSE295600/soft/GSE295600_family.soft.gz (attempt 1/3)
+02:47:18 [INFO] scruticell.utils.download: File size: 5509 bytes, Accept-Ranges: supported
+02:47:18 [INFO] scruticell.utils.download: Downloading 1 range chunks (3 connections)
+02:47:18 [INFO] scruticell.utils.download: Downloading 0 MB with 3 threads...
+02:47:21 [INFO] scruticell.utils.download: Download complete: 0 MB in 3s (0.0 MB/s avg)
+02:47:21 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE295nnn/GSE295600/soft/GSE295600_family.soft.gz -> E:\Scruti-Cell\output\GSE295600\download\GSE295600_family.soft.gz (5509 bytes)
+02:47:21 [INFO] scruticell.pipeline.nodes.download: SOFT file: E:\Scruti-Cell\output\GSE295600\download\GSE295600_family.soft.gz
+02:47:21 [INFO] scruticell.pipeline.nodes.download: Found 1 supplementary files from GSE GSE295600
+02:47:22 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE295nnn/GSE295600/suppl/GSE295600_RAW.tar (attempt 1/3)
+02:47:24 [INFO] scruticell.utils.download: File size: 101908480 bytes, Accept-Ranges: supported
+02:47:24 [INFO] scruticell.utils.download: Downloading 7 range chunks (3 connections)
+02:47:24 [INFO] scruticell.utils.download: Downloading 97 MB with 3 threads...
+02:47:27 [INFO] scruticell.utils.download: Downloading: 32/97 MB (33%) 10.4 MB/s
+02:47:30 [INFO] scruticell.utils.download: Downloading: 33/97 MB (34%) 0.4 MB/s
+02:47:33 [INFO] scruticell.utils.download: Downloading: 34/97 MB (35%) 0.3 MB/s
+02:47:36 [INFO] scruticell.utils.download: Downloading: 35/97 MB (37%) 0.3 MB/s
+02:47:39 [INFO] scruticell.utils.download: Downloading: 36/97 MB (38%) 0.4 MB/s
+02:47:42 [INFO] scruticell.utils.download: Downloading: 38/97 MB (39%) 0.5 MB/s
+02:47:45 [INFO] scruticell.utils.download: Downloading: 39/97 MB (41%) 0.4 MB/s
+02:47:48 [INFO] scruticell.utils.download: Downloading: 41/97 MB (42%) 0.5 MB/s
+02:47:51 [INFO] scruticell.utils.download: Downloading: 42/97 MB (43%) 0.4 MB/s
+02:47:54 [INFO] scruticell.utils.download: Downloading: 43/97 MB (45%) 0.4 MB/s
+02:47:57 [INFO] scruticell.utils.download: Downloading: 44/97 MB (46%) 0.3 MB/s
+02:48:00 [INFO] scruticell.utils.download: Downloading: 45/97 MB (47%) 0.4 MB/s
+02:48:03 [INFO] scruticell.utils.download: Downloading: 47/97 MB (48%) 0.4 MB/s
+02:48:06 [INFO] scruticell.utils.download: Downloading: 48/97 MB (49%) 0.3 MB/s
+02:48:09 [INFO] scruticell.utils.download: Downloading: 64/97 MB (66%) 5.4 MB/s
+02:48:12 [INFO] scruticell.utils.download: Downloading: 80/97 MB (83%) 5.4 MB/s
+02:48:15 [INFO] scruticell.utils.download: Downloading: 80/97 MB (83%) 0.1 MB/s
+02:48:21 [INFO] scruticell.utils.download: Downloading: 81/97 MB (83%) 0.0 MB/s
+02:48:24 [INFO] scruticell.utils.download: Downloading: 81/97 MB (84%) 0.2 MB/s
+02:48:27 [INFO] scruticell.utils.download: Downloading: 81/97 MB (84%) 0.1 MB/s
+02:48:30 [INFO] scruticell.utils.download: Downloading: 82/97 MB (85%) 0.2 MB/s
+02:48:33 [INFO] scruticell.utils.download: Downloading: 84/97 MB (86%) 0.5 MB/s
+02:48:36 [INFO] scruticell.utils.download: Downloading: 96/97 MB (99%) 4.1 MB/s
+02:48:39 [INFO] scruticell.utils.download: Downloading: 96/97 MB (100%) 0.2 MB/s
+02:48:42 [INFO] scruticell.utils.download: Downloading: 97/97 MB (100%) 0.1 MB/s
+02:48:54 [INFO] scruticell.utils.download: Download complete: 97 MB in 90s (1.1 MB/s avg)
+02:48:54 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE295nnn/GSE295600/suppl/GSE295600_RAW.tar -> E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW.tar (101908480 bytes)
+02:48:54 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE295600_RAW.tar (101908480 bytes)
+02:48:54 [INFO] scruticell.pipeline.nodes.download: Downloaded 1 supplementary files (from 1 URLs)
+02:48:54 [INFO] scruticell.pipeline.nodes.download: Extracting archive (97 MB): GSE295600_RAW.tar
+02:48:54 [INFO] scruticell.pipeline.nodes.download: Extracted 18 files from GSE295600_RAW.tar
+02:48:54 [INFO] scruticell.pipeline.nodes.download: Total supplementary files after extraction: 19
+02:48:54 [INFO] scruticell.pipeline.nodes.parse: Parsing SOFT file for GSE295600
+02:48:54 [INFO] scruticell.parsing.soft: Parsing SOFT file: E:\Scruti-Cell\output\GSE295600\download\GSE295600_family.soft.gz
+02:48:54 [INFO] scruticell.parsing.soft: Parsed 24 GSE metadata keys, 1 GPLs, 18 GSMs, 18 supplementary refs
+02:48:54 [INFO] scruticell.parsing.metadata: Extracted metadata for 18 GSM entries
+02:48:54 [INFO] scruticell.pipeline.nodes.parse: Parsed SOFT: 18 GSMs, organism=9606, platforms=['GPL20301'], pubmed_id=
+02:50:02 [INFO] scruticell.intelligence.reporter: Inspected 50/55 files (skipped 0 dirs)...
+02:50:05 [INFO] scruticell.intelligence.reporter: Inspected 55 files (54 data files found)
+02:50:05 [INFO] scruticell.intelligence.reporter: Generating readers for 54 files via LLM...
+02:50:11 [INFO] langchain_openai.chat_models._client_utils: langchain-openai detected system proxy configuration and no explicit `http_socket_options` / `http_client` / `http_async_client` / `openai_proxy`; skipping the custom `httpx` transport so httpx's env-proxy auto-detection applies. Pass `http_socket_options=[...]` to opt back into kernel-level TCP keepalive tuning on top of the env proxy.
+02:51:56 [INFO] scruticell.intelligence.reporter: LLM generated 18 reader groups
+02:51:59 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953605' validated OK
+02:51:59 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953606' validated OK
+02:51:59 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953607' validated OK
+02:51:59 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953608' validated OK
+02:51:59 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953609' validated OK
+02:51:59 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953610' validated OK
+02:51:59 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953611' validated OK
+02:51:59 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953612' validated OK
+02:51:59 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953613' validated OK
+02:51:59 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953614' validated OK
+02:51:59 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953615' validated OK
+02:51:59 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953616' validated OK
+02:51:59 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953617' validated OK
+02:51:59 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953618' validated OK
+02:51:59 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953619' validated OK
+02:52:00 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953620' validated OK
+02:52:00 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953621' validated OK
+02:52:00 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953622' validated OK
+02:52:00 [INFO] scruticell.intelligence.reporter: Readers saved: E:\Scruti-Cell\output\GSE295600\readers\readers.json (18 readers)
+02:52:02 [INFO] scruticell.knowledge.graph: Connected to Neo4j at bolt://localhost:7687
+02:52:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:FieldSynonym) REQUIRE (e.name) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_d9f7bc3a FOR (e:FieldSynonym) REQUIRE (e.name) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (fs:FieldSynonym) REQUIRE fs.name IS UNIQUE'
+02:52:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:GeneMapping) REQUIRE (e.source_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_97b24131 FOR (e:GeneMapping) REQUIRE (e.source_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (gm:GeneMapping) REQUIRE gm.source_id IS UNIQUE'
+02:52:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:GSE) REQUIRE (e.gse_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_8bde2949 FOR (e:GSE) REQUIRE (e.gse_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (gse:GSE) REQUIRE gse.gse_id IS UNIQUE'
+02:52:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:ParseStrategy) REQUIRE (e.strategy_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_c9435509 FOR (e:ParseStrategy) REQUIRE (e.strategy_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (ps:ParseStrategy) REQUIRE ps.strategy_id IS UNIQUE'
+02:52:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:FailureCase) REQUIRE (e.case_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_e506595e FOR (e:FailureCase) REQUIRE (e.case_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (fc:FailureCase) REQUIRE fc.case_id IS UNIQUE'
+02:52:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:BatchPattern) REQUIRE (e.pattern_name) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_9e585b6f FOR (e:BatchPattern) REQUIRE (e.pattern_name) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (bp:BatchPattern) REQUIRE bp.pattern_name IS UNIQUE'
+02:52:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:BatchStrategy) REQUIRE (e.batch_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_25e2cc3 FOR (e:BatchStrategy) REQUIRE (e.batch_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (bs:BatchStrategy) REQUIRE bs.batch_id IS UNIQUE'
+02:52:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:MatrixStrategy) REQUIRE (e.matrix_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_61005091 FOR (e:MatrixStrategy) REQUIRE (e.matrix_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (ms:MatrixStrategy) REQUIRE ms.matrix_id IS UNIQUE'
+02:52:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:ProcessingCode) REQUIRE (e.code_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_f9784487 FOR (e:ProcessingCode) REQUIRE (e.code_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (pc:ProcessingCode) REQUIRE pc.code_id IS UNIQUE'
+02:52:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:AssemblyCode) REQUIRE (e.code_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_d85e5ea FOR (e:AssemblyCode) REQUIRE (e.code_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (ac:AssemblyCode) REQUIRE ac.code_id IS UNIQUE'
+02:52:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:FieldMappingStrategy) REQUIRE (e.mapping_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_4f3b0f74 FOR (e:FieldMappingStrategy) REQUIRE (e.mapping_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (fm:FieldMappingStrategy) REQUIRE fm.mapping_id IS UNIQUE'
+02:52:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:FieldSynonym) ON (e.canonical_name)' has no effect. The index or constraint specified by 'RANGE INDEX index_4029d71a FOR (e:FieldSynonym) ON (e.canonical_name)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (fs:FieldSynonym) ON (fs.canonical_name)'
+02:52:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:GeneMapping) ON (e.target_symbol)' has no effect. The index or constraint specified by 'RANGE INDEX index_e5f90fd0 FOR (e:GeneMapping) ON (e.target_symbol)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (gm:GeneMapping) ON (gm.target_symbol)'
+02:52:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:GSE) ON (e.organism)' has no effect. The index or constraint specified by 'RANGE INDEX index_1fe8d2a4 FOR (e:GSE) ON (e.organism)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (gse:GSE) ON (gse.organism)'
+02:52:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:GSE) ON (e.assay_type)' has no effect. The index or constraint specified by 'RANGE INDEX index_38f59a2a FOR (e:GSE) ON (e.assay_type)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (gse:GSE) ON (gse.assay_type)'
+02:52:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:ParseStrategy) ON (e.success_count)' has no effect. The index or constraint specified by 'RANGE INDEX index_85672a78 FOR (e:ParseStrategy) ON (e.success_count)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (ps:ParseStrategy) ON (ps.success_count)'
+02:52:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:FailureCase) ON (e.error_signature)' has no effect. The index or constraint specified by 'RANGE INDEX index_701fbc61 FOR (e:FailureCase) ON (e.error_signature)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (fc:FailureCase) ON (fc.error_signature)'
+02:52:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchPattern) ON (e.detection_rule)' has no effect. The index or constraint specified by 'RANGE INDEX index_5a2fc8b8 FOR (e:BatchPattern) ON (e.detection_rule)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bp:BatchPattern) ON (bp.detection_rule)'
+02:52:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchStrategy) ON (e.gsm_id)' has no effect. The index or constraint specified by 'RANGE INDEX index_6fcdd738 FOR (e:BatchStrategy) ON (e.gsm_id)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.gsm_id)'
+02:52:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchStrategy) ON (e.genotype)' has no effect. The index or constraint specified by 'RANGE INDEX index_369c2325 FOR (e:BatchStrategy) ON (e.genotype)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.genotype)'
+02:52:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchStrategy) ON (e.treatment)' has no effect. The index or constraint specified by 'RANGE INDEX index_9d96a35e FOR (e:BatchStrategy) ON (e.treatment)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.treatment)'
+02:52:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:MatrixStrategy) ON (e.format)' has no effect. The index or constraint specified by 'RANGE INDEX index_5eea1dd4 FOR (e:MatrixStrategy) ON (e.format)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (ms:MatrixStrategy) ON (ms.format)'
+02:52:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:FieldMappingStrategy) ON (e.canonical)' has no effect. The index or constraint specified by 'RANGE INDEX index_281945fe FOR (e:FieldMappingStrategy) ON (e.canonical)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (fm:FieldMappingStrategy) ON (fm.canonical)'
+02:52:02 [INFO] scruticell.knowledge.graph: Neo4j schema initialized
+02:52:02 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage` does not exist. Verify that the spelling is correct.', position=<SummaryInputPosition line=3, column=10, offset=33>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 33, 'line': 3, 'column': 10}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: '\nMATCH (fc:FailureCase)\nWHERE fc.pipeline_stage = $pipeline_stage\nRETURN fc.case_id AS case_id, fc.error_signature AS error_signature,\n       fc.fix_strategy AS fix_strategy, fc.fixed AS fixed,\n       fc.error_message AS error_message, fc.gse_id AS gse_id,\n       COALESCE(fc.success_count, 0) AS success_count,\n       COALESCE(fc.fail_count, 0) AS fail_count\nORDER BY fc.success_count DESC, fc.created_at DESC\nLIMIT 20\n'
+02:52:02 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` does not exist. Verify that the spelling is correct.', position=<SummaryInputPosition line=5, column=11, offset=145>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 145, 'line': 5, 'column': 11}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: '\nMATCH (fc:FailureCase)\nWHERE fc.pipeline_stage = $pipeline_stage\nRETURN fc.case_id AS case_id, fc.error_signature AS error_signature,\n       fc.fix_strategy AS fix_strategy, fc.fixed AS fixed,\n       fc.error_message AS error_message, fc.gse_id AS gse_id,\n       COALESCE(fc.success_count, 0) AS success_count,\n       COALESCE(fc.fail_count, 0) AS fail_count\nORDER BY fc.success_count DESC, fc.created_at DESC\nLIMIT 20\n'
+02:52:02 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does not exist. Verify that the spelling is correct.', position=<SummaryInputPosition line=5, column=44, offset=178>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 178, 'line': 5, 'column': 44}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: '\nMATCH (fc:FailureCase)\nWHERE fc.pipeline_stage = $pipeline_stage\nRETURN fc.case_id AS case_id, fc.error_signature AS error_signature,\n       fc.fix_strategy AS fix_strategy, fc.fixed AS fixed,\n       fc.error_message AS error_message, fc.gse_id AS gse_id,\n       COALESCE(fc.success_count, 0) AS success_count,\n       COALESCE(fc.fail_count, 0) AS fail_count\nORDER BY fc.success_count DESC, fc.created_at DESC\nLIMIT 20\n'
+02:52:02 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message` does not exist. Verify that the spelling is correct.', position=<SummaryInputPosition line=6, column=11, offset=204>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 204, 'line': 6, 'column': 11}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: '\nMATCH (fc:FailureCase)\nWHERE fc.pipeline_stage = $pipeline_stage\nRETURN fc.case_id AS case_id, fc.error_signature AS error_signature,\n       fc.fix_strategy AS fix_strategy, fc.fixed AS fixed,\n       fc.error_message AS error_message, fc.gse_id AS gse_id,\n       COALESCE(fc.success_count, 0) AS success_count,\n       COALESCE(fc.fail_count, 0) AS fail_count\nORDER BY fc.success_count DESC, fc.created_at DESC\nLIMIT 20\n'
+02:52:02 [INFO] scruticell.intelligence.extractors: Step 1/5: flowcharts from GSE text...
+02:52:27 [INFO] scruticell.intelligence.extractors: Step 2/5: GSM metadata (characteristics + source_name)...
+02:52:59 [INFO] scruticell.intelligence.extractors: GSM meta extractions saved to E:\Scruti-Cell\output\GSE295600\gsm_meta_extractions.json
+02:52:59 [INFO] scruticell.intelligence.extractors: Step 3/5: file analysis (names + previews)...
+02:53:54 [WARNING] langsmith.client: Failed to send compressed multipart ingest: Connection error caused failure to POST https://api.smith.langchain.com/runs/multipart in LangSmith API. Please confirm your internet connection. ConnectionError(MaxRetryError('HTTPSConnectionPool(host=\'api.smith.langchain.com\', port=443): Max retries exceeded with url: /runs/multipart (Caused by ReadTimeoutError("HTTPSConnectionPool(host=\'api.smith.langchain.com\', port=443): Read timed out. (read timeout=3)"))'))
+Content-Length: 19724
+API Key: lsv2_********************************************c3trace=019f388e-fbcc-7690-9431-dcda6a48fce4,id=019f388f-5d89-7e33-a5d1-24de9579b80a; trace=019f388e-fbcc-7690-9431-dcda6a48fce4,id=019f388f-dbe8-78e2-818c-15ba93414b6f
+02:54:47 [INFO] scruticell.intelligence.extractors: Filename extractions saved to E:\Scruti-Cell\output\GSE295600\filename_extractions.json (18 files)
+02:54:47 [INFO] scruticell.intelligence.extractors: Axis meta CSVs saved to E:\Scruti-Cell\output\GSE295600\axis_meta (18 files)
+02:54:47 [INFO] scruticell.intelligence.extractors: Literature verification: checking paper for unresolved items...
+02:55:32 [WARNING] scruticell.literature.pubmed: Biopython Entrez fetch failed: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1006)>
+02:55:35 [WARNING] langsmith.client: Failed to send compressed multipart ingest: Connection error caused failure to POST https://api.smith.langchain.com/runs/multipart in LangSmith API. Please confirm your internet connection. ConnectionError(MaxRetryError('HTTPSConnectionPool(host=\'api.smith.langchain.com\', port=443): Max retries exceeded with url: /runs/multipart (Caused by ReadTimeoutError("HTTPSConnectionPool(host=\'api.smith.langchain.com\', port=443): Read timed out. (read timeout=3)"))'))
+Content-Length: 21586
+API Key: lsv2_********************************************c3trace=019f388e-fbcc-7690-9431-dcda6a48fce4,id=019f388f-dbe8-78e2-818c-15ba93414b6f
+02:55:38 [WARNING] scruticell.literature.pubmed: httpx PubMed fetch failed: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1006)
+02:55:38 [WARNING] scruticell.literature.pdf_agent: Could not acquire full text for PMID 
+02:55:38 [INFO] scruticell.intelligence.extractors: Literature verification: no PDF available, skipping
+02:55:38 [INFO] scruticell.intelligence.extractors: Step 4/5: metadata code generation...
+02:55:40 [INFO] scruticell.intelligence.extractors: Step 5a/5: batch discovery...
+02:56:14 [INFO] scruticell.intelligence.extractors: Step 5b/5: matrix/code assembly...
+02:56:26 [WARNING] langsmith.client: Failed to send compressed multipart ingest: Connection error caused failure to POST https://api.smith.langchain.com/runs/multipart in LangSmith API. Please confirm your internet connection. ConnectionError(MaxRetryError('HTTPSConnectionPool(host=\'api.smith.langchain.com\', port=443): Max retries exceeded with url: /runs/multipart (Caused by ReadTimeoutError("HTTPSConnectionPool(host=\'api.smith.langchain.com\', port=443): Read timed out. (read timeout=3)"))'))
+Content-Length: 21387
+API Key: lsv2_********************************************c3trace=019f388e-fbcc-7690-9431-dcda6a48fce4,id=019f3892-4807-7091-abc4-c22fab739684
+02:56:47 [INFO] scruticell.intelligence.generator: Plan validated successfully (multi_step, round 1)
+02:56:47 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953605_1b_counts.csv.gz (format: csv)
+02:56:47 [INFO] scruticell.readers.csv_matrix: Reading CSV matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953605_1b_counts.csv.gz
+02:57:14 [WARNING] langsmith.client: Failed to send compressed multipart ingest: Connection error caused failure to POST https://api.smith.langchain.com/runs/multipart in LangSmith API. Please confirm your internet connection. ConnectionError(MaxRetryError('HTTPSConnectionPool(host=\'api.smith.langchain.com\', port=443): Max retries exceeded with url: /runs/multipart (Caused by ReadTimeoutError("HTTPSConnectionPool(host=\'api.smith.langchain.com\', port=443): Read timed out. (read timeout=3)"))'))
+Content-Length: 85822
+API Key: lsv2_********************************************c3trace=019f388e-fbcc-7690-9431-dcda6a48fce4,id=019f3892-4807-7091-abc4-c22fab739684; trace=019f388e-fbcc-7690-9431-dcda6a48fce4,id=019f3892-50cd-70a1-a9c5-00cfec894d30; trace=019f388e-fbcc-7690-9431-dcda6a48fce4,id=019f3892-50cd-70a1-a9c5-00cfec894d30; trace=019f388e-fbcc-7690-9431-dcda6a48fce4,id=019f3892-d35a-72f2-a634-7eb585579dfc
+02:58:04 [INFO] scruticell.readers.csv_matrix: Loaded CSV matrix: shape=(7257, 36601), cells=7257, genes=36601
+02:58:04 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953606_1d10_counts.csv.gz (format: csv)
+02:58:04 [INFO] scruticell.readers.csv_matrix: Reading CSV matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953606_1d10_counts.csv.gz
+02:58:13 [WARNING] langsmith.client: Failed to send compressed multipart ingest: Connection error caused failure to POST https://api.smith.langchain.com/runs/multipart in LangSmith API. Please confirm your internet connection. ConnectionError(MaxRetryError('HTTPSConnectionPool(host=\'api.smith.langchain.com\', port=443): Max retries exceeded with url: /runs/multipart (Caused by ReadTimeoutError("HTTPSConnectionPool(host=\'api.smith.langchain.com\', port=443): Read timed out. (read timeout=3)"))'))
+Content-Length: 57192
+API Key: lsv2_********************************************c3trace=019f388e-fbcc-7690-9431-dcda6a48fce4,id=019f3892-d35a-72f2-a634-7eb585579dfc; trace=019f388e-fbcc-7690-9431-dcda6a48fce4,id=019f388e-fbcc-7690-9431-dcda6a48fce4; trace=019f3893-55cf-7f30-856f-6d225e11f2ca,id=019f3893-55cf-7f30-856f-6d225e11f2ca
+02:58:29 [INFO] scruticell.readers.csv_matrix: Loaded CSV matrix: shape=(2221, 36601), cells=2221, genes=36601
+02:58:29 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953607_3b_counts.csv.gz (format: csv)
+02:58:29 [INFO] scruticell.readers.csv_matrix: Reading CSV matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953607_3b_counts.csv.gz
+02:58:40 [INFO] scruticell.readers.csv_matrix: Loaded CSV matrix: shape=(1051, 36601), cells=1051, genes=36601
+02:58:40 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953608_6b_counts.csv.gz (format: csv)
+02:58:40 [INFO] scruticell.readers.csv_matrix: Reading CSV matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953608_6b_counts.csv.gz
+02:58:42 [INFO] scruticell.readers.csv_matrix: Loaded CSV matrix: shape=(116, 36601), cells=116, genes=36601
+02:58:42 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953609_6d10_counts.csv.gz (format: csv)
+02:58:42 [INFO] scruticell.readers.csv_matrix: Reading CSV matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953609_6d10_counts.csv.gz
+02:58:47 [INFO] scruticell.readers.csv_matrix: Loaded CSV matrix: shape=(497, 36601), cells=497, genes=36601
+02:58:47 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953610_8b_counts.csv.gz (format: csv)
+02:58:47 [INFO] scruticell.readers.csv_matrix: Reading CSV matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953610_8b_counts.csv.gz
+02:58:50 [INFO] scruticell.readers.csv_matrix: Loaded CSV matrix: shape=(240, 36601), cells=240, genes=36601
+02:58:50 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953611_10b_counts.csv.gz (format: csv)
+02:58:50 [INFO] scruticell.readers.csv_matrix: Reading CSV matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953611_10b_counts.csv.gz
+02:58:55 [INFO] scruticell.readers.csv_matrix: Loaded CSV matrix: shape=(516, 36601), cells=516, genes=36601
+02:58:55 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953612_11b_counts.csv.gz (format: csv)
+02:58:55 [INFO] scruticell.readers.csv_matrix: Reading CSV matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953612_11b_counts.csv.gz
+02:58:56 [INFO] scruticell.readers.csv_matrix: Loaded CSV matrix: shape=(123, 36601), cells=123, genes=36601
+02:58:56 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953613_11d10_counts.csv.gz (format: csv)
+02:58:56 [INFO] scruticell.readers.csv_matrix: Reading CSV matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953613_11d10_counts.csv.gz
+02:59:00 [INFO] scruticell.readers.csv_matrix: Loaded CSV matrix: shape=(303, 36601), cells=303, genes=36601
+02:59:00 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953614_17d10_counts.csv.gz (format: csv)
+02:59:00 [INFO] scruticell.readers.csv_matrix: Reading CSV matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953614_17d10_counts.csv.gz
+02:59:43 [INFO] scruticell.readers.csv_matrix: Loaded CSV matrix: shape=(3894, 36601), cells=3894, genes=36601
+02:59:43 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953615_18b_counts.csv.gz (format: csv)
+02:59:43 [INFO] scruticell.readers.csv_matrix: Reading CSV matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953615_18b_counts.csv.gz
+03:00:49 [INFO] scruticell.readers.csv_matrix: Loaded CSV matrix: shape=(5980, 36601), cells=5980, genes=36601
+03:00:49 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953616_18d10_counts.csv.gz (format: csv)
+03:00:49 [INFO] scruticell.readers.csv_matrix: Reading CSV matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953616_18d10_counts.csv.gz
+03:01:42 [INFO] scruticell.readers.csv_matrix: Loaded CSV matrix: shape=(4756, 36601), cells=4756, genes=36601
+03:01:42 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953617_19b_counts.csv.gz (format: csv)
+03:01:42 [INFO] scruticell.readers.csv_matrix: Reading CSV matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953617_19b_counts.csv.gz
+03:01:51 [INFO] scruticell.readers.csv_matrix: Loaded CSV matrix: shape=(912, 36601), cells=912, genes=36601
+03:01:51 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953618_19d10_counts.csv.gz (format: csv)
+03:01:51 [INFO] scruticell.readers.csv_matrix: Reading CSV matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953618_19d10_counts.csv.gz
+03:02:04 [INFO] scruticell.readers.csv_matrix: Loaded CSV matrix: shape=(1205, 36601), cells=1205, genes=36601
+03:02:04 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953619_20b_counts.csv.gz (format: csv)
+03:02:04 [INFO] scruticell.readers.csv_matrix: Reading CSV matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953619_20b_counts.csv.gz
+03:02:15 [INFO] scruticell.readers.csv_matrix: Loaded CSV matrix: shape=(1089, 36601), cells=1089, genes=36601
+03:02:15 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953620_20d10_counts.csv.gz (format: csv)
+03:02:15 [INFO] scruticell.readers.csv_matrix: Reading CSV matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953620_20d10_counts.csv.gz
+03:03:41 [INFO] scruticell.readers.csv_matrix: Loaded CSV matrix: shape=(7632, 36601), cells=7632, genes=36601
+03:03:41 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953621_22b_counts.csv.gz (format: csv)
+03:03:41 [INFO] scruticell.readers.csv_matrix: Reading CSV matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953621_22b_counts.csv.gz
+03:04:37 [INFO] scruticell.readers.csv_matrix: Loaded CSV matrix: shape=(5199, 36601), cells=5199, genes=36601
+03:04:37 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953622_22d10_counts.csv.gz (format: csv)
+03:04:37 [INFO] scruticell.readers.csv_matrix: Reading CSV matrix: E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW_extracted\GSM8953622_22d10_counts.csv.gz
+03:05:36 [INFO] scruticell.readers.csv_matrix: Loaded CSV matrix: shape=(5284, 36601), cells=5284, genes=36601
+03:05:37 [INFO] scruticell.intelligence.executor: Saved gsm_meta to E:\Scruti-Cell\output\GSE295600\gsm_meta.json (18 GSMs)
+03:05:37 [INFO] scruticell.intelligence.executor: Built 18 per-batch AnnData objects (48275 total cells)
+03:05:37 [INFO] scruticell.intelligence.executor: Skipping standalone processing_code (strip_axis_metadata handled by executor)
+03:05:37 [INFO] scruticell.intelligence.executor: Executing assembly code (1410 chars)
+03:05:37 [WARNING] scruticell.intelligence.executor: Assembly code failed: 'GSM8953605'
+03:05:37 [INFO] scruticell.intelligence.executor: Injected batch metadata (270 fields across 18 batches)
+03:05:37 [INFO] scruticell.pipeline.nodes.validation: Validating AnnData for GSE295600
+03:05:37 [INFO] scruticell.pipeline.nodes.validation: Per-batch validation: 18 AnnData objects
+03:05:37 [INFO] scruticell.pipeline.nodes.validation: Validation: overall=0.99, passed=True, errors=0, warnings=7
+03:05:37 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE295600\GSE295600_GSM8953605_scruticell.h5ad (7257 cells x 36601 genes)
+... storing 'batch' as categorical
+... storing 'library_name' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'taxid' as categorical
+... storing 'cancer_type' as categorical
+... storing 'tissue' as categorical
+... storing 'patient' as categorical
+... storing 'time_point' as categorical
+... storing 'biopsy_site' as categorical
+... storing 'title_patient_num' as categorical
+... storing 'title_time' as categorical
+... storing 'cellranger_version' as categorical
+... storing 'genome_assembly' as categorical
+... storing 'supplementary_files_format' as categorical
+03:05:52 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE295600\GSE295600_GSM8953606_scruticell.h5ad (2221 cells x 36601 genes)
+... storing 'batch' as categorical
+... storing 'library_name' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'taxid' as categorical
+... storing 'cancer_type' as categorical
+... storing 'tissue' as categorical
+... storing 'patient' as categorical
+... storing 'time_point' as categorical
+... storing 'biopsy_site' as categorical
+... storing 'title_patient_num' as categorical
+... storing 'title_time' as categorical
+... storing 'cellranger_version' as categorical
+... storing 'genome_assembly' as categorical
+... storing 'supplementary_files_format' as categorical
+03:05:56 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE295600\GSE295600_GSM8953607_scruticell.h5ad (1051 cells x 36601 genes)
+... storing 'batch' as categorical
+... storing 'library_name' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'taxid' as categorical
+... storing 'cancer_type' as categorical
+... storing 'tissue' as categorical
+... storing 'patient' as categorical
+... storing 'time_point' as categorical
+... storing 'biopsy_site' as categorical
+... storing 'title_patient_num' as categorical
+... storing 'title_time' as categorical
+... storing 'cellranger_version' as categorical
+... storing 'genome_assembly' as categorical
+... storing 'supplementary_files_format' as categorical
+03:05:58 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE295600\GSE295600_GSM8953608_scruticell.h5ad (116 cells x 36601 genes)
+... storing 'batch' as categorical
+... storing 'library_name' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'taxid' as categorical
+... storing 'cancer_type' as categorical
+... storing 'tissue' as categorical
+... storing 'patient' as categorical
+... storing 'time_point' as categorical
+... storing 'biopsy_site' as categorical
+... storing 'title_patient_num' as categorical
+... storing 'title_time' as categorical
+... storing 'cellranger_version' as categorical
+... storing 'genome_assembly' as categorical
+... storing 'supplementary_files_format' as categorical
+03:05:58 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE295600\GSE295600_GSM8953609_scruticell.h5ad (497 cells x 36601 genes)
+... storing 'batch' as categorical
+... storing 'library_name' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'taxid' as categorical
+... storing 'cancer_type' as categorical
+... storing 'tissue' as categorical
+... storing 'patient' as categorical
+... storing 'time_point' as categorical
+... storing 'biopsy_site' as categorical
+... storing 'title_patient_num' as categorical
+... storing 'title_time' as categorical
+... storing 'cellranger_version' as categorical
+... storing 'genome_assembly' as categorical
+... storing 'supplementary_files_format' as categorical
+03:05:59 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE295600\GSE295600_GSM8953610_scruticell.h5ad (240 cells x 36601 genes)
+... storing 'batch' as categorical
+... storing 'library_name' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'taxid' as categorical
+... storing 'cancer_type' as categorical
+... storing 'tissue' as categorical
+... storing 'patient' as categorical
+... storing 'time_point' as categorical
+... storing 'biopsy_site' as categorical
+... storing 'title_patient_num' as categorical
+... storing 'title_time' as categorical
+... storing 'cellranger_version' as categorical
+... storing 'genome_assembly' as categorical
+... storing 'supplementary_files_format' as categorical
+03:06:00 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE295600\GSE295600_GSM8953611_scruticell.h5ad (516 cells x 36601 genes)
+... storing 'batch' as categorical
+... storing 'library_name' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'taxid' as categorical
+... storing 'cancer_type' as categorical
+... storing 'tissue' as categorical
+... storing 'patient' as categorical
+... storing 'time_point' as categorical
+... storing 'biopsy_site' as categorical
+... storing 'title_patient_num' as categorical
+... storing 'title_time' as categorical
+... storing 'cellranger_version' as categorical
+... storing 'genome_assembly' as categorical
+... storing 'supplementary_files_format' as categorical
+03:06:01 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE295600\GSE295600_GSM8953612_scruticell.h5ad (123 cells x 36601 genes)
+... storing 'batch' as categorical
+... storing 'library_name' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'taxid' as categorical
+... storing 'cancer_type' as categorical
+... storing 'tissue' as categorical
+... storing 'patient' as categorical
+... storing 'time_point' as categorical
+... storing 'biopsy_site' as categorical
+... storing 'title_patient_num' as categorical
+... storing 'title_time' as categorical
+... storing 'cellranger_version' as categorical
+... storing 'genome_assembly' as categorical
+... storing 'supplementary_files_format' as categorical
+03:06:01 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE295600\GSE295600_GSM8953613_scruticell.h5ad (303 cells x 36601 genes)
+... storing 'batch' as categorical
+... storing 'library_name' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'taxid' as categorical
+... storing 'cancer_type' as categorical
+... storing 'tissue' as categorical
+... storing 'patient' as categorical
+... storing 'time_point' as categorical
+... storing 'biopsy_site' as categorical
+... storing 'title_patient_num' as categorical
+... storing 'title_time' as categorical
+... storing 'cellranger_version' as categorical
+... storing 'genome_assembly' as categorical
+... storing 'supplementary_files_format' as categorical
+03:06:02 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE295600\GSE295600_GSM8953614_scruticell.h5ad (3894 cells x 36601 genes)
+... storing 'batch' as categorical
+... storing 'library_name' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'taxid' as categorical
+... storing 'cancer_type' as categorical
+... storing 'tissue' as categorical
+... storing 'patient' as categorical
+... storing 'time_point' as categorical
+... storing 'biopsy_site' as categorical
+... storing 'title_patient_num' as categorical
+... storing 'title_time' as categorical
+... storing 'cellranger_version' as categorical
+... storing 'genome_assembly' as categorical
+... storing 'supplementary_files_format' as categorical
+03:06:09 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE295600\GSE295600_GSM8953615_scruticell.h5ad (5980 cells x 36601 genes)
+... storing 'batch' as categorical
+... storing 'library_name' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'taxid' as categorical
+... storing 'cancer_type' as categorical
+... storing 'tissue' as categorical
+... storing 'patient' as categorical
+... storing 'time_point' as categorical
+... storing 'biopsy_site' as categorical
+... storing 'title_patient_num' as categorical
+... storing 'title_time' as categorical
+... storing 'cellranger_version' as categorical
+... storing 'genome_assembly' as categorical
+... storing 'supplementary_files_format' as categorical
+03:06:21 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE295600\GSE295600_GSM8953616_scruticell.h5ad (4756 cells x 36601 genes)
+... storing 'batch' as categorical
+... storing 'library_name' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'taxid' as categorical
+... storing 'cancer_type' as categorical
+... storing 'tissue' as categorical
+... storing 'patient' as categorical
+... storing 'time_point' as categorical
+... storing 'biopsy_site' as categorical
+... storing 'title_patient_num' as categorical
+... storing 'title_time' as categorical
+... storing 'cellranger_version' as categorical
+... storing 'genome_assembly' as categorical
+... storing 'supplementary_files_format' as categorical
+03:06:30 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE295600\GSE295600_GSM8953617_scruticell.h5ad (912 cells x 36601 genes)
+... storing 'batch' as categorical
+... storing 'library_name' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'taxid' as categorical
+... storing 'cancer_type' as categorical
+... storing 'tissue' as categorical
+... storing 'patient' as categorical
+... storing 'time_point' as categorical
+... storing 'biopsy_site' as categorical
+... storing 'title_patient_num' as categorical
+... storing 'title_time' as categorical
+... storing 'cellranger_version' as categorical
+... storing 'genome_assembly' as categorical
+... storing 'supplementary_files_format' as categorical
+03:06:32 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE295600\GSE295600_GSM8953618_scruticell.h5ad (1205 cells x 36601 genes)
+... storing 'batch' as categorical
+... storing 'library_name' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'taxid' as categorical
+... storing 'cancer_type' as categorical
+... storing 'tissue' as categorical
+... storing 'patient' as categorical
+... storing 'time_point' as categorical
+... storing 'biopsy_site' as categorical
+... storing 'title_patient_num' as categorical
+... storing 'title_time' as categorical
+... storing 'cellranger_version' as categorical
+... storing 'genome_assembly' as categorical
+... storing 'supplementary_files_format' as categorical
+03:06:34 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE295600\GSE295600_GSM8953619_scruticell.h5ad (1089 cells x 36601 genes)
+... storing 'batch' as categorical
+... storing 'library_name' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'taxid' as categorical
+... storing 'cancer_type' as categorical
+... storing 'tissue' as categorical
+... storing 'patient' as categorical
+... storing 'time_point' as categorical
+... storing 'biopsy_site' as categorical
+... storing 'title_patient_num' as categorical
+... storing 'title_time' as categorical
+... storing 'cellranger_version' as categorical
+... storing 'genome_assembly' as categorical
+... storing 'supplementary_files_format' as categorical
+03:06:36 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE295600\GSE295600_GSM8953620_scruticell.h5ad (7632 cells x 36601 genes)
+... storing 'batch' as categorical
+... storing 'library_name' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'taxid' as categorical
+... storing 'cancer_type' as categorical
+... storing 'tissue' as categorical
+... storing 'patient' as categorical
+... storing 'time_point' as categorical
+... storing 'biopsy_site' as categorical
+... storing 'title_patient_num' as categorical
+... storing 'title_time' as categorical
+... storing 'cellranger_version' as categorical
+... storing 'genome_assembly' as categorical
+... storing 'supplementary_files_format' as categorical
+03:06:51 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE295600\GSE295600_GSM8953621_scruticell.h5ad (5199 cells x 36601 genes)
+... storing 'batch' as categorical
+... storing 'library_name' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'taxid' as categorical
+... storing 'cancer_type' as categorical
+... storing 'tissue' as categorical
+... storing 'patient' as categorical
+... storing 'time_point' as categorical
+... storing 'biopsy_site' as categorical
+... storing 'title_patient_num' as categorical
+... storing 'title_time' as categorical
+... storing 'cellranger_version' as categorical
+... storing 'genome_assembly' as categorical
+... storing 'supplementary_files_format' as categorical
+03:07:00 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE295600\GSE295600_GSM8953622_scruticell.h5ad (5284 cells x 36601 genes)
+... storing 'batch' as categorical
+... storing 'library_name' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'taxid' as categorical
+... storing 'cancer_type' as categorical
+... storing 'tissue' as categorical
+... storing 'patient' as categorical
+... storing 'time_point' as categorical
+... storing 'biopsy_site' as categorical
+... storing 'title_patient_num' as categorical
+... storing 'title_time' as categorical
+... storing 'cellranger_version' as categorical
+... storing 'genome_assembly' as categorical
+... storing 'supplementary_files_format' as categorical
+03:07:10 [INFO] scruticell.intelligence.executor: Origin trace report written to: E:\Scruti-Cell\output\GSE295600\GSE295600_trace.json
+03:07:10 [INFO] scruticell.intelligence.executor: Origin trace markdown written to: E:\Scruti-Cell\output\GSE295600\GSE295600_trace.md
+03:07:28 [INFO] scruticell.intelligence.verifier: Batch verification PASSED for GSE295600 (18 batches)
+03:07:30 [INFO] scruticell.knowledge.graph: Connected to Neo4j at bolt://localhost:7687
+03:07:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:FieldSynonym) REQUIRE (e.name) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_d9f7bc3a FOR (e:FieldSynonym) REQUIRE (e.name) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (fs:FieldSynonym) REQUIRE fs.name IS UNIQUE'
+03:07:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:GeneMapping) REQUIRE (e.source_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_97b24131 FOR (e:GeneMapping) REQUIRE (e.source_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (gm:GeneMapping) REQUIRE gm.source_id IS UNIQUE'
+03:07:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:GSE) REQUIRE (e.gse_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_8bde2949 FOR (e:GSE) REQUIRE (e.gse_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (gse:GSE) REQUIRE gse.gse_id IS UNIQUE'
+03:07:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:ParseStrategy) REQUIRE (e.strategy_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_c9435509 FOR (e:ParseStrategy) REQUIRE (e.strategy_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (ps:ParseStrategy) REQUIRE ps.strategy_id IS UNIQUE'
+03:07:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:FailureCase) REQUIRE (e.case_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_e506595e FOR (e:FailureCase) REQUIRE (e.case_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (fc:FailureCase) REQUIRE fc.case_id IS UNIQUE'
+03:07:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:BatchPattern) REQUIRE (e.pattern_name) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_9e585b6f FOR (e:BatchPattern) REQUIRE (e.pattern_name) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (bp:BatchPattern) REQUIRE bp.pattern_name IS UNIQUE'
+03:07:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:BatchStrategy) REQUIRE (e.batch_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_25e2cc3 FOR (e:BatchStrategy) REQUIRE (e.batch_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (bs:BatchStrategy) REQUIRE bs.batch_id IS UNIQUE'
+03:07:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:MatrixStrategy) REQUIRE (e.matrix_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_61005091 FOR (e:MatrixStrategy) REQUIRE (e.matrix_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (ms:MatrixStrategy) REQUIRE ms.matrix_id IS UNIQUE'
+03:07:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:ProcessingCode) REQUIRE (e.code_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_f9784487 FOR (e:ProcessingCode) REQUIRE (e.code_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (pc:ProcessingCode) REQUIRE pc.code_id IS UNIQUE'
+03:07:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:AssemblyCode) REQUIRE (e.code_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_d85e5ea FOR (e:AssemblyCode) REQUIRE (e.code_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (ac:AssemblyCode) REQUIRE ac.code_id IS UNIQUE'
+03:07:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:FieldMappingStrategy) REQUIRE (e.mapping_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_4f3b0f74 FOR (e:FieldMappingStrategy) REQUIRE (e.mapping_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (fm:FieldMappingStrategy) REQUIRE fm.mapping_id IS UNIQUE'
+03:07:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:FieldSynonym) ON (e.canonical_name)' has no effect. The index or constraint specified by 'RANGE INDEX index_4029d71a FOR (e:FieldSynonym) ON (e.canonical_name)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (fs:FieldSynonym) ON (fs.canonical_name)'
+03:07:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:GeneMapping) ON (e.target_symbol)' has no effect. The index or constraint specified by 'RANGE INDEX index_e5f90fd0 FOR (e:GeneMapping) ON (e.target_symbol)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (gm:GeneMapping) ON (gm.target_symbol)'
+03:07:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:GSE) ON (e.organism)' has no effect. The index or constraint specified by 'RANGE INDEX index_1fe8d2a4 FOR (e:GSE) ON (e.organism)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (gse:GSE) ON (gse.organism)'
+03:07:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:GSE) ON (e.assay_type)' has no effect. The index or constraint specified by 'RANGE INDEX index_38f59a2a FOR (e:GSE) ON (e.assay_type)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (gse:GSE) ON (gse.assay_type)'
+03:07:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:ParseStrategy) ON (e.success_count)' has no effect. The index or constraint specified by 'RANGE INDEX index_85672a78 FOR (e:ParseStrategy) ON (e.success_count)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (ps:ParseStrategy) ON (ps.success_count)'
+03:07:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:FailureCase) ON (e.error_signature)' has no effect. The index or constraint specified by 'RANGE INDEX index_701fbc61 FOR (e:FailureCase) ON (e.error_signature)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (fc:FailureCase) ON (fc.error_signature)'
+03:07:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchPattern) ON (e.detection_rule)' has no effect. The index or constraint specified by 'RANGE INDEX index_5a2fc8b8 FOR (e:BatchPattern) ON (e.detection_rule)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bp:BatchPattern) ON (bp.detection_rule)'
+03:07:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchStrategy) ON (e.gsm_id)' has no effect. The index or constraint specified by 'RANGE INDEX index_6fcdd738 FOR (e:BatchStrategy) ON (e.gsm_id)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.gsm_id)'
+03:07:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchStrategy) ON (e.genotype)' has no effect. The index or constraint specified by 'RANGE INDEX index_369c2325 FOR (e:BatchStrategy) ON (e.genotype)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.genotype)'
+03:07:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchStrategy) ON (e.treatment)' has no effect. The index or constraint specified by 'RANGE INDEX index_9d96a35e FOR (e:BatchStrategy) ON (e.treatment)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.treatment)'
+03:07:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:MatrixStrategy) ON (e.format)' has no effect. The index or constraint specified by 'RANGE INDEX index_5eea1dd4 FOR (e:MatrixStrategy) ON (e.format)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (ms:MatrixStrategy) ON (ms.format)'
+03:07:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:FieldMappingStrategy) ON (e.canonical)' has no effect. The index or constraint specified by 'RANGE INDEX index_281945fe FOR (e:FieldMappingStrategy) ON (e.canonical)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (fm:FieldMappingStrategy) ON (fm.canonical)'
+03:07:30 [INFO] scruticell.knowledge.graph: Neo4j schema initialized
+03:07:30 [INFO] scruticell.intelligence.matcher: Updated strategy stats for dcdd85e93151c651: success=True
+03:07:30 [WARNING] scruticell.intelligence.matcher: Failed to store strategy: {neo4j_code: Neo.ClientError.Schema.ConstraintValidationFailed} {message: Node(131) already exists with label `BatchStrategy` and property `batch_id` = 'dcdd85e93151c651_GSM8953605'} {gql_status: 50N42} {gql_status_description: error: general processing exception - unexpected error. Unexpected error has occurred. See debug log for details.}
+03:07:31 [INFO] scruticell.utils.tokens: Token usage CSV saved: E:\Scruti-Cell\output\GSE295600\token_usage.csv

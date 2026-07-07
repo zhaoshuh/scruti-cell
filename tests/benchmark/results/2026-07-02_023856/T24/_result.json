@@ -1,0 +1,19 @@
+{
+  "gse_id": "GSE327101",
+  "success": false,
+  "returncode": -1,
+  "started_at": "2026-07-02T06:58:49.588182",
+  "stages": {
+    "inspect": {},
+    "plan": {},
+    "execute": {}
+  },
+  "metrics": {},
+  "errors": [],
+  "duration_s": 1800.0,
+  "id": "T24",
+  "category": "批量测试",
+  "label": "GSE327101",
+  "features": "",
+  "grade": "D"
+}

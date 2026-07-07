@@ -121,7 +121,13 @@ def _load_dense_matrix(
             else:
                 values = row
 
-            data_rows.append([float(v) for v in values])
+            try:
+                data_rows.append([float(v) for v in values])
+            except ValueError:
+                # First column might be gene names without an empty header cell.
+                # Re-read with index_col=0.
+                fh.seek(0) if hasattr(fh, "seek") else None
+                return _load_dense_matrix_fallback(filepath, delimiter, orientation)
 
     matrix = np.array(data_rows, dtype=np.float32)
 
@@ -132,6 +138,45 @@ def _load_dense_matrix(
         cell_barcodes = row_names if has_row_names else [f"cell_{i}" for i in range(matrix.shape[0])]
         gene_names = col_headers
 
+    return matrix, gene_names, cell_barcodes
+
+
+def _load_dense_matrix_fallback(
+    filepath: Path, delimiter: str, orientation: str,
+) -> tuple[np.ndarray, list[str], list[str]]:
+    """Fallback: read with first column as row names."""
+    opener = gzip.open if filepath.suffix == ".gz" else open
+    with opener(filepath, "rt") as fh:
+        reader = csv.reader(fh, delimiter=delimiter)
+        header = next(reader)
+        col_headers = header[1:] if len(header) > 1 else header
+        row_names = []
+        data_rows = []
+        for row in reader:
+            if not row:
+                continue
+            if len(row) > 1:
+                row_names.append(row[0])
+                try:
+                    data_rows.append([float(v) for v in row[1:]])
+                except ValueError:
+                    continue
+            else:
+                try:
+                    data_rows.append([float(v) for v in row])
+                except ValueError:
+                    continue
+
+    matrix = np.array(data_rows, dtype=np.float32)
+
+    if orientation == "gene_x_cell":
+        gene_names = row_names if row_names else [f"gene_{i}" for i in range(matrix.shape[0])]
+        cell_barcodes = col_headers
+    else:
+        cell_barcodes = row_names if row_names else [f"cell_{i}" for i in range(matrix.shape[0])]
+        gene_names = col_headers
+
+    logger.info("Fallback mode: loaded with index_col=0 interpretation")
     return matrix, gene_names, cell_barcodes
 
 

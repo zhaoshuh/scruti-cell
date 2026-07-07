@@ -1,0 +1,25 @@
+{
+  "gse_id": "GSE312357",
+  "success": false,
+  "returncode": 1,
+  "started_at": "2026-07-06T00:29:51.578655",
+  "stages": {
+    "inspect": {
+      "summary": "[1/3] INSPECT �� downloading + inspecting..."
+    },
+    "plan": {},
+    "execute": {}
+  },
+  "metrics": {},
+  "errors": [
+    "Traceback (most recent call last):",
+    "raise TypeError(f'Object of type {o.__class__.__name__} '",
+    "TypeError: Object of type float32 is not JSON serializable"
+  ],
+  "duration_s": 431.1,
+  "id": "T00",
+  "category": "批量测试",
+  "label": "GSE312357",
+  "features": "",
+  "grade": "D"
+}

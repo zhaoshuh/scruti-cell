@@ -8,6 +8,7 @@ GSE 列表来源：test_gse.xlsx 的 gse_id 列（自动读取）
 
 Usage:
     python tests/benchmark/run_benchmark.py              # 跑全部
+    python tests/benchmark/run_benchmark.py --failed     # 仅重测上次失败的
     python tests/benchmark/run_benchmark.py --resume     # 断点续跑
     python tests/benchmark/run_benchmark.py --keep-data  # 保留下载数据
 """
@@ -33,6 +34,7 @@ PROJECT_ROOT = Path(__file__).parent.parent.parent
 def load_datasets() -> list[dict[str, Any]]:
     """从 test_gse.xlsx 读取 GSE 列表，返回统一格式的 DATASETS。
 
+    按列名 "gse_id" 查找（不依赖列位置）。
     如果 Excel 不存在或读取失败，回退到内置默认列表。
     """
     xlsx_path = PROJECT_ROOT / "test_gse.xlsx"
@@ -44,12 +46,16 @@ def load_datasets() -> list[dict[str, Any]]:
         import openpyxl
         wb = openpyxl.load_workbook(xlsx_path, read_only=True)
         ws = wb[wb.sheetnames[0]]
+        # Find column index by header name "gse_id"
+        headers = [str(c.value or "").strip().lower() for c in next(ws.iter_rows(max_row=1))]
+        gse_col = next((i for i, h in enumerate(headers) if h == "gse_id"), 0)
+        note_col = gse_col + 1 if gse_col + 1 < len(headers) else -1
         datasets = []
         for i, row in enumerate(ws.iter_rows(min_row=2, values_only=True), start=2):
-            gse = str(row[0]).strip() if row[0] and str(row[0]).strip() else ""
+            gse = str(row[gse_col]).strip() if gse_col < len(row) and row[gse_col] else ""
             if not gse.upper().startswith("GSE"):
                 continue
-            note = str(row[1]).strip() if len(row) > 1 and row[1] else ""
+            note = str(row[note_col]).strip() if note_col >= 0 and note_col < len(row) and row[note_col] else ""
             datasets.append({
                 "id": f"T{i - 2:02d}",
                 "gse_id": gse,
@@ -59,12 +65,64 @@ def load_datasets() -> list[dict[str, Any]]:
             })
         wb.close()
         if datasets:
+            datasets = datasets[:20]
             print(f"[OK] Loaded {len(datasets)} GSE IDs from {xlsx_path.name}")
             return datasets
     except Exception as exc:
         print(f"[WARN] Failed to read {xlsx_path}: {exc}")
 
     return _default_datasets()
+
+
+def load_failed_from_last_run() -> list[dict[str, Any]]:
+    """从上一次运行结果中读取所有失败的 GSE。
+
+    读取 results/latest/summary.json 或最新的结果目录，
+    提取失败项的 gse_id，构造与 load_datasets() 一致的格式。
+    """
+    results_dir = PROJECT_ROOT / "tests" / "benchmark" / "results"
+
+    # 优先用 latest 软链接
+    latest = results_dir / "latest"
+    if latest.is_symlink() or (latest.exists() and latest.is_dir()):
+        summary_path = latest / "summary.json"
+    else:
+        # 回退：找最新的时间戳目录
+        run_dirs = sorted(
+            [d for d in results_dir.iterdir() if d.is_dir() and d.name != "latest"],
+            reverse=True,
+        )
+        if not run_dirs:
+            print("[WARN] No previous results found")
+            return []
+        summary_path = run_dirs[0] / "summary.json"
+
+    if not summary_path.exists():
+        print(f"[WARN] {summary_path} not found")
+        return []
+
+    try:
+        summary = json.loads(summary_path.read_text(encoding="utf-8"))
+        failures = summary.get("failures", [])
+        if not failures:
+            print("[INFO] No failures in last run")
+            return []
+
+        datasets = []
+        for i, f in enumerate(failures):
+            if f["gse_id"]!='GSE303943':
+                datasets.append({
+                    "id": f.get("id", f"R{i:02d}"),
+                    "gse_id": f["gse_id"],
+                    "label": f.get("gse_id", ""),
+                    "category": "重测失败",
+                    "features": "",
+                })
+        print(f"[OK] Loaded {len(datasets)} failed GSE IDs from previous run ({summary_path})")
+        return datasets
+    except Exception as exc:
+        print(f"[WARN] Failed to read {summary_path}: {exc}")
+        return []
 
 
 def _default_datasets() -> list[dict[str, Any]]:
@@ -79,14 +137,14 @@ def _default_datasets() -> list[dict[str, Any]]:
     ]
 
 # 运行配置
-TIMEOUT_PER_GSE = 1800   # 每个 GSE 最长 30 分钟
+TIMEOUT_PER_GSE: int | None = None  # 无限制
 SCRUTICELL_BIN = "scruticell"
 RESULTS_DIR = PROJECT_ROOT / "tests" / "benchmark" / "results"
 
 
 # ---- 工具函数 ----
 
-def run_cmd(cmd: list[str], timeout: int = 600) -> tuple[int, str, str]:
+def run_cmd(cmd: list[str], timeout: int | None = None) -> tuple[int, str, str]:
     """运行命令，返回 (returncode, stdout, stderr)。"""
     try:
         proc = subprocess.run(
@@ -104,6 +162,26 @@ def clear_kb() -> str:
     """清空知识库中的策略数据。返回输出文本。"""
     rc, out, err = run_cmd([SCRUTICELL_BIN, "db-clear", "--yes"], timeout=30)
     return (out + err).strip()
+
+
+def _cleanup_gse_output(gse_id: str) -> None:
+    """Remove download, extracted files, and .h5ad for a GSE to free disk space.
+    Keeps report files (JSON, log, CSV, readers/).
+    """
+    import shutil
+    gse_dir = PROJECT_ROOT / "output" / gse_id
+    if not gse_dir.exists():
+        return
+    try:
+        # Remove download directory (largest)
+        download_dir = gse_dir / "download"
+        if download_dir.exists():
+            shutil.rmtree(download_dir)
+        # Remove .h5ad files
+        for h5 in gse_dir.rglob("*.h5ad"):
+            h5.unlink()
+    except Exception as exc:
+        print(f"  [WARN] Cleanup failed for {gse_id}: {exc}")
 
 
 def test_one_gse(gse_id: str, keep_data: bool = False) -> dict[str, Any]:
@@ -225,15 +303,16 @@ def main() -> None:
     p = argparse.ArgumentParser(description="Scrut-Cell Batch Benchmark")
     p.add_argument("--resume", action="store_true", help="跳过已有结果的数据集")
     p.add_argument("--keep-data", action="store_true", help="保留下载文件和 .h5ad")
-    p.add_argument("--timeout", type=int, default=TIMEOUT_PER_GSE, help="每个 GSE 超时秒数")
+    p.add_argument("--timeout", type=int, default=None, help="每个 GSE 超时秒数（默认无限制）")
+    p.add_argument("--failed", action="store_true", help="仅重测上一次运行中失败的数据集")
     args = p.parse_args()
 
     run_dir = RESULTS_DIR / datetime.now().strftime("%Y-%m-%d_%H%M%S")
     run_dir.mkdir(parents=True, exist_ok=True)
     TIMEOUT_PER_GSE = args.timeout
 
-    # 加载数据集列表（优先从 Excel）
-    datasets = load_datasets()
+    # 加载数据集列表（优先从 Excel，--failed 从上次失败中读取）
+    datasets = load_failed_from_last_run() if args.failed else load_datasets()
     if not datasets:
         log = open(str(run_dir / "_full.log"), "w", encoding="utf-8")
         log.write("No datasets to test.\n"); log.close()
@@ -307,6 +386,10 @@ def main() -> None:
                   f"G={result['metrics'].get('genes','?')} "
                   f"B={result['metrics'].get('batches','?')} | "
                   f"{result['duration_s']}s")
+
+        # Cleanup download + extracted files to free disk space
+        if not args.keep_data:
+            _cleanup_gse_output(gse_id)
 
     # Step 3: 汇总报告
     log_print(f"\n\n{'='*60}")

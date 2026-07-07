@@ -1,0 +1,2079 @@
+{
+  "timestamp": "2026-07-02T12:46:59.275827",
+  "total": 50,
+  "passed": 38,
+  "pass_rate": "76%",
+  "grades": {
+    "S": 35,
+    "A": 3,
+    "B": 0,
+    "C": 0,
+    "D": 12,
+    "F": 0
+  },
+  "by_category": {
+    "批量测试": {
+      "total": 50,
+      "passed": 38,
+      "pass_rate": "76%"
+    }
+  },
+  "failures": [
+    {
+      "id": "T06",
+      "gse_id": "GSE303943",
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "03:08:26 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "03:08:26 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "03:08:26 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+        "03:08:26 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+        "03:08:26 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+        "03:08:26 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`",
+        "03:09:53 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE303943\\download\\GSE303943_RAW_extracted\\GSM9139390_CON_matrix.mtx_extracted: Missing required 10X file(s) in ",
+        "03:09:53 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE303943\\download\\GSE303943_RAW_extracted\\GSM9139391_PKCi_matrix.mtx_extracted: Missing required 10X file(s) in",
+        "03:09:55 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "03:09:55 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ]
+    },
+    {
+      "id": "T08",
+      "gse_id": "GSE317309",
+      "errors": []
+    },
+    {
+      "id": "T11",
+      "gse_id": "GSE284443",
+      "errors": []
+    },
+    {
+      "id": "T24",
+      "gse_id": "GSE327101",
+      "errors": []
+    },
+    {
+      "id": "T28",
+      "gse_id": "GSE289335",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "08:09:51 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "08:09:51 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "08:09:51 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+        "08:09:51 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+        "08:09:51 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+        "08:09:51 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`"
+      ]
+    },
+    {
+      "id": "T33",
+      "gse_id": "GSE290316",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "09:02:59 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "09:02:59 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "09:02:59 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+        "09:02:59 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+        "09:02:59 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+        "09:02:59 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`"
+      ]
+    },
+    {
+      "id": "T35",
+      "gse_id": "GSE335943",
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "09:10:48 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "09:10:48 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "09:11:51 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE335943\\download\\GSE335943_RAW_extracted\\GSM9824070_matrix.mtx_extracted: Missing required 10X file(s) in E:\\S",
+        "09:11:53 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "09:11:53 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ]
+    },
+    {
+      "id": "T39",
+      "gse_id": "GSE304429",
+      "errors": [
+        "[#7c217d 61MiB/64MiB(94%) CN:1 DL:89KiB ETA:39s] FAILED: Could not generate a valid plan",
+        "09:26:35 [WARNING] scruticell.utils.download: Range download attempt 1 failed: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1006)",
+        "09:26:46 [WARNING] scruticell.utils.download: Range download attempt 2 failed: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1006)",
+        "09:26:59 [WARNING] scruticell.utils.download: Range download attempt 3 failed: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1006)",
+        "09:26:59 [WARNING] scruticell.pipeline.nodes.download: Range-download failed for GSE304429_D_EmptyDrops_CR_339549_matrix.tar.gz: Failed to range-download https://ftp.ncbi.nlm.nih.gov/geo/series/GSE304",
+        "09:31:59 [WARNING] scruticell.pipeline.nodes.download: aria2c attempt 1/5 for GSE304429_D_EmptyDrops_CR_339549_matrix.tar.gz: Command '['aria2c', 'https://ftp.ncbi.nlm.nih.gov/geo/series/GSE304nnn/GSE",
+        "09:34:41 [WARNING] scruticell.utils.download: Range download attempt 1 failed: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1006)",
+        "09:34:52 [WARNING] scruticell.utils.download: Range download attempt 2 failed: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1006)",
+        "09:35:05 [WARNING] scruticell.utils.download: Range download attempt 3 failed: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1006)",
+        "09:35:05 [WARNING] scruticell.pipeline.nodes.download: Range-download failed for GSE304429_L_EmptyDrops_CR_339548_matrix.tar.gz: Failed to range-download https://ftp.ncbi.nlm.nih.gov/geo/series/GSE304",
+        "09:40:05 [WARNING] scruticell.pipeline.nodes.download: aria2c attempt 1/5 for GSE304429_L_EmptyDrops_CR_339548_matrix.tar.gz: Command '['aria2c', 'https://ftp.ncbi.nlm.nih.gov/geo/series/GSE304nnn/GSE",
+        "09:44:29 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "09:44:29 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "09:44:53 [WARNING] langsmith.client: Failed to get info from https://api.smith.langchain.com: LangSmithConnectionError('Connection error caused failure to GET /info in LangSmith API. Please confirm yo",
+        "09:44:58 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Connection error.",
+        "09:44:58 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan",
+        "09:45:41 [WARNING] langsmith.client: Failed to multipart ingest runs: Connection error caused failure to POST https://api.smith.langchain.com/runs/multipart in LangSmith API. Please confirm your inter",
+        "09:46:29 [WARNING] langsmith.client: Failed to multipart ingest runs: Connection error caused failure to POST https://api.smith.langchain.com/runs/multipart in LangSmith API. Please confirm your inter"
+      ]
+    },
+    {
+      "id": "T40",
+      "gse_id": "GSE316025",
+      "errors": []
+    },
+    {
+      "id": "T43",
+      "gse_id": "GSE336034",
+      "errors": [
+        "Execution: FAILED",
+        "10:50:34 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "10:50:34 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "10:51:59 [WARNING] scruticell.intelligence.executor: Custom processing code failed: 'DataFrame' object has no attribute 'dtype'",
+        "10:52:12 [INFO] scruticell.pipeline.nodes.validation: Validation: overall=1.00, passed=True, errors=0, warnings=0",
+        "10:52:31 [WARNING] scruticell.intelligence.verifier: Batch verification FAILED for GSE336034: 4 mismatches",
+        "10:53:10 [WARNING] scruticell.intelligence.executor: Custom processing code failed: 'DataFrame' object has no attribute 'dtype'",
+        "10:53:16 [INFO] scruticell.pipeline.nodes.validation: Validation: overall=1.00, passed=True, errors=0, warnings=0",
+        "10:53:41 [WARNING] scruticell.intelligence.verifier: Batch verification FAILED for GSE336034: 6 mismatches",
+        "10:54:21 [WARNING] scruticell.intelligence.executor: Custom processing code failed: 'DataFrame' object has no attribute 'dtype'",
+        "10:54:21 [WARNING] scruticell.intelligence.executor: Assembly code failed: 'str' object has no attribute 'get'",
+        "10:54:21 [INFO] scruticell.pipeline.nodes.validation: Validation: overall=1.00, passed=True, errors=0, warnings=0",
+        "10:54:43 [WARNING] scruticell.intelligence.verifier: Batch verification FAILED for GSE336034: 5 mismatches",
+        "10:55:21 [WARNING] scruticell.intelligence.executor: Custom processing code failed: 'DataFrame' object has no attribute 'dtype'",
+        "10:55:21 [WARNING] scruticell.intelligence.executor: Assembly code failed: 'str' object has no attribute 'get'",
+        "10:55:21 [INFO] scruticell.pipeline.nodes.validation: Validation: overall=1.00, passed=True, errors=0, warnings=0",
+        "10:55:43 [WARNING] scruticell.intelligence.verifier: Batch verification FAILED for GSE336034: 5 mismatches",
+        "10:56:20 [WARNING] scruticell.intelligence.executor: Custom processing code failed: 'DataFrame' object has no attribute 'dtype'",
+        "10:56:34 [INFO] scruticell.pipeline.nodes.validation: Validation: overall=0.93, passed=True, errors=0, warnings=6",
+        "10:56:35 [ERROR] scruticell.intelligence.executor: Execution failed: Can't implicitly convert non-string objects to strings",
+        "Traceback (most recent call last):",
+        "File \"E:\\conda\\Lib\\site-packages\\anndata\\_io\\utils.py\", line 349, in raise_error_if_dataset_2d_present",
+        "TypeError: Can't implicitly convert non-string objects to strings",
+        "Error raised while writing key 'cell_source' of <class 'h5py._hl.group.Group'> to /raw/var",
+        "10:56:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "10:56:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ]
+    },
+    {
+      "id": "T46",
+      "gse_id": "GSE304657",
+      "errors": []
+    },
+    {
+      "id": "T49",
+      "gse_id": "GSE335070",
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "12:43:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "12:43:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "12:43:02 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+        "12:43:02 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+        "12:43:02 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+        "12:43:02 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`",
+        "12:46:56 [WARNING] scruticell.intelligence.generator: LLM validation failed: Expecting value: line 1 column 1 (char 0)",
+        "12:46:56 [ERROR] scruticell.intelligence.generator: LLM revision failed on literature_enriched round 1"
+      ]
+    }
+  ],
+  "results": [
+    {
+      "gse_id": "GSE312357",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T02:39:01.881834",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 48342,
+        "genes": 32245,
+        "batches": 8,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 6,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 123,
+        "gsm_entries": 8,
+        "data_files": 120
+      },
+      "errors": [],
+      "duration_s": 229.8,
+      "id": "T00",
+      "category": "批量测试",
+      "label": "GSE312357",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE327093",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T02:42:51.741107",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 33554,
+        "genes": 31019,
+        "batches": 4,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 6,
+        "batch_separation_strategy": "field_combination",
+        "kb_match_count": 0,
+        "total_files": 9,
+        "gsm_entries": 4,
+        "data_files": 8
+      },
+      "errors": [],
+      "duration_s": 178.4,
+      "id": "T01",
+      "category": "批量测试",
+      "label": "GSE327093",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE333438",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T02:45:50.153053",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 5363,
+        "genes": 32248,
+        "batches": 2,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.98,
+        "field_mappings": 6,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 5,
+        "gsm_entries": 2,
+        "data_files": 4
+      },
+      "errors": [],
+      "duration_s": 149.3,
+      "id": "T02",
+      "category": "批量测试",
+      "label": "GSE333438",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE297558",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T02:48:19.463426",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 9507,
+        "genes": 32245,
+        "batches": 4,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.98,
+        "field_mappings": 10,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 10,
+        "gsm_entries": 4,
+        "data_files": 8
+      },
+      "errors": [],
+      "duration_s": 140.4,
+      "id": "T03",
+      "category": "批量测试",
+      "label": "GSE297558",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE290746",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T02:50:39.861070",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 32098,
+        "genes": 28625,
+        "batches": 7,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 3,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 64,
+        "gsm_entries": 7,
+        "data_files": 63
+      },
+      "errors": [],
+      "duration_s": 537.1,
+      "id": "T04",
+      "category": "批量测试",
+      "label": "GSE290746",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE269042",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T02:59:36.957303",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 28516,
+        "genes": 32245,
+        "batches": 6,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 3,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 55,
+        "gsm_entries": 6,
+        "data_files": 54
+      },
+      "errors": [],
+      "duration_s": 377.4,
+      "id": "T05",
+      "category": "批量测试",
+      "label": "开始之前删除相同目录重新下载",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE303943",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-02T03:05:54.327672",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 0,
+        "genes": 0,
+        "batches": 0,
+        "success": false,
+        "errors": [
+          "No matrices could be read"
+        ],
+        "warnings": [],
+        "confidence": 0.98,
+        "field_mappings": 8,
+        "batch_separation_strategy": "per_condition",
+        "kb_match_count": 0,
+        "total_files": 19,
+        "gsm_entries": 2,
+        "data_files": 18
+      },
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "03:08:26 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "03:08:26 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "03:08:26 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+        "03:08:26 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+        "03:08:26 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+        "03:08:26 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`",
+        "03:09:53 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE303943\\download\\GSE303943_RAW_extracted\\GSM9139390_CON_matrix.mtx_extracted: Missing required 10X file(s) in ",
+        "03:09:53 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE303943\\download\\GSE303943_RAW_extracted\\GSM9139391_PKCi_matrix.mtx_extracted: Missing required 10X file(s) in",
+        "03:09:55 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "03:09:55 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ],
+      "duration_s": 242.3,
+      "id": "T06",
+      "category": "批量测试",
+      "label": "GSE303943",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE284668",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T03:09:56.656806",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 26917,
+        "genes": 32246,
+        "batches": 2,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.98,
+        "field_mappings": 8,
+        "batch_separation_strategy": "per_condition",
+        "kb_match_count": 0,
+        "total_files": 19,
+        "gsm_entries": 2,
+        "data_files": 18
+      },
+      "errors": [],
+      "duration_s": 230.5,
+      "id": "T07",
+      "category": "批量测试",
+      "label": "GSE284668",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE317309",
+      "success": false,
+      "returncode": -1,
+      "started_at": "2026-07-02T03:13:47.209443",
+      "stages": {
+        "inspect": {},
+        "plan": {},
+        "execute": {}
+      },
+      "metrics": {},
+      "errors": [],
+      "duration_s": 1800.0,
+      "id": "T08",
+      "category": "批量测试",
+      "label": "GSE317309",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE328098",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T03:43:47.224188",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 159303,
+        "genes": 32245,
+        "batches": 1,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.7,
+        "field_mappings": 4,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 2,
+        "gsm_entries": 8,
+        "data_files": 1
+      },
+      "errors": [],
+      "duration_s": 1463.2,
+      "id": "T09",
+      "category": "批量测试",
+      "label": "GSE328098",
+      "features": "",
+      "grade": "A"
+    },
+    {
+      "gse_id": "GSE294571",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T04:08:10.550196",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 12312,
+        "genes": 6495,
+        "batches": 2,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.98,
+        "field_mappings": 5,
+        "batch_separation_strategy": "per_condition",
+        "kb_match_count": 0,
+        "total_files": 5,
+        "gsm_entries": 2,
+        "data_files": 4
+      },
+      "errors": [],
+      "duration_s": 362.3,
+      "id": "T10",
+      "category": "批量测试",
+      "label": "GSE294571",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE284443",
+      "success": false,
+      "returncode": -1,
+      "started_at": "2026-07-02T04:14:12.984876",
+      "stages": {
+        "inspect": {},
+        "plan": {},
+        "execute": {}
+      },
+      "metrics": {},
+      "errors": [],
+      "duration_s": 1800.0,
+      "id": "T11",
+      "category": "批量测试",
+      "label": "GSE284443",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE297632",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T04:44:13.009382",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 17864,
+        "genes": 19065,
+        "batches": 2,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.98,
+        "field_mappings": 7,
+        "batch_separation_strategy": "per_condition",
+        "kb_match_count": 0,
+        "total_files": 19,
+        "gsm_entries": 2,
+        "data_files": 18
+      },
+      "errors": [],
+      "duration_s": 211.9,
+      "id": "T12",
+      "category": "批量测试",
+      "label": "GSE297632",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE312138",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T04:47:44.923916",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 10987,
+        "genes": 19065,
+        "batches": 1,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.98,
+        "field_mappings": 7,
+        "batch_separation_strategy": "per_condition",
+        "kb_match_count": 0,
+        "total_files": 37,
+        "gsm_entries": 1,
+        "data_files": 36
+      },
+      "errors": [],
+      "duration_s": 433.7,
+      "id": "T13",
+      "category": "批量测试",
+      "label": "GSE312138",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE295600",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T04:54:58.595236",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 48275,
+        "genes": 36601,
+        "batches": 18,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 8,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 55,
+        "gsm_entries": 18,
+        "data_files": 54
+      },
+      "errors": [],
+      "duration_s": 1022.4,
+      "id": "T14",
+      "category": "批量测试",
+      "label": "GSE295600",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE276139",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T05:12:01.066448",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 73199,
+        "genes": 36591,
+        "batches": 6,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.98,
+        "field_mappings": 5,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 73,
+        "gsm_entries": 6,
+        "data_files": 72
+      },
+      "errors": [],
+      "duration_s": 764.6,
+      "id": "T15",
+      "category": "批量测试",
+      "label": "GSE276139",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE304864",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T05:24:45.703789",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 4122396,
+        "genes": 32131,
+        "batches": 5,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.98,
+        "field_mappings": 9,
+        "batch_separation_strategy": "field_combination",
+        "kb_match_count": 0,
+        "total_files": 23,
+        "gsm_entries": 11,
+        "data_files": 22
+      },
+      "errors": [],
+      "duration_s": 1450.1,
+      "id": "T16",
+      "category": "批量测试",
+      "label": "GSE304864",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE295518",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T05:48:55.838375",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 21043,
+        "genes": 36591,
+        "batches": 2,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 4,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 19,
+        "gsm_entries": 2,
+        "data_files": 18
+      },
+      "errors": [],
+      "duration_s": 211.5,
+      "id": "T17",
+      "category": "批量测试",
+      "label": "GSE295518",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE294490",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T05:52:27.358407",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 19952,
+        "genes": 32248,
+        "batches": 2,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 5,
+        "batch_separation_strategy": "per_condition",
+        "kb_match_count": 0,
+        "total_files": 19,
+        "gsm_entries": 2,
+        "data_files": 18
+      },
+      "errors": [],
+      "duration_s": 157.8,
+      "id": "T18",
+      "category": "批量测试",
+      "label": "GSE294490",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE285606",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T05:55:05.162681",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 26105,
+        "genes": 5506,
+        "batches": 3,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.98,
+        "field_mappings": 7,
+        "batch_separation_strategy": "field_combination",
+        "kb_match_count": 0,
+        "total_files": 37,
+        "gsm_entries": 4,
+        "data_files": 36
+      },
+      "errors": [],
+      "duration_s": 455.7,
+      "id": "T19",
+      "category": "批量测试",
+      "label": "GSE285606",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE254205",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T06:02:40.871551",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 121165,
+        "genes": 30629,
+        "batches": 1,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 9,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 41,
+        "gsm_entries": 102,
+        "data_files": 40
+      },
+      "errors": [],
+      "duration_s": 1436.2,
+      "id": "T20",
+      "category": "批量测试",
+      "label": "GSE254205",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE243292",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T06:26:37.088257",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 15529,
+        "genes": 15529,
+        "batches": 1,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.85,
+        "field_mappings": 7,
+        "batch_separation_strategy": "single_batch",
+        "kb_match_count": 0,
+        "total_files": 8,
+        "gsm_entries": 15,
+        "data_files": 7
+      },
+      "errors": [],
+      "duration_s": 1641.2,
+      "id": "T21",
+      "category": "批量测试",
+      "label": "GSE243292",
+      "features": "",
+      "grade": "A"
+    },
+    {
+      "gse_id": "GSE336234",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T06:53:58.275531",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 20124,
+        "genes": 33670,
+        "batches": 2,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 5,
+        "batch_separation_strategy": "per_condition",
+        "kb_match_count": 0,
+        "total_files": 25,
+        "gsm_entries": 4,
+        "data_files": 24
+      },
+      "errors": [],
+      "duration_s": 136.5,
+      "id": "T22",
+      "category": "批量测试",
+      "label": "GSE336234",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE330011",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T06:56:14.791565",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 18153,
+        "genes": 32245,
+        "batches": 1,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.98,
+        "field_mappings": 8,
+        "batch_separation_strategy": "single_batch",
+        "kb_match_count": 0,
+        "total_files": 14,
+        "gsm_entries": 2,
+        "data_files": 13
+      },
+      "errors": [],
+      "duration_s": 154.8,
+      "id": "T23",
+      "category": "批量测试",
+      "label": "GSE330011",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE327101",
+      "success": false,
+      "returncode": -1,
+      "started_at": "2026-07-02T06:58:49.588182",
+      "stages": {
+        "inspect": {},
+        "plan": {},
+        "execute": {}
+      },
+      "metrics": {},
+      "errors": [],
+      "duration_s": 1800.0,
+      "id": "T24",
+      "category": "批量测试",
+      "label": "GSE327101",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE320221",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T07:28:49.601651",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 33198,
+        "genes": 33670,
+        "batches": 4,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.98,
+        "field_mappings": 14,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 37,
+        "gsm_entries": 4,
+        "data_files": 36
+      },
+      "errors": [],
+      "duration_s": 305.4,
+      "id": "T25",
+      "category": "批量测试",
+      "label": "GSE320221",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE300982",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T07:33:55.004861",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 147591,
+        "genes": 0,
+        "batches": 12,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.98,
+        "field_mappings": 5,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 24,
+        "gsm_entries": 16,
+        "data_files": 23
+      },
+      "errors": [],
+      "duration_s": 1457.5,
+      "id": "T26",
+      "category": "批量测试",
+      "label": "GSE300982",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE300932",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T07:58:12.490209",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 102810,
+        "genes": 33514,
+        "batches": 16,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 6,
+        "batch_separation_strategy": "field_combination",
+        "kb_match_count": 0,
+        "total_files": 145,
+        "gsm_entries": 16,
+        "data_files": 144
+      },
+      "errors": [],
+      "duration_s": 677.2,
+      "id": "T27",
+      "category": "批量测试",
+      "label": "GSE300932",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE289335",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-02T08:09:29.732066",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 7,
+        "gsm_entries": 127,
+        "data_files": 6
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "08:09:51 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "08:09:51 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "08:09:51 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+        "08:09:51 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+        "08:09:51 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+        "08:09:51 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`"
+      ],
+      "duration_s": 120.2,
+      "id": "T28",
+      "category": "批量测试",
+      "label": "GSE289335",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE278526",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T08:11:29.938748",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 5378713,
+        "genes": 36591,
+        "batches": 4,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.98,
+        "field_mappings": 5,
+        "batch_separation_strategy": "field_combination",
+        "kb_match_count": 0,
+        "total_files": 37,
+        "gsm_entries": 4,
+        "data_files": 36
+      },
+      "errors": [],
+      "duration_s": 433.6,
+      "id": "T29",
+      "category": "批量测试",
+      "label": "GSE278526",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE336609",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T08:18:43.517152",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 22,
+        "genes": 60483,
+        "batches": 4,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 8,
+        "batch_separation_strategy": "field_combination",
+        "kb_match_count": 0,
+        "total_files": 9,
+        "gsm_entries": 22,
+        "data_files": 8
+      },
+      "errors": [],
+      "duration_s": 290.6,
+      "id": "T30",
+      "category": "批量测试",
+      "label": "GSE336609",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE333617",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T08:23:34.099039",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 817567,
+        "genes": 36600,
+        "batches": 11,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 6,
+        "batch_separation_strategy": "field_combination",
+        "kb_match_count": 0,
+        "total_files": 221,
+        "gsm_entries": 26,
+        "data_files": 163
+      },
+      "errors": [],
+      "duration_s": 1281.9,
+      "id": "T31",
+      "category": "批量测试",
+      "label": "GSE333617",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE303768",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T08:44:56.113897",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 69208,
+        "genes": 32245,
+        "batches": 6,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 5,
+        "batch_separation_strategy": "field_combination",
+        "kb_match_count": 0,
+        "total_files": 73,
+        "gsm_entries": 6,
+        "data_files": 72
+      },
+      "errors": [],
+      "duration_s": 543.4,
+      "id": "T32",
+      "category": "批量测试",
+      "label": "GSE303768",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE290316",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-02T08:53:59.512719",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 34,
+        "gsm_entries": 39,
+        "data_files": 29
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "09:02:59 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "09:02:59 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "09:02:59 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+        "09:02:59 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+        "09:02:59 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+        "09:02:59 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`"
+      ],
+      "duration_s": 668.1,
+      "id": "T33",
+      "category": "批量测试",
+      "label": "GSE290316",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE336281",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T09:05:07.655857",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 6468,
+        "genes": 6468,
+        "batches": 1,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 11,
+        "batch_separation_strategy": "per_condition",
+        "kb_match_count": 0,
+        "total_files": 9,
+        "gsm_entries": 4,
+        "data_files": 8
+      },
+      "errors": [],
+      "duration_s": 321.2,
+      "id": "T34",
+      "category": "批量测试",
+      "label": "GSE336281",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE335943",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-02T09:10:28.813532",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 0,
+        "genes": 0,
+        "batches": 0,
+        "success": false,
+        "errors": [
+          "No matrices could be read"
+        ],
+        "warnings": [],
+        "confidence": 0.98,
+        "field_mappings": 8,
+        "batch_separation_strategy": "single_batch",
+        "kb_match_count": 0,
+        "total_files": 10,
+        "gsm_entries": 1,
+        "data_files": 9
+      },
+      "errors": [
+        "Unrecoverable error (attempt 1), stopping",
+        "Execution: FAILED",
+        "09:10:48 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "09:10:48 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "09:11:51 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE335943\\download\\GSE335943_RAW_extracted\\GSM9824070_matrix.mtx_extracted: Missing required 10X file(s) in E:\\S",
+        "09:11:53 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "09:11:53 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ],
+      "duration_s": 85.3,
+      "id": "T35",
+      "category": "批量测试",
+      "label": "GSE335943",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE335657",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T09:11:54.080973",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 14704,
+        "genes": 5799,
+        "batches": 2,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 3,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 7,
+        "gsm_entries": 2,
+        "data_files": 6
+      },
+      "errors": [],
+      "duration_s": 327.6,
+      "id": "T36",
+      "category": "批量测试",
+      "label": "GSE335657",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE326338",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T09:17:21.710294",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 24754,
+        "genes": 29804,
+        "batches": 4,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 6,
+        "batch_separation_strategy": "field_combination",
+        "kb_match_count": 0,
+        "total_files": 9,
+        "gsm_entries": 4,
+        "data_files": 8
+      },
+      "errors": [],
+      "duration_s": 155.6,
+      "id": "T37",
+      "category": "批量测试",
+      "label": "GSE326338",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE308594",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T09:19:57.307337",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 66660,
+        "genes": 32245,
+        "batches": 3,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.98,
+        "field_mappings": 8,
+        "batch_separation_strategy": "per_condition",
+        "kb_match_count": 0,
+        "total_files": 28,
+        "gsm_entries": 3,
+        "data_files": 27
+      },
+      "errors": [],
+      "duration_s": 382.5,
+      "id": "T38",
+      "category": "批量测试",
+      "label": "GSE308594",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE304429",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-02T09:26:19.777262",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 19,
+        "gsm_entries": 2,
+        "data_files": 18
+      },
+      "errors": [
+        "[#7c217d 61MiB/64MiB(94%) CN:1 DL:89KiB ETA:39s] FAILED: Could not generate a valid plan",
+        "09:26:35 [WARNING] scruticell.utils.download: Range download attempt 1 failed: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1006)",
+        "09:26:46 [WARNING] scruticell.utils.download: Range download attempt 2 failed: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1006)",
+        "09:26:59 [WARNING] scruticell.utils.download: Range download attempt 3 failed: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1006)",
+        "09:26:59 [WARNING] scruticell.pipeline.nodes.download: Range-download failed for GSE304429_D_EmptyDrops_CR_339549_matrix.tar.gz: Failed to range-download https://ftp.ncbi.nlm.nih.gov/geo/series/GSE304",
+        "09:31:59 [WARNING] scruticell.pipeline.nodes.download: aria2c attempt 1/5 for GSE304429_D_EmptyDrops_CR_339549_matrix.tar.gz: Command '['aria2c', 'https://ftp.ncbi.nlm.nih.gov/geo/series/GSE304nnn/GSE",
+        "09:34:41 [WARNING] scruticell.utils.download: Range download attempt 1 failed: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1006)",
+        "09:34:52 [WARNING] scruticell.utils.download: Range download attempt 2 failed: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1006)",
+        "09:35:05 [WARNING] scruticell.utils.download: Range download attempt 3 failed: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1006)",
+        "09:35:05 [WARNING] scruticell.pipeline.nodes.download: Range-download failed for GSE304429_L_EmptyDrops_CR_339548_matrix.tar.gz: Failed to range-download https://ftp.ncbi.nlm.nih.gov/geo/series/GSE304",
+        "09:40:05 [WARNING] scruticell.pipeline.nodes.download: aria2c attempt 1/5 for GSE304429_L_EmptyDrops_CR_339548_matrix.tar.gz: Command '['aria2c', 'https://ftp.ncbi.nlm.nih.gov/geo/series/GSE304nnn/GSE",
+        "09:44:29 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "09:44:29 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "09:44:53 [WARNING] langsmith.client: Failed to get info from https://api.smith.langchain.com: LangSmithConnectionError('Connection error caused failure to GET /info in LangSmith API. Please confirm yo",
+        "09:44:58 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Connection error.",
+        "09:44:58 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan",
+        "09:45:41 [WARNING] langsmith.client: Failed to multipart ingest runs: Connection error caused failure to POST https://api.smith.langchain.com/runs/multipart in LangSmith API. Please confirm your inter",
+        "09:46:29 [WARNING] langsmith.client: Failed to multipart ingest runs: Connection error caused failure to POST https://api.smith.langchain.com/runs/multipart in LangSmith API. Please confirm your inter"
+      ],
+      "duration_s": 1209.9,
+      "id": "T39",
+      "category": "批量测试",
+      "label": "GSE304429",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE316025",
+      "success": false,
+      "returncode": -1,
+      "started_at": "2026-07-02T09:46:29.681208",
+      "stages": {
+        "inspect": {},
+        "plan": {},
+        "execute": {}
+      },
+      "metrics": {},
+      "errors": [],
+      "duration_s": 2501.1,
+      "id": "T40",
+      "category": "批量测试",
+      "label": "GSE316025",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE314885",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T10:28:10.810172",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 25934,
+        "genes": 32246,
+        "batches": 12,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 7,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 109,
+        "gsm_entries": 12,
+        "data_files": 108
+      },
+      "errors": [],
+      "duration_s": 284.4,
+      "id": "T41",
+      "category": "批量测试",
+      "label": "GSE314885",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE300724",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T10:32:55.195963",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 10209163,
+        "genes": 31018,
+        "batches": 6,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.98,
+        "field_mappings": 6,
+        "batch_separation_strategy": "field_combination",
+        "kb_match_count": 0,
+        "total_files": 55,
+        "gsm_entries": 6,
+        "data_files": 54
+      },
+      "errors": [],
+      "duration_s": 756.6,
+      "id": "T42",
+      "category": "批量测试",
+      "label": "GSE300724",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE336034",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-02T10:45:31.827959",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 0,
+        "genes": 0,
+        "batches": 0,
+        "success": false,
+        "errors": [
+          "Can't implicitly convert non-string objects to strings"
+        ],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 5,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 55,
+        "gsm_entries": 6,
+        "data_files": 54
+      },
+      "errors": [
+        "Execution: FAILED",
+        "10:50:34 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "10:50:34 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "10:51:59 [WARNING] scruticell.intelligence.executor: Custom processing code failed: 'DataFrame' object has no attribute 'dtype'",
+        "10:52:12 [INFO] scruticell.pipeline.nodes.validation: Validation: overall=1.00, passed=True, errors=0, warnings=0",
+        "10:52:31 [WARNING] scruticell.intelligence.verifier: Batch verification FAILED for GSE336034: 4 mismatches",
+        "10:53:10 [WARNING] scruticell.intelligence.executor: Custom processing code failed: 'DataFrame' object has no attribute 'dtype'",
+        "10:53:16 [INFO] scruticell.pipeline.nodes.validation: Validation: overall=1.00, passed=True, errors=0, warnings=0",
+        "10:53:41 [WARNING] scruticell.intelligence.verifier: Batch verification FAILED for GSE336034: 6 mismatches",
+        "10:54:21 [WARNING] scruticell.intelligence.executor: Custom processing code failed: 'DataFrame' object has no attribute 'dtype'",
+        "10:54:21 [WARNING] scruticell.intelligence.executor: Assembly code failed: 'str' object has no attribute 'get'",
+        "10:54:21 [INFO] scruticell.pipeline.nodes.validation: Validation: overall=1.00, passed=True, errors=0, warnings=0",
+        "10:54:43 [WARNING] scruticell.intelligence.verifier: Batch verification FAILED for GSE336034: 5 mismatches",
+        "10:55:21 [WARNING] scruticell.intelligence.executor: Custom processing code failed: 'DataFrame' object has no attribute 'dtype'",
+        "10:55:21 [WARNING] scruticell.intelligence.executor: Assembly code failed: 'str' object has no attribute 'get'",
+        "10:55:21 [INFO] scruticell.pipeline.nodes.validation: Validation: overall=1.00, passed=True, errors=0, warnings=0",
+        "10:55:43 [WARNING] scruticell.intelligence.verifier: Batch verification FAILED for GSE336034: 5 mismatches",
+        "10:56:20 [WARNING] scruticell.intelligence.executor: Custom processing code failed: 'DataFrame' object has no attribute 'dtype'",
+        "10:56:34 [INFO] scruticell.pipeline.nodes.validation: Validation: overall=0.93, passed=True, errors=0, warnings=6",
+        "10:56:35 [ERROR] scruticell.intelligence.executor: Execution failed: Can't implicitly convert non-string objects to strings",
+        "Traceback (most recent call last):",
+        "File \"E:\\conda\\Lib\\site-packages\\anndata\\_io\\utils.py\", line 349, in raise_error_if_dataset_2d_present",
+        "TypeError: Can't implicitly convert non-string objects to strings",
+        "Error raised while writing key 'cell_source' of <class 'h5py._hl.group.Group'> to /raw/var",
+        "10:56:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "10:56:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+      ],
+      "duration_s": 668.5,
+      "id": "T43",
+      "category": "批量测试",
+      "label": "GSE336034",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE320131",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T10:56:40.446042",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 3864,
+        "genes": 15070,
+        "batches": 1,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.8,
+        "field_mappings": 4,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 13,
+        "gsm_entries": 4,
+        "data_files": 12
+      },
+      "errors": [],
+      "duration_s": 258.4,
+      "id": "T44",
+      "category": "批量测试",
+      "label": "GSE320131",
+      "features": "",
+      "grade": "A"
+    },
+    {
+      "gse_id": "GSE314571",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T11:00:58.885749",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 214373,
+        "genes": 33801,
+        "batches": 6,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.98,
+        "field_mappings": 4,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 73,
+        "gsm_entries": 6,
+        "data_files": 72
+      },
+      "errors": [],
+      "duration_s": 1662.6,
+      "id": "T45",
+      "category": "批量测试",
+      "label": "GSE314571",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE304657",
+      "success": false,
+      "returncode": -1,
+      "started_at": "2026-07-02T11:28:41.510176",
+      "stages": {
+        "inspect": {},
+        "plan": {},
+        "execute": {}
+      },
+      "metrics": {},
+      "errors": [],
+      "duration_s": 1800.0,
+      "id": "T46",
+      "category": "批量测试",
+      "label": "GSE304657",
+      "features": "",
+      "grade": "D"
+    },
+    {
+      "gse_id": "GSE284038",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T11:58:41.522776",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 10190887,
+        "genes": 32245,
+        "batches": 6,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.98,
+        "field_mappings": 9,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 25,
+        "gsm_entries": 6,
+        "data_files": 24
+      },
+      "errors": [],
+      "duration_s": 1442.1,
+      "id": "T47",
+      "category": "批量测试",
+      "label": "GSE284038",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE250124",
+      "success": true,
+      "returncode": 0,
+      "started_at": "2026-07-02T12:22:43.772516",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {
+          "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+        }
+      },
+      "metrics": {
+        "cells": 45343,
+        "genes": 32245,
+        "batches": 4,
+        "success": true,
+        "errors": [],
+        "warnings": [],
+        "confidence": 0.95,
+        "field_mappings": 9,
+        "batch_separation_strategy": "per_sample",
+        "kb_match_count": 0,
+        "total_files": 17,
+        "gsm_entries": 4,
+        "data_files": 16
+      },
+      "errors": [],
+      "duration_s": 521.5,
+      "id": "T48",
+      "category": "批量测试",
+      "label": "GSE250124",
+      "features": "",
+      "grade": "S"
+    },
+    {
+      "gse_id": "GSE335070",
+      "success": false,
+      "returncode": 0,
+      "started_at": "2026-07-02T12:31:25.311799",
+      "stages": {
+        "inspect": {
+          "summary": "[1/3] INSPECT �� downloading + inspecting..."
+        },
+        "plan": {
+          "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+        },
+        "execute": {}
+      },
+      "metrics": {
+        "total_files": 122,
+        "gsm_entries": 75,
+        "data_files": 121
+      },
+      "errors": [
+        "Generating plan via LLM... FAILED: Could not generate a valid plan",
+        "12:43:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "12:43:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+        "12:43:02 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage",
+        "12:43:02 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` ",
+        "12:43:02 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does no",
+        "12:43:02 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message`",
+        "12:46:56 [WARNING] scruticell.intelligence.generator: LLM validation failed: Expecting value: line 1 column 1 (char 0)",
+        "12:46:56 [ERROR] scruticell.intelligence.generator: LLM revision failed on literature_enriched round 1"
+      ],
+      "duration_s": 932.3,
+      "id": "T49",
+      "category": "批量测试",
+      "label": "GSE335070",
+      "features": "",
+      "grade": "D"
+    }
+  ]
+}

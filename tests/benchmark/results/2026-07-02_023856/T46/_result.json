@@ -1,0 +1,19 @@
+{
+  "gse_id": "GSE304657",
+  "success": false,
+  "returncode": -1,
+  "started_at": "2026-07-02T11:28:41.510176",
+  "stages": {
+    "inspect": {},
+    "plan": {},
+    "execute": {}
+  },
+  "metrics": {},
+  "errors": [],
+  "duration_s": 1800.0,
+  "id": "T46",
+  "category": "批量测试",
+  "label": "GSE304657",
+  "features": "",
+  "grade": "D"
+}

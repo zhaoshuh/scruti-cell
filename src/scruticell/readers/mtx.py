@@ -196,3 +196,36 @@ def read_mtx(mtx_dir: str | Path, matrix_hint: str | None = None) -> dict[str, A
         "is_sparse": is_sparse,
         "shape": shape,
     }
+
+
+def _has_mtx_companions(mtx_dir: Path) -> bool:
+    """Check if directory has 10X companion files alongside a matrix."""
+    names = {f.name.lower() for f in mtx_dir.iterdir() if f.is_file()}
+    has_barcodes = any("barcodes" in n for n in names)
+    has_features = any("features" in n or "genes" in n for n in names)
+    return has_barcodes and has_features
+
+
+def read_bare_mtx(mtx_file: str | Path) -> dict[str, Any]:
+    """Read a bare MTX file without companion barcodes/features files.
+
+    Uses anndata.read_mtx() which auto-generates cell/gene indices.
+    """
+    import anndata
+    from scipy import sparse as sp
+
+    mtx_file = Path(mtx_file)
+    logger.info("Reading bare MTX file: %s", mtx_file)
+
+    adata = anndata.read_mtx(mtx_file)
+
+    if sp.issparse(adata.X) and sp.isspmatrix_csc(adata.X):
+        adata.X = adata.X.tocsr()
+
+    return {
+        "matrix": adata.X,
+        "cell_barcodes": list(adata.obs_names),
+        "gene_names": list(adata.var_names),
+        "is_sparse": sp.issparse(adata.X),
+        "shape": adata.X.shape,
+    }

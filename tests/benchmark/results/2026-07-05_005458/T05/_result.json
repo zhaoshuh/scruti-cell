@@ -1,0 +1,60 @@
+{
+  "gse_id": "GSE269042",
+  "success": false,
+  "returncode": 0,
+  "started_at": "2026-07-05T01:36:47.539188",
+  "stages": {
+    "inspect": {
+      "summary": "[1/3] INSPECT �� downloading + inspecting..."
+    },
+    "plan": {
+      "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+    },
+    "execute": {
+      "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+    }
+  },
+  "metrics": {
+    "cells": 0,
+    "genes": 0,
+    "batches": 0,
+    "success": false,
+    "errors": [
+      "No matrices could be read"
+    ],
+    "warnings": [],
+    "confidence": 0.95,
+    "field_mappings": 2,
+    "batch_separation_strategy": "per_sample",
+    "kb_match_count": 0,
+    "total_files": 55,
+    "gsm_entries": 6,
+    "data_files": 54
+  },
+  "errors": [
+    "Unrecoverable error (attempt 1), stopping",
+    "Execution: FAILED",
+    "01:41:24 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8305449_Ctrl1-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW",
+    "01:41:24 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8305450_Ctrl2-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW",
+    "01:41:25 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8305451_Ctrl3-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW",
+    "01:41:25 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8305452_AML1-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_",
+    "01:41:25 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8305453_AML2-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_",
+    "01:41:25 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8305454_AML3-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_",
+    "01:41:27 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+    "01:41:27 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+    "01:45:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_extracted\\GSM8305449_Ctrl1-matrix.mtx_extracted\\GSM8305449_Ctrl1-matrix.mtx: Un",
+    "01:45:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_extracted\\GSM8305450_Ctrl2-matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+    "01:45:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_extracted\\GSM8305451_Ctrl3-matrix.mtx_extracted\\GSM8305451_Ctrl3-matrix.mtx: Un",
+    "01:45:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_extracted\\GSM8305452_AML1-matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+    "01:45:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_extracted\\GSM8305453_AML2-matrix.mtx_extracted\\GSM8305453_AML2-matrix.mtx: Unkn",
+    "01:45:28 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE269042\\download\\GSE269042_RAW_extracted\\GSM8305454_AML3-matrix.mtx_extracted\\GSM8305454_AML3-matrix.mtx: Unkn",
+    "01:45:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+    "01:45:30 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+  ],
+  "duration_s": 524.1,
+  "id": "T05",
+  "category": "批量测试",
+  "label": "开始之前删除相同目录重新下载",
+  "features": "",
+  "grade": "D"
+}

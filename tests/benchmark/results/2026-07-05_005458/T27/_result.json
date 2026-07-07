@@ -1,0 +1,64 @@
+{
+  "gse_id": "GSE300932",
+  "success": false,
+  "returncode": 0,
+  "started_at": "2026-07-05T05:47:28.709102",
+  "stages": {
+    "inspect": {
+      "summary": "[1/3] INSPECT �� downloading + inspecting..."
+    },
+    "plan": {
+      "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+    },
+    "execute": {
+      "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+    }
+  },
+  "metrics": {
+    "cells": 0,
+    "genes": 0,
+    "batches": 0,
+    "success": false,
+    "errors": [
+      "No matrices could be read"
+    ],
+    "warnings": [],
+    "confidence": 0.95,
+    "field_mappings": 4,
+    "batch_separation_strategy": "per_sample",
+    "kb_match_count": 0,
+    "total_files": 145,
+    "gsm_entries": 16,
+    "data_files": 144
+  },
+  "errors": [
+    "Unrecoverable error (attempt 1), stopping",
+    "Execution: FAILED",
+    "05:56:43 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+    "05:56:43 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+    "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072393_Brain_GEX_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+    "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072394_Brain_TCR_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+    "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072395_MLN_GEX_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+    "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072396_MLN_TCR_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+    "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072397_Smal_intestine_GEX_matrix.mtx.gz: Unknown matrix format: 1",
+    "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072398_Smal_intestine_TCR_matrix.mtx.gz: Unknown matrix format: 1",
+    "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072399_Spleen_GEX_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+    "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072400_Spleen_TCR_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+    "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072401_Brain2_GEX_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+    "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072402_Brain2_TCR_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+    "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072403_MLN2_GEX_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+    "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072404_MLN2_TCR_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+    "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072405_Small_intestine2_GEX_matrix.mtx.gz: Unknown matrix format:",
+    "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072406_Small_intestine2_TCR_matrix.mtx.gz: Unknown matrix format:",
+    "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072407_Spleen2_GEX_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+    "06:01:00 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE300932\\download\\GSE300932_RAW_extracted\\GSM9072408_Spleen2_TCR_matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+    "06:01:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+    "06:01:02 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+  ],
+  "duration_s": 815.7,
+  "id": "T27",
+  "category": "批量测试",
+  "label": "GSE300932",
+  "features": "",
+  "grade": "D"
+}

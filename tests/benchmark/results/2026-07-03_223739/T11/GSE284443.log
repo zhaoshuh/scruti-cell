@@ -1,0 +1,1254 @@
+=== STDOUT ===
+
+============================================================
+  Scrut-Cell Full Pipeline: GSE284443
+  Output: E:\Scruti-Cell\output\GSE284443
+============================================================
+
+  [1/3] INSPECT �� downloading + inspecting...
+    Downloading... OK
+    Parsing SOFT... OK
+    Building report... OK
+    Report: E:\Scruti-Cell\output\GSE284443\inspect.json
+    Files: 15 | GSM entries: 6
+
+  [2/3] PLAN �� knowledge base matching + LLM plan generation...
+    KB Matches: 0
+    Generating plan via LLM... OK
+    Plan:    E:\Scruti-Cell\output\GSE284443\plan.json
+    Confidence: 99% | Matrices: 2 | Batches: 6
+    Batch strategy: per_sample
+
+  [3/3] EXECUTE �� reading matrices + building AnnData...
+    Batch mismatch (attempt 1), re-planning...
+    Execution: SUCCESS
+    Output:   E:\Scruti-Cell\output\GSE284443\GSE284443_GSM8684423_scruticell.h5ad
+    Cells:    38727 | Genes: 15044 | Batches: 2
+    Metadata:  E:\Scruti-Cell\output\GSE284443\metadata.md
+
+============================================================
+  Pipeline complete: GSE284443
+  Cells: 38727 | Genes: 15044 | Batches: 2
+  Output: E:\Scruti-Cell\output\GSE284443
+============================================================
+
+------------------------------------------------------------
+  TRACE: GSE284443
+------------------------------------------------------------
+  LLM Steps Run: step1:flowchart, step2:gsm, step3:file, step4:lit, step5:plan
+  Literature: not available (PMID=N/A)
+  ORC Verified: 0/0 items
+  Compound Splits: 1
+  KB Matches: 0
+
+  -- BATCH: GSM8684423 --
+  Why batch: Unique GSM sample; condition Day_0 distinguishes from Day_7. Matrix file present.
+  Differs in: gsm_id
+  Matrix: GSM8684423_3579_JSP-1510_Day_0_IGO_12437_AA_25_dense.csv
+  Format: csv | Orientation: cell_x_gene
+  Cells: 19649 | Genes: 15044 (pruned: 0)
+  Gene ID system: symbol
+  Metadata injected (11 columns):
+    + batch                [executor: batch assignment]
+       value: GSM8684423
+    + tissue               [GSM: GSM characteristics]
+       value: Lung
+    + cell_line            [GSM: GSM characteristics]
+       value: KP cells
+    + cell_type            [GSM: GSM characteristics]
+       value: Lung adenocarcinoma
+    + genotype             [GSM: GSM characteristics]
+       value: KrasG12D;TP53-/-
+    + library_name         [GSM: GSM characteristics]
+       value: ['Library name: Sample 1', '10x Genomics']
+    + sample_id            [GSM: filename extraction]
+       value: 3579
+    + project              [GSM: filename extraction]
+       value: JSP-1510
+    + condition            [GSM: filename extraction]
+       value: Day_0
+    + extra_id             [GSM: filename extraction]
+       value: IGO_12437_AA_25
+    + cell_source          [processing code]
+       derived from: tissue
+       value: 
+
+  -- BATCH: GSM8684424 --
+  Why batch: Unique GSM sample; condition Day_7 distinguishes from Day_0. Matrix file present.
+  Differs in: gsm_id
+  Matrix: GSM8684424_3580_JSP-1510_Day_7_IGO_12437_AA_26_dense.csv
+  Format: csv | Orientation: cell_x_gene
+  Cells: 19078 | Genes: 15983 (pruned: 0)
+  Gene ID system: symbol
+  Metadata injected (11 columns):
+    + batch                [executor: batch assignment]
+       value: GSM8684424
+    + tissue               [GSM: GSM characteristics]
+       value: Lung
+    + cell_line            [GSM: GSM characteristics]
+       value: KP cells
+    + cell_type            [GSM: GSM characteristics]
+       value: Lung adenocarcinoma
+    + genotype             [GSM: GSM characteristics]
+       value: KrasG12D;TP53-/-
+    + library_name         [GSM: GSM characteristics]
+       value: ['Library name: Sample 2', '10x Genomics']
+    + sample_id            [GSM: filename extraction]
+       value: 3580
+    + project              [GSM: filename extraction]
+       value: JSP-1510
+    + condition            [GSM: filename extraction]
+       value: Day_7
+    + extra_id             [GSM: filename extraction]
+       value: IGO_12437_AA_26
+    + cell_source          [processing code]
+       derived from: tissue
+       value: 
+
+  -- OVERALL --
+  Cells: 38727 | Genes: 15044
+  Batches: 2 | Confidence: 100%
+------------------------------------------------------------
+  Log:      E:\Scruti-Cell\output\GSE284443\run.log
+
+
+=== STDERR ===
+23:37:43 [INFO] scruticell: Run log started for GSE284443 -> E:\Scruti-Cell\output\GSE284443\run.log
+23:37:45 [INFO] scruticell.utils.tracing: LangSmith tracing enabled (project: scruiti-cell)
+23:37:45 [INFO] scruticell.pipeline.nodes.download: Downloading data for GSE284443
+23:37:45 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/soft/GSE284443_family.soft.gz (attempt 1/3)
+23:37:46 [INFO] httpx: HTTP Request: HEAD https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/soft/GSE284443_family.soft.gz "HTTP/1.1 200 OK"
+23:37:46 [INFO] scruticell.utils.download: File size: 4335 bytes, Accept-Ranges: supported
+23:37:46 [INFO] scruticell.utils.download: Downloading 1 range chunks (3 connections)
+23:37:46 [INFO] scruticell.utils.download: Downloading 0 MB with 3 threads...
+23:37:46 [INFO] scruticell.utils.download: Downloading: 0/0 MB (100%) 0.0 MB/s
+23:37:48 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/soft/GSE284443_family.soft.gz "HTTP/1.1 206 Partial Content"
+23:37:49 [INFO] scruticell.utils.download: Download complete: 0 MB in 3s (0.0 MB/s avg)
+23:37:49 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/soft/GSE284443_family.soft.gz -> E:\Scruti-Cell\output\GSE284443\download\GSE284443_family.soft.gz (4335 bytes)
+23:37:49 [INFO] scruticell.pipeline.nodes.download: SOFT file: E:\Scruti-Cell\output\GSE284443\download\GSE284443_family.soft.gz
+23:37:49 [INFO] scruticell.pipeline.nodes.download: Found 1 supplementary files from GSE GSE284443
+23:37:49 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar (attempt 1/3)
+23:37:51 [INFO] httpx: HTTP Request: HEAD https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 200 OK"
+23:37:51 [INFO] scruticell.utils.download: File size: 3028316160 bytes, Accept-Ranges: supported
+23:37:51 [INFO] scruticell.utils.download: Downloading 181 range chunks (3 connections)
+23:37:51 [INFO] scruticell.utils.download: Downloading 2888 MB with 3 threads...
+23:37:51 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 28880.3 MB/s
+23:37:53 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:37:53 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:37:53 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:37:54 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:37:57 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:38:00 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:38:03 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:38:06 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:38:09 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:38:12 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:38:15 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:38:18 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:38:21 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:38:24 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:38:27 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:38:30 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:38:31 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:38:32 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:38:33 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:38:36 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:38:39 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:38:42 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:38:45 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:38:48 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:38:48 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:38:51 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:38:54 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:38:57 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:39:00 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:39:03 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:39:03 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:39:06 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:39:09 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:39:12 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:39:15 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:39:15 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:39:18 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:39:21 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:39:24 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:39:27 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:39:30 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:39:33 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:39:36 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:39:38 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:39:39 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:39:41 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:39:42 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:39:45 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:39:48 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:39:51 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:39:54 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:39:57 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:40:00 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:40:01 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:40:03 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:40:06 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:40:09 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:40:12 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:40:12 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:40:15 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:40:18 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:40:21 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:40:23 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:40:24 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:40:27 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:40:30 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:40:33 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:40:36 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:40:39 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:40:42 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:40:45 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:40:48 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:40:51 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:40:54 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:40:55 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:40:55 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:40:57 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:41:00 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:41:03 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:41:03 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:41:06 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:41:09 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:41:12 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:41:15 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:41:18 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:41:21 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:41:23 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:41:24 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:41:27 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:41:29 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:41:30 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:41:33 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:41:36 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:41:36 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:41:39 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:41:42 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:41:45 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:41:46 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:41:48 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:41:51 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:41:54 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:41:57 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:41:58 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:42:00 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:42:03 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:42:06 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:42:06 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:42:09 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:42:12 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:42:13 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:42:15 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:42:18 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:42:21 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:42:21 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:42:22 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:42:24 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:42:24 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:42:27 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:42:30 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:42:33 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:42:33 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:42:33 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:42:36 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:42:39 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:42:40 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:42:42 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:42:45 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:42:48 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:42:48 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:42:51 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:42:54 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:42:56 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:42:57 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:42:57 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:43:00 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:43:03 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:43:06 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:43:07 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:43:09 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:43:11 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:43:12 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:43:15 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:43:15 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:43:16 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:43:18 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:43:21 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:43:23 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:43:24 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:43:27 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:43:30 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:43:33 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:43:35 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:43:36 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:43:39 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:43:39 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:43:42 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:43:44 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:43:45 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:43:48 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:43:49 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:43:51 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:43:54 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:43:57 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:43:58 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:44:00 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:44:03 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:44:06 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:44:06 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:44:09 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:44:12 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:44:14 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:44:14 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:44:15 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:44:18 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:44:21 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:44:22 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:44:24 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:44:24 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:44:27 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:44:30 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:44:32 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:44:33 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:44:36 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:44:36 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:44:39 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:44:42 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:44:45 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:44:48 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:44:51 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:44:54 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:44:55 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:44:57 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:45:00 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:45:03 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:45:06 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:45:09 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:45:12 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:45:12 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:45:15 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:45:18 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:45:20 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:45:21 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:45:24 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:45:27 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:45:30 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:45:33 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:45:33 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:45:36 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:45:38 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:45:39 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:45:42 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:45:45 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:45:48 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:45:51 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:45:54 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:45:56 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:45:57 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:45:58 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:46:00 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:46:03 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:46:06 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:46:08 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:46:09 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:46:12 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:46:15 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:46:18 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:46:21 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:46:24 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:46:27 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:46:30 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:46:33 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:46:34 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:46:36 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:46:39 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:46:40 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:46:42 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:46:45 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:46:48 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:46:51 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:46:54 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:46:57 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:47:00 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:47:03 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:47:04 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:47:06 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:47:06 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:47:09 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:47:12 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:47:15 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:47:18 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:47:21 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:47:24 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:47:27 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:47:30 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:47:33 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:47:36 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:47:37 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:47:37 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:47:39 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:47:42 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:47:45 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:47:48 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:47:51 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:47:54 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:47:57 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:48:00 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:48:03 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:48:03 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:48:06 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:48:09 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:48:10 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:48:12 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:48:15 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:48:18 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:48:21 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:48:21 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:48:24 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:48:24 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:48:27 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:48:30 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:48:33 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:48:36 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:48:39 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:48:42 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:48:45 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:48:48 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:48:51 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:48:54 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:48:56 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:48:57 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:49:00 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:49:00 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:49:03 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:49:06 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:49:09 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:49:12 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:49:15 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:49:18 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:49:21 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:49:24 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:49:27 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:49:30 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:49:33 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:49:36 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:49:37 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:49:39 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:49:40 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:49:42 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:49:45 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:49:48 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:49:51 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:49:54 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:49:57 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:50:00 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:50:03 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:50:04 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:50:06 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:50:09 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:50:12 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:50:15 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:50:18 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:50:21 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:50:22 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:50:24 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:50:27 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:50:27 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:50:30 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:50:33 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:50:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:50:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:50:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:50:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:50:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:50:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:50:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:50:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:51:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:51:01 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:51:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:51:06 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:51:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:51:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:51:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:51:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:51:16 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:51:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:51:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:51:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:51:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:51:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:51:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:51:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:51:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:51:40 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:51:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:51:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:51:46 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:51:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:51:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:51:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:51:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:52:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:52:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:52:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:52:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:52:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:52:13 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:52:15 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:52:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:52:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:52:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:52:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:52:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:52:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:52:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:52:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:52:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:52:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:52:45 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:52:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:52:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:52:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:52:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:52:55 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:52:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:53:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:53:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:53:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:53:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:53:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:53:13 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:53:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:53:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:53:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:53:25 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:53:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:53:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:53:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:53:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:53:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:53:39 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:53:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:53:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:53:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:53:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:53:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:53:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:53:57 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:53:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:54:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:54:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:54:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:54:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:54:10 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:54:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:54:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:54:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:54:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:54:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:54:25 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:54:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:54:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:54:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:54:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:54:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:54:42 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:54:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:54:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:54:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:54:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:54:53 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:54:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:54:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:55:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:55:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:55:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:55:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:55:11 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:55:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:55:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:55:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:55:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:55:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:55:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:55:29 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:55:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:55:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:55:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:55:38 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:55:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:55:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:55:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:55:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:55:51 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:55:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:55:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:55:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:56:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:56:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:56:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:56:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:56:11 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:56:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:56:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:56:17 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:56:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:56:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:56:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:56:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:56:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:56:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:56:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:56:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:56:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:56:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:56:48 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:56:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:56:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:56:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:56:56 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:56:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:57:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:57:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:57:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:57:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:57:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:57:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:57:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:57:20 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:57:21 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:57:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:57:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:57:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:57:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:57:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:57:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:57:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:57:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:57:44 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:57:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:57:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:57:50 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:57:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:57:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:57:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:58:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:58:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:58:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:58:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:58:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:58:14 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:58:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:58:17 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:58:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:58:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:58:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:58:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:58:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:58:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:58:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:58:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:58:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:58:43 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:58:45 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:58:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:58:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:58:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:58:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:58:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:58:58 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:59:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:59:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:59:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:59:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:59:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:59:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:59:17 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:59:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:59:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:59:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:59:26 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:59:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:59:29 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:59:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:59:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:59:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:59:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:59:42 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+23:59:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:59:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:59:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:59:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:59:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:59:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+23:59:58 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:00:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:00:02 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:00:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:00:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:00:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:00:12 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:00:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:00:14 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:00:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:00:18 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:00:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:00:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:00:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:00:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:00:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:00:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:00:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:00:38 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:00:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:00:41 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:00:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:00:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:00:46 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:00:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:00:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:00:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:00:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:01:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:01:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:01:05 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:01:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:01:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:01:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:01:15 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:01:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:01:16 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:01:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:01:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:01:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:01:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:01:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:01:34 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:01:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:01:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:01:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:01:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:01:43 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:01:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:01:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:01:51 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:01:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:01:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:01:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:02:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:02:01 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:02:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:02:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:02:07 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:02:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:02:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:02:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:02:18 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:02:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:02:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:02:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:02:25 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:02:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:02:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:02:32 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:02:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:02:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:02:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:02:43 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:02:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:02:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:02:49 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:02:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:02:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:02:52 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:02:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:02:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:03:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:03:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:03:04 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:03:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:03:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:03:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:03:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:03:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:03:20 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:03:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:03:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:03:26 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:03:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:03:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:03:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:03:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:03:37 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:03:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:03:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:03:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:03:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:03:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:03:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:03:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:03:59 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:04:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:04:02 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:04:02 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:04:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:04:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:04:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:04:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:04:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:04:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:04:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:04:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:04:26 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:04:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:04:29 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:04:30 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:04:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:04:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:04:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:04:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:04:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:04:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:04:48 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:04:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:04:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:04:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:04:58 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:04:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:05:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:05:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:05:04 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:05:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:05:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:05:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:05:13 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:05:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:05:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:05:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:05:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:05:26 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:05:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:05:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:05:32 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:05:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:05:36 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:05:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:05:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:05:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:05:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:05:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:05:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:05:54 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:05:54 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:05:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:05:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:06:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:06:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:06:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:06:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:06:11 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:06:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:06:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:06:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:06:21 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:06:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:06:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:06:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:06:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:06:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:06:35 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:06:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:06:38 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:06:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:06:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:06:45 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:06:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:06:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:06:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:06:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:06:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:07:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:07:03 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:07:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:07:04 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:07:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:07:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:07:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:07:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:07:18 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:07:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:07:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:07:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:07:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:07:31 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:07:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:07:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:07:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:07:38 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:07:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:07:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:07:46 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:07:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:07:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:07:50 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:07:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:07:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:07:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:08:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:08:01 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:08:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:08:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:08:09 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:08:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:08:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:08:14 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:08:14 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:08:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:08:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:08:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:08:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:08:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:08:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:08:31 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:08:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:08:37 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:08:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:08:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:08:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:08:44 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:08:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:08:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:08:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:08:53 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:08:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:08:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:09:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:09:03 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:09:04 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:09:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:09:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:09:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:09:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:09:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:09:17 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:09:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:09:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:09:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:09:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:09:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:09:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:09:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:09:38 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:09:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:09:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:09:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:09:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:09:49 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:09:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:09:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:09:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:10:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:10:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:10:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:10:09 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:10:09 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:10:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:10:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:10:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:10:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:10:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:10:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:10:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:10:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:10:33 [INFO] httpx: HTTP Request: GET https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar "HTTP/1.1 206 Partial Content"
+00:10:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:10:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:10:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:10:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:10:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:10:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:10:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:10:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:10:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:11:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:11:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:11:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:11:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:11:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:11:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:11:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:11:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:11:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:11:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:11:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:11:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:11:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:11:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:11:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:11:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:11:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:11:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:11:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:11:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:12:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:12:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:12:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:12:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:12:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:12:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:12:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:12:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:12:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:12:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:12:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:12:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:12:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:12:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:12:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:12:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:12:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:12:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:12:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:12:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:13:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:13:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:13:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:13:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:13:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:13:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:13:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:13:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:13:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:13:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:13:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:13:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:13:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:13:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:13:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:13:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:13:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:13:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:13:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:13:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:14:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:14:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:14:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:14:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:14:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:14:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:14:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:14:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:14:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:14:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:14:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:14:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:14:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:14:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:14:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:14:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:14:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:14:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:14:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:14:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:15:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:15:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:15:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:15:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:15:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:15:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:15:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:15:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:15:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:15:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:15:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:15:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:15:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:15:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:15:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:15:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:15:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:15:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:15:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:15:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:16:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:16:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:16:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:16:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:16:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:16:16 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:16:19 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:16:22 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:16:25 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:16:28 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:16:31 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:16:34 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:16:37 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:16:40 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:16:43 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:16:46 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:16:49 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:16:52 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:16:55 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:16:58 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:17:01 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:17:04 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:17:07 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:17:10 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:17:13 [INFO] scruticell.utils.download: Downloading: 2888/2888 MB (100%) 0.0 MB/s
+00:17:16 [INFO] scruticell.utils.download: Download complete: 2888 MB in 2365s (1.2 MB/s avg)
+00:17:16 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE284nnn/GSE284443/suppl/GSE284443_RAW.tar -> E:\Scruti-Cell\output\GSE284443\download\GSE284443_RAW.tar (3028316160 bytes)
+00:17:16 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE284443_RAW.tar (3028316160 bytes)
+00:17:16 [INFO] scruticell.pipeline.nodes.download: Downloaded 1 supplementary files (from 1 URLs)
+00:17:16 [INFO] scruticell.pipeline.nodes.download: Extracting archive (2888 MB): GSE284443_RAW.tar
+00:17:35 [INFO] scruticell.pipeline.nodes.download: Extracted 6 files from GSE284443_RAW.tar
+00:17:35 [INFO] scruticell.pipeline.nodes.download: Total supplementary files after extraction: 7
+00:17:35 [INFO] scruticell.pipeline.nodes.parse: Parsing SOFT file for GSE284443
+00:17:35 [INFO] scruticell.parsing.soft: Parsing SOFT file: E:\Scruti-Cell\output\GSE284443\download\GSE284443_family.soft.gz
+00:17:35 [INFO] scruticell.parsing.soft: Parsed 24 GSE metadata keys, 2 GPLs, 6 GSMs, 6 supplementary refs
+00:17:35 [INFO] scruticell.parsing.metadata: Extracted metadata for 6 GSM entries
+00:17:35 [INFO] scruticell.pipeline.nodes.parse: Parsed SOFT: 6 GSMs, organism=10090, platforms=['GPL24247', 'GPL24676'], pubmed_id=
+00:18:44 [INFO] scruticell.intelligence.reporter: Inspected 15 files (6 data files found)
+00:18:46 [INFO] scruticell.knowledge.graph: Connected to Neo4j at bolt://localhost:7687
+00:18:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:FieldSynonym) REQUIRE (e.name) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_d9f7bc3a FOR (e:FieldSynonym) REQUIRE (e.name) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (fs:FieldSynonym) REQUIRE fs.name IS UNIQUE'
+00:18:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:GeneMapping) REQUIRE (e.source_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_97b24131 FOR (e:GeneMapping) REQUIRE (e.source_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (gm:GeneMapping) REQUIRE gm.source_id IS UNIQUE'
+00:18:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:GSE) REQUIRE (e.gse_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_8bde2949 FOR (e:GSE) REQUIRE (e.gse_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (gse:GSE) REQUIRE gse.gse_id IS UNIQUE'
+00:18:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:ParseStrategy) REQUIRE (e.strategy_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_c9435509 FOR (e:ParseStrategy) REQUIRE (e.strategy_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (ps:ParseStrategy) REQUIRE ps.strategy_id IS UNIQUE'
+00:18:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:FailureCase) REQUIRE (e.case_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_e506595e FOR (e:FailureCase) REQUIRE (e.case_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (fc:FailureCase) REQUIRE fc.case_id IS UNIQUE'
+00:18:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:BatchPattern) REQUIRE (e.pattern_name) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_9e585b6f FOR (e:BatchPattern) REQUIRE (e.pattern_name) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (bp:BatchPattern) REQUIRE bp.pattern_name IS UNIQUE'
+00:18:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:BatchStrategy) REQUIRE (e.batch_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_25e2cc3 FOR (e:BatchStrategy) REQUIRE (e.batch_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (bs:BatchStrategy) REQUIRE bs.batch_id IS UNIQUE'
+00:18:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:MatrixStrategy) REQUIRE (e.matrix_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_61005091 FOR (e:MatrixStrategy) REQUIRE (e.matrix_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (ms:MatrixStrategy) REQUIRE ms.matrix_id IS UNIQUE'
+00:18:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:ProcessingCode) REQUIRE (e.code_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_f9784487 FOR (e:ProcessingCode) REQUIRE (e.code_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (pc:ProcessingCode) REQUIRE pc.code_id IS UNIQUE'
+00:18:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:AssemblyCode) REQUIRE (e.code_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_d85e5ea FOR (e:AssemblyCode) REQUIRE (e.code_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (ac:AssemblyCode) REQUIRE ac.code_id IS UNIQUE'
+00:18:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:FieldMappingStrategy) REQUIRE (e.mapping_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_4f3b0f74 FOR (e:FieldMappingStrategy) REQUIRE (e.mapping_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (fm:FieldMappingStrategy) REQUIRE fm.mapping_id IS UNIQUE'
+00:18:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:FieldSynonym) ON (e.canonical_name)' has no effect. The index or constraint specified by 'RANGE INDEX index_4029d71a FOR (e:FieldSynonym) ON (e.canonical_name)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (fs:FieldSynonym) ON (fs.canonical_name)'
+00:18:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:GeneMapping) ON (e.target_symbol)' has no effect. The index or constraint specified by 'RANGE INDEX index_e5f90fd0 FOR (e:GeneMapping) ON (e.target_symbol)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (gm:GeneMapping) ON (gm.target_symbol)'
+00:18:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:GSE) ON (e.organism)' has no effect. The index or constraint specified by 'RANGE INDEX index_1fe8d2a4 FOR (e:GSE) ON (e.organism)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (gse:GSE) ON (gse.organism)'
+00:18:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:GSE) ON (e.assay_type)' has no effect. The index or constraint specified by 'RANGE INDEX index_38f59a2a FOR (e:GSE) ON (e.assay_type)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (gse:GSE) ON (gse.assay_type)'
+00:18:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:ParseStrategy) ON (e.success_count)' has no effect. The index or constraint specified by 'RANGE INDEX index_85672a78 FOR (e:ParseStrategy) ON (e.success_count)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (ps:ParseStrategy) ON (ps.success_count)'
+00:18:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:FailureCase) ON (e.error_signature)' has no effect. The index or constraint specified by 'RANGE INDEX index_701fbc61 FOR (e:FailureCase) ON (e.error_signature)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (fc:FailureCase) ON (fc.error_signature)'
+00:18:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchPattern) ON (e.detection_rule)' has no effect. The index or constraint specified by 'RANGE INDEX index_5a2fc8b8 FOR (e:BatchPattern) ON (e.detection_rule)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bp:BatchPattern) ON (bp.detection_rule)'
+00:18:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchStrategy) ON (e.gsm_id)' has no effect. The index or constraint specified by 'RANGE INDEX index_6fcdd738 FOR (e:BatchStrategy) ON (e.gsm_id)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.gsm_id)'
+00:18:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchStrategy) ON (e.genotype)' has no effect. The index or constraint specified by 'RANGE INDEX index_369c2325 FOR (e:BatchStrategy) ON (e.genotype)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.genotype)'
+00:18:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchStrategy) ON (e.treatment)' has no effect. The index or constraint specified by 'RANGE INDEX index_9d96a35e FOR (e:BatchStrategy) ON (e.treatment)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.treatment)'
+00:18:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:MatrixStrategy) ON (e.format)' has no effect. The index or constraint specified by 'RANGE INDEX index_5eea1dd4 FOR (e:MatrixStrategy) ON (e.format)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (ms:MatrixStrategy) ON (ms.format)'
+00:18:46 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:FieldMappingStrategy) ON (e.canonical)' has no effect. The index or constraint specified by 'RANGE INDEX index_281945fe FOR (e:FieldMappingStrategy) ON (e.canonical)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (fm:FieldMappingStrategy) ON (fm.canonical)'
+00:18:46 [INFO] scruticell.knowledge.graph: Neo4j schema initialized
+00:18:46 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage` does not exist. Verify that the spelling is correct.', position=<SummaryInputPosition line=3, column=10, offset=33>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 33, 'line': 3, 'column': 10}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: '\nMATCH (fc:FailureCase)\nWHERE fc.pipeline_stage = $pipeline_stage\nRETURN fc.case_id AS case_id, fc.error_signature AS error_signature,\n       fc.fix_strategy AS fix_strategy, fc.fixed AS fixed,\n       fc.error_message AS error_message, fc.gse_id AS gse_id,\n       COALESCE(fc.success_count, 0) AS success_count,\n       COALESCE(fc.fail_count, 0) AS fail_count\nORDER BY fc.success_count DESC, fc.created_at DESC\nLIMIT 20\n'
+00:18:46 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` does not exist. Verify that the spelling is correct.', position=<SummaryInputPosition line=5, column=11, offset=145>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 145, 'line': 5, 'column': 11}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: '\nMATCH (fc:FailureCase)\nWHERE fc.pipeline_stage = $pipeline_stage\nRETURN fc.case_id AS case_id, fc.error_signature AS error_signature,\n       fc.fix_strategy AS fix_strategy, fc.fixed AS fixed,\n       fc.error_message AS error_message, fc.gse_id AS gse_id,\n       COALESCE(fc.success_count, 0) AS success_count,\n       COALESCE(fc.fail_count, 0) AS fail_count\nORDER BY fc.success_count DESC, fc.created_at DESC\nLIMIT 20\n'
+00:18:46 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does not exist. Verify that the spelling is correct.', position=<SummaryInputPosition line=5, column=44, offset=178>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 178, 'line': 5, 'column': 44}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: '\nMATCH (fc:FailureCase)\nWHERE fc.pipeline_stage = $pipeline_stage\nRETURN fc.case_id AS case_id, fc.error_signature AS error_signature,\n       fc.fix_strategy AS fix_strategy, fc.fixed AS fixed,\n       fc.error_message AS error_message, fc.gse_id AS gse_id,\n       COALESCE(fc.success_count, 0) AS success_count,\n       COALESCE(fc.fail_count, 0) AS fail_count\nORDER BY fc.success_count DESC, fc.created_at DESC\nLIMIT 20\n'
+00:18:46 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message` does not exist. Verify that the spelling is correct.', position=<SummaryInputPosition line=6, column=11, offset=204>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 204, 'line': 6, 'column': 11}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: '\nMATCH (fc:FailureCase)\nWHERE fc.pipeline_stage = $pipeline_stage\nRETURN fc.case_id AS case_id, fc.error_signature AS error_signature,\n       fc.fix_strategy AS fix_strategy, fc.fixed AS fixed,\n       fc.error_message AS error_message, fc.gse_id AS gse_id,\n       COALESCE(fc.success_count, 0) AS success_count,\n       COALESCE(fc.fail_count, 0) AS fail_count\nORDER BY fc.success_count DESC, fc.created_at DESC\nLIMIT 20\n'
+00:18:51 [INFO] langchain_openai.chat_models._client_utils: langchain-openai detected system proxy configuration and no explicit `http_socket_options` / `http_client` / `http_async_client` / `openai_proxy`; skipping the custom `httpx` transport so httpx's env-proxy auto-detection applies. Pass `http_socket_options=[...]` to opt back into kernel-level TCP keepalive tuning on top of the env proxy.
+00:18:54 [INFO] scruticell.intelligence.extractors: Step 1/5: flowcharts from GSE text...
+00:18:55 [INFO] httpx: HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+00:19:09 [INFO] scruticell.intelligence.extractors: Step 2/5: GSM metadata (characteristics + source_name)...
+00:19:09 [INFO] httpx: HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+00:19:58 [INFO] scruticell.intelligence.extractors: Step 3/5: file analysis (names + previews)...
+00:19:59 [INFO] httpx: HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+00:21:15 [INFO] scruticell.intelligence.extractors: Literature verification: checking paper for unresolved items...
+00:21:16 [WARNING] scruticell.literature.pubmed: Biopython Entrez fetch failed: HTTP Error 400: Bad Request
+00:21:18 [INFO] httpx: HTTP Request: GET https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=&rettype=xml&retmode=text&api_key= "HTTP/1.1 400 Bad Request"
+00:21:18 [WARNING] scruticell.literature.pubmed: httpx PubMed fetch failed: Client error '400 Bad Request' for url 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=&rettype=xml&retmode=text&api_key='
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+00:21:18 [WARNING] scruticell.literature.pdf_agent: Could not acquire full text for PMID 
+00:21:18 [INFO] scruticell.intelligence.extractors: Literature verification: no PDF available, skipping
+00:21:18 [INFO] scruticell.intelligence.extractors: Step 4/5: metadata code generation...
+00:21:18 [INFO] httpx: HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+00:21:36 [INFO] scruticell.intelligence.extractors: Step 5a/5: batch discovery...
+00:21:36 [INFO] httpx: HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+00:22:09 [INFO] scruticell.intelligence.extractors: Step 5b/5: matrix/code assembly...
+00:22:10 [INFO] httpx: HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 200 OK"
+00:22:47 [INFO] scruticell.intelligence.generator: Plan validated successfully (multi_step, round 1)
+00:22:47 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE284443\download\GSE284443_RAW_extracted\GSM8684423_3579_JSP-1510_Day_0_IGO_12437_AA_25_dense.csv.gz (format: csv)
+00:22:47 [INFO] scruticell.readers.csv_matrix: Reading CSV matrix: E:\Scruti-Cell\output\GSE284443\download\GSE284443_RAW_extracted\GSM8684423_3579_JSP-1510_Day_0_IGO_12437_AA_25_dense.csv.gz
+00:24:09 [INFO] scruticell.readers.csv_matrix: Loaded CSV matrix: shape=(19649, 15044), cells=19649, genes=15044
+00:24:09 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE284443\download\GSE284443_RAW_extracted\GSM8684424_3580_JSP-1510_Day_7_IGO_12437_AA_26_dense.csv_extracted\GSM8684424_3580_JSP-1510_Day_7_IGO_12437_AA_26_dense.csv (format: csv)
+00:24:09 [INFO] scruticell.readers.csv_matrix: Reading CSV matrix: E:\Scruti-Cell\output\GSE284443\download\GSE284443_RAW_extracted\GSM8684424_3580_JSP-1510_Day_7_IGO_12437_AA_26_dense.csv_extracted\GSM8684424_3580_JSP-1510_Day_7_IGO_12437_AA_26_dense.csv
+00:25:38 [INFO] scruticell.readers.csv_matrix: Loaded CSV matrix: shape=(19078, 15983), cells=19078, genes=15983
+00:27:04 [WARNING] scruticell.intelligence.executor: Fixed orientation for GSM GSM8684423: transposed (15044, 19649) �� (19649, 15044)
+E:\Scruti-Cell\venv\Lib\site-packages\anndata\_core\anndata.py:1882: UserWarning: Observation names are not unique. To make them unique, call `.obs_names_make_unique`.
+  utils.warn_names_duplicates("obs")
+00:27:04 [WARNING] scruticell.intelligence.executor: Fixed orientation for GSM GSM8684424: transposed (15983, 19078) �� (19078, 15983)
+E:\Scruti-Cell\venv\Lib\site-packages\anndata\_core\anndata.py:1882: UserWarning: Observation names are not unique. To make them unique, call `.obs_names_make_unique`.
+  utils.warn_names_duplicates("obs")
+00:27:04 [INFO] scruticell.intelligence.executor: Built 2 per-batch AnnData objects (38727 total cells)
+00:27:04 [INFO] scruticell.intelligence.executor: Normalizing and pruning duplicate genes...
+00:27:04 [INFO] scruticell.intelligence.executor: No duplicate genes found
+00:27:04 [INFO] scruticell.intelligence.executor: Executing custom processing code (2535 chars)...
+00:27:05 [INFO] scruticell.intelligence.executor: Custom processing code completed
+00:27:05 [INFO] scruticell.intelligence.executor: Applying 7 field mappings...
+00:27:05 [INFO] scruticell.intelligence.executor: Executing assembly code (1347 chars)...
+00:27:31 [INFO] scruticell.intelligence.executor: Executing assembly code (1347 chars)
+00:27:31 [INFO] scruticell.intelligence.executor: Assembly code completed, 2 batches
+00:27:31 [INFO] scruticell.pipeline.nodes.validation: Validating AnnData for GSE284443
+00:27:31 [INFO] scruticell.pipeline.nodes.validation: Per-batch validation: 2 AnnData objects
+00:27:32 [INFO] scruticell.pipeline.nodes.validation: Validation: overall=1.00, passed=True, errors=0, warnings=0
+00:27:32 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE284443\GSE284443_GSM8684423_scruticell.h5ad (19649 cells x 15044 genes)
+... storing 'batch' as categorical
+... storing 'tissue' as categorical
+... storing 'cell_line' as categorical
+... storing 'cell_type' as categorical
+... storing 'genotype' as categorical
+... storing 'library_name' as categorical
+... storing 'sample_id' as categorical
+... storing 'project' as categorical
+... storing 'condition' as categorical
+... storing 'extra_id' as categorical
+... storing 'cell_source' as categorical
+00:27:48 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE284443\GSE284443_GSM8684424_scruticell.h5ad (19078 cells x 15983 genes)
+... storing 'batch' as categorical
+... storing 'tissue' as categorical
+... storing 'cell_line' as categorical
+... storing 'cell_type' as categorical
+... storing 'genotype' as categorical
+... storing 'library_name' as categorical
+... storing 'sample_id' as categorical
+... storing 'project' as categorical
+... storing 'condition' as categorical
+... storing 'extra_id' as categorical
+... storing 'cell_source' as categorical
+00:28:05 [INFO] scruticell.intelligence.executor: Origin trace report written to: E:\Scruti-Cell\output\GSE284443\GSE284443_trace.json
+00:28:05 [INFO] scruticell.intelligence.executor: Origin trace markdown written to: E:\Scruti-Cell\output\GSE284443\GSE284443_trace.md
+E:\Scruti-Cell\venv\Lib\site-packages\anndata\_core\anndata.py:1882: UserWarning: Observation names are not unique. To make them unique, call `.obs_names_make_unique`.
+  utils.warn_names_duplicates("obs")
+E:\Scruti-Cell\venv\Lib\site-packages\anndata\_core\anndata.py:1882: UserWarning: Observation names are not unique. To make them unique, call `.obs_names_make_unique`.
+  utils.warn_names_duplicates("obs")
+00:28:14 [WARNING] scruticell.intelligence.verifier: Batch verification FAILED for GSE284443: 2 mismatches
+00:28:14 [INFO] scruticell.intelligence.extractors: Skipping Steps 1-4, re-running Steps 5a+5b with mismatch context
+00:28:15 [INFO] httpx: HTTP Request: POST https://api.deepseek.com/chat/completions "HTTP/1.1 402 Payment Required"
+00:28:15 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': 'invalid_request_error'}}
+00:28:15 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan
+00:28:18 [INFO] scruticell.knowledge.graph: Connected to Neo4j at bolt://localhost:7687
+00:28:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:FieldSynonym) REQUIRE (e.name) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_d9f7bc3a FOR (e:FieldSynonym) REQUIRE (e.name) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (fs:FieldSynonym) REQUIRE fs.name IS UNIQUE'
+00:28:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:GeneMapping) REQUIRE (e.source_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_97b24131 FOR (e:GeneMapping) REQUIRE (e.source_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (gm:GeneMapping) REQUIRE gm.source_id IS UNIQUE'
+00:28:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:GSE) REQUIRE (e.gse_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_8bde2949 FOR (e:GSE) REQUIRE (e.gse_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (gse:GSE) REQUIRE gse.gse_id IS UNIQUE'
+00:28:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:ParseStrategy) REQUIRE (e.strategy_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_c9435509 FOR (e:ParseStrategy) REQUIRE (e.strategy_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (ps:ParseStrategy) REQUIRE ps.strategy_id IS UNIQUE'
+00:28:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:FailureCase) REQUIRE (e.case_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_e506595e FOR (e:FailureCase) REQUIRE (e.case_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (fc:FailureCase) REQUIRE fc.case_id IS UNIQUE'
+00:28:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:BatchPattern) REQUIRE (e.pattern_name) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_9e585b6f FOR (e:BatchPattern) REQUIRE (e.pattern_name) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (bp:BatchPattern) REQUIRE bp.pattern_name IS UNIQUE'
+00:28:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:BatchStrategy) REQUIRE (e.batch_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_25e2cc3 FOR (e:BatchStrategy) REQUIRE (e.batch_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (bs:BatchStrategy) REQUIRE bs.batch_id IS UNIQUE'
+00:28:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:MatrixStrategy) REQUIRE (e.matrix_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_61005091 FOR (e:MatrixStrategy) REQUIRE (e.matrix_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (ms:MatrixStrategy) REQUIRE ms.matrix_id IS UNIQUE'
+00:28:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:ProcessingCode) REQUIRE (e.code_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_f9784487 FOR (e:ProcessingCode) REQUIRE (e.code_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (pc:ProcessingCode) REQUIRE pc.code_id IS UNIQUE'
+00:28:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:AssemblyCode) REQUIRE (e.code_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_d85e5ea FOR (e:AssemblyCode) REQUIRE (e.code_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (ac:AssemblyCode) REQUIRE ac.code_id IS UNIQUE'
+00:28:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:FieldMappingStrategy) REQUIRE (e.mapping_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_4f3b0f74 FOR (e:FieldMappingStrategy) REQUIRE (e.mapping_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (fm:FieldMappingStrategy) REQUIRE fm.mapping_id IS UNIQUE'
+00:28:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:FieldSynonym) ON (e.canonical_name)' has no effect. The index or constraint specified by 'RANGE INDEX index_4029d71a FOR (e:FieldSynonym) ON (e.canonical_name)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (fs:FieldSynonym) ON (fs.canonical_name)'
+00:28:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:GeneMapping) ON (e.target_symbol)' has no effect. The index or constraint specified by 'RANGE INDEX index_e5f90fd0 FOR (e:GeneMapping) ON (e.target_symbol)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (gm:GeneMapping) ON (gm.target_symbol)'
+00:28:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:GSE) ON (e.organism)' has no effect. The index or constraint specified by 'RANGE INDEX index_1fe8d2a4 FOR (e:GSE) ON (e.organism)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (gse:GSE) ON (gse.organism)'
+00:28:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:GSE) ON (e.assay_type)' has no effect. The index or constraint specified by 'RANGE INDEX index_38f59a2a FOR (e:GSE) ON (e.assay_type)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (gse:GSE) ON (gse.assay_type)'
+00:28:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:ParseStrategy) ON (e.success_count)' has no effect. The index or constraint specified by 'RANGE INDEX index_85672a78 FOR (e:ParseStrategy) ON (e.success_count)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (ps:ParseStrategy) ON (ps.success_count)'
+00:28:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:FailureCase) ON (e.error_signature)' has no effect. The index or constraint specified by 'RANGE INDEX index_701fbc61 FOR (e:FailureCase) ON (e.error_signature)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (fc:FailureCase) ON (fc.error_signature)'
+00:28:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchPattern) ON (e.detection_rule)' has no effect. The index or constraint specified by 'RANGE INDEX index_5a2fc8b8 FOR (e:BatchPattern) ON (e.detection_rule)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bp:BatchPattern) ON (bp.detection_rule)'
+00:28:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchStrategy) ON (e.gsm_id)' has no effect. The index or constraint specified by 'RANGE INDEX index_6fcdd738 FOR (e:BatchStrategy) ON (e.gsm_id)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.gsm_id)'
+00:28:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchStrategy) ON (e.genotype)' has no effect. The index or constraint specified by 'RANGE INDEX index_369c2325 FOR (e:BatchStrategy) ON (e.genotype)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.genotype)'
+00:28:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchStrategy) ON (e.treatment)' has no effect. The index or constraint specified by 'RANGE INDEX index_9d96a35e FOR (e:BatchStrategy) ON (e.treatment)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.treatment)'
+00:28:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:MatrixStrategy) ON (e.format)' has no effect. The index or constraint specified by 'RANGE INDEX index_5eea1dd4 FOR (e:MatrixStrategy) ON (e.format)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (ms:MatrixStrategy) ON (ms.format)'
+00:28:18 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:FieldMappingStrategy) ON (e.canonical)' has no effect. The index or constraint specified by 'RANGE INDEX index_281945fe FOR (e:FieldMappingStrategy) ON (e.canonical)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (fm:FieldMappingStrategy) ON (fm.canonical)'
+00:28:18 [INFO] scruticell.knowledge.graph: Neo4j schema initialized
+00:28:18 [INFO] scruticell.intelligence.matcher: Updated strategy stats for 0187046e8f1cbfc9: success=False
+00:28:32 [WARNING] langsmith.client: Failed to send compressed multipart ingest: Connection error caused failure to POST https://api.smith.langchain.com/runs/multipart in LangSmith API. The content length of 82386401 bytes exceeds the maximum size limit of 20971520 bytes. SSLError(MaxRetryError("HTTPSConnectionPool(host='api.smith.langchain.com', port=443): Max retries exceeded with url: /runs/multipart (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol (_ssl.c:2427)')))"))
+Content-Length: 82386401
+API Key: lsv2_********************************************c3trace=019f2893-435d-70a1-8928-20ede901f102,id=019f2893-435d-70a1-8928-20ede901f102

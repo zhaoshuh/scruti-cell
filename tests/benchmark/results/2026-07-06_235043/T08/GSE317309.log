@@ -1,0 +1,24 @@
+=== STDOUT ===
+
+============================================================
+  Scrut-Cell Full Pipeline: GSE317309
+  Output: E:\Scruti-Cell\output\GSE317309
+============================================================
+
+  [1/3] INSPECT �� downloading + inspecting...
+    Downloading...
+
+=== STDERR ===
+01:35:22 [INFO] scruticell: Run log started for GSE317309 -> E:\Scruti-Cell\output\GSE317309\run.log
+01:35:24 [INFO] scruticell.utils.tracing: LangSmith tracing enabled (project: scruiti-cell)
+01:35:24 [INFO] scruticell.pipeline.nodes.download: Downloading data for GSE317309
+01:35:24 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE317nnn/GSE317309/soft/GSE317309_family.soft.gz (attempt 1/3)
+01:35:26 [INFO] scruticell.utils.download: File size: 9893 bytes, Accept-Ranges: supported
+01:35:26 [INFO] scruticell.utils.download: Downloading 1 range chunks (3 connections)
+01:35:26 [INFO] scruticell.utils.download: Downloading 0 MB with 3 threads...
+01:35:29 [INFO] scruticell.utils.download: Download complete: 0 MB in 3s (0.0 MB/s avg)
+01:35:29 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE317nnn/GSE317309/soft/GSE317309_family.soft.gz -> E:\Scruti-Cell\output\GSE317309\download\GSE317309_family.soft.gz (9893 bytes)
+01:35:29 [INFO] scruticell.pipeline.nodes.download: SOFT file: E:\Scruti-Cell\output\GSE317309\download\GSE317309_family.soft.gz
+01:35:29 [INFO] scruticell.pipeline.nodes.download: Found 2 supplementary files from GSE GSE317309
+01:35:33 [ERROR] scruticell.pipeline.nodes.download: GSE GSE317309: supplementary files too large (7.6 GB > 2 GB). Download skipped.
+Aborted!

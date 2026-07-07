@@ -1,0 +1,19 @@
+{
+  "gse_id": "GSE316025",
+  "success": false,
+  "returncode": -1,
+  "started_at": "2026-07-02T09:46:29.681208",
+  "stages": {
+    "inspect": {},
+    "plan": {},
+    "execute": {}
+  },
+  "metrics": {},
+  "errors": [],
+  "duration_s": 2501.1,
+  "id": "T40",
+  "category": "批量测试",
+  "label": "GSE316025",
+  "features": "",
+  "grade": "D"
+}

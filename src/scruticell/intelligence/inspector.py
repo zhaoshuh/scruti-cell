@@ -47,7 +47,14 @@ class FileSummary:
     n_cols: int | None = None
     columns: list[str] = field(default_factory=list)
     preview_rows: list[dict[str, str]] = field(default_factory=list)
+    preview_rows_raw: list[list[str]] = field(default_factory=list)
+    column_categories: dict[str, list[str]] = field(default_factory=dict)
     delimiter: str = ""
+
+    # Reader code (LLM-generated, for reading matrix correctly)
+    reader_code: str = ""
+    reader_path: str = ""
+    reader_error: str = ""
 
     # H5/H5AD
     h5_shape: tuple[int, int] | None = None
@@ -197,6 +204,11 @@ class Inspector:
 
         summary.n_cols = len(all_rows[0])
 
+        # Save raw preview (lenient, string-only, for LLM reader code generation)
+        summary.preview_rows_raw = [
+            row[:_PREVIEW_COLS] for row in all_rows
+        ]
+
         # Truncate columns to preview limit
         def _col(i: int) -> str:
             return all_rows[0][i] if i < len(all_rows[0]) else f"col_{i}"
@@ -225,6 +237,21 @@ class Inspector:
         if (summary.n_rows or 0) > 10 and (summary.n_cols or 0) > 10:
             # Heuristic: if first column looks like barcodes, or any column looks like gene IDs
             self._analyze_csv_barcodes(all_rows, summary)
+
+        # Extract column categories for potential metadata files (small, categorical)
+        if has_header and len(all_rows) >= 2 and len(all_rows) <= 1000:
+            categories: dict[str, list[str]] = {}
+            cols = summary.columns or [f"col_{j}" for j in range(len(all_rows[0]))]
+            for j, col_name in enumerate(cols):
+                vals: list[str] = []
+                for r in all_rows[1:]:
+                    if j < len(r) and r[j].strip():
+                        vals.append(r[j].strip())
+                unique = sorted(set(vals))[:50]
+                if 1 < len(unique) <= 30:  # Categorical: 2-30 unique values
+                    categories[col_name] = unique
+            if categories:
+                summary.column_categories = categories
 
         # Count total rows
         try:
@@ -314,6 +341,35 @@ class Inspector:
             return True
         except (ValueError, TypeError):
             return False
+
+    def re_read_with_reader(
+        self, filepath: Path, reader_code: str, nrows: int | None = 30,
+    ) -> dict[str, Any] | None:
+        """Execute LLM-generated reader code to get accurate preview / full data.
+
+        Args:
+            filepath: Path to the matrix file.
+            reader_code: Python code containing def read_matrix(filepath, nrows=None):.
+            nrows: Max rows to read (None = full).
+
+        Returns:
+            Dict from read_matrix() or None on failure.
+        """
+        local_ns: dict[str, Any] = {}
+        try:
+            exec(reader_code, {"np": __import__("numpy"), "pd": __import__("pandas"),
+                               "sc": __import__("scanpy"),
+                               "csv": __import__("csv"), "gzip": __import__("gzip")}, local_ns)
+            read_fn = local_ns.get("read_matrix")
+            if read_fn is None:
+                return None
+            result = read_fn(str(filepath), nrows)
+            if not isinstance(result, dict):
+                return None
+            return result
+        except Exception as exc:
+            logger.warning("Reader code execution failed for %s: %s", filepath.name, exc)
+            return None
 
     def _inspect_h5(self, filepath: Path, summary: FileSummary) -> None:
         """Inspect an HDF5 file (.h5 or .h5ad) — memory-safe via h5py peek.

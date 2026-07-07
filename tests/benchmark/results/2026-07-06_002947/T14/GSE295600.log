@@ -1,0 +1,134 @@
+=== STDOUT ===
+
+============================================================
+  Scrut-Cell Full Pipeline: GSE295600
+  Output: E:\Scruti-Cell\output\GSE295600
+============================================================
+
+  [1/3] INSPECT �� downloading + inspecting...
+    Downloading... OK
+    Parsing SOFT... OK
+    Building report... OK
+    Generating reader code... OK
+
+
+=== STDERR ===
+02:33:48 [INFO] scruticell: Run log started for GSE295600 -> E:\Scruti-Cell\output\GSE295600\run.log
+02:33:50 [INFO] scruticell.utils.tracing: LangSmith tracing enabled (project: scruiti-cell)
+02:33:50 [INFO] scruticell.pipeline.nodes.download: Downloading data for GSE295600
+02:33:50 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE295nnn/GSE295600/soft/GSE295600_family.soft.gz (attempt 1/3)
+02:33:57 [INFO] scruticell.utils.download: File size: 5509 bytes, Accept-Ranges: supported
+02:33:57 [INFO] scruticell.utils.download: Downloading 1 range chunks (3 connections)
+02:33:57 [INFO] scruticell.utils.download: Downloading 0 MB with 3 threads...
+02:34:06 [INFO] scruticell.utils.download: Download complete: 0 MB in 9s (0.0 MB/s avg)
+02:34:06 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE295nnn/GSE295600/soft/GSE295600_family.soft.gz -> E:\Scruti-Cell\output\GSE295600\download\GSE295600_family.soft.gz (5509 bytes)
+02:34:06 [INFO] scruticell.pipeline.nodes.download: SOFT file: E:\Scruti-Cell\output\GSE295600\download\GSE295600_family.soft.gz
+02:34:06 [INFO] scruticell.pipeline.nodes.download: Found 1 supplementary files from GSE GSE295600
+02:34:12 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE295nnn/GSE295600/suppl/GSE295600_RAW.tar (attempt 1/3)
+02:34:19 [INFO] scruticell.utils.download: File size: 101908480 bytes, Accept-Ranges: supported
+02:34:19 [INFO] scruticell.utils.download: Downloading 7 range chunks (3 connections)
+02:34:19 [INFO] scruticell.utils.download: Downloading 97 MB with 3 threads...
+02:34:28 [INFO] scruticell.utils.download: Downloading: 32/97 MB (33%) 3.6 MB/s
+02:34:31 [INFO] scruticell.utils.download: Downloading: 33/97 MB (34%) 0.3 MB/s
+02:34:34 [INFO] scruticell.utils.download: Downloading: 34/97 MB (35%) 0.3 MB/s
+02:34:37 [INFO] scruticell.utils.download: Downloading: 35/97 MB (36%) 0.2 MB/s
+02:34:40 [INFO] scruticell.utils.download: Downloading: 35/97 MB (37%) 0.2 MB/s
+02:34:43 [INFO] scruticell.utils.download: Downloading: 36/97 MB (38%) 0.3 MB/s
+02:34:46 [INFO] scruticell.utils.download: Downloading: 38/97 MB (40%) 0.7 MB/s
+02:34:49 [INFO] scruticell.utils.download: Downloading: 41/97 MB (42%) 0.8 MB/s
+02:34:52 [INFO] scruticell.utils.download: Downloading: 50/97 MB (52%) 3.2 MB/s
+02:34:55 [INFO] scruticell.utils.download: Downloading: 54/97 MB (56%) 1.2 MB/s
+02:34:58 [INFO] scruticell.utils.download: Downloading: 58/97 MB (60%) 1.3 MB/s
+02:35:01 [INFO] scruticell.utils.download: Downloading: 61/97 MB (64%) 1.2 MB/s
+02:35:04 [INFO] scruticell.utils.download: Downloading: 64/97 MB (66%) 0.8 MB/s
+02:35:07 [INFO] scruticell.utils.download: Downloading: 69/97 MB (72%) 1.8 MB/s
+02:35:10 [INFO] scruticell.utils.download: Downloading: 74/97 MB (77%) 1.7 MB/s
+02:35:13 [INFO] scruticell.utils.download: Downloading: 96/97 MB (99%) 7.2 MB/s
+02:35:16 [INFO] scruticell.utils.download: Downloading: 96/97 MB (99%) 0.1 MB/s
+02:35:19 [INFO] scruticell.utils.download: Downloading: 97/97 MB (100%) 0.2 MB/s
+02:35:22 [INFO] scruticell.utils.download: Downloading: 97/97 MB (100%) 0.1 MB/s
+02:35:25 [INFO] scruticell.utils.download: Download complete: 97 MB in 66s (1.5 MB/s avg)
+02:35:25 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE295nnn/GSE295600/suppl/GSE295600_RAW.tar -> E:\Scruti-Cell\output\GSE295600\download\GSE295600_RAW.tar (101908480 bytes)
+02:35:25 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE295600_RAW.tar (101908480 bytes)
+02:35:25 [INFO] scruticell.pipeline.nodes.download: Downloaded 1 supplementary files (from 1 URLs)
+02:35:25 [INFO] scruticell.pipeline.nodes.download: Extracting archive (97 MB): GSE295600_RAW.tar
+02:35:25 [INFO] scruticell.pipeline.nodes.download: Extracted 18 files from GSE295600_RAW.tar
+02:35:25 [INFO] scruticell.pipeline.nodes.download: Total supplementary files after extraction: 19
+02:35:25 [INFO] scruticell.pipeline.nodes.parse: Parsing SOFT file for GSE295600
+02:35:25 [INFO] scruticell.parsing.soft: Parsing SOFT file: E:\Scruti-Cell\output\GSE295600\download\GSE295600_family.soft.gz
+02:35:25 [INFO] scruticell.parsing.soft: Parsed 24 GSE metadata keys, 1 GPLs, 18 GSMs, 18 supplementary refs
+02:35:25 [INFO] scruticell.parsing.metadata: Extracted metadata for 18 GSM entries
+02:35:25 [INFO] scruticell.pipeline.nodes.parse: Parsed SOFT: 18 GSMs, organism=9606, platforms=['GPL20301'], pubmed_id=
+02:36:33 [INFO] scruticell.intelligence.reporter: Inspected 50/55 files (skipped 0 dirs)...
+02:36:36 [INFO] scruticell.intelligence.reporter: Inspected 55 files (54 data files found)
+02:36:36 [INFO] scruticell.intelligence.reporter: Generating readers for 54 files via LLM...
+02:36:42 [INFO] langchain_openai.chat_models._client_utils: langchain-openai detected system proxy configuration and no explicit `http_socket_options` / `http_client` / `http_async_client` / `openai_proxy`; skipping the custom `httpx` transport so httpx's env-proxy auto-detection applies. Pass `http_socket_options=[...]` to opt back into kernel-level TCP keepalive tuning on top of the env proxy.
+02:38:57 [INFO] scruticell.intelligence.reporter: LLM generated 18 reader groups
+02:39:00 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953605_1b_counts' validated OK
+02:39:00 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953606_1d10_counts' validated OK
+02:39:00 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953607_3b_counts' validated OK
+02:39:00 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953608_6b_counts' validated OK
+02:39:00 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953609_6d10_counts' validated OK
+02:39:00 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953610_8b_counts' validated OK
+02:39:00 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953611_10b_counts' validated OK
+02:39:00 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953612_11b_counts' validated OK
+02:39:00 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953613_11d10_counts' validated OK
+02:39:00 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953614_17d10_counts' validated OK
+02:39:00 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953615_18b_counts' validated OK
+02:39:00 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953616_18d10_counts' validated OK
+02:39:00 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953617_19b_counts' validated OK
+02:39:00 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953618_19d10_counts' validated OK
+02:39:00 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953619_20b_counts' validated OK
+02:39:00 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953620_20d10_counts' validated OK
+02:39:00 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953621_22b_counts' validated OK
+02:39:00 [INFO] scruticell.intelligence.reporter: Reader 'GSM8953622_22d10_counts' validated OK
+02:39:00 [INFO] scruticell.intelligence.reporter: Readers saved: E:\Scruti-Cell\output\GSE295600\readers\readers.json (18 readers)
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "E:\Scruti-Cell\venv\Scripts\scruticell.exe\__main__.py", line 7, in <module>
+  File "E:\Scruti-Cell\venv\Lib\site-packages\click\core.py", line 1569, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Scruti-Cell\venv\Lib\site-packages\click\core.py", line 1490, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "E:\Scruti-Cell\venv\Lib\site-packages\click\core.py", line 1970, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Scruti-Cell\venv\Lib\site-packages\click\core.py", line 1353, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Scruti-Cell\venv\Lib\site-packages\click\core.py", line 907, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Scruti-Cell\src\scruticell\cli.py", line 1163, in run
+    inspect_path.write_text(gse_report.to_json(), encoding="utf-8")
+                            ^^^^^^^^^^^^^^^^^^^^
+  File "E:\Scruti-Cell\src\scruticell\intelligence\reporter.py", line 86, in to_json
+    return json.dumps(self.to_dict(), indent=indent, ensure_ascii=False)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Python311\Lib\json\encoder.py", line 202, in encode
+    chunks = list(chunks)
+             ^^^^^^^^^^^^
+  File "C:\Python311\Lib\json\encoder.py", line 432, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "C:\Python311\Lib\json\encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "C:\Python311\Lib\json\encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "C:\Python311\Lib\json\encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "C:\Python311\Lib\json\encoder.py", line 326, in _iterencode_list
+    yield from chunks
+  File "C:\Python311\Lib\json\encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "C:\Python311\Lib\json\encoder.py", line 439, in _iterencode
+    o = _default(o)
+        ^^^^^^^^^^^
+  File "C:\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type float32 is not JSON serializable

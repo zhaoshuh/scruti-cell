@@ -1,0 +1,61 @@
+{
+  "gse_id": "GSE276139",
+  "success": false,
+  "returncode": 0,
+  "started_at": "2026-07-05T03:09:37.857613",
+  "stages": {
+    "inspect": {
+      "summary": "[1/3] INSPECT �� downloading + inspecting..."
+    },
+    "plan": {
+      "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+    },
+    "execute": {
+      "summary": "[3/3] EXECUTE �� reading matrices + building AnnData..."
+    }
+  },
+  "metrics": {
+    "cells": 0,
+    "genes": 0,
+    "batches": 0,
+    "success": false,
+    "errors": [
+      "No matrices could be read"
+    ],
+    "warnings": [],
+    "confidence": 0.99,
+    "field_mappings": 7,
+    "batch_separation_strategy": "per_sample",
+    "kb_match_count": 0,
+    "total_files": 73,
+    "gsm_entries": 6,
+    "data_files": 72
+  },
+  "errors": [
+    "Unrecoverable error (attempt 1), stopping",
+    "Execution: FAILED",
+    "03:25:42 [WARNING] scruticell.utils.download: Range request bytes=587202560-603979775 failed: peer closed connection without sending complete message body (received 11319479 bytes, expected 16777216)",
+    "03:28:51 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8491849_CSFLUAD1-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_",
+    "03:28:51 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8491850_CSFLUAD2-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_",
+    "03:28:51 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for GSM8491851_CSFLUAD3-barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_",
+    "03:28:51 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM950",
+    "03:28:51 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM950",
+    "03:28:51 [WARNING] scruticell.intelligence.inspector: Reader code execution failed for barcodes.tsv_extracted: Did not find file E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM950",
+    "03:28:53 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+    "03:28:53 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+    "03:32:21 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM8491849_CSFLUAD1-matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+    "03:32:21 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM8491850_CSFLUAD2-matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+    "03:32:21 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM8491851_CSFLUAD3-matrix.mtx.gz: Unknown matrix format: 10x_mtx",
+    "03:32:21 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM9505951_CWB.tar_extracted\\CWB\\matrix.mtx.gz: Unknown matrix format",
+    "03:32:21 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM9505952_WLC.tar_extracted\\WLC\\matrix.mtx.gz: Unknown matrix format",
+    "03:32:21 [ERROR] scruticell.intelligence.executor: Failed to read E:\\Scruti-Cell\\output\\GSE276139\\download\\GSE276139_RAW_extracted\\GSM9505953_ZRQ.tar_extracted\\ZRQ\\matrix.mtx.gz: Unknown matrix format",
+    "03:32:24 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+    "03:32:24 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. "
+  ],
+  "duration_s": 1367.9,
+  "id": "T15",
+  "category": "批量测试",
+  "label": "GSE276139",
+  "features": "",
+  "grade": "D"
+}

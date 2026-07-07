@@ -1,0 +1,19 @@
+{
+  "gse_id": "GSE284443",
+  "success": false,
+  "returncode": -1,
+  "started_at": "2026-07-03T01:50:51.439481",
+  "stages": {
+    "inspect": {},
+    "plan": {},
+    "execute": {}
+  },
+  "metrics": {},
+  "errors": [],
+  "duration_s": 1800.0,
+  "id": "T11",
+  "category": "重测失败",
+  "label": "GSE284443",
+  "features": "",
+  "grade": "D"
+}

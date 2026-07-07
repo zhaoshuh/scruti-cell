@@ -1,0 +1,446 @@
+=== STDOUT ===
+
+============================================================
+  Scrut-Cell Full Pipeline: GSE316025
+  Output: E:\Scruti-Cell\output\GSE316025
+============================================================
+
+  [1/3] INSPECT �� downloading + inspecting...
+    Downloading... OK
+    Parsing SOFT... OK
+    Building report... OK
+    Generating reader code... OK
+    Report: E:\Scruti-Cell\output\GSE316025\inspect.json
+    Files: 64 | GSM entries: 21
+
+  [2/3] PLAN �� knowledge base matching + LLM plan generation...
+    KB Matches: 0
+    Generating plan via LLM... FAILED: Could not generate a valid plan
+
+
+=== STDERR ===
+07:06:44 [INFO] scruticell: Run log started for GSE316025 -> E:\Scruti-Cell\output\GSE316025\run.log
+07:06:45 [INFO] scruticell.utils.tracing: LangSmith tracing enabled (project: scruiti-cell)
+07:06:45 [INFO] scruticell.pipeline.nodes.download: Downloading data for GSE316025
+07:06:45 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/soft/GSE316025_family.soft.gz (attempt 1/3)
+07:06:47 [INFO] scruticell.utils.download: File size: 4749 bytes, Accept-Ranges: supported
+07:06:47 [INFO] scruticell.utils.download: Downloading 1 range chunks (3 connections)
+07:06:47 [INFO] scruticell.utils.download: Downloading 0 MB with 3 threads...
+07:06:50 [INFO] scruticell.utils.download: Download complete: 0 MB in 3s (0.0 MB/s avg)
+07:06:50 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/soft/GSE316025_family.soft.gz -> E:\Scruti-Cell\output\GSE316025\download\GSE316025_family.soft.gz (4749 bytes)
+07:06:50 [INFO] scruticell.pipeline.nodes.download: SOFT file: E:\Scruti-Cell\output\GSE316025\download\GSE316025_family.soft.gz
+07:06:50 [INFO] scruticell.pipeline.nodes.download: Found 22 supplementary files from GSE GSE316025
+07:07:24 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_ATO_Day21_barcodes.tsv.gz (attempt 1/3)
+07:07:25 [INFO] scruticell.utils.download: File size: 58888 bytes, Accept-Ranges: supported
+07:07:25 [INFO] scruticell.utils.download: Downloading 1 range chunks (3 connections)
+07:07:25 [INFO] scruticell.utils.download: Downloading 0 MB with 3 threads...
+07:07:28 [INFO] scruticell.utils.download: Download complete: 0 MB in 3s (0.0 MB/s avg)
+07:07:28 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_ATO_Day21_barcodes.tsv.gz -> E:\Scruti-Cell\output\GSE316025\download\GSE316025_ATO_Day21_barcodes.tsv.gz (58888 bytes)
+07:07:28 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE316025_ATO_Day21_barcodes.tsv.gz (58888 bytes)
+07:07:28 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_ATO_Day21_features.tsv.gz (attempt 1/3)
+07:07:30 [INFO] scruticell.utils.download: File size: 333664 bytes, Accept-Ranges: supported
+07:07:30 [INFO] scruticell.utils.download: Downloading 1 range chunks (3 connections)
+07:07:30 [INFO] scruticell.utils.download: Downloading 0 MB with 3 threads...
+07:07:33 [INFO] scruticell.utils.download: Download complete: 0 MB in 3s (0.1 MB/s avg)
+07:07:33 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_ATO_Day21_features.tsv.gz -> E:\Scruti-Cell\output\GSE316025\download\GSE316025_ATO_Day21_features.tsv.gz (333664 bytes)
+07:07:33 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE316025_ATO_Day21_features.tsv.gz (333664 bytes)
+07:07:33 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_ATO_Day21_matrix.mtx.gz (attempt 1/3)
+07:07:34 [INFO] scruticell.utils.download: File size: 135758201 bytes, Accept-Ranges: supported
+07:07:34 [INFO] scruticell.utils.download: Downloading 9 range chunks (3 connections)
+07:07:34 [INFO] scruticell.utils.download: Downloading 129 MB with 3 threads...
+07:07:38 [INFO] scruticell.utils.download: Downloading: 32/129 MB (25%) 9.9 MB/s
+07:07:41 [INFO] scruticell.utils.download: Downloading: 33/129 MB (25%) 0.2 MB/s
+07:07:44 [INFO] scruticell.utils.download: Downloading: 33/129 MB (26%) 0.2 MB/s
+07:07:47 [INFO] scruticell.utils.download: Downloading: 34/129 MB (26%) 0.2 MB/s
+07:07:50 [INFO] scruticell.utils.download: Downloading: 35/129 MB (27%) 0.2 MB/s
+07:07:53 [INFO] scruticell.utils.download: Downloading: 35/129 MB (27%) 0.2 MB/s
+07:07:56 [INFO] scruticell.utils.download: Downloading: 36/129 MB (28%) 0.2 MB/s
+07:07:59 [INFO] scruticell.utils.download: Downloading: 36/129 MB (28%) 0.2 MB/s
+07:08:02 [INFO] scruticell.utils.download: Downloading: 37/129 MB (29%) 0.2 MB/s
+07:08:05 [INFO] scruticell.utils.download: Downloading: 48/129 MB (37%) 3.6 MB/s
+07:08:08 [INFO] scruticell.utils.download: Downloading: 50/129 MB (39%) 0.6 MB/s
+07:08:11 [INFO] scruticell.utils.download: Downloading: 51/129 MB (40%) 0.6 MB/s
+07:08:14 [INFO] scruticell.utils.download: Downloading: 53/129 MB (42%) 0.7 MB/s
+07:08:17 [INFO] scruticell.utils.download: Downloading: 55/129 MB (43%) 0.7 MB/s
+07:08:20 [INFO] scruticell.utils.download: Downloading: 57/129 MB (44%) 0.6 MB/s
+07:08:23 [INFO] scruticell.utils.download: Downloading: 59/129 MB (46%) 0.7 MB/s
+07:08:26 [INFO] scruticell.utils.download: Downloading: 61/129 MB (48%) 0.6 MB/s
+07:08:29 [INFO] scruticell.utils.download: Downloading: 63/129 MB (49%) 0.7 MB/s
+07:08:32 [INFO] scruticell.utils.download: Downloading: 64/129 MB (49%) 0.2 MB/s
+07:08:35 [INFO] scruticell.utils.download: Downloading: 80/129 MB (62%) 5.4 MB/s
+07:08:38 [INFO] scruticell.utils.download: Downloading: 80/129 MB (62%) 0.2 MB/s
+07:08:41 [INFO] scruticell.utils.download: Downloading: 81/129 MB (63%) 0.3 MB/s
+07:08:44 [INFO] scruticell.utils.download: Downloading: 98/129 MB (76%) 5.5 MB/s
+07:08:47 [INFO] scruticell.utils.download: Downloading: 100/129 MB (78%) 0.8 MB/s
+07:08:50 [INFO] scruticell.utils.download: Downloading: 103/129 MB (80%) 0.8 MB/s
+07:08:53 [INFO] scruticell.utils.download: Downloading: 105/129 MB (81%) 0.8 MB/s
+07:08:56 [INFO] scruticell.utils.download: Downloading: 108/129 MB (84%) 1.0 MB/s
+07:08:59 [INFO] scruticell.utils.download: Downloading: 111/129 MB (86%) 0.8 MB/s
+07:09:02 [INFO] scruticell.utils.download: Downloading: 112/129 MB (87%) 0.3 MB/s
+07:09:05 [INFO] scruticell.utils.download: Downloading: 112/129 MB (87%) 0.2 MB/s
+07:09:08 [INFO] scruticell.utils.download: Downloading: 113/129 MB (87%) 0.2 MB/s
+07:09:11 [INFO] scruticell.utils.download: Downloading: 114/129 MB (88%) 0.2 MB/s
+07:09:14 [INFO] scruticell.utils.download: Downloading: 128/129 MB (99%) 4.8 MB/s
+07:09:17 [INFO] scruticell.utils.download: Downloading: 129/129 MB (100%) 0.2 MB/s
+07:09:20 [INFO] scruticell.utils.download: Downloading: 129/129 MB (100%) 0.2 MB/s
+07:09:35 [INFO] scruticell.utils.download: Download complete: 129 MB in 120s (1.1 MB/s avg)
+07:09:35 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_ATO_Day21_matrix.mtx.gz -> E:\Scruti-Cell\output\GSE316025\download\GSE316025_ATO_Day21_matrix.mtx.gz (135758201 bytes)
+07:09:35 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE316025_ATO_Day21_matrix.mtx.gz (135758201 bytes)
+07:09:35 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_ATO_Day35_barcodes.tsv.gz (attempt 1/3)
+07:09:36 [INFO] scruticell.utils.download: File size: 58786 bytes, Accept-Ranges: supported
+07:09:36 [INFO] scruticell.utils.download: Downloading 1 range chunks (3 connections)
+07:09:36 [INFO] scruticell.utils.download: Downloading 0 MB with 3 threads...
+07:09:39 [INFO] scruticell.utils.download: Download complete: 0 MB in 3s (0.0 MB/s avg)
+07:09:39 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_ATO_Day35_barcodes.tsv.gz -> E:\Scruti-Cell\output\GSE316025\download\GSE316025_ATO_Day35_barcodes.tsv.gz (58786 bytes)
+07:09:39 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE316025_ATO_Day35_barcodes.tsv.gz (58786 bytes)
+07:09:39 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_ATO_Day35_features.tsv.gz (attempt 1/3)
+07:09:41 [INFO] scruticell.utils.download: File size: 333664 bytes, Accept-Ranges: supported
+07:09:41 [INFO] scruticell.utils.download: Downloading 1 range chunks (3 connections)
+07:09:41 [INFO] scruticell.utils.download: Downloading 0 MB with 3 threads...
+07:09:44 [INFO] scruticell.utils.download: Download complete: 0 MB in 3s (0.1 MB/s avg)
+07:09:44 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_ATO_Day35_features.tsv.gz -> E:\Scruti-Cell\output\GSE316025\download\GSE316025_ATO_Day35_features.tsv.gz (333664 bytes)
+07:09:44 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE316025_ATO_Day35_features.tsv.gz (333664 bytes)
+07:09:44 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_ATO_Day35_matrix.mtx.gz (attempt 1/3)
+07:09:45 [INFO] scruticell.utils.download: File size: 134681312 bytes, Accept-Ranges: supported
+07:09:45 [INFO] scruticell.utils.download: Downloading 9 range chunks (3 connections)
+07:09:45 [INFO] scruticell.utils.download: Downloading 128 MB with 3 threads...
+07:09:49 [INFO] scruticell.utils.download: Downloading: 32/128 MB (25%) 9.9 MB/s
+07:09:52 [INFO] scruticell.utils.download: Downloading: 33/128 MB (26%) 0.2 MB/s
+07:09:55 [INFO] scruticell.utils.download: Downloading: 33/128 MB (26%) 0.2 MB/s
+07:09:58 [INFO] scruticell.utils.download: Downloading: 34/128 MB (26%) 0.2 MB/s
+07:10:01 [INFO] scruticell.utils.download: Downloading: 34/128 MB (27%) 0.2 MB/s
+07:10:04 [INFO] scruticell.utils.download: Downloading: 35/128 MB (27%) 0.2 MB/s
+07:10:07 [INFO] scruticell.utils.download: Downloading: 36/128 MB (28%) 0.2 MB/s
+07:10:10 [INFO] scruticell.utils.download: Downloading: 36/128 MB (28%) 0.2 MB/s
+07:10:13 [INFO] scruticell.utils.download: Downloading: 37/128 MB (29%) 0.2 MB/s
+07:10:16 [INFO] scruticell.utils.download: Downloading: 48/128 MB (38%) 3.6 MB/s
+07:10:19 [INFO] scruticell.utils.download: Downloading: 49/128 MB (39%) 0.4 MB/s
+07:10:22 [INFO] scruticell.utils.download: Downloading: 51/128 MB (40%) 0.6 MB/s
+07:10:25 [INFO] scruticell.utils.download: Downloading: 52/128 MB (41%) 0.5 MB/s
+07:10:28 [INFO] scruticell.utils.download: Downloading: 54/128 MB (42%) 0.5 MB/s
+07:10:31 [INFO] scruticell.utils.download: Downloading: 56/128 MB (44%) 0.6 MB/s
+07:10:34 [INFO] scruticell.utils.download: Downloading: 57/128 MB (45%) 0.5 MB/s
+07:10:37 [INFO] scruticell.utils.download: Downloading: 59/128 MB (46%) 0.7 MB/s
+07:10:40 [INFO] scruticell.utils.download: Downloading: 64/128 MB (50%) 1.6 MB/s
+07:10:43 [INFO] scruticell.utils.download: Downloading: 64/128 MB (50%) 0.2 MB/s
+07:10:46 [INFO] scruticell.utils.download: Downloading: 80/128 MB (63%) 5.2 MB/s
+07:10:49 [INFO] scruticell.utils.download: Downloading: 82/128 MB (64%) 0.6 MB/s
+07:10:52 [INFO] scruticell.utils.download: Downloading: 84/128 MB (65%) 0.6 MB/s
+07:10:55 [INFO] scruticell.utils.download: Downloading: 85/128 MB (67%) 0.5 MB/s
+07:10:58 [INFO] scruticell.utils.download: Downloading: 87/128 MB (68%) 0.6 MB/s
+07:11:01 [INFO] scruticell.utils.download: Downloading: 89/128 MB (69%) 0.7 MB/s
+07:11:04 [INFO] scruticell.utils.download: Downloading: 91/128 MB (71%) 0.7 MB/s
+07:11:07 [INFO] scruticell.utils.download: Downloading: 96/128 MB (75%) 1.8 MB/s
+07:11:10 [INFO] scruticell.utils.download: Downloading: 99/128 MB (77%) 0.8 MB/s
+07:11:13 [INFO] scruticell.utils.download: Downloading: 101/128 MB (79%) 0.9 MB/s
+07:11:16 [INFO] scruticell.utils.download: Downloading: 104/128 MB (81%) 0.9 MB/s
+07:11:19 [INFO] scruticell.utils.download: Downloading: 107/128 MB (84%) 0.9 MB/s
+07:11:22 [INFO] scruticell.utils.download: Downloading: 109/128 MB (85%) 0.8 MB/s
+07:11:25 [INFO] scruticell.utils.download: Downloading: 112/128 MB (87%) 0.9 MB/s
+07:11:28 [INFO] scruticell.utils.download: Downloading: 128/128 MB (100%) 5.4 MB/s
+07:11:46 [INFO] scruticell.utils.download: Download complete: 128 MB in 120s (1.1 MB/s avg)
+07:11:46 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_ATO_Day35_matrix.mtx.gz -> E:\Scruti-Cell\output\GSE316025\download\GSE316025_ATO_Day35_matrix.mtx.gz (134681312 bytes)
+07:11:46 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE316025_ATO_Day35_matrix.mtx.gz (134681312 bytes)
+07:11:46 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_ATO_Day49_barcodes.tsv.gz (attempt 1/3)
+07:11:47 [INFO] scruticell.utils.download: File size: 62445 bytes, Accept-Ranges: supported
+07:11:47 [INFO] scruticell.utils.download: Downloading 1 range chunks (3 connections)
+07:11:47 [INFO] scruticell.utils.download: Downloading 0 MB with 3 threads...
+07:11:50 [INFO] scruticell.utils.download: Download complete: 0 MB in 3s (0.0 MB/s avg)
+07:11:50 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_ATO_Day49_barcodes.tsv.gz -> E:\Scruti-Cell\output\GSE316025\download\GSE316025_ATO_Day49_barcodes.tsv.gz (62445 bytes)
+07:11:50 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE316025_ATO_Day49_barcodes.tsv.gz (62445 bytes)
+07:11:50 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_ATO_Day49_features.tsv.gz (attempt 1/3)
+07:11:52 [INFO] scruticell.utils.download: File size: 333664 bytes, Accept-Ranges: supported
+07:11:52 [INFO] scruticell.utils.download: Downloading 1 range chunks (3 connections)
+07:11:52 [INFO] scruticell.utils.download: Downloading 0 MB with 3 threads...
+07:11:55 [INFO] scruticell.utils.download: Download complete: 0 MB in 3s (0.1 MB/s avg)
+07:11:55 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_ATO_Day49_features.tsv.gz -> E:\Scruti-Cell\output\GSE316025\download\GSE316025_ATO_Day49_features.tsv.gz (333664 bytes)
+07:11:55 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE316025_ATO_Day49_features.tsv.gz (333664 bytes)
+07:11:55 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_ATO_Day49_matrix.mtx.gz (attempt 1/3)
+07:11:56 [INFO] scruticell.utils.download: File size: 115789025 bytes, Accept-Ranges: supported
+07:11:56 [INFO] scruticell.utils.download: Downloading 7 range chunks (3 connections)
+07:11:56 [INFO] scruticell.utils.download: Downloading 110 MB with 3 threads...
+07:12:02 [INFO] scruticell.utils.download: Downloading: 33/110 MB (30%) 5.5 MB/s
+07:12:05 [INFO] scruticell.utils.download: Downloading: 34/110 MB (31%) 0.3 MB/s
+07:12:08 [INFO] scruticell.utils.download: Downloading: 35/110 MB (32%) 0.3 MB/s
+07:12:11 [INFO] scruticell.utils.download: Downloading: 35/110 MB (32%) 0.2 MB/s
+07:12:14 [INFO] scruticell.utils.download: Downloading: 36/110 MB (33%) 0.3 MB/s
+07:12:17 [INFO] scruticell.utils.download: Downloading: 37/110 MB (34%) 0.2 MB/s
+07:12:20 [INFO] scruticell.utils.download: Downloading: 38/110 MB (35%) 0.3 MB/s
+07:12:23 [INFO] scruticell.utils.download: Downloading: 39/110 MB (36%) 0.2 MB/s
+07:12:26 [INFO] scruticell.utils.download: Downloading: 40/110 MB (36%) 0.2 MB/s
+07:12:29 [INFO] scruticell.utils.download: Downloading: 40/110 MB (37%) 0.2 MB/s
+07:12:32 [INFO] scruticell.utils.download: Downloading: 42/110 MB (38%) 0.4 MB/s
+07:12:35 [INFO] scruticell.utils.download: Downloading: 48/110 MB (44%) 2.1 MB/s
+07:12:38 [INFO] scruticell.utils.download: Downloading: 49/110 MB (44%) 0.2 MB/s
+07:12:42 [INFO] scruticell.utils.download: Downloading: 49/110 MB (45%) 0.2 MB/s
+07:12:45 [INFO] scruticell.utils.download: Downloading: 64/110 MB (58%) 4.8 MB/s
+07:12:48 [INFO] scruticell.utils.download: Downloading: 65/110 MB (59%) 0.2 MB/s
+07:12:51 [INFO] scruticell.utils.download: Downloading: 65/110 MB (60%) 0.2 MB/s
+07:12:54 [INFO] scruticell.utils.download: Downloading: 66/110 MB (60%) 0.2 MB/s
+07:12:57 [INFO] scruticell.utils.download: Downloading: 67/110 MB (61%) 0.2 MB/s
+07:13:00 [INFO] scruticell.utils.download: Downloading: 80/110 MB (73%) 4.4 MB/s
+07:13:03 [INFO] scruticell.utils.download: Downloading: 81/110 MB (74%) 0.4 MB/s
+07:13:06 [INFO] scruticell.utils.download: Downloading: 83/110 MB (75%) 0.5 MB/s
+07:13:09 [INFO] scruticell.utils.download: Downloading: 96/110 MB (87%) 4.3 MB/s
+07:13:12 [INFO] scruticell.utils.download: Downloading: 98/110 MB (89%) 0.6 MB/s
+07:13:15 [INFO] scruticell.utils.download: Downloading: 100/110 MB (91%) 0.7 MB/s
+07:13:18 [INFO] scruticell.utils.download: Downloading: 102/110 MB (92%) 0.7 MB/s
+07:13:21 [INFO] scruticell.utils.download: Downloading: 104/110 MB (94%) 0.7 MB/s
+07:13:24 [INFO] scruticell.utils.download: Downloading: 106/110 MB (96%) 0.8 MB/s
+07:13:27 [INFO] scruticell.utils.download: Downloading: 108/110 MB (98%) 0.8 MB/s
+07:13:30 [INFO] scruticell.utils.download: Downloading: 110/110 MB (100%) 0.6 MB/s
+07:13:42 [INFO] scruticell.utils.download: Download complete: 110 MB in 105s (1.1 MB/s avg)
+07:13:42 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_ATO_Day49_matrix.mtx.gz -> E:\Scruti-Cell\output\GSE316025\download\GSE316025_ATO_Day49_matrix.mtx.gz (115789025 bytes)
+07:13:42 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE316025_ATO_Day49_matrix.mtx.gz (115789025 bytes)
+07:13:42 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_FF_Day21_barcodes.tsv.gz (attempt 1/3)
+07:13:43 [INFO] scruticell.utils.download: File size: 13189 bytes, Accept-Ranges: supported
+07:13:43 [INFO] scruticell.utils.download: Downloading 1 range chunks (3 connections)
+07:13:43 [INFO] scruticell.utils.download: Downloading 0 MB with 3 threads...
+07:13:46 [INFO] scruticell.utils.download: Download complete: 0 MB in 3s (0.0 MB/s avg)
+07:13:46 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_FF_Day21_barcodes.tsv.gz -> E:\Scruti-Cell\output\GSE316025\download\GSE316025_FF_Day21_barcodes.tsv.gz (13189 bytes)
+07:13:46 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE316025_FF_Day21_barcodes.tsv.gz (13189 bytes)
+07:13:46 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_FF_Day21_features.tsv.gz (attempt 1/3)
+07:13:48 [INFO] scruticell.utils.download: File size: 333664 bytes, Accept-Ranges: supported
+07:13:48 [INFO] scruticell.utils.download: Downloading 1 range chunks (3 connections)
+07:13:48 [INFO] scruticell.utils.download: Downloading 0 MB with 3 threads...
+07:13:51 [INFO] scruticell.utils.download: Download complete: 0 MB in 3s (0.1 MB/s avg)
+07:13:51 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_FF_Day21_features.tsv.gz -> E:\Scruti-Cell\output\GSE316025\download\GSE316025_FF_Day21_features.tsv.gz (333664 bytes)
+07:13:51 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE316025_FF_Day21_features.tsv.gz (333664 bytes)
+07:13:51 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_FF_Day21_matrix.mtx.gz (attempt 1/3)
+07:13:52 [INFO] scruticell.utils.download: File size: 28479945 bytes, Accept-Ranges: supported
+07:13:52 [INFO] scruticell.utils.download: Downloading 2 range chunks (3 connections)
+07:13:52 [INFO] scruticell.utils.download: Downloading 27 MB with 3 threads...
+07:13:55 [INFO] scruticell.utils.download: Downloading: 16/27 MB (61%) 5.5 MB/s
+07:13:58 [INFO] scruticell.utils.download: Downloading: 19/27 MB (70%) 0.8 MB/s
+07:14:01 [INFO] scruticell.utils.download: Downloading: 21/27 MB (78%) 0.8 MB/s
+07:14:04 [INFO] scruticell.utils.download: Downloading: 23/27 MB (87%) 0.8 MB/s
+07:14:07 [INFO] scruticell.utils.download: Downloading: 26/27 MB (97%) 0.8 MB/s
+07:14:10 [INFO] scruticell.utils.download: Downloading: 27/27 MB (100%) 0.3 MB/s
+07:14:19 [INFO] scruticell.utils.download: Download complete: 27 MB in 27s (1.0 MB/s avg)
+07:14:19 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_FF_Day21_matrix.mtx.gz -> E:\Scruti-Cell\output\GSE316025\download\GSE316025_FF_Day21_matrix.mtx.gz (28479945 bytes)
+07:14:19 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE316025_FF_Day21_matrix.mtx.gz (28479945 bytes)
+07:14:19 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_FF_Day29_barcodes.tsv.gz (attempt 1/3)
+07:14:21 [INFO] scruticell.utils.download: File size: 40223 bytes, Accept-Ranges: supported
+07:14:21 [INFO] scruticell.utils.download: Downloading 1 range chunks (3 connections)
+07:14:21 [INFO] scruticell.utils.download: Downloading 0 MB with 3 threads...
+07:14:24 [INFO] scruticell.utils.download: Download complete: 0 MB in 3s (0.0 MB/s avg)
+07:14:24 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_FF_Day29_barcodes.tsv.gz -> E:\Scruti-Cell\output\GSE316025\download\GSE316025_FF_Day29_barcodes.tsv.gz (40223 bytes)
+07:14:24 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE316025_FF_Day29_barcodes.tsv.gz (40223 bytes)
+07:14:24 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_FF_Day29_features.tsv.gz (attempt 1/3)
+07:14:25 [INFO] scruticell.utils.download: File size: 333664 bytes, Accept-Ranges: supported
+07:14:25 [INFO] scruticell.utils.download: Downloading 1 range chunks (3 connections)
+07:14:25 [INFO] scruticell.utils.download: Downloading 0 MB with 3 threads...
+07:14:28 [INFO] scruticell.utils.download: Download complete: 0 MB in 3s (0.1 MB/s avg)
+07:14:28 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_FF_Day29_features.tsv.gz -> E:\Scruti-Cell\output\GSE316025\download\GSE316025_FF_Day29_features.tsv.gz (333664 bytes)
+07:14:28 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE316025_FF_Day29_features.tsv.gz (333664 bytes)
+07:14:28 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_FF_Day29_matrix.mtx.gz (attempt 1/3)
+07:14:30 [INFO] scruticell.utils.download: File size: 106833654 bytes, Accept-Ranges: supported
+07:14:30 [INFO] scruticell.utils.download: Downloading 7 range chunks (3 connections)
+07:14:30 [INFO] scruticell.utils.download: Downloading 101 MB with 3 threads...
+07:14:33 [INFO] scruticell.utils.download: Downloading: 32/101 MB (32%) 10.3 MB/s
+07:14:36 [INFO] scruticell.utils.download: Downloading: 33/101 MB (32%) 0.2 MB/s
+07:14:39 [INFO] scruticell.utils.download: Downloading: 33/101 MB (33%) 0.2 MB/s
+07:14:42 [INFO] scruticell.utils.download: Downloading: 34/101 MB (34%) 0.2 MB/s
+07:14:45 [INFO] scruticell.utils.download: Downloading: 34/101 MB (34%) 0.2 MB/s
+07:14:48 [INFO] scruticell.utils.download: Downloading: 35/101 MB (35%) 0.2 MB/s
+07:14:51 [INFO] scruticell.utils.download: Downloading: 36/101 MB (35%) 0.2 MB/s
+07:14:54 [INFO] scruticell.utils.download: Downloading: 36/101 MB (36%) 0.2 MB/s
+07:14:57 [INFO] scruticell.utils.download: Downloading: 37/101 MB (37%) 0.2 MB/s
+07:15:00 [INFO] scruticell.utils.download: Downloading: 37/101 MB (37%) 0.2 MB/s
+07:15:03 [INFO] scruticell.utils.download: Downloading: 48/101 MB (48%) 3.6 MB/s
+07:15:06 [INFO] scruticell.utils.download: Downloading: 49/101 MB (49%) 0.3 MB/s
+07:15:09 [INFO] scruticell.utils.download: Downloading: 50/101 MB (50%) 0.4 MB/s
+07:15:12 [INFO] scruticell.utils.download: Downloading: 52/101 MB (51%) 0.5 MB/s
+07:15:15 [INFO] scruticell.utils.download: Downloading: 64/101 MB (63%) 4.0 MB/s
+07:15:18 [INFO] scruticell.utils.download: Downloading: 64/101 MB (63%) 0.1 MB/s
+07:15:21 [INFO] scruticell.utils.download: Downloading: 64/101 MB (64%) 0.1 MB/s
+07:15:24 [INFO] scruticell.utils.download: Downloading: 65/101 MB (64%) 0.2 MB/s
+07:15:27 [INFO] scruticell.utils.download: Downloading: 65/101 MB (64%) 0.1 MB/s
+07:15:30 [INFO] scruticell.utils.download: Downloading: 66/101 MB (65%) 0.3 MB/s
+07:15:33 [INFO] scruticell.utils.download: Downloading: 96/101 MB (94%) 9.8 MB/s
+07:15:36 [INFO] scruticell.utils.download: Downloading: 96/101 MB (95%) 0.1 MB/s
+07:15:39 [INFO] scruticell.utils.download: Downloading: 97/101 MB (95%) 0.2 MB/s
+07:15:42 [INFO] scruticell.utils.download: Downloading: 97/101 MB (96%) 0.2 MB/s
+07:15:45 [INFO] scruticell.utils.download: Downloading: 98/101 MB (96%) 0.2 MB/s
+07:15:48 [INFO] scruticell.utils.download: Downloading: 99/101 MB (97%) 0.2 MB/s
+07:15:51 [INFO] scruticell.utils.download: Downloading: 100/101 MB (99%) 0.6 MB/s
+07:15:54 [INFO] scruticell.utils.download: Downloading: 101/101 MB (100%) 0.4 MB/s
+07:16:03 [INFO] scruticell.utils.download: Download complete: 101 MB in 93s (1.1 MB/s avg)
+07:16:03 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_FF_Day29_matrix.mtx.gz -> E:\Scruti-Cell\output\GSE316025\download\GSE316025_FF_Day29_matrix.mtx.gz (106833654 bytes)
+07:16:03 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE316025_FF_Day29_matrix.mtx.gz (106833654 bytes)
+07:16:03 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_FF_Day33_barcodes.tsv.gz (attempt 1/3)
+07:16:05 [INFO] scruticell.utils.download: File size: 62987 bytes, Accept-Ranges: supported
+07:16:05 [INFO] scruticell.utils.download: Downloading 1 range chunks (3 connections)
+07:16:05 [INFO] scruticell.utils.download: Downloading 0 MB with 3 threads...
+07:16:08 [INFO] scruticell.utils.download: Download complete: 0 MB in 3s (0.0 MB/s avg)
+07:16:08 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_FF_Day33_barcodes.tsv.gz -> E:\Scruti-Cell\output\GSE316025\download\GSE316025_FF_Day33_barcodes.tsv.gz (62987 bytes)
+07:16:08 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE316025_FF_Day33_barcodes.tsv.gz (62987 bytes)
+07:16:08 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_FF_Day33_features.tsv.gz (attempt 1/3)
+07:16:09 [INFO] scruticell.utils.download: File size: 333664 bytes, Accept-Ranges: supported
+07:16:09 [INFO] scruticell.utils.download: Downloading 1 range chunks (3 connections)
+07:16:09 [INFO] scruticell.utils.download: Downloading 0 MB with 3 threads...
+07:16:12 [INFO] scruticell.utils.download: Download complete: 0 MB in 3s (0.1 MB/s avg)
+07:16:12 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_FF_Day33_features.tsv.gz -> E:\Scruti-Cell\output\GSE316025\download\GSE316025_FF_Day33_features.tsv.gz (333664 bytes)
+07:16:12 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE316025_FF_Day33_features.tsv.gz (333664 bytes)
+07:16:12 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_FF_Day33_matrix.mtx.gz (attempt 1/3)
+07:16:14 [INFO] scruticell.utils.download: File size: 170878981 bytes, Accept-Ranges: supported
+07:16:14 [INFO] scruticell.utils.download: Downloading 11 range chunks (3 connections)
+07:16:14 [INFO] scruticell.utils.download: Downloading 162 MB with 3 threads...
+07:16:17 [INFO] scruticell.utils.download: Downloading: 32/162 MB (20%) 10.7 MB/s
+07:16:20 [INFO] scruticell.utils.download: Downloading: 34/162 MB (21%) 0.6 MB/s
+07:16:23 [INFO] scruticell.utils.download: Downloading: 36/162 MB (22%) 0.8 MB/s
+07:16:26 [INFO] scruticell.utils.download: Downloading: 38/162 MB (23%) 0.6 MB/s
+07:16:29 [INFO] scruticell.utils.download: Downloading: 40/162 MB (25%) 0.8 MB/s
+07:16:32 [INFO] scruticell.utils.download: Downloading: 42/162 MB (26%) 0.8 MB/s
+07:16:35 [INFO] scruticell.utils.download: Downloading: 45/162 MB (28%) 0.7 MB/s
+07:16:38 [INFO] scruticell.utils.download: Downloading: 47/162 MB (29%) 0.7 MB/s
+07:16:41 [INFO] scruticell.utils.download: Downloading: 48/162 MB (29%) 0.3 MB/s
+07:16:44 [INFO] scruticell.utils.download: Downloading: 49/162 MB (30%) 0.5 MB/s
+07:16:47 [INFO] scruticell.utils.download: Downloading: 51/162 MB (32%) 0.8 MB/s
+07:16:50 [INFO] scruticell.utils.download: Downloading: 53/162 MB (33%) 0.7 MB/s
+07:16:53 [INFO] scruticell.utils.download: Downloading: 55/162 MB (34%) 0.7 MB/s
+07:16:56 [INFO] scruticell.utils.download: Downloading: 58/162 MB (36%) 0.8 MB/s
+07:16:59 [INFO] scruticell.utils.download: Downloading: 60/162 MB (37%) 0.8 MB/s
+07:17:02 [INFO] scruticell.utils.download: Downloading: 62/162 MB (39%) 0.8 MB/s
+07:17:05 [INFO] scruticell.utils.download: Downloading: 64/162 MB (39%) 0.4 MB/s
+07:17:08 [INFO] scruticell.utils.download: Downloading: 64/162 MB (40%) 0.2 MB/s
+07:17:11 [INFO] scruticell.utils.download: Downloading: 66/162 MB (41%) 0.7 MB/s
+07:17:14 [INFO] scruticell.utils.download: Downloading: 68/162 MB (42%) 0.6 MB/s
+07:17:17 [INFO] scruticell.utils.download: Downloading: 70/162 MB (43%) 0.7 MB/s
+07:17:20 [INFO] scruticell.utils.download: Downloading: 72/162 MB (44%) 0.7 MB/s
+07:17:23 [INFO] scruticell.utils.download: Downloading: 74/162 MB (46%) 0.7 MB/s
+07:17:26 [INFO] scruticell.utils.download: Downloading: 80/162 MB (49%) 1.9 MB/s
+07:17:29 [INFO] scruticell.utils.download: Downloading: 96/162 MB (59%) 5.4 MB/s
+07:17:32 [INFO] scruticell.utils.download: Downloading: 97/162 MB (60%) 0.4 MB/s
+07:17:35 [INFO] scruticell.utils.download: Downloading: 112/162 MB (69%) 4.8 MB/s
+07:17:38 [INFO] scruticell.utils.download: Downloading: 112/162 MB (69%) 0.2 MB/s
+07:17:41 [INFO] scruticell.utils.download: Downloading: 113/162 MB (69%) 0.2 MB/s
+07:17:44 [INFO] scruticell.utils.download: Downloading: 113/162 MB (70%) 0.1 MB/s
+07:17:47 [INFO] scruticell.utils.download: Downloading: 114/162 MB (70%) 0.2 MB/s
+07:17:50 [INFO] scruticell.utils.download: Downloading: 114/162 MB (70%) 0.2 MB/s
+07:17:53 [INFO] scruticell.utils.download: Downloading: 115/162 MB (71%) 0.2 MB/s
+07:17:56 [INFO] scruticell.utils.download: Downloading: 116/162 MB (71%) 0.3 MB/s
+07:17:59 [INFO] scruticell.utils.download: Downloading: 128/162 MB (79%) 4.2 MB/s
+07:18:02 [INFO] scruticell.utils.download: Downloading: 130/162 MB (80%) 0.4 MB/s
+07:18:05 [INFO] scruticell.utils.download: Downloading: 131/162 MB (81%) 0.5 MB/s
+07:18:08 [INFO] scruticell.utils.download: Downloading: 144/162 MB (89%) 4.4 MB/s
+07:18:11 [INFO] scruticell.utils.download: Downloading: 147/162 MB (90%) 0.8 MB/s
+07:18:14 [INFO] scruticell.utils.download: Downloading: 149/162 MB (92%) 0.7 MB/s
+07:18:17 [INFO] scruticell.utils.download: Downloading: 152/162 MB (93%) 1.0 MB/s
+07:18:20 [INFO] scruticell.utils.download: Downloading: 154/162 MB (95%) 0.8 MB/s
+07:18:23 [INFO] scruticell.utils.download: Downloading: 157/162 MB (96%) 0.8 MB/s
+07:18:26 [INFO] scruticell.utils.download: Downloading: 160/162 MB (98%) 1.0 MB/s
+07:18:29 [INFO] scruticell.utils.download: Downloading: 160/162 MB (98%) 0.1 MB/s
+07:18:32 [INFO] scruticell.utils.download: Downloading: 161/162 MB (99%) 0.4 MB/s
+07:18:35 [INFO] scruticell.utils.download: Downloading: 162/162 MB (100%) 0.4 MB/s
+07:18:38 [INFO] scruticell.utils.download: Downloading: 162/162 MB (100%) 0.1 MB/s
+07:18:41 [INFO] scruticell.utils.download: Download complete: 162 MB in 147s (1.1 MB/s avg)
+07:18:41 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_FF_Day33_matrix.mtx.gz -> E:\Scruti-Cell\output\GSE316025\download\GSE316025_FF_Day33_matrix.mtx.gz (170878981 bytes)
+07:18:41 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE316025_FF_Day33_matrix.mtx.gz (170878981 bytes)
+07:18:41 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_FF_Day37_barcodes.tsv.gz (attempt 1/3)
+07:18:42 [INFO] scruticell.utils.download: File size: 59516 bytes, Accept-Ranges: supported
+07:18:42 [INFO] scruticell.utils.download: Downloading 1 range chunks (3 connections)
+07:18:42 [INFO] scruticell.utils.download: Downloading 0 MB with 3 threads...
+07:18:45 [INFO] scruticell.utils.download: Download complete: 0 MB in 3s (0.0 MB/s avg)
+07:18:45 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_FF_Day37_barcodes.tsv.gz -> E:\Scruti-Cell\output\GSE316025\download\GSE316025_FF_Day37_barcodes.tsv.gz (59516 bytes)
+07:18:45 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE316025_FF_Day37_barcodes.tsv.gz (59516 bytes)
+07:18:45 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_FF_Day37_features.tsv.gz (attempt 1/3)
+07:18:47 [INFO] scruticell.utils.download: File size: 333664 bytes, Accept-Ranges: supported
+07:18:47 [INFO] scruticell.utils.download: Downloading 1 range chunks (3 connections)
+07:18:47 [INFO] scruticell.utils.download: Downloading 0 MB with 3 threads...
+07:18:50 [INFO] scruticell.utils.download: Download complete: 0 MB in 3s (0.1 MB/s avg)
+07:18:50 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_FF_Day37_features.tsv.gz -> E:\Scruti-Cell\output\GSE316025\download\GSE316025_FF_Day37_features.tsv.gz (333664 bytes)
+07:18:50 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE316025_FF_Day37_features.tsv.gz (333664 bytes)
+07:18:50 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_FF_Day37_matrix.mtx.gz (attempt 1/3)
+07:18:51 [INFO] scruticell.utils.download: File size: 137313157 bytes, Accept-Ranges: supported
+07:18:51 [INFO] scruticell.utils.download: Downloading 9 range chunks (3 connections)
+07:18:51 [INFO] scruticell.utils.download: Downloading 130 MB with 3 threads...
+07:18:55 [INFO] scruticell.utils.download: Downloading: 32/130 MB (25%) 10.4 MB/s
+07:18:58 [INFO] scruticell.utils.download: Downloading: 33/130 MB (25%) 0.3 MB/s
+07:19:01 [INFO] scruticell.utils.download: Downloading: 34/130 MB (26%) 0.2 MB/s
+07:19:04 [INFO] scruticell.utils.download: Downloading: 34/130 MB (27%) 0.2 MB/s
+07:19:07 [INFO] scruticell.utils.download: Downloading: 35/130 MB (27%) 0.2 MB/s
+07:19:10 [INFO] scruticell.utils.download: Downloading: 36/130 MB (27%) 0.2 MB/s
+07:19:13 [INFO] scruticell.utils.download: Downloading: 36/130 MB (28%) 0.2 MB/s
+07:19:16 [INFO] scruticell.utils.download: Downloading: 37/130 MB (28%) 0.2 MB/s
+07:19:19 [INFO] scruticell.utils.download: Downloading: 38/130 MB (29%) 0.2 MB/s
+07:19:22 [INFO] scruticell.utils.download: Downloading: 48/130 MB (37%) 3.5 MB/s
+07:19:25 [INFO] scruticell.utils.download: Downloading: 50/130 MB (38%) 0.6 MB/s
+07:19:28 [INFO] scruticell.utils.download: Downloading: 52/130 MB (40%) 0.6 MB/s
+07:19:31 [INFO] scruticell.utils.download: Downloading: 54/130 MB (41%) 0.7 MB/s
+07:19:34 [INFO] scruticell.utils.download: Downloading: 55/130 MB (43%) 0.6 MB/s
+07:19:37 [INFO] scruticell.utils.download: Downloading: 58/130 MB (44%) 0.8 MB/s
+07:19:40 [INFO] scruticell.utils.download: Downloading: 59/130 MB (46%) 0.6 MB/s
+07:19:43 [INFO] scruticell.utils.download: Downloading: 61/130 MB (47%) 0.5 MB/s
+07:19:46 [INFO] scruticell.utils.download: Downloading: 63/130 MB (48%) 0.6 MB/s
+07:19:49 [INFO] scruticell.utils.download: Downloading: 64/130 MB (49%) 0.3 MB/s
+07:19:52 [INFO] scruticell.utils.download: Downloading: 66/130 MB (50%) 0.7 MB/s
+07:19:55 [INFO] scruticell.utils.download: Downloading: 82/130 MB (63%) 5.6 MB/s
+07:19:58 [INFO] scruticell.utils.download: Downloading: 85/130 MB (65%) 0.8 MB/s
+07:20:01 [INFO] scruticell.utils.download: Downloading: 87/130 MB (67%) 0.9 MB/s
+07:20:04 [INFO] scruticell.utils.download: Downloading: 96/130 MB (74%) 2.8 MB/s
+07:20:07 [INFO] scruticell.utils.download: Downloading: 96/130 MB (74%) 0.1 MB/s
+07:20:10 [INFO] scruticell.utils.download: Downloading: 97/130 MB (74%) 0.2 MB/s
+07:20:13 [INFO] scruticell.utils.download: Downloading: 112/130 MB (86%) 5.0 MB/s
+07:20:16 [INFO] scruticell.utils.download: Downloading: 113/130 MB (86%) 0.3 MB/s
+07:20:19 [INFO] scruticell.utils.download: Downloading: 114/130 MB (87%) 0.3 MB/s
+07:20:22 [INFO] scruticell.utils.download: Downloading: 115/130 MB (88%) 0.4 MB/s
+07:20:25 [INFO] scruticell.utils.download: Downloading: 116/130 MB (89%) 0.3 MB/s
+07:20:28 [INFO] scruticell.utils.download: Downloading: 118/130 MB (90%) 0.5 MB/s
+07:20:31 [INFO] scruticell.utils.download: Downloading: 128/130 MB (98%) 3.6 MB/s
+07:20:34 [INFO] scruticell.utils.download: Downloading: 129/130 MB (99%) 0.3 MB/s
+07:20:37 [INFO] scruticell.utils.download: Downloading: 130/130 MB (100%) 0.4 MB/s
+07:20:49 [INFO] scruticell.utils.download: Download complete: 130 MB in 117s (1.1 MB/s avg)
+07:20:49 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_FF_Day37_matrix.mtx.gz -> E:\Scruti-Cell\output\GSE316025\download\GSE316025_FF_Day37_matrix.mtx.gz (137313157 bytes)
+07:20:49 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE316025_FF_Day37_matrix.mtx.gz (137313157 bytes)
+07:20:49 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_RAW.tar (attempt 1/3)
+07:20:50 [INFO] scruticell.utils.download: File size: 6563840 bytes, Accept-Ranges: supported
+07:20:50 [INFO] scruticell.utils.download: Downloading 1 range chunks (3 connections)
+07:20:50 [INFO] scruticell.utils.download: Downloading 6 MB with 3 threads...
+07:20:53 [INFO] scruticell.utils.download: Downloading: 0/6 MB (12%) 0.2 MB/s
+07:20:56 [INFO] scruticell.utils.download: Downloading: 4/6 MB (64%) 1.1 MB/s
+07:20:59 [INFO] scruticell.utils.download: Download complete: 6 MB in 9s (0.7 MB/s avg)
+07:20:59 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE316nnn/GSE316025/suppl/GSE316025_RAW.tar -> E:\Scruti-Cell\output\GSE316025\download\GSE316025_RAW.tar (6563840 bytes)
+07:20:59 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE316025_RAW.tar (6563840 bytes)
+07:20:59 [INFO] scruticell.pipeline.nodes.download: Downloaded 22 supplementary files (from 22 URLs)
+07:20:59 [INFO] scruticell.pipeline.nodes.download: Extracting archive (6 MB): GSE316025_RAW.tar
+07:20:59 [INFO] scruticell.pipeline.nodes.download: Extracted 14 files from GSE316025_RAW.tar
+07:20:59 [INFO] scruticell.pipeline.nodes.download: Total supplementary files after extraction: 36
+07:20:59 [INFO] scruticell.pipeline.nodes.parse: Parsing SOFT file for GSE316025
+07:20:59 [INFO] scruticell.parsing.soft: Parsing SOFT file: E:\Scruti-Cell\output\GSE316025\download\GSE316025_family.soft.gz
+07:20:59 [INFO] scruticell.parsing.soft: Parsed 24 GSE metadata keys, 1 GPLs, 21 GSMs, 28 supplementary refs
+07:20:59 [INFO] scruticell.parsing.metadata: Extracted metadata for 21 GSM entries
+07:20:59 [INFO] scruticell.pipeline.nodes.parse: Parsed SOFT: 21 GSMs, organism=9606, platforms=['GPL28038'], pubmed_id=
+07:21:24 [INFO] scruticell.intelligence.reporter: Inspected 50/64 files (skipped 0 dirs)...
+07:21:24 [INFO] scruticell.intelligence.reporter: Inspected 64 files (63 data files found)
+07:21:24 [INFO] scruticell.intelligence.reporter: Generating readers for 56 files via LLM...
+07:21:31 [INFO] langchain_openai.chat_models._client_utils: langchain-openai detected system proxy configuration and no explicit `http_socket_options` / `http_client` / `http_async_client` / `openai_proxy`; skipping the custom `httpx` transport so httpx's env-proxy auto-detection applies. Pass `http_socket_options=[...]` to opt back into kernel-level TCP keepalive tuning on top of the env proxy.
+07:21:33 [ERROR] scruticell.intelligence.reporter: Reader generation failed: Generation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': 'invalid_request_error'}}
+07:21:35 [INFO] scruticell.knowledge.graph: Connected to Neo4j at bolt://localhost:7687
+07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:FieldSynonym) REQUIRE (e.name) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_d9f7bc3a FOR (e:FieldSynonym) REQUIRE (e.name) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (fs:FieldSynonym) REQUIRE fs.name IS UNIQUE'
+07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:GeneMapping) REQUIRE (e.source_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_97b24131 FOR (e:GeneMapping) REQUIRE (e.source_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (gm:GeneMapping) REQUIRE gm.source_id IS UNIQUE'
+07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:GSE) REQUIRE (e.gse_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_8bde2949 FOR (e:GSE) REQUIRE (e.gse_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (gse:GSE) REQUIRE gse.gse_id IS UNIQUE'
+07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:ParseStrategy) REQUIRE (e.strategy_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_c9435509 FOR (e:ParseStrategy) REQUIRE (e.strategy_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (ps:ParseStrategy) REQUIRE ps.strategy_id IS UNIQUE'
+07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:FailureCase) REQUIRE (e.case_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_e506595e FOR (e:FailureCase) REQUIRE (e.case_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (fc:FailureCase) REQUIRE fc.case_id IS UNIQUE'
+07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:BatchPattern) REQUIRE (e.pattern_name) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_9e585b6f FOR (e:BatchPattern) REQUIRE (e.pattern_name) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (bp:BatchPattern) REQUIRE bp.pattern_name IS UNIQUE'
+07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:BatchStrategy) REQUIRE (e.batch_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_25e2cc3 FOR (e:BatchStrategy) REQUIRE (e.batch_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (bs:BatchStrategy) REQUIRE bs.batch_id IS UNIQUE'
+07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:MatrixStrategy) REQUIRE (e.matrix_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_61005091 FOR (e:MatrixStrategy) REQUIRE (e.matrix_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (ms:MatrixStrategy) REQUIRE ms.matrix_id IS UNIQUE'
+07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:ProcessingCode) REQUIRE (e.code_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_f9784487 FOR (e:ProcessingCode) REQUIRE (e.code_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (pc:ProcessingCode) REQUIRE pc.code_id IS UNIQUE'
+07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:AssemblyCode) REQUIRE (e.code_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_d85e5ea FOR (e:AssemblyCode) REQUIRE (e.code_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (ac:AssemblyCode) REQUIRE ac.code_id IS UNIQUE'
+07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:FieldMappingStrategy) REQUIRE (e.mapping_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_4f3b0f74 FOR (e:FieldMappingStrategy) REQUIRE (e.mapping_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (fm:FieldMappingStrategy) REQUIRE fm.mapping_id IS UNIQUE'
+07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:FieldSynonym) ON (e.canonical_name)' has no effect. The index or constraint specified by 'RANGE INDEX index_4029d71a FOR (e:FieldSynonym) ON (e.canonical_name)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (fs:FieldSynonym) ON (fs.canonical_name)'
+07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:GeneMapping) ON (e.target_symbol)' has no effect. The index or constraint specified by 'RANGE INDEX index_e5f90fd0 FOR (e:GeneMapping) ON (e.target_symbol)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (gm:GeneMapping) ON (gm.target_symbol)'
+07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:GSE) ON (e.organism)' has no effect. The index or constraint specified by 'RANGE INDEX index_1fe8d2a4 FOR (e:GSE) ON (e.organism)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (gse:GSE) ON (gse.organism)'
+07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:GSE) ON (e.assay_type)' has no effect. The index or constraint specified by 'RANGE INDEX index_38f59a2a FOR (e:GSE) ON (e.assay_type)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (gse:GSE) ON (gse.assay_type)'
+07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:ParseStrategy) ON (e.success_count)' has no effect. The index or constraint specified by 'RANGE INDEX index_85672a78 FOR (e:ParseStrategy) ON (e.success_count)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (ps:ParseStrategy) ON (ps.success_count)'
+07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:FailureCase) ON (e.error_signature)' has no effect. The index or constraint specified by 'RANGE INDEX index_701fbc61 FOR (e:FailureCase) ON (e.error_signature)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (fc:FailureCase) ON (fc.error_signature)'
+07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchPattern) ON (e.detection_rule)' has no effect. The index or constraint specified by 'RANGE INDEX index_5a2fc8b8 FOR (e:BatchPattern) ON (e.detection_rule)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bp:BatchPattern) ON (bp.detection_rule)'
+07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchStrategy) ON (e.gsm_id)' has no effect. The index or constraint specified by 'RANGE INDEX index_6fcdd738 FOR (e:BatchStrategy) ON (e.gsm_id)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.gsm_id)'
+07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchStrategy) ON (e.genotype)' has no effect. The index or constraint specified by 'RANGE INDEX index_369c2325 FOR (e:BatchStrategy) ON (e.genotype)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.genotype)'
+07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchStrategy) ON (e.treatment)' has no effect. The index or constraint specified by 'RANGE INDEX index_9d96a35e FOR (e:BatchStrategy) ON (e.treatment)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.treatment)'
+07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:MatrixStrategy) ON (e.format)' has no effect. The index or constraint specified by 'RANGE INDEX index_5eea1dd4 FOR (e:MatrixStrategy) ON (e.format)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (ms:MatrixStrategy) ON (ms.format)'
+07:21:35 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:FieldMappingStrategy) ON (e.canonical)' has no effect. The index or constraint specified by 'RANGE INDEX index_281945fe FOR (e:FieldMappingStrategy) ON (e.canonical)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (fm:FieldMappingStrategy) ON (fm.canonical)'
+07:21:35 [INFO] scruticell.knowledge.graph: Neo4j schema initialized
+07:21:35 [INFO] scruticell.intelligence.extractors: Step 1/5: flowcharts from GSE text...
+07:21:36 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': 'invalid_request_error'}}
+07:21:36 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan

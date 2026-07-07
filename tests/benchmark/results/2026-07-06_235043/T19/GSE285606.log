@@ -1,0 +1,710 @@
+=== STDOUT ===
+
+============================================================
+  Scrut-Cell Full Pipeline: GSE285606
+  Output: E:\Scruti-Cell\output\GSE285606
+============================================================
+
+  [1/3] INSPECT �� downloading + inspecting...
+    Downloading... OK
+    Parsing SOFT... OK
+    Building report... OK
+    Generating reader code... OK
+    Report: E:\Scruti-Cell\output\GSE285606\inspect.json
+    Files: 37 | GSM entries: 4
+
+  [2/3] PLAN �� knowledge base matching + LLM plan generation...
+    KB Matches: 0
+    Generating plan via LLM... OK
+    Plan:    E:\Scruti-Cell\output\GSE285606\plan.json
+    Confidence: 95% | Matrices: 4 | Batches: 4
+    Batch strategy: per_sample
+
+  [3/3] EXECUTE �� reading matrices + building AnnData...
+    Batch mismatch (attempt 1), re-planning...
+    Batch mismatch (attempt 2), re-planning...
+    Execution: SUCCESS
+    Output:   E:\Scruti-Cell\output\GSE285606\GSE285606_GSM8705589_scruticell.h5ad
+    Cells:    26105 | Genes: 32245 | Batches: 3
+    Metadata:  E:\Scruti-Cell\output\GSE285606\metadata.md
+
+========================================================================
+  Token Usage Report
+========================================================================
+  Step                         Calls      Input    Output      Total   Time
+  --------------------------------------------------------------------
+  step1_flowchart                  1        808        2K         3K  23.5s
+  step2_gsm                        1         5K        2K         8K  29.9s
+  step3_file                       1        24K        4K        28K  46.8s
+  step4_metadata                   1        26K        94        27K   2.7s
+  step5a_batch                     1        32K        2K        33K  21.5s
+  step5b_matrix                    1        34K        2K        36K  27.4s
+  --------------------------------------------------------------------
+  INSPECT (5-step)                 6       122K       12K       135K 151.7s
+
+  step5a_replan                    2        79K        4K        83K  46.3s
+  step5b_replan                    2        84K        3K        87K  33.2s
+  --------------------------------------------------------------------
+  RE-PLAN                          4       162K        7K       169K  79.5s
+
+  plan_validate                    2        92K        4K        97K  56.3s
+  --------------------------------------------------------------------
+  PLAN                             2        92K        4K        97K  56.3s
+
+  ====================================================================
+  TOTAL                           13       390K       30K       420K 359.8s
+========================================================================
+
+============================================================
+  Pipeline complete: GSE285606
+  Cells: 26105 | Genes: 32245 | Batches: 3
+  Output: E:\Scruti-Cell\output\GSE285606
+============================================================
+
+------------------------------------------------------------
+  TRACE: GSE285606
+------------------------------------------------------------
+  LLM Steps Run: step1:flowchart, step2:gsm, step3:file, step4:lit, step5:plan
+  Literature: not available (PMID=N/A)
+  ORC Verified: 0/0 items
+  Compound Splits: 0
+  KB Matches: 0
+
+  -- BATCH: GSM8705589 --
+  Why batch: Different biological sample: 344SQ_PD1R1 (140P) at 4 weeks
+  Differs in: cell line, time point
+  Matrix: GSM8705589_140P-IgG-T1.matrix.mtx
+  Format: mtx | Orientation: gene_x_cell -> cell_x_gene (transposed)
+  Cells: 5506 | Genes: 32245 (pruned: 0)
+  Gene ID system: symbol
+  Metadata injected (22 columns):
+    + batch                [executor: batch assignment]
+       value: GSM8705589
+    + organism             [processing code]
+       value: Mus musculus
+    + molecule             [processing code]
+       value: total RNA
+    + taxid                [processing code]
+       value: 10090
+    + library_strategy     [processing code]
+       value: RNA-Seq
+    + instrument_model     [processing code]
+       value: Illumina NextSeq 500
+    + library_selection    [processing code]
+       value: cDNA
+    + library_source       [processing code]
+       value: transcriptomic single cell
+    + cell_line            [processing code]
+       value: 344SQ_PD1R1 (140P)
+    + cell_type            [processing code]
+       value: lung cancer
+    + genotype             [processing code]
+       value: KrasG12D;Trp53R172H
+    + treatment            [processing code]
+       value: IgG antibody
+    + time_point           [processing code]
+       value: 4 weeks
+    + source_name          [processing code]
+       value: 344SQ_PD1R1 (140P)
+    + library_name         [processing code]
+       value: 140P-IgG-T1
+    + cell_line_short      [processing code]
+       value: 140P
+    + time_point_code      [processing code]
+       value: T1
+    + protocol_10x         [processing code]
+       value: True
+    + facs_sorting         [processing code]
+       value: True
+    + enzyme_digestion     [processing code]
+       value: collagenase+hyaluronidase+DNAse
+    + pipeline             [processing code]
+       value: Cell Ranger
+    + reference_genome     [processing code]
+       value: Mouse
+
+  -- BATCH: GSM8705590 --
+  Why batch: Different biological sample: 344SQ_PD1R1 (140P) at 6 weeks
+  Differs in: cell line, time point
+  Matrix: GSM8705590_140P-IgG-T2.matrix.mtx
+  Format: mtx | Orientation: gene_x_cell -> cell_x_gene (transposed)
+  Cells: 9219 | Genes: 32245 (pruned: 0)
+  Gene ID system: symbol
+  Metadata injected (22 columns):
+    + batch                [executor: batch assignment]
+       value: GSM8705590
+    + organism             [processing code]
+       value: Mus musculus
+    + molecule             [processing code]
+       value: total RNA
+    + taxid                [processing code]
+       value: 10090
+    + library_strategy     [processing code]
+       value: RNA-Seq
+    + instrument_model     [processing code]
+       value: Illumina NextSeq 500
+    + library_selection    [processing code]
+       value: cDNA
+    + library_source       [processing code]
+       value: transcriptomic single cell
+    + cell_line            [processing code]
+       value: 344SQ_PD1R1 (140P)
+    + cell_type            [processing code]
+       value: lung cancer
+    + genotype             [processing code]
+       value: KrasG12D;Trp53R172H
+    + treatment            [processing code]
+       value: IgG antibody
+    + time_point           [processing code]
+       value: 6 weeks
+    + source_name          [processing code]
+       value: 344SQ_PD1R1 (140P)
+    + library_name         [processing code]
+       value: 140P-IgG-T2
+    + cell_line_short      [processing code]
+       value: 140P
+    + time_point_code      [processing code]
+       value: T2
+    + protocol_10x         [processing code]
+       value: True
+    + facs_sorting         [processing code]
+       value: True
+    + enzyme_digestion     [processing code]
+       value: collagenase+hyaluronidase+DNAse
+    + pipeline             [processing code]
+       value: Cell Ranger
+    + reference_genome     [processing code]
+       value: Mouse
+
+  -- BATCH: GSM8705592 --
+  Why batch: Different biological sample: 344SQ parental (WT) at 6 weeks
+  Differs in: cell line, time point
+  Matrix: GSM8705592_WT-IgG-T2.matrix.mtx
+  Format: mtx | Orientation: gene_x_cell -> cell_x_gene (transposed)
+  Cells: 11380 | Genes: 32245 (pruned: 0)
+  Gene ID system: symbol
+  Metadata injected (22 columns):
+    + batch                [executor: batch assignment]
+       value: GSM8705592
+    + organism             [processing code]
+       value: Mus musculus
+    + molecule             [processing code]
+       value: total RNA
+    + taxid                [processing code]
+       value: 10090
+    + library_strategy     [processing code]
+       value: RNA-Seq
+    + instrument_model     [processing code]
+       value: Illumina NextSeq 500
+    + library_selection    [processing code]
+       value: cDNA
+    + library_source       [processing code]
+       value: transcriptomic single cell
+    + cell_line            [processing code]
+       value: 344SQ parental (WT)
+    + cell_type            [processing code]
+       value: lung cancer
+    + genotype             [processing code]
+       value: KrasG12D;Trp53R172H
+    + treatment            [processing code]
+       value: IgG antibody
+    + time_point           [processing code]
+       value: 6 weeks
+    + source_name          [processing code]
+       value: 344SQ parental (WT)
+    + library_name         [processing code]
+       value: WT-IgG-T2
+    + cell_line_short      [processing code]
+       value: WT
+    + time_point_code      [processing code]
+       value: T2
+    + protocol_10x         [processing code]
+       value: True
+    + facs_sorting         [processing code]
+       value: True
+    + enzyme_digestion     [processing code]
+       value: collagenase+hyaluronidase+DNAse
+    + pipeline             [processing code]
+       value: Cell Ranger
+    + reference_genome     [processing code]
+       value: Mouse
+
+  -- OVERALL --
+  Cells: 26105 | Genes: 32245
+  Batches: 3 | Confidence: 100%
+------------------------------------------------------------
+  Log:      E:\Scruti-Cell\output\GSE285606\run.log
+
+
+=== STDERR ===
+03:53:11 [INFO] scruticell: Run log started for GSE285606 -> E:\Scruti-Cell\output\GSE285606\run.log
+03:53:13 [INFO] scruticell.utils.tracing: LangSmith tracing enabled (project: scruiti-cell)
+03:53:13 [INFO] scruticell.pipeline.nodes.download: Downloading data for GSE285606
+03:53:13 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE285nnn/GSE285606/soft/GSE285606_family.soft.gz (attempt 1/3)
+03:53:14 [INFO] scruticell.utils.download: File size: 3339 bytes, Accept-Ranges: supported
+03:53:14 [INFO] scruticell.utils.download: Downloading 1 range chunks (3 connections)
+03:53:14 [INFO] scruticell.utils.download: Downloading 0 MB with 3 threads...
+03:53:17 [INFO] scruticell.utils.download: Download complete: 0 MB in 3s (0.0 MB/s avg)
+03:53:17 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE285nnn/GSE285606/soft/GSE285606_family.soft.gz -> E:\Scruti-Cell\output\GSE285606\download\GSE285606_family.soft.gz (3339 bytes)
+03:53:17 [INFO] scruticell.pipeline.nodes.download: SOFT file: E:\Scruti-Cell\output\GSE285606\download\GSE285606_family.soft.gz
+03:53:17 [INFO] scruticell.pipeline.nodes.download: Found 1 supplementary files from GSE GSE285606
+03:53:19 [INFO] scruticell.utils.download: Range-downloading https://ftp.ncbi.nlm.nih.gov/geo/series/GSE285nnn/GSE285606/suppl/GSE285606_RAW.tar (attempt 1/3)
+03:53:21 [INFO] scruticell.utils.download: File size: 229672960 bytes, Accept-Ranges: supported
+03:53:21 [INFO] scruticell.utils.download: Downloading 14 range chunks (3 connections)
+03:53:21 [INFO] scruticell.utils.download: Downloading 219 MB with 3 threads...
+03:53:24 [INFO] scruticell.utils.download: Downloading: 32/219 MB (15%) 10.5 MB/s
+03:53:27 [INFO] scruticell.utils.download: Downloading: 33/219 MB (15%) 0.5 MB/s
+03:53:30 [INFO] scruticell.utils.download: Downloading: 35/219 MB (16%) 0.7 MB/s
+03:53:33 [INFO] scruticell.utils.download: Downloading: 37/219 MB (17%) 0.7 MB/s
+03:53:36 [INFO] scruticell.utils.download: Downloading: 39/219 MB (18%) 0.6 MB/s
+03:53:39 [INFO] scruticell.utils.download: Downloading: 41/219 MB (19%) 0.6 MB/s
+03:53:42 [INFO] scruticell.utils.download: Downloading: 43/219 MB (20%) 0.7 MB/s
+03:53:45 [INFO] scruticell.utils.download: Downloading: 45/219 MB (21%) 0.6 MB/s
+03:53:48 [INFO] scruticell.utils.download: Downloading: 46/219 MB (21%) 0.5 MB/s
+03:53:51 [INFO] scruticell.utils.download: Downloading: 48/219 MB (22%) 0.5 MB/s
+03:53:54 [INFO] scruticell.utils.download: Downloading: 64/219 MB (29%) 5.2 MB/s
+03:53:57 [INFO] scruticell.utils.download: Downloading: 66/219 MB (30%) 0.8 MB/s
+03:54:00 [INFO] scruticell.utils.download: Downloading: 68/219 MB (31%) 0.8 MB/s
+03:54:03 [INFO] scruticell.utils.download: Downloading: 71/219 MB (33%) 0.8 MB/s
+03:54:06 [INFO] scruticell.utils.download: Downloading: 74/219 MB (34%) 0.9 MB/s
+03:54:09 [INFO] scruticell.utils.download: Downloading: 76/219 MB (35%) 0.9 MB/s
+03:54:12 [INFO] scruticell.utils.download: Downloading: 80/219 MB (37%) 1.2 MB/s
+03:54:15 [INFO] scruticell.utils.download: Downloading: 81/219 MB (37%) 0.4 MB/s
+03:54:18 [INFO] scruticell.utils.download: Downloading: 97/219 MB (45%) 5.4 MB/s
+03:54:21 [INFO] scruticell.utils.download: Downloading: 99/219 MB (45%) 0.6 MB/s
+03:54:24 [INFO] scruticell.utils.download: Downloading: 101/219 MB (46%) 0.8 MB/s
+03:54:27 [INFO] scruticell.utils.download: Downloading: 104/219 MB (48%) 0.9 MB/s
+03:54:30 [INFO] scruticell.utils.download: Downloading: 107/219 MB (49%) 0.8 MB/s
+03:54:33 [INFO] scruticell.utils.download: Downloading: 109/219 MB (50%) 0.8 MB/s
+03:54:36 [INFO] scruticell.utils.download: Downloading: 112/219 MB (51%) 0.9 MB/s
+03:54:39 [INFO] scruticell.utils.download: Downloading: 114/219 MB (52%) 0.8 MB/s
+03:54:42 [INFO] scruticell.utils.download: Downloading: 128/219 MB (59%) 4.8 MB/s
+03:54:45 [INFO] scruticell.utils.download: Downloading: 129/219 MB (59%) 0.3 MB/s
+03:54:48 [INFO] scruticell.utils.download: Downloading: 130/219 MB (60%) 0.2 MB/s
+03:54:51 [INFO] scruticell.utils.download: Downloading: 131/219 MB (60%) 0.2 MB/s
+03:54:54 [INFO] scruticell.utils.download: Downloading: 132/219 MB (60%) 0.3 MB/s
+03:54:57 [INFO] scruticell.utils.download: Downloading: 134/219 MB (62%) 0.8 MB/s
+03:55:00 [INFO] scruticell.utils.download: Downloading: 160/219 MB (73%) 8.5 MB/s
+03:55:03 [INFO] scruticell.utils.download: Downloading: 160/219 MB (73%) 0.1 MB/s
+03:55:06 [INFO] scruticell.utils.download: Downloading: 160/219 MB (73%) 0.1 MB/s
+03:55:09 [INFO] scruticell.utils.download: Downloading: 161/219 MB (74%) 0.2 MB/s
+03:55:12 [INFO] scruticell.utils.download: Downloading: 161/219 MB (74%) 0.2 MB/s
+03:55:15 [INFO] scruticell.utils.download: Downloading: 162/219 MB (74%) 0.2 MB/s
+03:55:18 [INFO] scruticell.utils.download: Downloading: 177/219 MB (81%) 4.9 MB/s
+03:55:21 [INFO] scruticell.utils.download: Downloading: 193/219 MB (88%) 5.4 MB/s
+03:55:24 [INFO] scruticell.utils.download: Downloading: 195/219 MB (89%) 0.8 MB/s
+03:55:27 [INFO] scruticell.utils.download: Downloading: 198/219 MB (91%) 0.8 MB/s
+03:55:30 [INFO] scruticell.utils.download: Downloading: 200/219 MB (92%) 0.8 MB/s
+03:55:33 [INFO] scruticell.utils.download: Downloading: 203/219 MB (93%) 0.8 MB/s
+03:55:36 [INFO] scruticell.utils.download: Downloading: 205/219 MB (94%) 0.7 MB/s
+03:55:39 [INFO] scruticell.utils.download: Downloading: 207/219 MB (95%) 0.8 MB/s
+03:55:42 [INFO] scruticell.utils.download: Downloading: 208/219 MB (95%) 0.2 MB/s
+03:55:45 [INFO] scruticell.utils.download: Downloading: 209/219 MB (96%) 0.5 MB/s
+03:55:48 [INFO] scruticell.utils.download: Downloading: 211/219 MB (97%) 0.8 MB/s
+03:55:51 [INFO] scruticell.utils.download: Downloading: 213/219 MB (98%) 0.7 MB/s
+03:55:54 [INFO] scruticell.utils.download: Downloading: 215/219 MB (99%) 0.7 MB/s
+03:55:57 [INFO] scruticell.utils.download: Downloading: 218/219 MB (100%) 0.7 MB/s
+03:56:00 [INFO] scruticell.utils.download: Downloading: 219/219 MB (100%) 0.3 MB/s
+03:56:03 [INFO] scruticell.utils.download: Download complete: 219 MB in 162s (1.3 MB/s avg)
+03:56:03 [INFO] scruticell.utils.download: Range-downloaded https://ftp.ncbi.nlm.nih.gov/geo/series/GSE285nnn/GSE285606/suppl/GSE285606_RAW.tar -> E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW.tar (229672960 bytes)
+03:56:03 [INFO] scruticell.pipeline.nodes.download: Range-downloaded: GSE285606_RAW.tar (229672960 bytes)
+03:56:03 [INFO] scruticell.pipeline.nodes.download: Downloaded 1 supplementary files (from 1 URLs)
+03:56:03 [INFO] scruticell.pipeline.nodes.download: Extracting archive (219 MB): GSE285606_RAW.tar
+03:56:03 [INFO] scruticell.pipeline.nodes.download: Extracted 12 files from GSE285606_RAW.tar
+03:56:03 [INFO] scruticell.pipeline.nodes.download: Total supplementary files after extraction: 13
+03:56:03 [INFO] scruticell.pipeline.nodes.parse: Parsing SOFT file for GSE285606
+03:56:03 [INFO] scruticell.parsing.soft: Parsing SOFT file: E:\Scruti-Cell\output\GSE285606\download\GSE285606_family.soft.gz
+03:56:03 [INFO] scruticell.parsing.soft: Parsed 24 GSE metadata keys, 1 GPLs, 4 GSMs, 12 supplementary refs
+03:56:03 [INFO] scruticell.parsing.metadata: Extracted metadata for 4 GSM entries
+03:56:03 [INFO] scruticell.pipeline.nodes.parse: Parsed SOFT: 4 GSMs, organism=10090, platforms=['GPL19057'], pubmed_id=41739590
+03:56:13 [INFO] scruticell.intelligence.reporter: Inspected 37 files (36 data files found)
+03:56:13 [INFO] scruticell.intelligence.reporter: Generating readers for 24 files via LLM...
+03:56:20 [INFO] langchain_openai.chat_models._client_utils: langchain-openai detected system proxy configuration and no explicit `http_socket_options` / `http_client` / `http_async_client` / `openai_proxy`; skipping the custom `httpx` transport so httpx's env-proxy auto-detection applies. Pass `http_socket_options=[...]` to opt back into kernel-level TCP keepalive tuning on top of the env proxy.
+03:57:33 [INFO] scruticell.intelligence.reporter: LLM generated 2 reader groups
+03:57:36 [INFO] scruticell.intelligence.reporter: Reader 'barcodes_reader' validated OK
+03:57:36 [INFO] scruticell.intelligence.reporter: Reader 'features_reader' validated OK
+03:57:36 [INFO] scruticell.intelligence.reporter: Readers saved: E:\Scruti-Cell\output\GSE285606\readers\readers.json (2 readers)
+03:57:38 [INFO] scruticell.knowledge.graph: Connected to Neo4j at bolt://localhost:7687
+03:57:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:FieldSynonym) REQUIRE (e.name) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_d9f7bc3a FOR (e:FieldSynonym) REQUIRE (e.name) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (fs:FieldSynonym) REQUIRE fs.name IS UNIQUE'
+03:57:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:GeneMapping) REQUIRE (e.source_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_97b24131 FOR (e:GeneMapping) REQUIRE (e.source_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (gm:GeneMapping) REQUIRE gm.source_id IS UNIQUE'
+03:57:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:GSE) REQUIRE (e.gse_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_8bde2949 FOR (e:GSE) REQUIRE (e.gse_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (gse:GSE) REQUIRE gse.gse_id IS UNIQUE'
+03:57:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:ParseStrategy) REQUIRE (e.strategy_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_c9435509 FOR (e:ParseStrategy) REQUIRE (e.strategy_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (ps:ParseStrategy) REQUIRE ps.strategy_id IS UNIQUE'
+03:57:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:FailureCase) REQUIRE (e.case_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_e506595e FOR (e:FailureCase) REQUIRE (e.case_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (fc:FailureCase) REQUIRE fc.case_id IS UNIQUE'
+03:57:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:BatchPattern) REQUIRE (e.pattern_name) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_9e585b6f FOR (e:BatchPattern) REQUIRE (e.pattern_name) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (bp:BatchPattern) REQUIRE bp.pattern_name IS UNIQUE'
+03:57:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:BatchStrategy) REQUIRE (e.batch_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_25e2cc3 FOR (e:BatchStrategy) REQUIRE (e.batch_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (bs:BatchStrategy) REQUIRE bs.batch_id IS UNIQUE'
+03:57:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:MatrixStrategy) REQUIRE (e.matrix_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_61005091 FOR (e:MatrixStrategy) REQUIRE (e.matrix_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (ms:MatrixStrategy) REQUIRE ms.matrix_id IS UNIQUE'
+03:57:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:ProcessingCode) REQUIRE (e.code_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_f9784487 FOR (e:ProcessingCode) REQUIRE (e.code_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (pc:ProcessingCode) REQUIRE pc.code_id IS UNIQUE'
+03:57:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:AssemblyCode) REQUIRE (e.code_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_d85e5ea FOR (e:AssemblyCode) REQUIRE (e.code_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (ac:AssemblyCode) REQUIRE ac.code_id IS UNIQUE'
+03:57:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:FieldMappingStrategy) REQUIRE (e.mapping_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_4f3b0f74 FOR (e:FieldMappingStrategy) REQUIRE (e.mapping_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (fm:FieldMappingStrategy) REQUIRE fm.mapping_id IS UNIQUE'
+03:57:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:FieldSynonym) ON (e.canonical_name)' has no effect. The index or constraint specified by 'RANGE INDEX index_4029d71a FOR (e:FieldSynonym) ON (e.canonical_name)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (fs:FieldSynonym) ON (fs.canonical_name)'
+03:57:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:GeneMapping) ON (e.target_symbol)' has no effect. The index or constraint specified by 'RANGE INDEX index_e5f90fd0 FOR (e:GeneMapping) ON (e.target_symbol)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (gm:GeneMapping) ON (gm.target_symbol)'
+03:57:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:GSE) ON (e.organism)' has no effect. The index or constraint specified by 'RANGE INDEX index_1fe8d2a4 FOR (e:GSE) ON (e.organism)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (gse:GSE) ON (gse.organism)'
+03:57:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:GSE) ON (e.assay_type)' has no effect. The index or constraint specified by 'RANGE INDEX index_38f59a2a FOR (e:GSE) ON (e.assay_type)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (gse:GSE) ON (gse.assay_type)'
+03:57:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:ParseStrategy) ON (e.success_count)' has no effect. The index or constraint specified by 'RANGE INDEX index_85672a78 FOR (e:ParseStrategy) ON (e.success_count)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (ps:ParseStrategy) ON (ps.success_count)'
+03:57:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:FailureCase) ON (e.error_signature)' has no effect. The index or constraint specified by 'RANGE INDEX index_701fbc61 FOR (e:FailureCase) ON (e.error_signature)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (fc:FailureCase) ON (fc.error_signature)'
+03:57:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchPattern) ON (e.detection_rule)' has no effect. The index or constraint specified by 'RANGE INDEX index_5a2fc8b8 FOR (e:BatchPattern) ON (e.detection_rule)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bp:BatchPattern) ON (bp.detection_rule)'
+03:57:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchStrategy) ON (e.gsm_id)' has no effect. The index or constraint specified by 'RANGE INDEX index_6fcdd738 FOR (e:BatchStrategy) ON (e.gsm_id)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.gsm_id)'
+03:57:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchStrategy) ON (e.genotype)' has no effect. The index or constraint specified by 'RANGE INDEX index_369c2325 FOR (e:BatchStrategy) ON (e.genotype)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.genotype)'
+03:57:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchStrategy) ON (e.treatment)' has no effect. The index or constraint specified by 'RANGE INDEX index_9d96a35e FOR (e:BatchStrategy) ON (e.treatment)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.treatment)'
+03:57:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:MatrixStrategy) ON (e.format)' has no effect. The index or constraint specified by 'RANGE INDEX index_5eea1dd4 FOR (e:MatrixStrategy) ON (e.format)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (ms:MatrixStrategy) ON (ms.format)'
+03:57:38 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:FieldMappingStrategy) ON (e.canonical)' has no effect. The index or constraint specified by 'RANGE INDEX index_281945fe FOR (e:FieldMappingStrategy) ON (e.canonical)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (fm:FieldMappingStrategy) ON (fm.canonical)'
+03:57:38 [INFO] scruticell.knowledge.graph: Neo4j schema initialized
+03:57:38 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `pipeline_stage` does not exist. Verify that the spelling is correct.', position=<SummaryInputPosition line=3, column=10, offset=33>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 33, 'line': 3, 'column': 10}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: '\nMATCH (fc:FailureCase)\nWHERE fc.pipeline_stage = $pipeline_stage\nRETURN fc.case_id AS case_id, fc.error_signature AS error_signature,\n       fc.fix_strategy AS fix_strategy, fc.fixed AS fixed,\n       fc.error_message AS error_message, fc.gse_id AS gse_id,\n       COALESCE(fc.success_count, 0) AS success_count,\n       COALESCE(fc.fail_count, 0) AS fail_count\nORDER BY fc.success_count DESC, fc.created_at DESC\nLIMIT 20\n'
+03:57:38 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fix_strategy` does not exist. Verify that the spelling is correct.', position=<SummaryInputPosition line=5, column=11, offset=145>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 145, 'line': 5, 'column': 11}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: '\nMATCH (fc:FailureCase)\nWHERE fc.pipeline_stage = $pipeline_stage\nRETURN fc.case_id AS case_id, fc.error_signature AS error_signature,\n       fc.fix_strategy AS fix_strategy, fc.fixed AS fixed,\n       fc.error_message AS error_message, fc.gse_id AS gse_id,\n       COALESCE(fc.success_count, 0) AS success_count,\n       COALESCE(fc.fail_count, 0) AS fail_count\nORDER BY fc.success_count DESC, fc.created_at DESC\nLIMIT 20\n'
+03:57:38 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `fixed` does not exist. Verify that the spelling is correct.', position=<SummaryInputPosition line=5, column=44, offset=178>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 178, 'line': 5, 'column': 44}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: '\nMATCH (fc:FailureCase)\nWHERE fc.pipeline_stage = $pipeline_stage\nRETURN fc.case_id AS case_id, fc.error_signature AS error_signature,\n       fc.fix_strategy AS fix_strategy, fc.fixed AS fixed,\n       fc.error_message AS error_message, fc.gse_id AS gse_id,\n       COALESCE(fc.success_count, 0) AS success_count,\n       COALESCE(fc.fail_count, 0) AS fail_count\nORDER BY fc.success_count DESC, fc.created_at DESC\nLIMIT 20\n'
+03:57:38 [WARNING] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `error_message` does not exist. Verify that the spelling is correct.', position=<SummaryInputPosition line=6, column=11, offset=204>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 204, 'line': 6, 'column': 11}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: '\nMATCH (fc:FailureCase)\nWHERE fc.pipeline_stage = $pipeline_stage\nRETURN fc.case_id AS case_id, fc.error_signature AS error_signature,\n       fc.fix_strategy AS fix_strategy, fc.fixed AS fixed,\n       fc.error_message AS error_message, fc.gse_id AS gse_id,\n       COALESCE(fc.success_count, 0) AS success_count,\n       COALESCE(fc.fail_count, 0) AS fail_count\nORDER BY fc.success_count DESC, fc.created_at DESC\nLIMIT 20\n'
+03:57:38 [INFO] scruticell.intelligence.extractors: Step 1/5: flowcharts from GSE text...
+03:58:02 [INFO] scruticell.intelligence.extractors: Step 2/5: GSM metadata (characteristics + source_name)...
+03:58:32 [INFO] scruticell.intelligence.extractors: GSM meta extractions saved to E:\Scruti-Cell\output\GSE285606\gsm_meta_extractions.json
+03:58:32 [INFO] scruticell.intelligence.extractors: Step 3/5: file analysis (names + previews)...
+03:59:18 [INFO] scruticell.intelligence.extractors: Filename extractions saved to E:\Scruti-Cell\output\GSE285606\filename_extractions.json (12 files)
+03:59:18 [INFO] scruticell.intelligence.extractors: Literature verification: checking paper for unresolved items...
+03:59:19 [WARNING] scruticell.literature.pdf_agent: Could not acquire full text for PMID 41739590
+03:59:19 [INFO] scruticell.intelligence.extractors: Literature verification: no PDF available, skipping
+03:59:19 [INFO] scruticell.intelligence.extractors: Step 4/5: metadata code generation...
+03:59:22 [INFO] scruticell.intelligence.extractors: Step 5a/5: batch discovery...
+03:59:44 [INFO] scruticell.intelligence.extractors: Step 5b/5: matrix/code assembly...
+04:00:11 [INFO] scruticell.intelligence.generator: Plan validated successfully (multi_step, round 1)
+04:00:12 [INFO] scruticell.intelligence.generator: PMID 41739590 has no PMCID �� not open access, skipping enrichment
+04:00:12 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW_extracted\GSM8705589_140P-IgG-T1.matrix.mtx.gz (format: mtx)
+04:00:12 [INFO] scruticell.readers.mtx: Reading MTX directory: E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW_extracted
+04:00:13 [INFO] scruticell.readers.mtx: Loaded MTX: shape=(5506, 32285), sparse=True, cells=5506, genes=32285
+04:00:13 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW_extracted\GSM8705590_140P-IgG-T2.matrix.mtx.gz (format: mtx)
+04:00:13 [INFO] scruticell.readers.mtx: Reading MTX directory: E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW_extracted
+04:00:14 [INFO] scruticell.readers.mtx: Loaded MTX: shape=(9219, 32285), sparse=True, cells=9219, genes=32285
+04:00:14 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW_extracted\GSM8705591_WT-IgG-T1.matrix.mtx.gz (format: mtx)
+04:00:14 [INFO] scruticell.readers.mtx: Reading MTX directory: E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW_extracted
+04:00:16 [WARNING] scruticell.readers.mtx: Cell count mismatch: matrix has 737280 columns but 5851 barcodes found (dataset may have inconsistent supplementary files)
+04:00:16 [INFO] scruticell.readers.mtx: Loaded MTX: shape=(737280, 32285), sparse=True, cells=5851, genes=32285
+04:00:16 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW_extracted\GSM8705592_WT-IgG-T2.matrix.mtx.gz (format: mtx)
+04:00:16 [INFO] scruticell.readers.mtx: Reading MTX directory: E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW_extracted
+04:00:18 [INFO] scruticell.readers.mtx: Loaded MTX: shape=(11380, 32285), sparse=True, cells=11380, genes=32285
+E:\Scruti-Cell\venv\Lib\site-packages\anndata\_core\anndata.py:1884: UserWarning: Variable names are not unique. To make them unique, call `.var_names_make_unique`.
+  utils.warn_names_duplicates("var")
+E:\Scruti-Cell\venv\Lib\site-packages\anndata\_core\anndata.py:1884: UserWarning: Variable names are not unique. To make them unique, call `.var_names_make_unique`.
+  utils.warn_names_duplicates("var")
+04:00:18 [ERROR] scruticell.intelligence.executor: Skipping matrix for GSM GSM8705591: cell count mismatch (matrix has 737280 cells, 5851 barcodes found). This sample's supplementary files may be corrupted.
+E:\Scruti-Cell\venv\Lib\site-packages\anndata\_core\anndata.py:1884: UserWarning: Variable names are not unique. To make them unique, call `.var_names_make_unique`.
+  utils.warn_names_duplicates("var")
+04:00:18 [INFO] scruticell.intelligence.executor: Saved gsm_meta to E:\Scruti-Cell\output\GSE285606\gsm_meta.json (4 GSMs)
+04:00:18 [INFO] scruticell.intelligence.executor: Built 3 per-batch AnnData objects (26105 total cells)
+04:00:19 [INFO] scruticell.intelligence.executor: Pruned 120 duplicate genes across all batches
+04:00:19 [INFO] scruticell.intelligence.executor: Skipping standalone processing_code (strip_axis_metadata handled by executor)
+04:00:19 [INFO] scruticell.intelligence.executor: Executing assembly code (423 chars)
+04:00:19 [WARNING] scruticell.intelligence.executor: Assembly code failed: 'GSM8705589'
+04:00:19 [INFO] scruticell.intelligence.executor: Injected batch metadata (63 fields across 3 batches)
+04:00:19 [INFO] scruticell.pipeline.nodes.validation: Validating AnnData for GSE285606
+04:00:19 [INFO] scruticell.pipeline.nodes.validation: Per-batch validation: 3 AnnData objects
+04:00:19 [INFO] scruticell.pipeline.nodes.validation: Validation: overall=1.00, passed=True, errors=0, warnings=0
+04:00:19 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE285606\GSE285606_GSM8705589_scruticell.h5ad (5506 cells x 32245 genes)
+... storing 'batch' as categorical
+... storing 'sample_name' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'taxid' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'library_selection' as categorical
+... storing 'library_source' as categorical
+... storing 'cell_line' as categorical
+... storing 'cell_type' as categorical
+... storing 'genotype' as categorical
+... storing 'treatment' as categorical
+... storing 'time_point' as categorical
+... storing 'source_name' as categorical
+... storing 'library_name' as categorical
+... storing 'cell_line_short' as categorical
+... storing 'time_point_code' as categorical
+... storing 'protocol_10x' as categorical
+... storing 'facs_sorting' as categorical
+... storing 'enzyme_digestion' as categorical
+... storing 'pipeline' as categorical
+... storing 'reference_genome' as categorical
+04:00:19 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE285606\GSE285606_GSM8705590_scruticell.h5ad (9219 cells x 32245 genes)
+... storing 'batch' as categorical
+... storing 'sample_name' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'taxid' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'library_selection' as categorical
+... storing 'library_source' as categorical
+... storing 'cell_line' as categorical
+... storing 'cell_type' as categorical
+... storing 'genotype' as categorical
+... storing 'treatment' as categorical
+... storing 'time_point' as categorical
+... storing 'source_name' as categorical
+... storing 'library_name' as categorical
+... storing 'cell_line_short' as categorical
+... storing 'time_point_code' as categorical
+... storing 'protocol_10x' as categorical
+... storing 'facs_sorting' as categorical
+... storing 'enzyme_digestion' as categorical
+... storing 'pipeline' as categorical
+... storing 'reference_genome' as categorical
+04:00:20 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE285606\GSE285606_GSM8705592_scruticell.h5ad (11380 cells x 32245 genes)
+... storing 'batch' as categorical
+... storing 'sample_name' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'taxid' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'library_selection' as categorical
+... storing 'library_source' as categorical
+... storing 'cell_line' as categorical
+... storing 'cell_type' as categorical
+... storing 'genotype' as categorical
+... storing 'treatment' as categorical
+... storing 'time_point' as categorical
+... storing 'source_name' as categorical
+... storing 'library_name' as categorical
+... storing 'cell_line_short' as categorical
+... storing 'time_point_code' as categorical
+... storing 'protocol_10x' as categorical
+... storing 'facs_sorting' as categorical
+... storing 'enzyme_digestion' as categorical
+... storing 'pipeline' as categorical
+... storing 'reference_genome' as categorical
+04:00:20 [INFO] scruticell.intelligence.executor: Origin trace report written to: E:\Scruti-Cell\output\GSE285606\GSE285606_trace.json
+04:00:20 [INFO] scruticell.intelligence.executor: Origin trace markdown written to: E:\Scruti-Cell\output\GSE285606\GSE285606_trace.md
+04:00:21 [WARNING] scruticell.intelligence.verifier: Batch verification FAILED for GSE285606: 1 mismatches
+04:00:21 [INFO] scruticell.intelligence.extractors: Skipping Steps 1-4, re-running Steps 5a+5b with mismatch context
+04:01:00 [INFO] scruticell.intelligence.generator: Plan validated successfully (multi_step, round 1)
+04:01:01 [INFO] scruticell.intelligence.generator: PMID 41739590 has no PMCID �� not open access, skipping enrichment
+04:01:01 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW_extracted\GSM8705589_140P-IgG-T1.matrix.mtx.gz (format: mtx)
+04:01:01 [INFO] scruticell.readers.mtx: Reading MTX directory: E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW_extracted
+04:01:02 [INFO] scruticell.readers.mtx: Loaded MTX: shape=(5506, 32285), sparse=True, cells=5506, genes=32285
+04:01:02 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW_extracted\GSM8705590_140P-IgG-T2.matrix.mtx.gz (format: mtx)
+04:01:02 [INFO] scruticell.readers.mtx: Reading MTX directory: E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW_extracted
+04:01:03 [INFO] scruticell.readers.mtx: Loaded MTX: shape=(9219, 32285), sparse=True, cells=9219, genes=32285
+04:01:03 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW_extracted\GSM8705591_WT-IgG-T1.matrix.mtx.gz (format: mtx)
+04:01:03 [INFO] scruticell.readers.mtx: Reading MTX directory: E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW_extracted
+04:01:05 [WARNING] scruticell.readers.mtx: Cell count mismatch: matrix has 737280 columns but 5851 barcodes found (dataset may have inconsistent supplementary files)
+04:01:05 [INFO] scruticell.readers.mtx: Loaded MTX: shape=(737280, 32285), sparse=True, cells=5851, genes=32285
+04:01:05 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW_extracted\GSM8705592_WT-IgG-T2.matrix.mtx.gz (format: mtx)
+04:01:05 [INFO] scruticell.readers.mtx: Reading MTX directory: E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW_extracted
+04:01:07 [INFO] scruticell.readers.mtx: Loaded MTX: shape=(11380, 32285), sparse=True, cells=11380, genes=32285
+E:\Scruti-Cell\venv\Lib\site-packages\anndata\_core\anndata.py:1884: UserWarning: Variable names are not unique. To make them unique, call `.var_names_make_unique`.
+  utils.warn_names_duplicates("var")
+E:\Scruti-Cell\venv\Lib\site-packages\anndata\_core\anndata.py:1884: UserWarning: Variable names are not unique. To make them unique, call `.var_names_make_unique`.
+  utils.warn_names_duplicates("var")
+04:01:07 [ERROR] scruticell.intelligence.executor: Skipping matrix for GSM GSM8705591: cell count mismatch (matrix has 737280 cells, 5851 barcodes found). This sample's supplementary files may be corrupted.
+E:\Scruti-Cell\venv\Lib\site-packages\anndata\_core\anndata.py:1884: UserWarning: Variable names are not unique. To make them unique, call `.var_names_make_unique`.
+  utils.warn_names_duplicates("var")
+04:01:07 [INFO] scruticell.intelligence.executor: Built 3 per-batch AnnData objects (26105 total cells)
+04:01:08 [INFO] scruticell.intelligence.executor: Pruned 120 duplicate genes across all batches
+04:01:08 [INFO] scruticell.intelligence.executor: Skipping standalone processing_code (strip_axis_metadata handled by executor)
+04:01:08 [INFO] scruticell.intelligence.executor: Executing assembly code (468 chars)
+04:01:08 [WARNING] scruticell.intelligence.executor: Assembly code failed: 'GSM8705589'
+04:01:08 [INFO] scruticell.intelligence.executor: Injected batch metadata (63 fields across 3 batches)
+04:01:08 [INFO] scruticell.pipeline.nodes.validation: Validating AnnData for GSE285606
+04:01:08 [INFO] scruticell.pipeline.nodes.validation: Per-batch validation: 3 AnnData objects
+04:01:08 [INFO] scruticell.pipeline.nodes.validation: Validation: overall=1.00, passed=True, errors=0, warnings=0
+04:01:08 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE285606\GSE285606_GSM8705589_scruticell.h5ad (5506 cells x 32245 genes)
+... storing 'batch' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'taxid' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'library_selection' as categorical
+... storing 'library_source' as categorical
+... storing 'cell_line' as categorical
+... storing 'cell_type' as categorical
+... storing 'genotype' as categorical
+... storing 'treatment' as categorical
+... storing 'time_point' as categorical
+... storing 'source_name' as categorical
+... storing 'library_name' as categorical
+... storing 'cell_line_short' as categorical
+... storing 'time_point_code' as categorical
+... storing 'protocol_10x' as categorical
+... storing 'facs_sorting' as categorical
+... storing 'enzyme_digestion' as categorical
+... storing 'pipeline' as categorical
+... storing 'reference_genome' as categorical
+04:01:08 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE285606\GSE285606_GSM8705590_scruticell.h5ad (9219 cells x 32245 genes)
+... storing 'batch' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'taxid' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'library_selection' as categorical
+... storing 'library_source' as categorical
+... storing 'cell_line' as categorical
+... storing 'cell_type' as categorical
+... storing 'genotype' as categorical
+... storing 'treatment' as categorical
+... storing 'time_point' as categorical
+... storing 'source_name' as categorical
+... storing 'library_name' as categorical
+... storing 'cell_line_short' as categorical
+... storing 'time_point_code' as categorical
+... storing 'protocol_10x' as categorical
+... storing 'facs_sorting' as categorical
+... storing 'enzyme_digestion' as categorical
+... storing 'pipeline' as categorical
+... storing 'reference_genome' as categorical
+04:01:08 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE285606\GSE285606_GSM8705592_scruticell.h5ad (11380 cells x 32245 genes)
+... storing 'batch' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'taxid' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'library_selection' as categorical
+... storing 'library_source' as categorical
+... storing 'cell_line' as categorical
+... storing 'cell_type' as categorical
+... storing 'genotype' as categorical
+... storing 'treatment' as categorical
+... storing 'time_point' as categorical
+... storing 'source_name' as categorical
+... storing 'library_name' as categorical
+... storing 'cell_line_short' as categorical
+... storing 'time_point_code' as categorical
+... storing 'protocol_10x' as categorical
+... storing 'facs_sorting' as categorical
+... storing 'enzyme_digestion' as categorical
+... storing 'pipeline' as categorical
+... storing 'reference_genome' as categorical
+04:01:09 [INFO] scruticell.intelligence.executor: Origin trace report written to: E:\Scruti-Cell\output\GSE285606\GSE285606_trace.json
+04:01:09 [INFO] scruticell.intelligence.executor: Origin trace markdown written to: E:\Scruti-Cell\output\GSE285606\GSE285606_trace.md
+04:01:10 [WARNING] scruticell.intelligence.verifier: Batch verification FAILED for GSE285606: 1 mismatches
+04:01:10 [INFO] scruticell.intelligence.extractors: Skipping Steps 1-4, re-running Steps 5a+5b with mismatch context
+04:01:51 [WARNING] scruticell.intelligence.generator: Plan validation issues (multi_step, round 1): ["Matrix 'download/GSE285606_RAW.tar/GSM8705589_140P-IgG-T1.matrix.mtx.gz/GSM8705589_140P-IgG-T1.matrix.mtx' not assigned to any batch", "Matrix 'download/GSE285606_RAW.tar/GSM8705590_140P-IgG-T2.matrix.mtx.gz/GSM8705590_140P-IgG-T2.matrix.mtx' not assigned to any batch", "Matrix 'download/GSE285606_RAW.tar/GSM8705591_WT-IgG-T1.matrix.mtx.gz/GSM8705591_WT-IgG-T1.matrix.mtx' not assigned to any batch", "Matrix 'download/GSE285606_RAW.tar/GSM8705592_WT-IgG-T2.matrix.mtx.gz/GSM8705592_WT-IgG-T2.matrix.mtx' not assigned to any batch"]
+04:02:19 [WARNING] scruticell.intelligence.generator: Plan validation issues (multi_step, round 2): ["Batch(es) , , ,  missing 'reasoning' �� explain why each batch is separate", "Batch(es) 140P_IgG_T1, 140P_IgG_T2, WT_IgG_T1, WT_IgG_T2 missing 'defining_fields' �� each batch must declare which metadata fields uniquely identify it", "Batch GSM '' not found in report GSM entries", "Batch GSM '' not found in report GSM entries", "Batch GSM '' not found in report GSM entries", "Batch GSM '' not found in report GSM entries"]
+04:02:47 [INFO] scruticell.intelligence.generator: Plan validated successfully (multi_step, round 3)
+04:02:48 [INFO] scruticell.intelligence.generator: PMID 41739590 has no PMCID �� not open access, skipping enrichment
+04:02:48 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW_extracted\GSM8705589_140P-IgG-T1.matrix.mtx.gz (format: mtx)
+04:02:48 [INFO] scruticell.readers.mtx: Reading MTX directory: E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW_extracted
+04:02:49 [INFO] scruticell.readers.mtx: Loaded MTX: shape=(5506, 32285), sparse=True, cells=5506, genes=32285
+04:02:49 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW_extracted\GSM8705590_140P-IgG-T2.matrix.mtx.gz (format: mtx)
+04:02:49 [INFO] scruticell.readers.mtx: Reading MTX directory: E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW_extracted
+04:02:50 [INFO] scruticell.readers.mtx: Loaded MTX: shape=(9219, 32285), sparse=True, cells=9219, genes=32285
+04:02:50 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW_extracted\GSM8705591_WT-IgG-T1.matrix.mtx.gz (format: mtx)
+04:02:50 [INFO] scruticell.readers.mtx: Reading MTX directory: E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW_extracted
+04:02:52 [WARNING] scruticell.readers.mtx: Cell count mismatch: matrix has 737280 columns but 5851 barcodes found (dataset may have inconsistent supplementary files)
+04:02:52 [INFO] scruticell.readers.mtx: Loaded MTX: shape=(737280, 32285), sparse=True, cells=5851, genes=32285
+04:02:52 [INFO] scruticell.intelligence.executor: Reading matrix: E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW_extracted\GSM8705592_WT-IgG-T2.matrix.mtx.gz (format: mtx)
+04:02:52 [INFO] scruticell.readers.mtx: Reading MTX directory: E:\Scruti-Cell\output\GSE285606\download\GSE285606_RAW_extracted
+04:02:54 [INFO] scruticell.readers.mtx: Loaded MTX: shape=(11380, 32285), sparse=True, cells=11380, genes=32285
+E:\Scruti-Cell\venv\Lib\site-packages\anndata\_core\anndata.py:1884: UserWarning: Variable names are not unique. To make them unique, call `.var_names_make_unique`.
+  utils.warn_names_duplicates("var")
+E:\Scruti-Cell\venv\Lib\site-packages\anndata\_core\anndata.py:1884: UserWarning: Variable names are not unique. To make them unique, call `.var_names_make_unique`.
+  utils.warn_names_duplicates("var")
+04:02:54 [ERROR] scruticell.intelligence.executor: Skipping matrix for GSM GSM8705591: cell count mismatch (matrix has 737280 cells, 5851 barcodes found). This sample's supplementary files may be corrupted.
+E:\Scruti-Cell\venv\Lib\site-packages\anndata\_core\anndata.py:1884: UserWarning: Variable names are not unique. To make them unique, call `.var_names_make_unique`.
+  utils.warn_names_duplicates("var")
+04:02:54 [INFO] scruticell.intelligence.executor: Built 3 per-batch AnnData objects (26105 total cells)
+04:02:55 [INFO] scruticell.intelligence.executor: Pruned 120 duplicate genes across all batches
+04:02:55 [INFO] scruticell.intelligence.executor: Skipping standalone processing_code (strip_axis_metadata handled by executor)
+04:02:55 [INFO] scruticell.intelligence.executor: Executing assembly code (732 chars)
+04:02:55 [WARNING] scruticell.intelligence.executor: Assembly code failed: 'GSM8705589'
+04:02:55 [INFO] scruticell.intelligence.executor: Injected batch metadata (63 fields across 3 batches)
+04:02:55 [INFO] scruticell.pipeline.nodes.validation: Validating AnnData for GSE285606
+04:02:55 [INFO] scruticell.pipeline.nodes.validation: Per-batch validation: 3 AnnData objects
+04:02:55 [INFO] scruticell.pipeline.nodes.validation: Validation: overall=1.00, passed=True, errors=0, warnings=0
+04:02:55 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE285606\GSE285606_GSM8705589_scruticell.h5ad (5506 cells x 32245 genes)
+... storing 'batch' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'taxid' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'library_selection' as categorical
+... storing 'library_source' as categorical
+... storing 'cell_line' as categorical
+... storing 'cell_type' as categorical
+... storing 'genotype' as categorical
+... storing 'treatment' as categorical
+... storing 'time_point' as categorical
+... storing 'source_name' as categorical
+... storing 'library_name' as categorical
+... storing 'cell_line_short' as categorical
+... storing 'time_point_code' as categorical
+... storing 'protocol_10x' as categorical
+... storing 'facs_sorting' as categorical
+... storing 'enzyme_digestion' as categorical
+... storing 'pipeline' as categorical
+... storing 'reference_genome' as categorical
+04:02:55 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE285606\GSE285606_GSM8705590_scruticell.h5ad (9219 cells x 32245 genes)
+... storing 'batch' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'taxid' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'library_selection' as categorical
+... storing 'library_source' as categorical
+... storing 'cell_line' as categorical
+... storing 'cell_type' as categorical
+... storing 'genotype' as categorical
+... storing 'treatment' as categorical
+... storing 'time_point' as categorical
+... storing 'source_name' as categorical
+... storing 'library_name' as categorical
+... storing 'cell_line_short' as categorical
+... storing 'time_point_code' as categorical
+... storing 'protocol_10x' as categorical
+... storing 'facs_sorting' as categorical
+... storing 'enzyme_digestion' as categorical
+... storing 'pipeline' as categorical
+... storing 'reference_genome' as categorical
+04:02:55 [INFO] scruticell.intelligence.executor: Writing per-batch h5ad: E:\Scruti-Cell\output\GSE285606\GSE285606_GSM8705592_scruticell.h5ad (11380 cells x 32245 genes)
+... storing 'batch' as categorical
+... storing 'organism' as categorical
+... storing 'molecule' as categorical
+... storing 'taxid' as categorical
+... storing 'library_strategy' as categorical
+... storing 'instrument_model' as categorical
+... storing 'library_selection' as categorical
+... storing 'library_source' as categorical
+... storing 'cell_line' as categorical
+... storing 'cell_type' as categorical
+... storing 'genotype' as categorical
+... storing 'treatment' as categorical
+... storing 'time_point' as categorical
+... storing 'source_name' as categorical
+... storing 'library_name' as categorical
+... storing 'cell_line_short' as categorical
+... storing 'time_point_code' as categorical
+... storing 'protocol_10x' as categorical
+... storing 'facs_sorting' as categorical
+... storing 'enzyme_digestion' as categorical
+... storing 'pipeline' as categorical
+... storing 'reference_genome' as categorical
+04:02:56 [INFO] scruticell.intelligence.executor: Origin trace report written to: E:\Scruti-Cell\output\GSE285606\GSE285606_trace.json
+04:02:56 [INFO] scruticell.intelligence.executor: Origin trace markdown written to: E:\Scruti-Cell\output\GSE285606\GSE285606_trace.md
+04:02:58 [WARNING] scruticell.intelligence.verifier: Batch verification FAILED for GSE285606: 1 mismatches
+04:03:00 [INFO] scruticell.knowledge.graph: Connected to Neo4j at bolt://localhost:7687
+04:03:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:FieldSynonym) REQUIRE (e.name) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_d9f7bc3a FOR (e:FieldSynonym) REQUIRE (e.name) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (fs:FieldSynonym) REQUIRE fs.name IS UNIQUE'
+04:03:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:GeneMapping) REQUIRE (e.source_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_97b24131 FOR (e:GeneMapping) REQUIRE (e.source_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (gm:GeneMapping) REQUIRE gm.source_id IS UNIQUE'
+04:03:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:GSE) REQUIRE (e.gse_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_8bde2949 FOR (e:GSE) REQUIRE (e.gse_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (gse:GSE) REQUIRE gse.gse_id IS UNIQUE'
+04:03:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:ParseStrategy) REQUIRE (e.strategy_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_c9435509 FOR (e:ParseStrategy) REQUIRE (e.strategy_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (ps:ParseStrategy) REQUIRE ps.strategy_id IS UNIQUE'
+04:03:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:FailureCase) REQUIRE (e.case_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_e506595e FOR (e:FailureCase) REQUIRE (e.case_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (fc:FailureCase) REQUIRE fc.case_id IS UNIQUE'
+04:03:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:BatchPattern) REQUIRE (e.pattern_name) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_9e585b6f FOR (e:BatchPattern) REQUIRE (e.pattern_name) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (bp:BatchPattern) REQUIRE bp.pattern_name IS UNIQUE'
+04:03:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:BatchStrategy) REQUIRE (e.batch_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_25e2cc3 FOR (e:BatchStrategy) REQUIRE (e.batch_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (bs:BatchStrategy) REQUIRE bs.batch_id IS UNIQUE'
+04:03:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:MatrixStrategy) REQUIRE (e.matrix_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_61005091 FOR (e:MatrixStrategy) REQUIRE (e.matrix_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (ms:MatrixStrategy) REQUIRE ms.matrix_id IS UNIQUE'
+04:03:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:ProcessingCode) REQUIRE (e.code_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_f9784487 FOR (e:ProcessingCode) REQUIRE (e.code_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (pc:ProcessingCode) REQUIRE pc.code_id IS UNIQUE'
+04:03:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:AssemblyCode) REQUIRE (e.code_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_d85e5ea FOR (e:AssemblyCode) REQUIRE (e.code_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (ac:AssemblyCode) REQUIRE ac.code_id IS UNIQUE'
+04:03:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT IF NOT EXISTS FOR (e:FieldMappingStrategy) REQUIRE (e.mapping_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_4f3b0f74 FOR (e:FieldMappingStrategy) REQUIRE (e.mapping_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT IF NOT EXISTS FOR (fm:FieldMappingStrategy) REQUIRE fm.mapping_id IS UNIQUE'
+04:03:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:FieldSynonym) ON (e.canonical_name)' has no effect. The index or constraint specified by 'RANGE INDEX index_4029d71a FOR (e:FieldSynonym) ON (e.canonical_name)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (fs:FieldSynonym) ON (fs.canonical_name)'
+04:03:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:GeneMapping) ON (e.target_symbol)' has no effect. The index or constraint specified by 'RANGE INDEX index_e5f90fd0 FOR (e:GeneMapping) ON (e.target_symbol)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (gm:GeneMapping) ON (gm.target_symbol)'
+04:03:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:GSE) ON (e.organism)' has no effect. The index or constraint specified by 'RANGE INDEX index_1fe8d2a4 FOR (e:GSE) ON (e.organism)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (gse:GSE) ON (gse.organism)'
+04:03:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:GSE) ON (e.assay_type)' has no effect. The index or constraint specified by 'RANGE INDEX index_38f59a2a FOR (e:GSE) ON (e.assay_type)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (gse:GSE) ON (gse.assay_type)'
+04:03:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:ParseStrategy) ON (e.success_count)' has no effect. The index or constraint specified by 'RANGE INDEX index_85672a78 FOR (e:ParseStrategy) ON (e.success_count)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (ps:ParseStrategy) ON (ps.success_count)'
+04:03:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:FailureCase) ON (e.error_signature)' has no effect. The index or constraint specified by 'RANGE INDEX index_701fbc61 FOR (e:FailureCase) ON (e.error_signature)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (fc:FailureCase) ON (fc.error_signature)'
+04:03:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchPattern) ON (e.detection_rule)' has no effect. The index or constraint specified by 'RANGE INDEX index_5a2fc8b8 FOR (e:BatchPattern) ON (e.detection_rule)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bp:BatchPattern) ON (bp.detection_rule)'
+04:03:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchStrategy) ON (e.gsm_id)' has no effect. The index or constraint specified by 'RANGE INDEX index_6fcdd738 FOR (e:BatchStrategy) ON (e.gsm_id)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.gsm_id)'
+04:03:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchStrategy) ON (e.genotype)' has no effect. The index or constraint specified by 'RANGE INDEX index_369c2325 FOR (e:BatchStrategy) ON (e.genotype)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.genotype)'
+04:03:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:BatchStrategy) ON (e.treatment)' has no effect. The index or constraint specified by 'RANGE INDEX index_9d96a35e FOR (e:BatchStrategy) ON (e.treatment)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (bs:BatchStrategy) ON (bs.treatment)'
+04:03:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:MatrixStrategy) ON (e.format)' has no effect. The index or constraint specified by 'RANGE INDEX index_5eea1dd4 FOR (e:MatrixStrategy) ON (e.format)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (ms:MatrixStrategy) ON (ms.format)'
+04:03:00 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX IF NOT EXISTS FOR (e:FieldMappingStrategy) ON (e.canonical)' has no effect. The index or constraint specified by 'RANGE INDEX index_281945fe FOR (e:FieldMappingStrategy) ON (e.canonical)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX IF NOT EXISTS FOR (fm:FieldMappingStrategy) ON (fm.canonical)'
+04:03:00 [INFO] scruticell.knowledge.graph: Neo4j schema initialized
+04:03:00 [INFO] scruticell.intelligence.matcher: Updated strategy stats for 31030c19569a0b45: success=False
+04:03:00 [INFO] scruticell.utils.tokens: Token usage CSV saved: E:\Scruti-Cell\output\GSE285606\token_usage.csv

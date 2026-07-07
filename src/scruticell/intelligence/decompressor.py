@@ -127,6 +127,19 @@ class Decompressor:
         name_lower = entry.name.lower()
         archive_type = self._detect_archive(name_lower)
 
+        if archive_type:
+            entry_parent = entry.parent
+            _TENX_COMPANIONS = {"barcodes.tsv.gz", "features.tsv.gz", "genes.tsv.gz"}
+            if name_lower in _TENX_COMPANIONS:
+                if entry_parent and (entry_parent / "matrix.mtx.gz").exists():
+                    archive_type = ""
+            elif name_lower == "matrix.mtx.gz":
+                if entry_parent:
+                    has_barcodes = (entry_parent / "barcodes.tsv.gz").exists()
+                    has_features = (entry_parent / "features.tsv.gz").exists() or (entry_parent / "genes.tsv.gz").exists()
+                    if has_barcodes and has_features:
+                        archive_type = ""
+
         if archive_type and parent.depth < self._max_depth:
             try:
                 extracted = self._extract(entry, archive_type)

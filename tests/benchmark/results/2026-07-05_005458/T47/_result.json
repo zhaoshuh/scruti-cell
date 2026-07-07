@@ -1,0 +1,33 @@
+{
+  "gse_id": "GSE284038",
+  "success": false,
+  "returncode": 0,
+  "started_at": "2026-07-05T08:09:59.250851",
+  "stages": {
+    "inspect": {
+      "summary": "[1/3] INSPECT �� downloading + inspecting..."
+    },
+    "plan": {
+      "summary": "[2/3] PLAN �� knowledge base matching + LLM plan generation..."
+    },
+    "execute": {}
+  },
+  "metrics": {
+    "total_files": 25,
+    "gsm_entries": 6,
+    "data_files": 24
+  },
+  "errors": [
+    "Generating plan via LLM... FAILED: Could not generate a valid plan",
+    "08:20:28 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+    "08:20:28 [INFO] neo4j.notifications: Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description=\"note: successful completion - index or constraint already exists. ",
+    "08:20:36 [WARNING] scruticell.intelligence.extractors: Multi-step conversation failed: Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error', 'param': None, 'code': '",
+    "08:20:36 [ERROR] scruticell.intelligence.generator: Multi-step extraction failed to produce valid plan"
+  ],
+  "duration_s": 638.8,
+  "id": "T47",
+  "category": "批量测试",
+  "label": "GSE284038",
+  "features": "",
+  "grade": "D"
+}
