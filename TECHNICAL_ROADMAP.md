@@ -12,17 +12,18 @@ Scrut-Cell 是一个 GEO 单细胞数据标准化管道，将 NCBI GEO 的 GSE �
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                        CLI 入口 (click)                         │
-│         parse | config | inspect | plan | execute | version     │
+│    preprocess | parse | inspect | plan | execute | config       │
 └──────────────────────────────┬──────────────────────────────────┘
                                │
-        ┌──────────────────────┼──────────────────────┐
-        ▼                      ▼                      ▼
-┌───────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│  Layer 1      │    │  Layer 2        │    │  Layer 3        │
-│  规则管道     │    │  智能管道       │    │  KB 持久化      │
-│  (parse)      │    │  (inspect→plan  │    │  SQLite + Neo4j │
-│               │    │   →execute)     │    │  双后端         │
-└───────────────┘    └─────────────────┘    └─────────────────┘
+         ┌─────────────────────┼──────────────────────┐
+         ▼                     ▼                      ▼
+┌──────────────────┐  ┌─────────────────┐  ┌─────────────────┐
+│  Layer 0         │  │  Layer 1        │  │  Layer 2        │
+│  组学预处理      │  │  规则管道       │  │  智能管道       │
+│  (preprocess)    │  │  (parse)        │  │  (inspect→plan  │
+│  LLM Agent       │  │  固定规则 DAG   │  │   →execute)     │
+│  信号收集→LLM判决│  │                 │  │                 │
+└──────────────────┘  └─────────────────┘  └─────────────────┘
 ```
 
 ### 2.0 输出文件结构
@@ -31,37 +32,184 @@ Scrut-Cell 是一个 GEO 单细胞数据标准化管道，将 NCBI GEO 的 GSE �
 
 ```
 output/<GSE_ID>/
+├── preprocessed/                  # Layer 0: 组学分离结果
+│   ├── manifest.json              #   预处理清单 (含 sample_groups 逻辑分组)
+│   └── <sample_dir>/              #   样本目录 (GSM ID 或推断复合 key)
+│       ├── metadata.json          #   样本元数据 (含 gsm_ids, sample_key, key_source)
+│       └── <modality>/            #   模态子目录
+│           ├── files.json         #   文件清单 (role→path)
+│           └── ... (hard link)
 ├── inspect.json      # M1 勘查报告
-│   ├── gse_info:         GSE 标题/摘要/实验设计
-│   ├── gsm_entries:      各 GSM 特征字段、补充文件列表
-│   ├── file_tree:        递归解压后的文件族谱
-│   ├── file_summaries:   每个文件的指纹（行列数/列名/数据预览/barcode 格式）
-│   └── data_files:       候选矩阵文件列表
-│
 ├── plan.json         # M2 处理方案
-│   ├── matrices:        矩阵文件→格式→方向映射
-│   ├── batches:         GSM→矩阵分组→细胞数映射
-│   ├── field_mappings:  原始字段→规范字段 + 复合值拆分规则
-│   ├── processing_code: LLM 生成的元数据标准化 Python 代码
-│   ├── assembly_code:   LLM 生成的多样本合并代码
-│   └── strategy_notes:  LLM 策略解释
-│
 ├── execute.json      # M3 执行汇总
-│   ├── gse_id:          GSE 编号
-│   ├── success:         执行成功/失败
-│   ├── output_path:     首个 .h5ad 文件路径
-│   ├── cells / genes / batches:  关键统计
-│   ├── steps:           每步执行状态及错误
-│   ├── errors / warnings:  汇总
-│   └── trace:           来源追踪文本
-│
 ├── <GSE_ID>_<GSM_ID>_scruticell.h5ad   # 每个批次一个 AnnData
 └── ...
 ```
 
 > `-o` 参数可覆盖默认路径，兼容向后。
 
-### 2.1 Layer 1: 规则管道 (`scruticell parse`)
+### 2.0 Layer 0: 组学预处理 Agent (`scruticell preprocess`)
+
+基于 `deepagents` 多 Agent 架构，自动下载、解压、检查并分离 GEO 数据到 **样本 × 模态** 的目录树。不进行下游分析——纯数据组织。
+
+#### 2.0.1 整体架构
+
+```
+CLI: scruticell preprocess GSE_ID
+         │
+         ▼
+┌────────────────────────────────────────────┐
+│  Main Orchestrator Agent (agent.py)         │
+│  Model: deepseek-chat (temperature=0.0)      │
+│  工具: organize_output                       │
+│  子 Agent: file-prep, classifier, evidence   │
+└────────────────────────────────────────────┘
+         │
+         ├──(1)──► file-prep Sub-Agent
+         │           下载 → 解压 → 检查 → FileContextReport
+         │
+         ├──(2)──► evidence Sub-Agent (可选，仅信号冲突时)
+         │           PubMed 搜索 → PDF RAG → EvidenceReport
+         │
+         ├──(3)──► classifier Sub-Agent
+         │           样本分组 → 模态分类 → 文件归属 → JSON
+         │
+         └──(4)──► organize_output 工具
+                    构建预处理目录树 (hard link)
+```
+
+#### 2.0.2 子 Agent 详细设计
+
+**File Prep Sub-Agent (`subagents/file_prep.py`)**
+
+| 项目 | 说明 |
+|------|------|
+| 工具 | `download_gse`, `decompress_files`, `inspect_files` |
+| 输出 | 紧凑 `FileContextReport` (token 优化) |
+| 核心函数 | `inspect_files()` → 协调全部信号提取层 |
+
+`inspect_files()` 内部流程：
+
+```
+对所有文件循环:
+  1. Inspector.inspect_file() → 文件指纹
+  2. extract_metadata_signals() → GSM 元数据信号
+  3. extract_filename_signals() → 文件名 + 目录结构信号
+  4. extract_content_signals() → 文件内容信号 (特征ID类型/条形码格式)
+  5. 构建 FileSignals 对象
+
+紧凑优化:
+  L1: build_field_value_maps()        → metadata 字段→值→GSM 去重
+  L2+L3: group_file_signals()         → 按信号指纹分组
+         └ per_file_gsm_id            → ancestry→GSM 提取 (无推断)
+         └ build_content_preview()    → 附加实际数据预览
+  L5: 过滤噪声文件 (.pdf/.docx/.png 等)
+
+归因信号收集 (无决策):
+  compute_attribution(file_meta):
+    L0: ancestry 路径提取 GSM ID       → candidates
+    L1: SOFT supplementary_file_N 匹配 → candidates
+    Signals: filename/column/barcode tokens → signals dict
+```
+
+**Classifier Sub-Agent (`subagents/classifier.py`)**
+
+| 项目 | 说明 |
+|------|------|
+| 工具 | **无** — 纯 LLM 推理 |
+| Prompt | 运行时从 `skills/modality_knowledge/SKILL.md` 注入 |
+| 输入 | `FileContextReport` (紧凑格式) |
+| 输出 | 紧凑 JSON (GSM 去重) |
+
+分类规则 (均在 prompt 中，无 Python 决策)：
+
+```
+1. 文件→样本归属 (1:1 约束)
+   优先级:
+   (a) 信任 per_file_gsm_id (ancestry 路径提取)
+   (b) 使用 attribution.candidates (SOFT ref)
+   (c) attribution.signals 交叉匹配 field_value_maps
+   (d) 推断复合 key (格式: field1_value__field2_value)
+
+2. 共享文件检测
+   同一 ancestry 在 per_file_gsm_id 中对应多个 GSM → 共享文件
+   列入 shared_file_groups，organize 时 hard link 到所有组
+
+3. Demux 文件检测
+   列头或 barcode 前缀匹配不同样本 token → demux 文件
+   标注 has_demux: true + 拆分规则
+
+4. 样本分组
+   基于 field_value_maps: 字段值差异 = 不同实验分组
+   相同 key + 模态的组合并 (GSM 去重)
+
+5. 模态判定
+   参考 SKILL.md 模态定义 + content_preview 数据样本
+   置信度 ≥ 0.85 当 metadata + filename + content 信号一致
+```
+
+**Evidence Sub-Agent (`subagents/evidence.py`)**
+
+| 项目 | 说明 |
+|------|------|
+| 工具 | `search_gse_papers`, `read_paper_methods` |
+| 触发条件 | metadata 信号矛盾 (classifier 无法确定) |
+| 工作流 | PubMed 搜索 → 读摘要 → 如需要 RAG PDF Methods 章节 |
+| 输出 | EvidenceReport (classifier 优先信任论文证据) |
+
+**Organize Output (`tools/organize_tool.py`)**
+
+| 项目 | 说明 |
+|------|------|
+| 输入 | classification_json (classifier 输出) |
+| 功能 | 构建 `output/<GSE_ID>/preprocessed/` 目录树（按样本组织：`<sample_dir>/<modality>/`） |
+| 独占文件 | hard link 到对应 sample_group/modality 目录 |
+| 共享文件 | 同一源文件 hard link 到所有 ref_by_gsm 组 |
+
+#### 2.0.3 关键模型
+
+| 模型 | 作用 |
+|------|------|
+| `SampleKey` | 归属 key（GSM ID 或推断复合 key），key↔sample_group 1:1 双射 |
+| `AttributionResult` | 纯信号收集：`candidates` (L0+L1) + `signals` (token) |
+| `FileSignalGroup` | 同指纹文件组，含 `per_file_gsm_id` + `content_preview` |
+| `ModalityDecision` | 模态判定，含 `has_shared/has_demux/files` |
+| `CompactSampleGroup` | 样本组，含 `sample_key/key_source/modalities` |
+| `CompactClassificationResult` | 分类器输出，含 `shared_file_groups` |
+| `SharedFileGroup` | 跨样本共享文件 (ancestry + ref_by_gsm) |
+
+#### 2.0.4 模态知识 Skill 化
+
+模态定义不再硬编码在 Python 中，而是单一来源：
+
+```
+skills/modality_knowledge/SKILL.md   ← 模态定义 (标题/元数据信号/文件模式/内容信号/平台)
+prompts.py: build_classifier_prompt() ← 运行时加载 + 注入 prompt 模板
+context/metadata.py: _MODALITY_KEYWORDS  ← 元数据关键词 (新增模态时同步更新)
+context/filenames.py: _KEYWORD_PATTERNS  ← 文件名关键词 (新增模态时同步更新)
+```
+
+新增/修改模态只需编辑 `SKILL.md`，无需改 Python 代码。关键词检测 dict 需同步更新以提供更强的信号强度。
+
+#### 2.0.5 缓存层
+
+```python
+modality_cache.py:
+  store_classification()      → MD5(gse_id + field_values + signal_patterns) → 决策 JSON
+  find_similar_classification() → 指纹匹配 → 跳过 LLM 调用
+  clear_cache()                → 清空所有缓存
+```
+
+缓存仅存决策 (sample_groups + modalities)，不存文件列表 (organize 阶段从本地文件系统重建)。
+
+#### 2.0.6 核心设计原则
+
+| 原则 | 说明 |
+|------|------|
+| **Python 收集信号，LLM 做判决** | `attribution.py` 只做 L0+L1 确定性提取。所有 token 匹配、共享/demux 检测、key 推断均由 classifier prompt 驱动 |
+| **1:1 文件归属** | 每个文件归属唯一 key。key ↔ sample_group 双射。不允许一个文件属于多个样本 |
+| **模态 Skill 化** | `SKILL.md` 是单一真相来源，运行时注入 prompt |
+| **内容指纹缓存** | 相同 GSE 只需一次 LLM 调用 |
 
 基于 LangGraph 的 10 节点 DAG，全程使用固定规则，无需 LLM。
 
@@ -267,30 +415,28 @@ download → parse_soft → discover_matrix → read_matrix
 ```
 GSE accession
     │
-    ▼
-NCBI GEO FTP ──→ download_dir/ (GSE12345/)
+    ├──[Layer 0: preprocess]
+    │   ├── Download + decompress
+    │   ├── SOFT 解析 → GSE/GSM 元数据
+    │   ├── 文件检查 → 信号指纹分组
+    │   ├── LLM classifier → sample × modality JSON
+    │   ├── organize → 预处理目录树 (hard link)
+    │   └── modality_cache (SQLite 指纹缓存)
     │
-    ├── GSE12345_family.soft.gz  ──→ SOFT 解析 ──→ GSE/GSM 元数据
+    ├──[Layer 1: parse]
+    │   ├── NCBI GEO FTP → download_dir (GSE12345/)
+    │   ├── GSE12345_family.soft.gz → SOFT 解析 → GSE/GSM 元数据
+    │   ├── GSM*.h5/mtx/csv → 矩阵读取 → 表达矩阵 (gene×cell)
+    │   ├── 细胞对齐 + 基因统一 + 批次标注
+    │   ├── 4 维置信度验证
+    │   ├── ≥ 0.85 → output.h5ad
+    │   └── < 0.85 → reflexion (KG→LLM→MCTS) → 重试
     │
-    ├── GSM1234567_*.h5          ──→ 矩阵读取 ──→ 表达矩阵 (gene×cell)
-    ├── GSM1234568_*.h5
-    └── ...
-    │
-    ▼
-细胞对齐 + 基因统一 + 批次标注
-    │
-    ▼
-4 维置信度验证
-    │
-    ├── ≥ 0.85 ──→ output.h5ad (规则管道)
-    │
-    ├── < 0.85 ──→ reflexion (KG→LLM→MCTS) ──→ 重试
-    │
-     └── (智能管道)
-          inspect ──→ output/<GSE_ID>/inspect.json (勘查报告)
-          plan    ──→ output/<GSE_ID>/plan.json    (含 LLM processing_code)
-          execute ──→ output/<GSE_ID>/execute.json (provenance + trace + stats)
-                   ──→ output/<GSE_ID>/<GSE_ID>_<GSM>_scruticell.h5ad (每批次一个)
+    └──[Layer 2: inspect→plan→execute]
+        ├── inspect → output/<GSE_ID>/inspect.json
+        ├── plan    → output/<GSE_ID>/plan.json (LLM processing_code)
+        └── execute → output/<GSE_ID>/execute.json
+                    → output/<GSE_ID>/<GSE>_<batch>_scruticell.h5ad
 ```
 
 ---

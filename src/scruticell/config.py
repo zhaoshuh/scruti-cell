@@ -35,6 +35,7 @@ DOWNLOAD_RETRIES = 3
 DOWNLOAD_CHUNK_SIZE = 8192  # bytes for streaming
 DOWNLOAD_CONNECT_TIMEOUT = 30  # seconds for initial connection
 DOWNLOAD_STARTUP_TIMEOUT = 120  # seconds before first byte received
+MAX_SUPPL_SIZE_GB = int(os.environ.get("SCRUTICELL_MAX_SUPPL_SIZE_GB", "10"))
 
 # Download mode: "range" (HTTP 206 Partial Content, default) or "aria2c" (multi-connection)
 # Override via SCRUTICELL_DOWNLOAD_MODE env variable

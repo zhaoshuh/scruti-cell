@@ -2,122 +2,36 @@
 
 ## 目录
 
-1. [输出文件结构](#输出文件结构)
-2. [快速开始](#快速开始)
-3. [命令行接口](#命令行接口)
-4. [规则管道：一条命令出结果](#规则管道一条命令出结果)
-5. [智能管道：勘查→规划→执行](#智能管道勘查规划执行)
+1. [快速开始](#快速开始)
+2. [多组学预处理](#多组学预处理) ← **新增**
+3. [一键管道](#一键管道)
+4. [规则管道](#规则管道)
+5. [智能管道](#智能管道)
 6. [配置管理](#配置管理)
-7. [许可证](#许可证)
-8. [常见问题](#常见问题)
+7. [常见问题](#常见问题)
 
 ---
 
-## 输出文件结构
-
-所有智能管道 (inspect / plan / execute) 的输出默认统一到 `output/<GSE_ID>/` 目录下：
-
-```
-output/<GSE_ID>/
-├── inspect.json                              # 勘查报告（M1：文件指纹 + 元数据摘要）
-├── plan.json                                 # 处理方案（M2：矩阵映射 + LLM 生成代码）
-├── execute.json                              # 执行汇总（M3：provenance + trace + 统计）
-├── <GSE_ID>_<GSM_ID>_scruticell.h5ad         # AnnData 输出（每个批次一个）
-├── <GSE_ID>_<GSM_ID>_scruticell.h5ad
-└── ...
-```
-
-> `-o` 参数可覆盖默认路径。
-
----
-
-## 前置软件与环境
-
-### 必需
-
-| 软件 | 版本要求 | 说明 |
-|------|---------|------|
-| Python | 3.10 ~ 3.12 | 推荐使用 Conda 管理环境 |
-| LLM API Key | — | DeepSeek 或 OpenAI-compatible API |
-| **磁盘空间** | ≥ 10 GB 空闲 | GEO 下载缓存 + 嵌入模型（首次约 80 MB） |
-
-### 可选（企业版功能）
-
-| 软件 | 版本要求 | 说明 |
-|------|---------|------|
-| Neo4j | 5.x Community/Enterprise | 知识图谱持久化与策略累积 |
-| Java | 17+ | Neo4j 运行时依赖 |
-
-### Pip 依赖清单
-
-```
-PyMuPDF           # PDF 文本提取
-sentence-transformers  # 本地向量嵌入（all-MiniLM-L6-v2, ~80 MB 首次下载）
-torch             # 嵌入模型运行时
-langgraph         # 管道 DAG 引擎
-langchain + langchain-openai  # LLM 接口
-anndata + scanpy  # 单细胞数据
-GEOparse          # GEO SOFT 文件解析
-pandas + numpy + scipy  # 数值计算
-neo4j             # 图数据库客户端
-bionty            # 基因/物种标准化
-biopython         # 生物信息工具
-click + rich      # CLI 框架
-pydantic          # 数据验证
-```
+## 快速开始
 
 ### 安装
 
 ```bash
-# 克隆仓库
-git clone https://github.com/scruti-cell/scruticell
+git clone https://github.com/zhaoshuh/scruti-cell
 cd scruticell
-
-# 推荐：用 Conda 创建环境（防止 C 盘空间不足）
-conda create -p G:\anaconda\envs\scruticell python=3.11 -y
-conda activate G:\anaconda\envs\scruticell
-
-# 安装全部依赖（指定缓存目录避免占用 C 盘）
-pip install -e ".[dev]" --cache-dir G:\pip-cache
-
-# 首次运行时会自动下载嵌入模型到 HF_HOME（约 80 MB）
+pip install -e ".[dev]"
 ```
 
-### Neo4j 安装（企业版）
+### 设置 API Key
 
 ```bash
-# 1. 下载并解压到任意目录
-# https://neo4j.com/download/
-
-# 2. 修改 conf/neo4j.conf，将数据目录指向非系统盘
-# server.directories.data=G:\\scruticell\\neo4j\\data
-
-# 3. 启动
-bin\neo4j console
-# 或
-bin\neo4j install-service && bin\neo4j start
-```
-
-### 设置 LLM API Key
-
-```bash
-# 需要设置以下环境变量之一
 export DEEPSEEK_API_KEY="sk-xxx"
-# 或
-export OPENAI_API_KEY="sk-xxx"
-
-# 推荐：设置缓存目录到非系统盘
-export TMP=G:\temp
-export TEMP=G:\temp
-export PIP_CACHE_DIR=G:\pip-cache
-export TORCH_HOME=G:\torch_cache
-export HF_HOME=G:\huggingface_cache
 ```
 
-### 验证安装
+### 验证
 
 ```bash
-scruticell version
+scruticell --version
 # Scrut-Cell version 0.1.0
 
 scruticell config
@@ -126,26 +40,114 @@ scruticell config
 
 ---
 
-## 命令行接口
+## 多组学预处理（preprocess）
 
-Scrut-Cell 提供 7 个子命令：
+**新增命令**。从 GSE 编号出发，自动下载、解压、识别 12 种组学模态（scRNA-seq、ATAC-seq、空间转录组、DNA 甲基化、CITE-seq、TCR/BCR、Multiome 等），将文件按**样本×模态**分离。不进行下游分析——输出是组织好的文件树。
+
+### 基本用法
+
+```bash
+# 预处理 GSE215353：自动分离 scRNA-seq 和 DNA 甲基化文件
+scruticell preprocess GSE215353
+
+# 指定输出目录
+scruticell preprocess GSE215353 -o ./my_results
+
+# 保留下载的原始数据
+scruticell preprocess GSE215353 --keep-data
+
+# 详细日志
+scruticell preprocess GSE215353 -v
+```
+
+### 输出结构
 
 ```
-scruticell run <GSE_ID>       一键管道：inspect + plan + execute
-scruticell parse <GSE_ID>     规则管道：一站式 GSE→AnnData
-scruticell inspect <GSE_ID>   智能管道-勘查：生成结构化报告
-scruticell plan <GSE_ID>      智能管道-规划：LLM 生成处理方案
-scruticell execute <GSE_ID>   智能管道-执行：按方案生成 AnnData
-scruticell config             查看当前配置
-scruticell db-clear           清空知识库
-scruticell --version          显示版本号
+output/<GSE_ID>/preprocessed/
+├── manifest.json              # 完整预处理清单 (含 sample_groups 逻辑分组)
+├── GSM4797916/                # 样本目录 (key = GSM ID 或推断 key)
+│   ├── metadata.json          # 样本元数据 (含 gsm_ids, sample_key, key_source)
+│   ├── spatial_transcriptomics/
+│   │   ├── files.json         # 文件清单及角色
+│   │   ├── tissue_positions_list.csv
+│   │   ├── scalefactors_json.json
+│   │   └── tissue_hires_image.png
+│   └── scrna_seq/
+│       └── ...
+├── donor_P1__untreated/       # 推断 key 场景 (复合键)
+│   ├── metadata.json
+│   └── scrna_seq/
+├── GSM4797918/
+│   └── ...
+└── unclassified/              # 无法分类的文件
+    └── unclassified.json
 ```
+
+共享文件通过 hard link 出现在所有引用它的样本目录中。`manifest.json` 的 `sample_groups` 记录逻辑分组。
+
+### 工作原理
+
+Scrut-Cell 使用 LLM Agent（deepagents）编排整个预处理流程。核心原则：**Python 收集信号，LLM 做判决**。
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  1. File Prep Sub-Agent (下载 + 解压 + 检查)                 │
+│     downloads → decompresses → inspects all files           │
+│     输出: 紧凑 FileContextReport                              │
+│       ├── field_value_maps    (metadata 去重, 识别实验分组)    │
+│       ├── file_signal_groups  (同指纹文件合并)                 │
+│       │   ├── per_file_gsm_id  (ancestry→GSM, 无推断)        │
+│       │   ├── attribution       (L0 ancestry + L1 SOFT ref)  │
+│       │   └── content_preview   (实际数据样本)                 │
+│       └── file_summaries      (原始文件指纹, 供 organize 使用)  │
+└─────────────────────────────────────────────────────────────┘
+         │
+         ├─(信号冲突时)→ Evidence Sub-Agent (PubMed→PDF RAG)
+         │
+         ▼
+┌─────────────────────────────────────────────────────────────┐
+│  2. Classifier Sub-Agent (纯 LLM 推理, 零工具)               │
+│     模态知识从 skills/modality_knowledge/SKILL.md 运行时注入   │
+│     分类规则:                                                 │
+│       A. 文件→样本归属 (1:1 约束)                             │
+│          优先级: per_file_gsm_id > candidates > tokens       │
+│          无法匹配 → 推断复合 key                              │
+│       B. 共享文件检测 (同一文件被多个样本使用)                  │
+│       C. Demux 文件检测 (合并文件需拆分)                      │
+│       D. 样本分组 (field_value_maps 值差异)                   │
+│       E. 模态判定 (SKILL.md + content_preview)               │
+│     置信度: ≥0.85 (信号一致) / 0.5-0.85 (有冲突) / <0.5 (严重不足)│
+└─────────────────────────────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────────────────┐
+│  3. organize_output Tool (构建输出目录树)                     │
+│     output/<GSE_ID>/preprocessed/                             │
+│       group_<key>/                    (key = GSM ID 或推断 key)│
+│         {modality}/                                            │
+│           files.json + hard link                              │
+│       manifest.json                                           │
+│     共享文件 hard link 到所有引用组                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**关键设计：**
+- **模态 Skill 化**：`skills/modality_knowledge/SKILL.md` 是模态定义的唯一来源。新增模态只需编辑此文件，无需改代码。
+- **1:1 文件归属**：每个文件归属唯一 key，key↔sample_group 是双射。不允许一个文件属于多个样本。
+- **信号收集 vs 判决分离**：`attribution.py` 只收集 L0+L1 信号。所有匹配/推断由 classifier prompt 完成。
+- **指纹缓存**：相同 GSE 的内容指纹 → 跳过 LLM 调用直接返回。
+
+整个流程对 12 种组学模态做了 token 优化：50 个 GSM 的元数据从 ~28,000 tokens 压缩到 ~500 tokens。`per_file_gsm_id` 提供准确的 ancestry→GSM 映射，消除了模糊匹配带来的多归属问题。
+
+### 支持的 12 种组学模态
+
+模态定义位于 `skills/modality_knowledge/SKILL.md`（运行时加载）。支持扩展新模态——编辑该文件即可。
 
 ---
 
-## 一键管道：一条命令出结果
+## 一键管道（run）
 
-**推荐用法**。自动完成勘查→规划→执行三步，适合所有数据集。
+**推荐用法**。自动完成勘查→规划→执行，输出分析就绪的 AnnData。
 
 ```bash
 # 最简单用法
@@ -154,14 +156,14 @@ scruticell run GSE334035
 # 指定输出目录
 scruticell run GSE334035 -o ./my_results
 
-# 跳过 LLM（仅 KB 匹配，不调用 LLM）
+# 跳过 LLM（仅 KB 匹配）
 scruticell run GSE334035 --no-llm
 
-# 保留下载的原始数据
+# 保留下载数据
 scruticell run GSE334035 --keep-data
 ```
 
-**参数说明**：
+### 参数说明
 
 ```
 Usage: scruticell run [OPTIONS] GSE_ID
@@ -176,260 +178,100 @@ Options:
   -v, --verbose          显示详细日志
 ```
 
-**输出结构**：
+### 输出结构
 
 ```
 output/<GSE_ID>/
-├── inspect.json                                     # 勘查报告
-├── plan.json                                        # 处理方案
-├── execute.json                                     # 执行汇总
-├── metadata.md                                      # 批次元数据表
-├── <GSE>_<batch>_scruticell.h5ad                    # 每批次 AnnData
+├── preprocessed/         # (Layer 0) 组学分离结果
+├── inspect.json          # 勘查报告
+├── plan.json             # 处理方案
+├── execute.json          # 执行汇总
+├── metadata.md           # 批次元数据表
+├── <GSE>_<batch>_scruticell.h5ad  # 每批次 AnnData
 └── ...
-```
-
-**分步执行**：如果需要查看中间结果（如 LLM 生成的 plan 代码），可以分三步运行：
-
-```bash
-scruticell inspect GSE334035   # → output/GSE334035/inspect.json
-scruticell plan GSE334035      # → output/GSE334035/plan.json
-scruticell execute GSE334035   # → output/GSE334035/execute.json + .h5ad
 ```
 
 ---
 
-## 规则管道：一条命令出结果（旧版）
+## 规则管道（parse / standardize）
 
-适合结构标准的数据集（单样本、标准 10X h5 格式）。
-
-### 基本用法
+适合结构标准的数据集（单一样本、标准 10X h5 格式）。不需要 LLM，全用固定规则。
 
 ```bash
 scruticell parse GSE334035 -o ./output
+
+# 跳过 PubMed 文献搜索
+scruticell parse GSE334035 --no-literature
+
+# 增加重试次数
+scruticell parse GSE334035 --max-retries 5
 ```
-
-### 参数说明
-
-```
-Usage: scruticell parse [OPTIONS] GSE_ID
-
-Options:
-  -o, --output PATH      输出目录（默认：当前目录）
-  --llm-model TEXT       LLM 模型名称（默认：deepseek-chat）
-  --llm-api-key TEXT     LLM API Key（默认从环境变量读取）
-  --llm-base-url TEXT    LLM API 地址
-  --no-literature       跳过 PubMed 文献搜索
-  --max-retries INTEGER  最大反省重试次数（默认：3）
-  -v, --verbose          显示详细日志
-  --keep-data            保留下载的原始数据和输出文件
-```
-
-### 输出文件
-
-成功运行后，输出目录包含：
-- `GSE334035_scruticell.h5ad`：分析就绪的 AnnData 文件
-- `audit_*.json`：处理审计日志
-- `*_provenance.json`：来源追踪信息
 
 ### 管道流程
 
 ```
-[Download]...   OK    ← 从 NCBI GEO 下载数据
-[Parse SOFT]... OK    ← 解析元数据
-[Literature]... OK    ← 搜索文献（可选）
-     │
-[Discover Matrix]... OK   ← 发现矩阵文件
-[Read Matrix]...    OK    ← 读取矩阵
-[Align Cells]...    OK    ← 对齐细胞 barcode
-[Unify Genes]...    OK    ← 统一基因 ID
-[Validate]...       OK    ← 置信度验证
-     │
-[Output]...         OK    ← 写入 .h5ad
-
-=== 结果 ===
-Cells:    54198
-Genes:    38584
-Organism: Homo sapiens
-Retries:  0
-Confidence: 100%
-  barcode: 100%
-  gene_id: 100%
-  metadata: 100%
-  batch: 100%
-  Audit log: output/audit_20250101_120000.json
-```
-
-### 反省重试
-
-当置信度低于 85% 时，管道自动触发 Reflexion 重试：
-
-```
-[Validate]... WARNING  ← 置信度低于阈值
---- Reflexion retry 1/3 ---
-[Reflexion]...  OK     ← KG/LLM/启发式 生成修正策略
-Strategy: Force matrix transpose
-  [Discover Matrix]... OK
-  ...
-[Validate]...    OK
+[Download]      ← 从 NCBI GEO 下载数据
+[Parse SOFT]    ← 解析 SOFT 元数据 + GSM 特征字段
+[Literature]    ← (可选) PubMed 文献搜索
+[Discover Matrix]  ← 发现矩阵文件 (h5ad > mtx > csv > rds > loom)
+[Read Matrix]   ← 读取矩阵，自动检测方向
+[Align Cells]   ← 标准化细胞 barcode (10x v2/v3, Drop-seq)
+[Unify Genes]   ← 统一基因 ID (symbol/ensembl/entrez)
+[Validate]      ← 4 维置信度验证 (barcode, 基因, 元数据, 批次)
+[Reflexion]     ← 置信度 < 85% 时：KG→LLM→启发式→MCTS 自修正
+[Output]        ← 写入 .h5ad
 ```
 
 ---
 
-## 智能管道：勘查→规划→执行
+## 智能管道（inspect → plan → execute）
 
-适合结构复杂的数据集（多样本、嵌套压缩包、复合字段元信息、非标准矩阵格式）。
+适合结构复杂的数据集（多样本、嵌套压缩包、复合字段元信息、非标准矩阵）。
 
-智能管道分三步，每步都可以独立运行和查看中间结果。
-
-### 第一步：勘查（inspect）
+### Step 1: inspect（勘查）
 
 ```bash
-# 下载并勘查数据集 → 默认写入 output/<GSE_ID>/inspect.json
 scruticell inspect GSE334035
 
-# 指定自定义输出文件
-scruticell inspect GSE334035 -o ./custom/inspect.json
-
-# 使用已有下载目录
+# 使用已有下载缓存
 scruticell inspect GSE334035 --no-download
 ```
 
-**输出：** 生成 `inspect.json`，包含：
-- `gse_info`：GSE 级别的标题、摘要、实验设计描述
-- `gsm_entries`：每个 GSM 的特征字段、补充文件列表
-- `file_tree`：解压后的文件族谱树
-- `file_summaries`：每个数据文件的内容摘要（行列数、列名、数据预览、barcode 格式等）
-- `data_files`：候选数据文件列表（LLM 后续决定哪些是矩阵）
+输出 `inspect.json`：GSE 元数据、GSM 条目、文件族谱树、每个文件的指纹（行列数、列名、barcode 格式等）。
+
+### Step 2: plan（规划）
 
 ```bash
-=== Inspection Report: GSE334035 ===
-Files inspected:   15
-Data files:        3
-GSM entries:       3
-```
-
-### 第二步：规划（plan）
-
-```bash
-# 从勘查报告生成规划 → 默认写入 output/<GSE_ID>/plan.json
-scruticell plan GSE334035 \
-  --report ./output/GSE334035/inspect.json
-
-# 指定自定义输出文件
-scruticell plan GSE334035 \
-  --report ./output/GSE334035/inspect.json \
-  -o ./custom/plan.json
+scruticell plan GSE334035
 
 # 仅查看 KB 匹配，不调用 LLM
-scruticell plan GSE334035 \
-  --report ./output/GSE334035/inspect.json \
-  --no-llm
+scruticell plan GSE334035 --no-llm
 ```
 
-**输出：** 生成 `plan.json`，包含 LLM 生成的处理方案：
+输出 `plan.json`：LLM 生成的处理方案，含矩阵映射、批次分配、字段映射，以及 Python 处理代码。
 
-- `matrices`：哪些文件是表达矩阵（含格式、方向、是否需转置）
-- `batches`：每个 GSM 对应哪些矩阵文件
-- `field_mappings`：原始 GEO 字段→规范字段名的映射（如 `"tissue: liver"` → `tissue="liver"`）
-- `processing_code`：LLM 生成的 Python 代码，对元数据做标准化：
-  ```python
-  def process(obs, var, adata):
-      # 字段重命名
-      obs.rename(columns={'characteristics_ch1': 'tissue'}, inplace=True)
-
-      # 复合值拆分：'Male_Control_72yr' → sex='Male', condition='Control', age=72
-      obs['sex'] = obs['raw_field'].str.split('_').str[0]
-      obs['condition'] = obs['raw_field'].str.split('_').str[1]
-
-      # 全局元数据
-      obs['organism'] = 'Homo sapiens'
-
-      return obs, var, adata
-  ```
-- `assembly_code`：LLM 生成的装配代码（多样本合并）
-- `strategy_notes`：LLM 的策略解释
-- `confidence`：LLM 对规划方案的置信度
-
-**KB 匹配：** 如果之前处理过相似结构的数据集，规划阶段会显示匹配结果：
-
-```
-KB Matches: 2
-  - GSE12345 (score: 0.85, success: 3, fail: 0)
-  - GSE67890 (score: 0.72, success: 1, fail: 1)
-```
-
-### 第三步：执行（execute）
+### Step 3: execute（执行）
 
 ```bash
-# 最简单用法：自动查找 output/<GSE_ID>/ 下的 plan.json + inspect.json
 scruticell execute GSE334035
 
-# 指定自定义输出目录
-scruticell execute GSE334035 -o ./custom
-
-# 显式指定 plan 和 report 文件
-scruticell execute GSE334035 \
-  --plan-file ./custom/plan.json \
-  --report-file ./custom/inspect.json
-
-# 跳过下载，使用已有数据
-scruticell execute GSE334035 --no-download
-
-# 关闭反射重试
+# 关闭失败反射重试
 scruticell execute GSE334035 --no-reflect
-
-# 保留所有数据文件
-scruticell execute GSE334035 --keep-data
 ```
 
-**输出：**
-- 每个批次一个 `.h5ad` 文件：`{GSE_ID}_{batch_label}_scruticell.h5ad`
-- `execute.json`：执行汇总（provenance + trace + cells/genes/batches 统计）
+输出：每批次一个 `.h5ad` + `execute.json`（provenance + trace + 统计）。
 
-> 如果 `output/<GSE_ID>/plan.json` 或 `inspect.json` 不存在，会报错提示先运行对应的上一步命令。
-
-```
-=== Execution: SUCCESS ===
-Output:   output/GSE334035/GSE334035_GSM9779490_scruticell.h5ad
-Cells:    54198
-Genes:    38584
-Batches:  3
-Provenance: output/GSE334035/execute.json
-
-[Step 4 — Metadata Strategy]
-  obs['organism'] = 'Homo sapiens'
-  obs['tissue'] = 'Forebrain organoid'
-  ...
-
-[Step 5 — Assembly Strategy]
-  merged = sc.concat(adatas.values(), ...)
-  ...
-```
-
-### 批量处理脚本
+### 批量处理
 
 ```powershell
-# batch_run.ps1
-$GSE_LIST = @(
-    "GSE334035",
-    "GSE123456",
-    "GSE234567"
-)
+$GSE_LIST = @("GSE334035", "GSE123456", "GSE234567")
 
 foreach ($gse in $GSE_LIST) {
-    Write-Host "=== Processing $gse ==="
-
-    scruticell inspect $gse -o "./output/$gse/inspect.json"
-    if (-not $?) { Write-Host "Inspect failed for $gse"; continue }
-
-    scruticell plan $gse `
-        --report "./output/$gse/inspect.json" `
-        -o "./output/$gse/plan.json"
-    if (-not $?) { Write-Host "Plan failed for $gse"; continue }
-
+    scruticell inspect $gse
+    if (-not $?) { continue }
+    scruticell plan $gse
+    if (-not $?) { continue }
     scruticell execute $gse
-
-    Write-Host ""
 }
 ```
 
@@ -437,65 +279,28 @@ foreach ($gse in $GSE_LIST) {
 
 ## 配置管理
 
-### 数据存储路径
-
-所有运行时数据统一存储在 `G:\scruticell\` 下：
-
-| 目录 | 内容 |
-|------|------|
-| `G:\scruticell\data\` | GEO 下载缓存 + SQLite 知识库 (`knowledge.db`) |
-| `G:\scruticell\cache\pdf\` | PDF RAG 文献提取缓存 (按 PMID 存储) |
-| `G:\scruticell\neo4j\data\` | Neo4j 图数据库文件 |
-
-### 查看当前配置
+### 查看配置
 
 ```bash
 scruticell config
 ```
 
-输出：
+### 关键环境变量
 
-```
-Scrut-Cell Configuration:
-  Data directory:     G:\scruticell\data
-  LLM model:          deepseek-chat
-  LLM temperature:    0.0
-  LLM base URL:       https://api.deepseek.com
-  LLM API key:        ***
-  Neo4j URI:          bolt://localhost:7687
-  Download timeout:   600s
-  Download retries:   3
-  Confidence auto:    0.85
-  Confidence warn:    0.60
-```
+| 变量 | 默认值 | 说明 |
+|------|--------|------|
+| `DEEPSEEK_API_KEY` | — | LLM API key |
+| `LLM_MODEL` | `deepseek-chat` | 模型名称 |
+| `LLM_BASE_URL` | `https://api.deepseek.com` | API 地址 |
+| `LLM_TEMPERATURE` | `0.0` | 确定性输出 |
+| `CONFIDENCE_THRESHOLD_AUTO` | `0.85` | 自动通过阈值 |
+| `SCRUTICELL_LICENSE` | — | 企业版 License |
 
 ### 自定义 LLM
 
-使用 OpenAI 或其他兼容 API：
-
 ```bash
 export OPENAI_API_KEY="sk-xxx"
-
-scruticell parse GSE334035 \
-  --llm-model "gpt-4o" \
-  --llm-base-url "https://api.openai.com/v1"
-```
-
----
-
-## 许可证
-
-Scrut-Cell 提供两个版本：
-
-| 版本 | 许可证 | 功能 |
-|------|--------|------|
-| **开源版** | MIT，免费 | Layer 1 规则管道 + SQLite KB |
-| **企业版** | 订阅 | Layer 2 智能管道 + Neo4j KB + MCTS |
-
-企业版许可证通过环境变量设置：
-
-```bash
-export SCRUTICELL_LICENSE="your-org-name-a1b2c3d4-ENT-SCRUTICELL"
+scruticell parse GSE334035 --llm-model "gpt-4o" --llm-base-url "https://api.openai.com/v1"
 ```
 
 ---
@@ -504,50 +309,46 @@ export SCRUTICELL_LICENSE="your-org-name-a1b2c3d4-ENT-SCRUTICELL"
 
 ### Q: 需要安装 Neo4j 吗？
 
-A: 开源版不需要。规则管道（`parse`）和企业版除外的智能管道步骤（`inspect`/`plan`/`execute`）都可以在无 Neo4j 的情况下运行，只是无法使用知识图谱的匹配累积功能。
+A: 不需要。开源版使用 SQLite，preprocess/parse/inspect/plan/execute 都可以在无 Neo4j 的情况下运行。
 
-### Q: 如何修改存储路径？
+### Q: 支持哪些组学模态？
 
-A: 编辑 `src/scruticell/config.py` 中的 `DATA_DIR` 变量：
+A: 12 种：scRNA-seq、snRNA-seq、ATAC-seq、10x Multiome、空间转录组、DNA 甲基化、CITE-seq、TCR-seq、BCR-seq、Perturb-seq、蛋白质组学、未知。模态定义在 `skills/modality_knowledge/SKILL.md`，编辑此文件即可新增模态。
 
-```python
-DATA_DIR = Path("G:/scruticell/data")  # 改为任意路径
-```
+### Q: 如何添加新的组学模态？
 
-Neo4j 的数据路径在 `conf/neo4j.conf` 中：
+A:
+1. 编辑 `skills/modality_knowledge/SKILL.md`，按模板添加新模态的 metadata signals、file patterns、content signals
+2. (可选) 在 `context/metadata.py` 的 `_MODALITY_KEYWORDS` 中添加元数据关键词
+3. (可选) 在 `context/filenames.py` 的 `_KEYWORD_PATTERNS` 中添加文件名关键词
+4. 无需修改任何 Python 逻辑代码
 
-```ini
-server.directories.data=G:\\scruticell\\neo4j\\data
-```
+### Q: 支持哪些文件格式？
 
-### Q: 嵌入模型有多大？
-
-A: 首次运行 PDF RAG 功能时会自动下载 `all-MiniLM-L6-v2`（约 80 MB），存储在 `HF_HOME` 环境变量指定的目录（默认 `~/.cache/huggingface`）。建议设置 `export HF_HOME=G:\huggingface_cache` 避免占用 C 盘。
-
-### Q: 支持哪些 LLM 提供商？
-
-A: 任何 OpenAI-compatible API。目前工具默认使用 DeepSeek。设置环境变量 `DEEPSEEK_API_KEY` 或 `OPENAI_API_KEY`，或通过 `--llm-api-key` 参数指定。
-
-### Q: 处理失败怎么办？
-
-A: 
-1. 查看 `audit_*.json` 日志文件了解错误详情
-2. 使用 `--verbose` / `-v` 查看完整日志
-3. 规则管道下 `--max-retries` 可增加重试次数
-4. 智能管道下 `execute` 命令默认开启反射重试（`--reflect`）
-5. 检查下载缓存：`G:\scruticell\data\<GSE_ID>\`
+A: `.h5ad`, `.h5` (10x AnnData/HDF5), `.mtx` (10x 三件套), `.csv/.tsv`, `.rds` (Seurat/SCE), `.loom`。
 
 ### Q: 支持哪些物种？
 
-A: 目前支持人类（Homo sapiens）和小鼠（Mus musculus）。基因 ID 的标准化基于 `bionty` 数据库，理论上支持 bionty 覆盖的全部物种。
+A: 人类和小鼠。基因 ID 基于 bionty 数据库。
 
-### Q: 输出文件很大怎么办？
+### Q: 处理失败怎么办？
 
-A: 
-- 默认 `--keep-data` 为 false，管道完成后会自动删除下载的文件和 .h5ad 输出文件，仅保留 output 目录（inspect.json、plan.json、execute.json）
-- 如需保留输出 .h5ad，使用 `--keep-data` 参数
-- 稀疏矩阵默认使用 scipy sparse CSR 格式存储
+A:
+1. 使用 `-v` 查看完整日志
+2. `parse` 命令下 `--max-retries` 可增加重试次数
+3. `execute` 命令默认开启反射重试（`--no-reflect` 关闭）
+4. 检查下载缓存：`G:\scruticell\data\<GSE_ID>\`
 
-### Q: 支持从 SOFT 文件直接读取矩阵吗？
+### Q: 文件如何归属到样本？
 
-A: 不支持。规则管道需要下载 Supplementary files（如 .h5、.h5ad、.mtx 文件）。智能管道会从压缩包中递归解压查找矩阵文件。
+A: 每个文件通过 4 层优先级归属到唯一样本 key：
+1. **ancestry 路径** — 最高优先级。例如 `GSM001/barcodes.tsv.gz` → GSM001
+2. **SOFT supplementary 引用** — GEO 元数据中明确列出的文件归属
+3. **文件名/列头 Token** — 从文件名和列头提取的样本 ID 与 metadata 交叉匹配
+4. **推断复合 key** — 以上均无法匹配时，从文件名/内容推断。例如 `donor_P1__treatment_control`
+
+所有判断由 LLM classifier 完成。key 与样本组之间是严格的 1:1 双射关系。共享文件（如多个样本共用同一 features.tsv.gz）会被标记并通过 hard link 分发。
+
+### Q: 嵌入模型有多大？
+
+A: PDF RAG 功能首次运行时下载 `all-MiniLM-L6-v2`（约 80 MB），缓存到 `HF_HOME` 目录。
