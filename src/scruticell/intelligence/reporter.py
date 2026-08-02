@@ -18,6 +18,7 @@ from typing import Any
 
 from scruticell.intelligence.decompressor import DecompressionNode, Decompressor
 from scruticell.intelligence.inspector import Inspector
+from scruticell.utils.paths import normalize_ancestry
 
 logger = logging.getLogger(__name__)
 
@@ -131,7 +132,7 @@ def _extract_base_filename(ancestry: str) -> str:
 
     'GSE328098/RAW_extracted/GSM9672365_matrix.mtx' -> 'GSM9672365_matrix.mtx'
     """
-    parts = ancestry.replace("\\", "/").split("/")
+    parts = normalize_ancestry(ancestry).split("/")
     for part in reversed(parts):
         if "." in part and not part.endswith("_extracted"):
             return part
@@ -301,7 +302,7 @@ class Reporter:
                 continue
 
             # Save reader file
-            safe_rname = rname.replace(".", "_").replace("/", "_").replace("\\", "_")
+            safe_rname = rname.replace(".", "_").replace("/", "_")
             reader_path = readers_dir / f"{safe_rname}.py"
             reader_path.write_text(code, encoding="utf-8")
             rd["reader_path"] = str(reader_path.relative_to(output_dir))

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 
 # ---------------------------------------------------------------------------
@@ -263,6 +263,62 @@ class FileSignalGroup(BaseModel):
 
 
 # ---------------------------------------------------------------------------
+# DemuxRule — rules for splitting merged multi-sample files
+# ---------------------------------------------------------------------------
+
+class DemuxRule(BaseModel):
+    """Splitting rules for a merged file containing multiple samples."""
+
+    method: str = ""
+    # "column_split"  — column headers contain sample identifiers
+    # "row_split"     — a column value directly identifies the sample
+    # "barcode_split" — identifiers appear anywhere in barcode/row-name strings
+
+    identifier_pattern: str = ""
+    # regex to extract sample identifiers (re.search, any position)
+    # e.g. "GSM\\d+", "Sample[A-Z]\\d*", "donor_\\w+__treatment_\\w+"
+
+    value_column: str = ""
+    # row_split: column name whose value indicates sample ownership
+
+    barcode_column: str = ""
+    # barcode_split: column name containing barcodes with embedded identifiers
+
+    @field_validator("method")
+    @classmethod
+    def _validate_method(cls, v: str) -> str:
+        allowed = {"column_split", "row_split", "barcode_split", ""}
+        if v not in allowed:
+            raise ValueError(f"Invalid demux method '{v}'. Allowed: {allowed}")
+        return v
+
+
+# ---------------------------------------------------------------------------
+# Verification — quality checks for LLM-generated outputs
+# ---------------------------------------------------------------------------
+
+class VerificationCheck(BaseModel):
+    """A single verification check result."""
+
+    type: str = ""
+    severity: str = ""  # "warning" | "error"
+    detail: str = ""
+
+
+class VerificationReport(BaseModel):
+    """Result of running verification checks on an LLM output."""
+
+    passed: bool = False
+    checks: list[VerificationCheck] = Field(default_factory=list)
+    repair_attempts: int = 0
+    fallback: bool = False
+
+    def failure_summary(self) -> str:
+        errors = [c for c in self.checks if c.severity == "error"]
+        return "\n".join(f"[{c.type}] {c.detail}" for c in errors)
+
+
+# ---------------------------------------------------------------------------
 # L14 — Compact classification output
 # ---------------------------------------------------------------------------
 
@@ -274,6 +330,8 @@ class ModalityDecision(BaseModel):
     file_pattern: str = ""                 # e.g. "10x triplet (mtx+barcodes+features)"
     has_shared: bool = False               # 是否有跨样本共享文件
     has_demux: bool = False                # 是否有需要拆分的合并文件
+    demux_rule: DemuxRule | None = None    # 拆分规则 (has_demux=true 时填充)
+    demux_content_preview: dict | None = None  # 文件内容预览 (demux LLM code-gen 用)
     files: list[dict] = Field(default_factory=list)
                                            # [{ancestry, source_path, role}]
 
@@ -296,6 +354,9 @@ class CompactClassificationResult(BaseModel):
     shared_file_groups: list[dict] = Field(default_factory=list)
     unclassified: list[dict] = Field(default_factory=list)
     reasoning: str = ""
+    verification: VerificationReport | None = None
+    repair_attempts: int = 0
+    fallback: bool = False
 
 
 class SharedFileGroup(BaseModel):

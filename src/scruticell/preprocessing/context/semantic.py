@@ -9,6 +9,8 @@ from __future__ import annotations
 import re
 from typing import Any
 
+from scruticell.utils.paths import normalize_ancestry
+
 # ─── Token patterns (ordered by specificity) ───
 
 _PATTERNS: list[tuple[str, str, str]] = [
@@ -167,7 +169,7 @@ def extract_filename_meta(raw_filename: str, ancestry: str = "") -> FileNameMeta
 
     # Also extract from parent directory tokens in ancestry
     if ancestry:
-        ancestry_tokens = tokenize(ancestry.replace("/", " ").replace("\\", " "))
+        ancestry_tokens = tokenize(normalize_ancestry(ancestry).replace("/", " "))
         for token in ancestry_tokens:
             if token.lower() in _NON_BIO_TOKENS or token in meta.tokens:
                 continue

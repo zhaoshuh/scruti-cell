@@ -10,6 +10,7 @@ import re
 from collections import defaultdict
 
 from scruticell.preprocessing.models import FileSignalGroup, FileSignals
+from scruticell.utils.paths import normalize_ancestry
 
 
 def _extract_ancestry_pattern(ancestries: list[str]) -> str:
@@ -23,7 +24,7 @@ def _extract_ancestry_pattern(ancestries: list[str]) -> str:
     if len(ancestries) == 1:
         return ancestries[0]
 
-    parts = [a.replace("\\", "/").split("/") for a in ancestries]
+    parts = [normalize_ancestry(a).split("/") for a in ancestries]
     if not all(len(p) == len(parts[0]) for p in parts):
         return ancestries[0]
 

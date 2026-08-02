@@ -7,7 +7,7 @@ name = "scruticell"
 version = "0.1.0"
 description = "GEO single-cell data standardization pipeline: GSE accession to analysis-ready AnnData"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 license = {text = "MIT"}
 authors = [
     {name = "Scrut-Cell Team"}
@@ -45,6 +45,7 @@ dependencies = [
     "bionty>=0.7.0",
     "PyMuPDF>=1.23",
     "sentence-transformers>=3.0",
+    "deepagents>=0.6.0",
 ]
 
 [project.optional-dependencies]

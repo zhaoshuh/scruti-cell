@@ -1,19 +1,19 @@
 """Classifier sub-agent: classifies sample groups and modalities.
 
 Receives compact FileContextReport, returns L14 compact classification output.
+Modality definitions provided via deepagents skills ('modality_knowledge').
 """
 
 from __future__ import annotations
 
-from scruticell.preprocessing.prompts import build_classifier_prompt
+from scruticell.preprocessing.prompts import CLASSIFIER_SYSTEM_PROMPT
 
 
 def create_classifier_subagent(model: str = "deepseek-chat"):
     """Create the Classifier sub-agent with compact input/output.
 
     Input: Compact FileContextReport (field_value_maps + file_signal_groups)
-    Output (L14): Compact classification with GSM-deduplicated groups.
-    Modality definitions loaded from skills/modality_knowledge/SKILL.md at runtime.
+    Output: Compact classification with GSM-deduplicated groups.
     """
     from deepagents import CompiledSubAgent
 
@@ -26,6 +26,6 @@ def create_classifier_subagent(model: str = "deepseek-chat"):
             "Use this sub-agent for efficient, token-optimized classification."
         ),
         tools=[],
-        system_prompt=build_classifier_prompt(),
+        system_prompt=CLASSIFIER_SYSTEM_PROMPT,
         model=model,
     )

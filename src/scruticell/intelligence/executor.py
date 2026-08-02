@@ -23,6 +23,7 @@ from scruticell.intelligence.planner import (
 )
 from scruticell.intelligence.reporter import GseReport
 from scruticell.pipeline.state import PipelineState
+from scruticell.utils.paths import normalize_ancestry
 from scruticell.utils.tracing import traceable
 
 logger = logging.getLogger(__name__)
@@ -403,7 +404,6 @@ class PlanExecutor:
                 # Inject filename-derived metadata (Step 3, by base filename)
                 skip_fe = {"gsm_id", "role", "file_type", "format", "extension"}
                 file_basename = fk.rsplit("/", 1)[-1] if "/" in fk else fk
-                file_basename = file_basename.rsplit("\\", 1)[-1] if "\\" in file_basename else file_basename
                 for fe in (plan._filename_extractions or []):
                     if not isinstance(fe, dict):
                         continue
@@ -712,7 +712,7 @@ class PlanExecutor:
                 adata.obs_names = adata.obs_names.astype(str)
                 adata.var_names = adata.var_names.astype(str)
 
-                safe_label = batch_label.replace("/", "_").replace("\\", "_").replace(" ", "_")
+                safe_label = batch_label.replace("/", "_").replace(" ", "_")
                 output_path = output_dir / f"{report.gse_id}_{safe_label}_scruticell.h5ad"
                 logger.info("Writing per-batch h5ad: %s (%d cells x %d genes)", output_path, adata.n_obs, adata.n_vars)
                 adata.write_h5ad(output_path)
@@ -877,7 +877,7 @@ class PlanExecutor:
 
         # Extract the base filename from the file_key
         # e.g., "GSE312357/GSM9344289...tar.gz/filtered/.../matrix.mtx" -> "GSM9344289...tar.gz"
-        fk_parts = file_key.replace("\\", "/").split("/")
+        fk_parts = normalize_ancestry(file_key).split("/")
         base_name = ""
         for part in fk_parts:
             if any(part.lower().endswith(ext) for ext in (

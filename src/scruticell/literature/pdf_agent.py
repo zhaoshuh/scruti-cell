@@ -21,11 +21,12 @@ from typing import Any
 
 import numpy as np
 
+from scruticell.config import DATA_DIR
 from scruticell.utils.tokens import invoke_and_track
 
 logger = logging.getLogger(__name__)
 
-_CACHE_ROOT = Path("G:/scruticell/cache/pdf")
+_CACHE_ROOT = DATA_DIR / "cache" / "pdf"
 
 _EMBED_MODEL = None
 _EMBED_MODEL_NAME = "all-MiniLM-L6-v2"

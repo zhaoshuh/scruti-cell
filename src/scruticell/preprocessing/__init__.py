@@ -23,6 +23,7 @@ from scruticell.preprocessing.models import (
     ClassificationResult,
     CompactClassificationResult,
     CompactSampleGroup,
+    DemuxRule,
     EvidenceReport,
     FieldValueMap,
     FileContentPreview,
@@ -38,6 +39,8 @@ from scruticell.preprocessing.models import (
     SampleKey,
     SharedFileGroup,
     ValueGroup,
+    VerificationCheck,
+    VerificationReport,
 )
 from scruticell.preprocessing.readers.codegen import generate_reader_code
 
@@ -68,4 +71,7 @@ __all__ = [
     "AttributionResult",
     "SampleKey",
     "SharedFileGroup",
+    "DemuxRule",
+    "VerificationCheck",
+    "VerificationReport",
 ]

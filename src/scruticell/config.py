@@ -10,10 +10,11 @@ ROOT_DIR = Path(__file__).parent.parent.parent
 CONFIG_DIR = ROOT_DIR / "config"
 
 # Data download cache directory (relative to project, overridable via SCRUTICELL_DATA_DIR env)
-DATA_DIR = Path(os.environ.get("SCRUTICELL_DATA_DIR", "output"))
+_DEFAULT_DATA = str(Path.home() / ".scruticell" / "data")
+DATA_DIR = Path(os.environ.get("SCRUTICELL_DATA_DIR", _DEFAULT_DATA))
 
 # Default output directory
-OUTPUT_DIR = Path.cwd()
+OUTPUT_DIR = Path(os.environ.get("SCRUTICELL_OUTPUT_DIR", "output"))
 
 # Neo4j defaults (for enterprise version)
 NEO4J_URI = "bolt://localhost:7687"
@@ -74,7 +75,7 @@ ASPERA_TIMEOUT = 300
 
 # Browser-mimicking headers for NCBI downloads
 BROWSER_HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
                   "(KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,"
               "image/avif,image/webp,image/apng,*/*;q=0.8,"
@@ -94,3 +95,13 @@ CONFIDENCE_THRESHOLD_WARN = 0.60  # warn but proceed
 # Maximum matrix size for dense loading (before switching to sparse)
 MAX_DENSE_CELLS = 100_000
 MAX_DENSE_GENES = 30_000
+
+
+def get_output_path(gse_id: str) -> Path:
+    """Return the resolved output path for a GSE accession."""
+    return (Path.cwd() / OUTPUT_DIR / gse_id).resolve()
+
+
+def get_download_path(gse_id: str) -> Path:
+    """Return the resolved download path for a GSE accession."""
+    return get_output_path(gse_id) / "download"

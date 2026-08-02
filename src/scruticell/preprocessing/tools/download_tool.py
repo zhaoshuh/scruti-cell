@@ -30,7 +30,8 @@ def download_gse(gse_id: str, output_dir: str = "") -> dict:
             errors: list[str] — any download errors
     """
     if not output_dir:
-        output_directory = Path.cwd() / "output" / gse_id
+        from scruticell.config import get_output_path
+        output_directory = get_output_path(gse_id)
     else:
         output_directory = Path(output_dir)
 

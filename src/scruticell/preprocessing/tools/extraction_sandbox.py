@@ -65,6 +65,7 @@ def run_extraction_metadata(
             "print": print, "isinstance": isinstance,
             "Exception": Exception, "ValueError": ValueError,
             "TypeError": TypeError, "KeyError": KeyError,
+            "__import__": __import__,
         },
     }
 

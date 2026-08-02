@@ -165,18 +165,45 @@ CLI: scruticell preprocess GSE_ID
 | 功能 | 构建 `output/<GSE_ID>/preprocessed/` 目录树（按样本组织：`<sample_dir>/<modality>/`） |
 | 独占文件 | hard link 到对应 sample_group/modality 目录 |
 | 共享文件 | 同一源文件 hard link 到所有 ref_by_gsm 组 |
+| Demux 拆分 | `handle_demux_split()` — LLM code-gen → sandbox → verify → repair → fallback |
 
-#### 2.0.3 关键模型
+#### 2.0.3 质量保证
+
+**RubricMiddleware (实时质量门禁)**
+- 每次 classifier 输出后，grader 子 Agent 对照 rubric 评估
+- 调用 `verify_classification_tool()` 获取确定性结构检查结果
+- `needs_revision` → 反馈注入 Agent 循环 → 重新委托 classifier
+- `satisfied` → 通过
+- 默认 max_iterations=3
+
+**Verification + Repair (事后审计)**
+- `verify_extraction_results()` — 覆盖率/空结果/字段数量
+- `verify_demux_results()` — 文件存在/非空/sample_id 数量
+- `verify_classification()` — GSM 覆盖率/重叠/modality 缺失/demux_rule 完整性
+- `run_with_repair()` — code-gen → execute → verify → retry → fallback 通用模板
+
+**Checkpoint (会话恢复)**
+- `MemorySaver` checkpointer — 单次 `invoke()` 内的 LLM 调用失败时恢复
+- `config={"configurable": {"thread_id": gse_id}}` — per-GSE 线程隔离
+
+**Code Cache (代码复用)**
+- `modality_cache.code_cache` — SQLite 复合主键 `(fingerprint, code_type)`
+- `store_code_cache()` / `find_code_cache()` — 缓存 extraction_code / flowchart / demux_code
+- 相同 GSE 指纹 → 跳过 LLM 代码生成
+
+#### 2.0.4 关键模型
 
 | 模型 | 作用 |
 |------|------|
 | `SampleKey` | 归属 key（GSM ID 或推断复合 key），key↔sample_group 1:1 双射 |
 | `AttributionResult` | 纯信号收集：`candidates` (L0+L1) + `signals` (token) |
 | `FileSignalGroup` | 同指纹文件组，含 `per_file_gsm_id` + `content_preview` |
-| `ModalityDecision` | 模态判定，含 `has_shared/has_demux/files` |
-| `CompactSampleGroup` | 样本组，含 `sample_key/key_source/modalities` |
+| `ModalityDecision` | 模态判定，含 `has_shared/has_demux/demux_rule/demux_content_preview` |
+| `DemuxRule` | 拆分规则：`method` + `identifier_pattern` + `value_column` + `barcode_column` |
+| `CompactSampleGroup` | 样本组，含 `sample_key/key_source/file_prefix` |
 | `CompactClassificationResult` | 分类器输出，含 `shared_file_groups` |
 | `SharedFileGroup` | 跨样本共享文件 (ancestry + ref_by_gsm) |
+| `VerificationCheck` / `VerificationReport` | 验证结果模型（passed + checks + repair_attempts + fallback） |
 
 #### 2.0.4 模态知识 Skill 化
 

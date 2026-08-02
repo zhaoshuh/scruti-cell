@@ -1,0 +1,155 @@
+﻿geo_id,dataset_id,name,assay,suspension_type,cell_count,organism,omics_types
+GSE151302,01a8c684-c327-47a2-ba8c-adb0892c4c76,Single cell transcriptional and chromatin accessibility profiling redefine cellular heterogeneity in the adult human kidney - ATACseq,10x scATAC-seq,nucleus,27034,Homo sapiens,ATAC_seq
+GSE151302,6dbfae45-1638-4842-8e84-462acc8366a1,Single cell transcriptional and chromatin accessibility profiling redefine cellular heterogeneity in the adult human kidney - RNAseq,10x 5' v1,nucleus,19985,Homo sapiens,snRNA_seq
+GSE158328,0232e99c-00dd-4919-a26a-4545715a599f,Spatiotemporal analysis of human intestinal development at single-cell resolution: Fetal A7,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE158328,40fe3e03-cb51-4aae-8dad-5cefa50c6350,Spatiotemporal analysis of human intestinal development at single-cell resolution: Fetal A3,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE158328,74af8a22-0e68-4483-8a09-9ec5b5961b94,Spatiotemporal analysis of human intestinal development at single-cell resolution: Adult A2,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE158328,87a64267-6d5c-4e36-9c5a-5fef3988116b,Spatiotemporal analysis of human intestinal development at single-cell resolution: Fetal A6,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE158328,7f17c607-720a-4127-902a-551195bc901e,Spatiotemporal analysis of human intestinal development at single-cell resolution: Adult A1,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE158328,9a78f716-552d-4f25-a7d5-95bbf44d4d05,Spatiotemporal analysis of human intestinal development at single-cell resolution: Fetal A8,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE158328,9ac8fc3e-cae0-4ace-b952-68866b3f023b,Spatiotemporal analysis of human intestinal development at single-cell resolution: Endothelium,10x 3' v3,cell,4154,Homo sapiens,scRNA_seq
+GSE158328,9c8cf5c7-6528-4bf0-b482-7ef38e55fe27,Spatiotemporal analysis of human intestinal development at single-cell resolution: Epithelium,10x 3' v3,cell,17622,Homo sapiens,scRNA_seq
+GSE158328,9f2c8edb-7b88-42b1-b2f4-32ed4792d972,Spatiotemporal analysis of human intestinal development at single-cell resolution: Fetal A4,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE158328,a40d9047-5990-4aa1-aac8-2ff55649dab5,Spatiotemporal analysis of human intestinal development at single-cell resolution: Neural,10x 3' v3,cell,4144,Homo sapiens,scRNA_seq
+GSE158328,b3b1f01a-8383-4bb2-892f-77825efbf903,Spatiotemporal analysis of human intestinal development at single-cell resolution: Fibroblasts,10x 3' v3,cell,24081,Homo sapiens,scRNA_seq
+GSE158328,c2d996fe-bd30-4c59-a443-8a3e168bcda7,Spatiotemporal analysis of human intestinal development at single-cell resolution: All cells,10x 3' v3,cell,76592,Homo sapiens,scRNA_seq
+GSE158328,bbf977be-6c4f-4e38-bff6-045962afb641,Spatiotemporal analysis of human intestinal development at single-cell resolution: Immune,10x 3' v3,cell,2199,Homo sapiens,scRNA_seq
+GSE158328,c99452ae-365a-4c2c-b7fa-f403bb0bc5e5,Spatiotemporal analysis of human intestinal development at single-cell resolution: Pericytes,10x 3' v3,cell,4163,Homo sapiens,scRNA_seq
+GSE158328,f5978acd-775e-4608-acb9-d3f2d51c8708,Spatiotemporal analysis of human intestinal development at single-cell resolution: Muscularis,10x 3' v3,cell,4211,Homo sapiens,scRNA_seq
+GSE158328,f010aff5-8063-49b0-aef1-8d2ed87425f5,Spatiotemporal analysis of human intestinal development at single-cell resolution: Myofibroblasts and Mesothelium,10x 3' v3,cell,2833,Homo sapiens,scRNA_seq
+GSE158328,fd6f06f5-6046-4dad-b732-4cbe8a57a653,Spatiotemporal analysis of human intestinal development at single-cell resolution: Fetal A9,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE166895,2d598393-8d5d-4dbc-8973-24a5e57d5d5a,Fetal Bone Marrow (10x) - Down Syndrome,10x 5' v1,cell,16743,Homo sapiens,scRNA_seq
+GSE166895,47362a52-4a8c-48ae-8968-00d4e57d1dfc,Fetal Bone Marrow (10x),10x 3' v2; 10x 5' v1,cell,103228,Homo sapiens,scRNA_seq
+GSE166895,7b278368-e146-4811-bc55-b2b022586de3,Human Fetal Bone Marrow (CITE-seq),10x 3' v3,cell,8978,Homo sapiens,CITE_seq; scRNA_seq
+GSE166895,fa6fb10c-74c3-4ba9-90cd-27d754225d5d,"CD34+ Fetal Bone Marrow, Fetal Liver, Cord Blood (CITE-seq)",10x 3' v3,cell,27998,Homo sapiens,CITE_seq; scRNA_seq
+GSE176078,075b9b95-c24c-4c02-ae8c-ae5381418e87,A single-cell and spatially-resolved atlas of human breast cancers - B_cells,10x 3' v2; 10x 3' v3; 10x 5' v1,cell,3206,Homo sapiens,scRNA_seq
+GSE176078,0e60d1bf-5366-47ba-a01c-7011dade6b76,A single-cell and spatially-resolved atlas of human breast cancers - Stromal,10x 3' v2; 10x 3' v3; 10x 5' v1,cell,19601,Homo sapiens,scRNA_seq
+GSE176078,0b8e5229-5ab6-4c9d-b01a-3192fd716ca5,A single-cell and spatially-resolved atlas of human breast cancers - Plasmablasts,10x 3' v2; 10x 3' v3; 10x 5' v1,cell,3524,Homo sapiens,scRNA_seq
+GSE176078,0fa1249e-a670-4534-b51c-69218dce7889,CID4465,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE176078,22a27631-aecf-463b-86c6-a8334a2f2cf2,A single-cell and spatially-resolved atlas of human breast cancers,10x 3' v2; 10x 3' v3; 10x 5' v1,cell,100064,Homo sapiens,scRNA_seq
+GSE176078,27a4cfeb-fc26-4b46-8320-d84e17d1004b,A single-cell and spatially-resolved atlas of human breast cancers - Myeloid,10x 3' v2; 10x 3' v3; 10x 5' v1,cell,9675,Homo sapiens,scRNA_seq
+GSE176078,58a6f5de-f847-495d-84a5-4766c76dcbc0,CID44971,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE176078,5d904a8a-9190-43d6-8779-f167bf508244,1142243F,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE176078,6cdeab96-fd27-40c9-a75a-cb94a41ec10b,1160920F,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE176078,91d821e4-403c-4de8-bed8-f798ad33d93a,CID4535,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE176078,9c62cb12-39e5-4cf4-a030-802ef136d044,CID4290,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE176078,de3c0ed3-5aab-4fd5-be2d-ecaa1b598a18,A single-cell and spatially-resolved atlas of human breast cancers - Cancer_epithelial,10x 3' v2; 10x 5' v1,cell,24489,Homo sapiens,scRNA_seq
+GSE176078,fff5d349-6bf8-4a6d-8124-486e2c9daf20,A single-cell and spatially-resolved atlas of human breast cancers - T_cells,10x 3' v2; 10x 3' v3; 10x 5' v1,cell,35214,Homo sapiens,scRNA_seq
+GSE192742,140766fa-0b76-48ab-bf0b-61d829a3275e,Liver Visium of Mouse sample JBO001,Visium Spatial Gene Expression V1,na,4992,Mus musculus,Spatial_Transcriptomics
+GSE192742,19d5c09b-1a74-41c5-976e-9ad723257ffd,Liver Visium of Mouse sample JBO004,Visium Spatial Gene Expression V1,na,4992,Mus musculus,Spatial_Transcriptomics
+GSE192742,1cb0b9ec-19ba-44a2-900e-3d6782f00da8,Liver Visium of Mouse sample JBO003,Visium Spatial Gene Expression V1,na,4992,Mus musculus,Spatial_Transcriptomics
+GSE192742,2e983acd-6deb-4221-afae-249a08b63dd3,Liver Visium of Human H37,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE192742,392c10c6-166d-4e79-892b-c04016a94a7e,Liver Visium of Human H35 (sample1),Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE192742,3fea9049-d7da-43f0-80d9-9284e3d299db,Liver Visium of Mouse sample JBO006,Visium Spatial Gene Expression V1,na,4992,Mus musculus,Spatial_Transcriptomics
+GSE192742,542d7104-468a-4af3-b0d8-33986d6c89dd,Liver Visium of Mouse sample JBO012,Visium Spatial Gene Expression V1,na,4992,Mus musculus,Spatial_Transcriptomics
+GSE192742,4a34293d-929f-41cb-bdc1-ff707e3318b6,Pooled NAFLD mouse liver Visium data,Visium Spatial Gene Expression V1,na,6671,Mus musculus,Spatial_Transcriptomics
+GSE192742,6da1a5a2-9a57-40e9-bb22-003ef183661c,Myeloid cells from human liver dataset,10x 3' v2; 10x 3' v3,cell,40821,Homo sapiens,scRNA_seq
+GSE192742,8aa3f8d9-b5fb-4d69-823c-f8df73a08fc4,Liver Visium of Human H38,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE192742,9340b688-2e28-42ab-bcf6-0d574e04af94,Liver Visium of Human H36,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE192742,a2ebec68-7e59-4c44-a88f-c9ef87139d2e,All cells from human liver dataset,10x 3' v2; 10x 3' v3,cell; nucleus,167598,Homo sapiens,snRNA_seq
+GSE192742,b3773f9d-db5e-420d-a27e-479edd2d43b3,CD45 negative cells from human liver dataset,10x 3' v2; 10x 3' v3,cell; nucleus,15481,Homo sapiens,snRNA_seq
+GSE192742,ba1dada0-f48d-4893-b9a9-ef0892a6a713,Liver Visium of Human H35 (sample2),Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE192742,bfdfbe88-466f-4a21-bb25-2df505be5c0a,Pooled healthy StSt mouse liver Visium data,Visium Spatial Gene Expression V1,na,5862,Mus musculus,Spatial_Transcriptomics
+GSE192742,ca5ac986-633d-42f5-bb59-f0a69095fbda,Liver Visium of Mouse sample CAP002,Visium Spatial Gene Expression V1,na,4992,Mus musculus,Spatial_Transcriptomics
+GSE192742,d5d8d3c2-4454-4828-b97c-f1def9a60877,Liver Visium of Mouse sample JBO010,Visium Spatial Gene Expression V1,na,4992,Mus musculus,Spatial_Transcriptomics
+GSE192742,d607a8e4-4468-4428-97ce-aa812222665c,Liver Visium of Mouse sample JBO002,Visium Spatial Gene Expression V1,na,4992,Mus musculus,Spatial_Transcriptomics
+GSE192742,e84dbcac-5abd-4375-b591-4386b61483e5,Pooled human liver Visium data,Visium Spatial Gene Expression V1,na,4333,Homo sapiens,Spatial_Transcriptomics
+GSE192742,f23952d7-442e-40b9-833f-9a1d95137a6b,Liver Visium of Mouse sample JBO009,Visium Spatial Gene Expression V1,na,4992,Mus musculus,Spatial_Transcriptomics
+GSE192742,f70edcee-38a7-403f-94ca-b4bbb8e61bf3,Lymphoid cells from human liver dataset,10x 3' v2; 10x 3' v3,cell; nucleus,105790,Homo sapiens,snRNA_seq
+GSE195460,473d2e1c-a579-4682-96aa-b5b166d7b23e,Human kidney cortex snRNA-seq data from donors with and without diabetic kidney disease,10x 3' v3; 10x 5' v1,nucleus,39176,Homo sapiens,snRNA_seq
+GSE195460,41ae2dd6-39c6-4bd7-bcb3-1a6679916efe,Human kidney cortex snATAC-seq data from donors with and without diabetic kidney disease,10x scATAC-seq,nucleus,37747,Homo sapiens,ATAC_seq
+GSE195665,26ac3f4a-fe21-4056-8980-f74c0de52cff,visium spatial - sample v03,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE195665,275526cc-c493-4392-b3f6-2b4e4aa82e7d,scRNA-seq data - myeloid cells,10x 3' v2; 10x 3' v3,cell,30789,Homo sapiens,scRNA_seq
+GSE195665,296226b4-4916-44a3-97cc-60bdfb95f2e1,scRNA-seq data - all cells,10x 3' v2; 10x 3' v3,cell,714331,Homo sapiens,scRNA_seq
+GSE195665,21959d4d-3af8-406f-aa50-caecefcc7672,snRNA-seq data - all cells,10x 3' v2; 10x 3' v3,nucleus,117346,Homo sapiens,snRNA_seq
+GSE195665,393167fd-0f6e-4b8d-87b0-ffae1caf9605,visium spatial - sample v06,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE195665,3b05271d-77cc-4f2a-996b-23d8dd5712a9,scRNA-seq data - fibroblasts,10x 3' v2; 10x 3' v3,cell,208390,Homo sapiens,scRNA_seq
+GSE195665,40f1f4ee-62ed-43b2-9fa2-a22e93c68c7a,scRNA-seq data - epithelial cells,10x 3' v2; 10x 3' v3,cell,240804,Homo sapiens,scRNA_seq
+GSE195665,2edb2873-f079-4741-80f2-24f82fb623af,scRNA-seq data - lymphatic cells,10x 3' v2; 10x 3' v3,cell,8982,Homo sapiens,scRNA_seq
+GSE195665,35d89ed9-6dfe-4bc0-a330-7c838e10aba1,scRNA-seq data - perivascular cells,10x 3' v2; 10x 3' v3,cell,52638,Homo sapiens,scRNA_seq
+GSE195665,440f840c-0614-44e9-9ce1-e9e0bff106ba,visium spatial - sample v07,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE195665,56279f26-6681-4082-b5b8-dc80e853cf9d,visium spatial - sample v01,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE195665,5960dd52-90e6-418f-9d04-45babcc47292,visium spatial - sample v04,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE195665,63dfaacd-c2b6-48ab-aafe-bda743dc9b22,visium spatial - sample v10,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE195665,81bedfd5-8add-4d05-a4cf-f69d40453469,visium UMAP - all samples,Visium Spatial Gene Expression V1,na,23686,Homo sapiens,Spatial_Transcriptomics
+GSE195665,90377993-524f-40d2-8295-6317288ffca6,scRNA-seq data - B cells,10x 3' v2; 10x 3' v3,cell,12510,Homo sapiens,scRNA_seq
+GSE195665,93bdc48a-54ec-4b1b-828b-b262a8224062,visium spatial - sample v05,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE195665,bdc0daca-3fcf-4c05-9d46-330e038b820c,scRNA-seq data - T cells,10x 3' v2; 10x 3' v3,cell,76567,Homo sapiens,scRNA_seq
+GSE195665,db31bb77-d40e-4ee1-8459-e360ae8f21d0,visium spatial - sample v02,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE195665,e9041e47-b470-4c43-a4db-0f730560136b,scRNA-seq data - vascular cells,10x 3' v2; 10x 3' v3,cell,83651,Homo sapiens,scRNA_seq
+GSE195665,ecf3b123-eb32-4da9-8f9e-b5ec9c1bd609,visium spatial - sample v09,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE195665,f85fb730-4f32-4b6e-8063-04681757a0ec,visium spatial - sample v08,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE196235,74ec3a77-f1ff-4e90-af45-b8937cea0a8f,Joint scRNA-seq and scATAC-seq atlas of the adult human retina,10x multiome,nucleus,51645,Homo sapiens,Multiome_RNA_ATAC
+GSE204684,06ee790a-829c-4c18-afa8-2dc9d3f1579b,10x scRNA-seq from human cortex,10x multiome,nucleus,45549,Homo sapiens,Multiome_RNA_ATAC
+GSE207848,12fef5e5-c5eb-428a-84ac-f9156c10da9c,BrainAgingSpatialAtlas_Imputed,MERFISH,na,378918,Mus musculus,Spatial_Transcriptomics
+GSE207848,752ed29d-bbb0-45bd-9c57-19edf68ef73e,BrainAgingSpatialAtlas_snRNAseq,10x 3' v3,nucleus,79667,Mus musculus,snRNA_seq
+GSE207848,9a610e48-3fb3-4813-9cd0-ec5ae190e49c,BrainAgingSpatialAtlas_MERFISH_LPS,MERFISH,na,345934,Mus musculus,Spatial_Transcriptomics
+GSE207848,c93d78c2-ee17-4504-8d1c-17cf093ad7b5,BrainAgingSpatialAtlas_MERFISH,MERFISH,na,378918,Mus musculus,Spatial_Transcriptomics
+GSE240429,02eda8d2-bd30-4046-9fa3-24755cb8dd24,Hepatocyte-2 cells from human healthy donor liver samples,10x 3' v2; 10x 5' v1,cell,13635,Homo sapiens,scRNA_seq
+GSE240429,0ce2d669-da27-48dc-bb73-22e822188cd2,B cells from human healthy donor liver samples,10x 3' v2; 10x 5' v1,cell,1250,Homo sapiens,scRNA_seq
+GSE240429,085648af-883b-4969-851a-046d9dcedf49,Visium spatial data from liver of primary sclerosing cholangitis patient; sample PSC011_B1,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE240429,1d929cac-aba7-4346-a95c-f7c32f148221,Visium spatial data from liver of primary sclerosing cholangitis patient; sample PSC011_D1,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE240429,2188e7ff-cc0b-451b-8e3a-dbd337338134,Natural killer T cells from human healthy donor liver samples,10x 3' v2; 10x 5' v1,cell,16665,Homo sapiens,scRNA_seq
+GSE240429,119777da-ed00-4c76-a20b-4d6c804427e9,Stellate cells from human healthy donor liver samples,10x 3' v2; 10x 5' v1,cell,1417,Homo sapiens,scRNA_seq
+GSE240429,34702b40-d0ac-4ec2-8871-776ca012efd0,All cells types from snRNA-seq of human primary sclerosing cholangitis patients and healthy controls,10x 3' v3,nucleus,105780,Homo sapiens,snRNA_seq
+GSE240429,36122151-f8f8-43a6-8dd5-acd0746586b2,Visium spatial data from human healthy liver donor; sample C73_A1,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE240429,4c67a799-0db0-4ddd-ae9d-7ddf54b41935,Macrophage cells from human healthy donor liver samples,10x 3' v2; 10x 5' v1,cell,11127,Homo sapiens,scRNA_seq
+GSE240429,4ac4ef10-fa02-452c-a6b6-cbfb0c6159c8,Hepatocyte-1 cells from human healthy donor liver samples,10x 3' v2; 10x 5' v1,cell,53015,Homo sapiens,scRNA_seq
+GSE240429,58821f45-6468-4766-af0b-8cb164ae71d7,Cholangiocytes from human healthy donor liver samples,10x 3' v2; 10x 5' v1,cell,1011,Homo sapiens,scRNA_seq
+GSE240429,878d13cd-2769-45c6-bba9-25bd5b651aa0,Visium spatial data from human healthy liver donor; sample C73_D1,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE240429,975d4575-5e70-497e-b609-182a1e21ac8e,Visium spatial data from liver of primary sclerosing cholangitis patient; sample PSC011_C1,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE240429,95dbfcf7-a456-4fa6-aef0-f66786d59bc5,Endothelial cells from human healthy donor liver samples,10x 3' v2; 10x 5' v1,cell,9422,Homo sapiens,scRNA_seq
+GSE240429,adbebdbd-d935-4d49-8d42-a5f42b36e2b0,Visium spatial data from human healthy liver donor; sample C73_C1,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE240429,c12dd8cc-56a6-4b60-812a-8816c415b235,Visium spatial data from human healthy liver donor; sample C73_B1,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE240429,c8c7681f-8575-48cd-8f8b-a3c44c81572b,Visium spatial data from liver of primary sclerosing cholangitis patient; sample PSC011_A1,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE240429,ff713455-e6b7-45b3-b2dd-1c9dd26251f6,All cells types from scRNA-seq of human primary sclerosing cholangitis patients and healthy controls,10x 5' v1; 10x 5' v2,cell,89637,Homo sapiens,scRNA_seq
+GSE241468,a1e971da-5c35-46fd-acc3-b742735ec7d9,Context-aware single-cell multiomics approach identifies cell-type-specific lung cancer susceptibility genes.,10x multiome,nucleus,116778,Homo sapiens,Multiome_RNA_ATAC
+GSE244594,31798b24-255e-4726-8805-66507589ccb8,snRNA-seq analyses of breast tissues of healthy women of diverse genetic ancestry,10x multiome,nucleus,51367,Homo sapiens,Multiome_RNA_ATAC
+GSE252772,29eec938-c857-4dc0-a3c1-db864bdea6dd,Multi-omic and spatial analysis of mouse kidneys highlights sex-specific differences in gene regulation across the lifespan,10x multiome,nucleus,203139,Mus musculus,Multiome_RNA_ATAC
+GSE254185,0fe5eee4-380d-4bd9-8735-ada5e03021d9,snRNA-seq of human kidney with ureteral obstruction,10x multiome,nucleus,46957,Homo sapiens,Multiome_RNA_ATAC
+GSE268630,883270e9-41e6-4c2c-b352-b15c292d2a34,snRNA-seq of the developing human retina,10x multiome,nucleus,226506,Homo sapiens,Multiome_RNA_ATAC
+GSE268807,799e0777-8fe4-4d14-9183-01a7314923ec,snRNA-seq data from eight focal cortical dysplasia donors,10x multiome,nucleus,61525,Homo sapiens,Multiome_RNA_ATAC
+GSE271304,05f8904a-2ac7-4cca-915c-2580b6ad9f60,thymus visium sample WSSS_F_IMMsp9838711,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,021034d1-0a41-4736-bb42-db771674c5e7,thymus visium sample WSSS_THYst9142086,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,0e3a2528-a698-42e9-88ac-bfb8750c7314,thymus visium sample WSSS_F_IMMsp11765868,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,12cc6c69-2ff6-499e-9679-c6716d299a09,thymus visium sample WSSS_F_IMMsp11765867,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,1fb779e3-6207-41dd-a157-0311380ba84d,thymus visium sample WSSS_F_IMMsp11604689,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,1ddf5a78-2994-4df8-a29e-824f2cf4c5d6,thymus scRNA-seq atlas - B cell subset,10x 3' v2; 10x 5' v1; 10x 5' v2,cell,3460,Homo sapiens,scRNA_seq
+GSE271304,2f48a169-5b03-4d41-8d9f-3bd2198e511d,thymus visium sample WSSS_THYst9518032,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,409826ac-9b0d-4ac1-bcc7-f71f5f95a9f0,thymus visium sample WSSS_THYst9518030,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,3cfa318b-b971-4295-abed-1bb9d3b63685,thymus visium sample WSSS_THYst9518033,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,42cb67f3-c6a8-473d-817f-4e52843c2ee5,thymus scRNA-seq atlas,10x 3' v2; 10x 3' v3; 10x 5' v1; 10x 5' v2,cell,482651,Homo sapiens,scRNA_seq
+GSE271304,54716bd9-72ac-4e7b-a041-ecae791cf217,thymus visium sample WSSS_THYst9142088,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,5d09585a-4198-45b3-b44c-bec344b69441,thymus visium sample TA11486164,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,67adf9f0-8ad2-4688-afcd-0221bdb44f91,thymus visium sample WSSS_F_IMMsp11604690,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,6e8630b3-b4a0-4463-b925-8f04e7b2cec0,thymus visium sample TA11486162,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,72b75311-9720-4873-931d-9ead8595dfe3,thymus visium sample WSSS_F_IMMsp11604688,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,6e0c3112-bbaa-4702-a2bd-1fe921ab1cc6,thymus scRNA-seq atlas - fibroblast subset,10x 3' v2; 10x 3' v3; 10x 5' v1; 10x 5' v2,cell,20779,Homo sapiens,scRNA_seq
+GSE271304,748d4c0d-307f-4c8c-a7a3-064d399ce96a,thymus visium sample TA11556496,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,7bb2c564-592d-4afc-880d-9d08fbfb0701,thymus visium sample TA11556492,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,875f797e-ee7e-43e0-b838-239522133ba8,thymus visium sample TA11486163,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,8d9d916a-8031-40f3-99f8-ead96050db42,thymus visium sample WSSS_F_IMMsp11765870,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,8cd7a073-f8ed-4837-8269-98c258b20110,merged thymus visium fetal samples,Visium Spatial Gene Expression V1,na,12918,Homo sapiens,Spatial_Transcriptomics
+GSE271304,7f1d199e-9ae1-4dd4-9bc9-154954318d2c,thymus visium sample TA11556495,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,952f4b91-adca-44a7-89fc-b7104305a845,thymus visium sample TA11556494,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,9515c60b-a7e6-4316-b558-eb88fd508c7e,thymus visium sample WSSS_THYst9142087,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,9532bbf2-da9f-4cc1-bf52-df9a3dfea3d1,merged thymus visium pediatric samples,Visium Spatial Gene Expression V1,na,25593,Homo sapiens,Spatial_Transcriptomics
+GSE271304,a1d2e2db-74e2-4a76-9edb-7916c45f3a0b,thymus visium sample WSSS_F_IMMsp11604686,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,a28cc1b6-eb42-4635-9a1e-0945149d3d13,thymus scRNA-seq atlas - myeloid p2 subset,10x 3' v2; 10x 3' v3; 10x 5' v1; 10x 5' v2,cell,843,Homo sapiens,scRNA_seq
+GSE271304,a14a4500-db13-41b5-bd55-9cf6fe1de008,thymus scRNA-seq atlas - smooth muscle cell subset,10x 3' v2; 10x 3' v3; 10x 5' v1; 10x 5' v2,cell,10019,Homo sapiens,scRNA_seq
+GSE271304,9e93e320-fecf-4f29-88b0-f052c945a335,thymus scRNA-seq atlas - T cell subset,10x 3' v2; 10x 3' v3; 10x 5' v1; 10x 5' v2,cell,391462,Homo sapiens,scRNA_seq
+GSE271304,a77dbeb5-c627-447b-962b-01dd88fe24c5,thymus visium sample TA11486161,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,ad4813c6-33ce-48e6-8505-8bbaca5408c5,thymus scRNA-seq atlas - thymic epithelial cell subset,10x 3' v2; 10x 3' v3; 10x 5' v1; 10x 5' v2,cell,25726,Homo sapiens,scRNA_seq
+GSE271304,b69f3964-25bb-46f5-bea1-3599ad052e16,thymus visium sample WSSS_F_IMMsp11604687,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,bacb2141-3d6d-4604-b2de-8f2e8acc0416,thymus visium sample WSSS_F_IMMsp10864183,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,df1e3368-67f5-49ce-92cd-fe4f13298b4f,thymus scRNA-seq atlas - myeloid p1 subset,10x 3' v2; 10x 3' v3; 10x 5' v1; 10x 5' v2,cell,2923,Homo sapiens,scRNA_seq
+GSE271304,e4d6e467-ec86-466c-98bc-fb6c5204e119,thymus visium sample WSSS_F_IMMsp9838716,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,c9e64bf3-bf83-4f9a-b0d8-194411ef05e2,thymus visium sample TA11556493,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,f483be56-16e7-42ee-b476-132854b14813,thymus scRNA-seq atlas - vascular cell subset,10x 3' v2; 10x 3' v3; 10x 5' v1; 10x 5' v2,cell,26313,Homo sapiens,scRNA_seq
+GSE271304,fab29cbc-dad2-4644-abaf-5281fdc7fb7d,thymus visium sample WSSS_THYst9142089,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE271304,fe8bf587-e198-4ff7-93a0-9fc6cf3b583c,thymus visium sample WSSS_F_IMMsp11604685,Visium Spatial Gene Expression V1,na,4992,Homo sapiens,Spatial_Transcriptomics
+GSE305153,54ad14be-a4df-4683-8c69-6346e2a25db9,"Human fetal cortex in Down syndrome, 10X-Multiome (snRNA/ATACseq), subsetted excitatory lineage",10x multiome,nucleus,215680,Homo sapiens,Multiome_RNA_ATAC
+GSE305153,f16c25da-15bd-46a4-9a3f-17093f27a2f1,"Human fetal cortex in Down syndrome, 10X-Multiome (snRNA/ATACseq), complete dataset",10x multiome,nucleus,248998,Homo sapiens,Multiome_RNA_ATAC
+GSE321762,0fba368a-69fd-422e-b500-e3a3e2883581,SMC RNA dataset,10x 3' v3,cell,74306,Mus musculus,scRNA_seq
+GSE321762,554c1b6a-9405-418d-810c-388830eae769,SMC scATAC-seq dataset,10x scATAC-seq,nucleus,87718,Mus musculus,ATAC_seq
+GSE321762,92f93b05-aca9-4859-8044-05859c17f95c,Full RNA dataset,10x 3' v3,cell,124252,Mus musculus,scRNA_seq

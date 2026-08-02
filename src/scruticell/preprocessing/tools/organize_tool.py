@@ -12,6 +12,8 @@ import os
 import re
 from pathlib import Path
 
+from scruticell.utils.paths import normalize_ancestry
+
 logger = logging.getLogger(__name__)
 
 # Module-level cache — walk download_dir once, reuse for all scans
@@ -142,7 +144,7 @@ def _scan_gsm_files(
     seen: set[str] = set()
 
     for fp in _all_file_cache[cache_key]:
-        ancestry = str(fp.relative_to(download_root)).replace("\\", "/")
+        ancestry = normalize_ancestry(str(fp.relative_to(download_root)))
 
         if _is_noise(ancestry, modality):
             continue
@@ -182,12 +184,18 @@ def _hardlink_or_copy(src: Path, dst: Path) -> bool:
         return True
     except (OSError, NotImplementedError):
         try:
-            import shutil
-            shutil.copy2(str(src), str(dst))
-            return False
-        except Exception as e:
-            logger.warning("Failed to copy %s → %s: %s", src, dst, e)
-            return False
+            if dst.exists():
+                dst.unlink()
+            os.symlink(str(src.resolve()), str(dst))
+            return True
+        except (OSError, NotImplementedError):
+            try:
+                import shutil
+                shutil.copy2(str(src), str(dst))
+                return False
+            except Exception as e:
+                logger.warning("Failed to copy %s → %s: %s", src, dst, e)
+                return False
 
 
 def _resolve_source(src_str: str, download_root: Path) -> Path | None:
@@ -216,9 +224,60 @@ def _link_file_entry(
     return mod_files, source_files, linked
 
 
-def _handle_demux(entry: dict, download_root: Path, mod_dir: Path, modality_name: str):
-    logger.warning("Demux file handling not yet implemented for: %s", entry.get("ancestry", ""))
-    return [], [], 0
+def _handle_demux(entry: dict, demux_rule: dict, modality_name: str,
+                  preprocessed_dir: Path, download_root: Path,
+                  content_preview: dict | None = None) -> list[dict]:
+    """Split a demux file and link sub-files to sample directories.
+    
+    Returns list of {sample_id, output_path, role, format} for updating metadata.
+    """
+    from scruticell.preprocessing.tools.demux_splitter import handle_demux_split
+    from scruticell.preprocessing.verification import verify_demux_results
+    import shutil
+
+    source_path = entry.get("source_path", "")
+    if not source_path:
+        return []
+    src = _resolve_source(source_path, download_root)
+    if not src:
+        return []
+
+    tmp_dir = preprocessed_dir / "_demux_tmp"
+    tmp_dir.mkdir(parents=True, exist_ok=True)
+
+    split_files = handle_demux_split(
+        str(src), str(tmp_dir),
+        demux_rule, modality_name,
+        content_preview=content_preview,
+    )
+
+    # Verify demux output
+    verif = verify_demux_results(split_files, demux_rule)
+    if not verif.passed:
+        logger.warning("Demux verification failed: %s", verif.failure_summary())
+
+    results = []
+    for sf in split_files:
+        sid = sf.get("sample_id", "unknown")
+        out_path = Path(sf.get("output_file", ""))
+        if not out_path.exists():
+            continue
+        role = _assign_role(str(out_path), out_path, modality_name)
+        fmt = _format_from_role(out_path, role)
+        results.append({
+            "sample_id": sid,
+            "output_file": str(out_path),
+            "role": role,
+            "format": fmt,
+        })
+
+    # Cleanup temp dir
+    try:
+        shutil.rmtree(tmp_dir, ignore_errors=True)
+    except Exception:
+        pass
+
+    return results
 
 
 def organize_output(
@@ -240,7 +299,8 @@ def organize_output(
         └── unclassified/
     """
     if not output_dir:
-        base_dir = Path.cwd() / "output" / gse_id
+        from scruticell.config import get_output_path
+        base_dir = get_output_path(gse_id)
     else:
         base_dir = Path(output_dir)
 
@@ -312,6 +372,10 @@ def organize_output(
             for gsm_id in rg["gsm_ids"]:
                 gsm_to_dir[gsm_id] = rg["dir_name"]
 
+        # ── Phase 1: per-sample normal files (collect demux tasks) ──
+        demux_tasks: list[dict] = []
+        seen_demux_sources: set[str] = set()
+
         for rg in resolved_groups:
             dir_name = rg["dir_name"]
             sample_dir = preprocessed_dir / dir_name
@@ -345,7 +409,19 @@ def organize_output(
 
                 for entry in file_entries:
                     if modality_data.get("has_demux"):
-                        mod_f, src_f, linked = _handle_demux(entry, download_root, mod_dir, modality_name)
+                        src = entry.get("source_path", "")
+                        if src and src not in seen_demux_sources:
+                            seen_demux_sources.add(src)
+                            demux_rule = modality_data.get("demux_rule") or {}
+                            if isinstance(demux_rule, dict):
+                                demux_tasks.append({
+                                    "source_path": src,
+                                    "ancestry": entry.get("ancestry", ""),
+                                    "demux_rule": demux_rule,
+                                    "modality": modality_name,
+                                    "gsm_ids": rg["gsm_ids"],
+                                    "content_preview": modality_data.get("demux_content_preview"),
+                                })
                     else:
                         mod_f, src_f, linked = _link_file_entry(entry, download_root, mod_dir, modality_name)
                     mod_files.extend(mod_f)
@@ -400,6 +476,35 @@ def organize_output(
                 if _hardlink_or_copy(src, mod_dir / src.name):
                     total_files_linked += 1
 
+        # ── Phase 2: demux post-processing ──
+        for task in demux_tasks:
+            entry = {"source_path": task["source_path"], "ancestry": task["ancestry"]}
+            split_files = _handle_demux(
+                entry, task["demux_rule"], task["modality"],
+                preprocessed_dir, download_root,
+                content_preview=task.get("content_preview"),
+            )
+            for sf in split_files:
+                sid = sf["sample_id"]
+                dir_name = gsm_to_dir.get(sid) or _safe_name(sid)
+                dst_dir = preprocessed_dir / dir_name / task["modality"]
+                dst_dir.mkdir(parents=True, exist_ok=True)
+                src = Path(sf["output_file"])
+                if _hardlink_or_copy(src, dst_dir / src.name):
+                    total_files_linked += 1
+
+                # Update sample metadata with demux sub-file
+                for sample_info in all_sample_dirs:
+                    if sample_info["dir_name"] == dir_name:
+                        mod_info = sample_info["modalities"].setdefault(task["modality"], {})
+                        mod_info.setdefault("files", []).append({
+                            "path": f"{task['modality']}/{src.name}",
+                            "role": sf.get("role", "other"),
+                            "format": sf.get("format", "other"),
+                            "reader_code": "",
+                        })
+                        break
+
         # Unclassified
         if unclassified_files:
             uncl_dir = preprocessed_dir / "unclassified"
@@ -415,13 +520,16 @@ def organize_output(
                 gsm_ids = [gsm_ids]
             key_source = group.get("key_source", "")
             sample_key = group.get("sample_key", "")
+            mods = group.get("modalities", {})
+            if isinstance(mods, list):
+                mods = {m.get("modality", "other"): m for m in mods if isinstance(m, dict)}
             logical_groups.append({
                 "note": group.get("note", ""),
                 "gsm_ids": gsm_ids,
                 "sample_key": sample_key,
                 "key_source": key_source or ("gsm_id" if gsm_ids else "inferred_composite"),
                 "dir_name": _safe_name(sample_key) if key_source == "inferred_composite" else None,
-                "modalities": list(group.get("modalities", {}).keys()),
+                "modalities": list(mods.keys()),
             })
 
         manifest = {

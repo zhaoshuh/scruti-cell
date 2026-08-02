@@ -341,7 +341,8 @@ def _extract_supplementary_refs(gse_id: str) -> list[dict[str, str]]:
     Used by the inspect command when --no-download is specified.
     Returns list of {filename, gsm} dicts.
     """
-    dest = Path.cwd() / "output" / gse_id / "download"
+    from scruticell.config import get_download_path
+    dest = get_download_path(gse_id)
     soft_gz_path = dest / f"{gse_id}_family.soft.gz"
     if not soft_gz_path.exists():
         logger.warning("SOFT file not cached for %s, cannot extract supplementary refs", gse_id)
@@ -361,7 +362,8 @@ def download_node(state: PipelineState) -> dict[str, Any]:
     logger.info("Downloading data for %s", state.gse_id)
 
     gse_id = state.gse_id
-    download_dir = Path.cwd() / "output" / gse_id / "download"
+    from scruticell.config import get_download_path
+    download_dir = get_download_path(gse_id)
     download_dir.mkdir(parents=True, exist_ok=True)
 
     download_errors: list[str] = []
@@ -424,8 +426,9 @@ def download_node(state: PipelineState) -> dict[str, Any]:
         except Exception as e:
             logger.warning("Failed to extract supplementary URLs: %s", e)
 
-    # ── Check total supplementary size, skip if > 2 GB ──
-    _max_suppl_size = 2 * 1024 * 1024 * 1024  # 2 GB
+    # ── Check total supplementary size, skip if too large ──
+    from scruticell.config import MAX_SUPPL_SIZE_GB
+    _max_suppl_size = MAX_SUPPL_SIZE_GB * 1024 * 1024 * 1024  # configurable GB limit
     suppl_total_size = 0
     for _entity_id, https_url, filename in suppl_urls:
         size = _probe_suppl_size(https_url)
@@ -437,7 +440,7 @@ def download_node(state: PipelineState) -> dict[str, Any]:
         gb = suppl_total_size / (1024 * 1024 * 1024)
         msg = (
             f"GSE {gse_id}: supplementary files too large "
-            f"({gb:.1f} GB > 2 GB). Download skipped."
+            f"({gb:.1f} GB > {MAX_SUPPL_SIZE_GB} GB). Download skipped."
         )
         logger.error(msg)
         raise _click.Abort(msg)

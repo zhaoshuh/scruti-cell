@@ -22,6 +22,8 @@ from typing import Any
 from scruticell.intelligence.reporter import GseReport
 from scruticell.utils.tokens import invoke_and_track
 
+from scruticell.config import get_output_path
+
 logger = logging.getLogger(__name__)
 
 
@@ -729,7 +731,7 @@ class MultiStepExtractor:
             try:
                 from pathlib import Path
                 gse_id = report.gse_id
-                out_dir = Path.cwd() / "output" / gse_id
+                out_dir = get_output_path(gse_id)
                 out_dir.mkdir(parents=True, exist_ok=True)
                 json_path = out_dir / "gsm_meta_extractions.json"
                 json_path.write_text(
@@ -761,7 +763,7 @@ class MultiStepExtractor:
                             fe_by_file[fname] = {k: str(v) for k, v in comps.items() if v}
                 if fe_by_file:
                     gse_id = report.gse_id
-                    out_dir = _Path.cwd() / "output" / gse_id
+                    out_dir = get_output_path(gse_id)
                     out_dir.mkdir(parents=True, exist_ok=True)
                     json_path = out_dir / "filename_extractions.json"
                     json_path.write_text(
@@ -777,7 +779,7 @@ class MultiStepExtractor:
                 from pathlib import Path as _Path
                 fm_json = self._context["file_extract"].get("file_metadata", [])
                 gse_id = report.gse_id
-                out_dir = _Path.cwd() / "output" / gse_id / "axis_meta"
+                out_dir = get_output_path(gse_id) / "axis_meta"
                 out_dir.mkdir(parents=True, exist_ok=True)
                 saved = 0
                 for fm in fm_json:

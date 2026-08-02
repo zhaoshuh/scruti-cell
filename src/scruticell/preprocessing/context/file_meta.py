@@ -8,6 +8,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
+from scruticell.utils.paths import ancestry_filename
 from scruticell.preprocessing.models import (
     ColumnSummary,
     FileMeta,
@@ -50,7 +51,7 @@ def build_file_meta(
     Returns:
         FileMeta with all extracted signals
     """
-    raw_filename = ancestry.split("/")[-1].split("\\")[-1] if "/" in ancestry or "\\" in ancestry else ancestry
+    raw_filename = ancestry_filename(ancestry) if "/" in ancestry or "\\" in ancestry else ancestry
 
     # ── Source 1: File name ──
     filename_meta = extract_filename_meta(raw_filename, ancestry)

@@ -27,6 +27,7 @@ from scruticell.preprocessing.models import (
     FileSignals,
     MetadataSignal,
 )
+from scruticell.utils.paths import ancestry_filename
 
 logger = logging.getLogger(__name__)
 
@@ -186,7 +187,7 @@ def inspect_files(
     # Build content_preview + shape_range + file_meta + attribution for each signal group
     for sg in signal_groups:
         group_summaries: list[dict] = []
-        rep_name = sg.representative.ancestry.split("/")[-1].split("\\")[-1] if sg.representative.ancestry else ""
+        rep_name = ancestry_filename(sg.representative.ancestry) if sg.representative.ancestry else ""
         for ancestry in file_summaries_raw:
             if Path(ancestry).name == rep_name:
                 group_summaries.append(file_summaries_raw[ancestry])
@@ -232,31 +233,51 @@ def inspect_files(
     # ─── Try LLM metadata extraction (inline, non-blocking) ───
     if extraction_context:
         try:
+            from scruticell.preprocessing.memory.modality_cache import find_code_cache, store_code_cache
             from scruticell.preprocessing.prompts import METADATA_EXTRACTION_PROMPT
             from scruticell.preprocessing.tools.extraction_sandbox import run_extraction_metadata
             from langchain_openai import ChatOpenAI
             from scruticell.config import LLM_API_KEY, LLM_BASE_URL, LLM_MODEL
 
             import json as _json
-            llm = ChatOpenAI(
-                model=LLM_MODEL,
-                temperature=0.0,
-                openai_api_key=LLM_API_KEY,
-                openai_api_base=LLM_BASE_URL,
-            )
-            ctx_json = _json.dumps(extraction_context, ensure_ascii=False)
-            response = llm.invoke(
-                METADATA_EXTRACTION_PROMPT + "\n\n## Data\n\n" + ctx_json
-            )
-            result_text = str(response.content) if hasattr(response, "content") else str(response)
-            # Strip markdown fences if present
-            if result_text.startswith("```"):
-                lines = result_text.split("\n")
-                result_text = "\n".join(lines[1:-1] if lines[-1].strip() == "```" else lines[1:])
-            result = _json.loads(result_text)
 
-            experiment_flowchart = result.get("experiment_flowchart", "")
-            extraction_code = result.get("extraction_code", "")
+            # Check code cache first
+            cached_flowchart = find_code_cache(
+                gse_id, field_value_maps_raw, data_file_signals, "experiment_flowchart")
+            cached_extraction = find_code_cache(
+                gse_id, field_value_maps_raw, data_file_signals, "extraction_code")
+
+            if cached_flowchart and cached_extraction:
+                experiment_flowchart = cached_flowchart
+                extraction_code = cached_extraction
+                logger.info("Metadata extraction: full cache hit for %s", gse_id)
+            else:
+                llm = ChatOpenAI(
+                    model=LLM_MODEL,
+                    temperature=0.0,
+                    openai_api_key=LLM_API_KEY,
+                    openai_api_base=LLM_BASE_URL,
+                )
+                ctx_json = _json.dumps(extraction_context, ensure_ascii=False)
+                response = llm.invoke(
+                    METADATA_EXTRACTION_PROMPT + "\n\n## Data\n\n" + ctx_json
+                )
+                result_text = str(response.content) if hasattr(response, "content") else str(response)
+                if result_text.startswith("```"):
+                    lines = result_text.split("\n")
+                    result_text = "\n".join(lines[1:-1] if lines[-1].strip() == "```" else lines[1:])
+                result = _json.loads(result_text)
+
+                experiment_flowchart = result.get("experiment_flowchart", "")
+                extraction_code = result.get("extraction_code", "")
+
+                # Store in code cache for next time
+                if experiment_flowchart:
+                    store_code_cache(gse_id, field_value_maps_raw, data_file_signals,
+                                     "experiment_flowchart", experiment_flowchart)
+                if extraction_code:
+                    store_code_cache(gse_id, field_value_maps_raw, data_file_signals,
+                                     "extraction_code", extraction_code)
 
             if extraction_code and raw_gsm:
                 # Serialize GSM entries for sandbox (all values must be strings)
@@ -265,16 +286,25 @@ def inspect_files(
 
                 # Sandbox: execute extraction code against each GSM
                 from scruticell.preprocessing.models import FieldValueMap, ValueGroup
+                from scruticell.preprocessing.verification import verify_extraction_results
                 extracted_fields: dict[str, dict[str, list[str]]] = {}
+                per_gsm_results: dict[str, dict] = {}
                 for gsm_id, raw_entry in serialized_gsm.items():
                     try:
                         meta = run_extraction_metadata(extraction_code, raw_entry)
-                        for field, value in meta.items():
-                            extracted_fields.setdefault(field, {}).setdefault(value, []).append(gsm_id)
+                        if meta:
+                            per_gsm_results[gsm_id] = meta
+                            for field, value in meta.items():
+                                extracted_fields.setdefault(field, {}).setdefault(value, []).append(gsm_id)
                     except Exception as e:
                         logger.debug("Extraction failed for %s: %s", gsm_id, e)
 
-                # Merge extracted fields into field_value_maps
+                # Verify extraction quality
+                verif = verify_extraction_results(per_gsm_results, len(raw_gsm))
+                if not verif.passed:
+                    logger.warning("Metadata extraction verification failed: %s", verif.failure_summary())
+
+                # Merge extracted fields into field_value_maps (even if partially failed)
                 for field_name, value_map in extracted_fields.items():
                     if field_name not in field_value_maps_raw:
                         fv = FieldValueMap(field_name=field_name, category="extracted")

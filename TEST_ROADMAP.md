@@ -56,6 +56,10 @@ Scrut-Cell 的核心能力是**多组学数据预处理**。测试需覆盖以�
 | 证据搜集可用性 | 不确定时 PubMed 证据正确辅助分类 | ≥ 80% |
 | Token 效率 | 紧凑报告 vs 原始报告 token 比 | ≤ 5% |
 | **模态 Skill 加载** | `SKILL.md` 成功注入 classifier prompt | 100% |
+| **Rubric 自评估通过率** | 首次分类就 `satisfied` 的 GSE 比例 | ≥ 70% |
+| **Code-Gen 沙箱成功率** | `extract_metadata()` / `split_demux_file()` 执行无错误 | ≥ 85% |
+| **元数据提取覆盖率** | LLM 提取的字段占可提取字段的比例 | ≥ 60% |
+| **Code Cache 命中率** | 相同 GSE 重跑时跳过 LLM 调用 | 100% (hit) |
 
 ---
 
@@ -141,11 +145,13 @@ Scrut-Cell 的核心能力是**多组学数据预处理**。测试需覆盖以�
 
 | 指标 | 权重 | 说明 |
 |------|------|------|
-| 组学识别准确率 | 35% | 每个 GSE 检测到的模态 vs 实际模态 |
-| **文件→样本 1:1 归属正确率** | 30% | `per_file_gsm_id` + key 推断 vs ground truth |
-| Token 效率 | 15% | 紧凑报告 vs 原始报告 token 比 |
+| 组学识别准确率 | 30% | 每个 GSE 检测到的模态 vs 实际模态 |
+| **文件→样本 1:1 归属正确率** | 25% | `per_file_gsm_id` + key 推断 vs ground truth |
+| Token 效率 | 10% | 紧凑报告 vs 原始报告 token 比 |
 | 共享/Demux 检测 | 10% | shared 文件 + demux 拆分规则正确 |
+| **Rubric 自评估通过率** | 10% | 首次分类即 `satisfied` 的比例 |
 | 证据搜集可用性 | 10% | 不确定时 PubMed 证据辅助效果 |
+| **Code-Gen 沙箱成功率** | 5% | 代码生成/沙箱执行无错误 |
 
 ---
 

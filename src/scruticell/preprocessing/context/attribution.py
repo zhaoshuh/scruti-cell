@@ -11,6 +11,7 @@ import re
 from typing import Any
 
 from scruticell.preprocessing.models import AttributionResult, FileMeta
+from scruticell.utils.paths import ancestry_filename
 
 logger = logging.getLogger(__name__)
 
@@ -116,7 +117,7 @@ def compute_attribution(
 
     # ── L1: SOFT supplementary reference ──
     if soft_suppl_refs:
-        filename = file_meta.ancestry.split("/")[-1].split("\\")[-1]
+        filename = ancestry_filename(file_meta.ancestry)
         stem = re.sub(r"\.(gz|tar|zip)$", "", filename)
         stem = re.sub(r"\.[^.]+$", "", stem)
         for ref_filename, gsm_id in soft_suppl_refs.items():

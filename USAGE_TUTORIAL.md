@@ -94,48 +94,58 @@ Scrut-Cell 使用 LLM Agent（deepagents）编排整个预处理流程。核心�
 │  1. File Prep Sub-Agent (下载 + 解压 + 检查)                 │
 │     downloads → decompresses → inspects all files           │
 │     输出: 紧凑 FileContextReport                              │
-│       ├── field_value_maps    (metadata 去重, 识别实验分组)    │
-│       ├── file_signal_groups  (同指纹文件合并)                 │
-│       │   ├── per_file_gsm_id  (ancestry→GSM, 无推断)        │
-│       │   ├── attribution       (L0 ancestry + L1 SOFT ref)  │
-│       │   └── content_preview   (实际数据样本)                 │
-│       └── file_summaries      (原始文件指纹, 供 organize 使用)  │
+│       ├── field_value_maps     (metadata 去重, 识别实验分组)    │
+│       ├── file_signal_groups   (同指纹文件合并)                 │
+│       │   ├── per_file_gsm_id   (ancestry→GSM, 无推断)        │
+│       │   ├── attribution        (L0 ancestry + L1 SOFT ref)  │
+│       │   └── content_preview    (实际数据样本)                 │
+│       ├── experiment_flowchart  (Mermaid 实验设计图)           │
+│       └── file_summaries       (原始文件指纹)                   │
 └─────────────────────────────────────────────────────────────┘
+         │
+         ├──(内联 LLM) Metadata Extraction
+         │     三层紧凑 JSON → extract_metadata() 代码 → 沙箱执行
+         │     → enriched field_value_maps
          │
          ├─(信号冲突时)→ Evidence Sub-Agent (PubMed→PDF RAG)
          │
          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │  2. Classifier Sub-Agent (纯 LLM 推理, 零工具)               │
-│     模态知识从 skills/modality_knowledge/SKILL.md 运行时注入   │
+│     模态知识从 skills/modality_knowledge/SKILL.md 注入        │
+│     读 experiment_flowchart + enriched field_value_maps      │
 │     分类规则:                                                 │
 │       A. 文件→样本归属 (1:1 约束)                             │
-│          优先级: per_file_gsm_id > candidates > tokens       │
-│          无法匹配 → 推断复合 key                              │
-│       B. 共享文件检测 (同一文件被多个样本使用)                  │
-│       C. Demux 文件检测 (合并文件需拆分)                      │
-│       D. 样本分组 (field_value_maps 值差异)                   │
-│       E. 模态判定 (SKILL.md + content_preview)               │
-│     置信度: ≥0.85 (信号一致) / 0.5-0.85 (有冲突) / <0.5 (严重不足)│
+│       B. 共享文件 + Demux 文件检测                            │
+│       C. 样本分组 + 模态判定                                  │
 └─────────────────────────────────────────────────────────────┘
          │
          ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  3. organize_output Tool (构建输出目录树)                     │
+│  3. RubricMiddleware (实时质量门禁) ★ 新增                   │
+│     Grader 子 Agent 评估 classifier 输出                     │
+│     → satisfied (通过) / needs_revision (修复)               │
+└─────────────────────────────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────────────────┐
+│  4. organize_output Tool (构建输出目录树)                     │
 │     output/<GSE_ID>/preprocessed/                             │
-│       group_<key>/                    (key = GSM ID 或推断 key)│
+│       <sample_dir>/                    (GSM ID 或推断 key)     │
 │         {modality}/                                            │
 │           files.json + hard link                              │
 │       manifest.json                                           │
-│     共享文件 hard link 到所有引用组                              │
+│     共享文件 + Demux 子文件 hard link                          │
 └─────────────────────────────────────────────────────────────┘
 ```
 
 **关键设计：**
 - **模态 Skill 化**：`skills/modality_knowledge/SKILL.md` 是模态定义的唯一来源。新增模态只需编辑此文件，无需改代码。
 - **1:1 文件归属**：每个文件归属唯一 key，key↔sample_group 是双射。不允许一个文件属于多个样本。
+- **LLM Code-Generation + 沙箱**：LLM 生成 `extract_metadata()` / `split_demux_file()` 代码，沙箱确定执行。一次生成，对所有样本确定执行。
 - **信号收集 vs 判决分离**：`attribution.py` 只收集 L0+L1 信号。所有匹配/推断由 classifier prompt 完成。
-- **指纹缓存**：相同 GSE 的内容指纹 → 跳过 LLM 调用直接返回。
+- **Rubric 自评估**：grading Agent 自动评估分类质量 → 不通过 → 反馈注入 → Agent 重新分类。
+- **指纹缓存**：相同 GSE 的内容指纹 → 跳过 LLM 调用直接返回（含 extraction_code 缓存）。
 
 整个流程对 12 种组学模态做了 token 优化：50 个 GSM 的元数据从 ~28,000 tokens 压缩到 ~500 tokens。`per_file_gsm_id` 提供准确的 ancestry→GSM 映射，消除了模糊匹配带来的多归属问题。
 

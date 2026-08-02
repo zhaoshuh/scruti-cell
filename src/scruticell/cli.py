@@ -19,6 +19,7 @@ from typing import Optional
 import click
 
 from scruticell import __version__
+from scruticell.config import get_output_path, get_download_path
 
 logging.basicConfig(
     level=logging.INFO,
@@ -44,7 +45,7 @@ def _cleanup_gse_output(gse_id: str, keep_data: bool = False) -> None:
     _cleanup_registered.add(gse_id)
 
     import shutil
-    output_dir = Path.cwd() / "output" / gse_id
+    output_dir = get_output_path(gse_id)
     download_dir = output_dir / "download"
     if download_dir.exists():
         shutil.rmtree(download_dir, ignore_errors=True)
@@ -82,6 +83,54 @@ def main() -> None:
     and identified batches.
     """
     pass
+
+
+@main.command()
+@click.argument("gse_id")
+@click.option("--output", "-o", type=click.Path(path_type=Path), default=None,
+              help="Output directory (default: output/<GSE_ID>)")
+@click.option("--keep-data", is_flag=True, help="Keep downloaded raw files")
+@click.option("-v", "--verbose", is_flag=True, help="Verbose output")
+def preprocess(gse_id: str, output: Path | None, keep_data: bool, verbose: bool) -> None:
+    """Preprocess GSE data: separate files by sample and modality.
+
+    Downloads, decompresses, and inspects files, then classifies them into
+    sample groups and modalities (scRNA-seq, ATAC-seq, spatial, methylation,
+    etc.) using LLM + evidence-based reasoning. No downstream analysis.
+
+    Output structure:
+        output/<GSE_ID>/preprocessed/
+            group_<GSM_ID>/
+                scrna_seq/
+                scatac_seq/
+                ...
+    """
+    from scruticell.preprocessing import preprocess_gse as run_preprocess
+
+    click.echo(f"\n{'='*60}")
+    click.echo(f"  Omics Preprocessing: {gse_id}")
+    click.echo(f"{'='*60}\n")
+
+    result = run_preprocess(
+        gse_id=gse_id,
+        output_dir=str(output) if output else None,
+        verbose=verbose,
+    )
+
+    click.echo(f"\n{'='*60}")
+    click.echo(f"  Preprocessing complete: {gse_id}")
+    click.echo(f"  Sample groups: {len(result.get('sample_groups', []))}")
+    click.echo(f"  Unclassified:  {len(result.get('unclassified', []))}")
+    click.echo(f"  Output:        {result.get('output_dir', 'N/A')}")
+    click.echo(f"{'='*60}")
+
+    if result.get("errors"):
+        click.echo("\nErrors:")
+        for err in result["errors"]:
+            click.echo(f"  - {err}")
+
+    if not keep_data:
+        _cleanup_gse_output(gse_id, keep_data=False)
 
 
 @main.command()
@@ -384,7 +433,7 @@ def inspect(
     from scruticell.pipeline.nodes.parse import parse_soft_node
     from scruticell.pipeline.state import PipelineState
 
-    state = PipelineState(gse_id=gse_id, output_dir=Path.cwd())
+    state = PipelineState(gse_id=gse_id, output_dir=get_output_path(gse_id))
 
     if not no_download:
         click.echo("Downloading...")
@@ -394,9 +443,9 @@ def inspect(
         if state.download_errors:
             click.echo(f"  Download errors: {state.download_errors}")
     else:
-        state.download_dir = Path.cwd() / "output" / gse_id / "download"
+        state.download_dir = get_download_path(gse_id)
         if not state.download_dir.exists():
-            state.download_dir = Path.cwd() / gse_id
+            state.download_dir = get_download_path(gse_id)
         # Populate supplementary files from existing download
         if state.download_dir.exists():
             _H5AD_EXTS = {".h5ad", ".h5", ".mtx", ".mtx.gz", ".csv", ".csv.gz",
@@ -431,7 +480,7 @@ def inspect(
     reporter = Reporter()
     report = reporter.build_report(
         gse_id=gse_id,
-        download_dir=state.download_dir or (Path.cwd() / "output" / gse_id / "download"),
+        download_dir=state.download_dir or (get_download_path(gse_id)),
         gsm_entries=state.parsed_characteristics,
         gse_metadata=state.raw_metadata,
         file_gsm_map=getattr(state, "file_gsm_map", {}),
@@ -445,7 +494,7 @@ def inspect(
         if output_path.is_dir():
             output_path = output_path / f"{gse_id}_report.json"
     else:
-        output_path = Path.cwd() / "output" / gse_id / "inspect.json"
+        output_path = get_output_path(gse_id) / "inspect.json"
         output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json_str, encoding="utf-8")
     click.echo(f"\nReport written to: {output_path}")
@@ -529,7 +578,7 @@ def plan(
         gse_report = GseReport.from_dict(report_data)
     else:
         # Try default output path first (from prior 'inspect' run)
-        default_report = Path.cwd() / "output" / gse_id / "inspect.json"
+        default_report = get_output_path(gse_id) / "inspect.json"
         if default_report.exists():
             click.echo(f"Found existing report: {default_report}")
             report_data = json.loads(default_report.read_text(encoding="utf-8"))
@@ -537,7 +586,7 @@ def plan(
         else:
             click.echo(f"No report found at {default_report}, generating...")
             click.echo("Downloading...")
-            state = PipelineState(gse_id=gse_id, output_dir=Path.cwd())
+            state = PipelineState(gse_id=gse_id, output_dir=get_output_path(gse_id))
             result = download_node(state)
             for k, v in result.items():
                 setattr(state, k, v)
@@ -557,7 +606,7 @@ def plan(
             reporter = Reporter()
             gse_report = reporter.build_report(
                 gse_id=gse_id,
-                download_dir=state.download_dir or (Path.cwd() / "output" / gse_id / "download"),
+                download_dir=state.download_dir or (get_download_path(gse_id)),
                 gsm_entries=state.parsed_characteristics,
                 gse_metadata=state.raw_metadata,
                 raw_gsm_entries=getattr(state, "raw_gsm_entries", {}),
@@ -607,7 +656,7 @@ def plan(
         if output_path.is_dir():
             output_path = output_path / f"{gse_id}_plan.json"
     else:
-        output_path = Path.cwd() / "output" / gse_id / "plan.json"
+        output_path = get_output_path(gse_id) / "plan.json"
         output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(plan_json, encoding="utf-8")
     click.echo(f"\n  Plan written to: {output_path}")
@@ -735,7 +784,7 @@ def execute(
     click.echo(f"{'='*60}")
 
     # Resolve plan and report files to default paths if not specified
-    default_base = Path.cwd() / "output" / gse_id
+    default_base = get_output_path(gse_id)
     if plan_file is None:
         plan_file = default_base / "plan.json"
     if report_file is None:
@@ -762,13 +811,13 @@ def execute(
     report_data = json.loads(report_json)
     report = GseReport.from_dict(report_data)
 
-    output_dir = output or (Path.cwd() / "output" / gse_id)
+    output_dir = output or get_output_path(gse_id)
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Setup state
     state = PipelineState(gse_id=gse_id, output_dir=output_dir)
     if not no_download:
-        download_dir = Path.cwd() / "output" / gse_id / "download"
+        download_dir = get_download_path(gse_id)
         if download_dir.exists() and any(download_dir.iterdir()):
             # Already downloaded (e.g. by prior 'inspect'), reuse
             click.echo("[Download]... SKIPPED (already cached)")
@@ -812,9 +861,9 @@ def execute(
             except Exception as exc:
                 click.echo(f" WARNING: {exc}")
     else:
-        state.download_dir = Path.cwd() / "output" / gse_id / "download"
+        state.download_dir = get_download_path(gse_id)
         if not state.download_dir.exists():
-            state.download_dir = Path.cwd() / gse_id
+            state.download_dir = get_download_path(gse_id)
         if state.download_dir.exists():
             _H5AD_EXTS = {".h5ad", ".h5", ".mtx", ".mtx.gz", ".csv", ".csv.gz",
                           ".tsv", ".tsv.gz", ".rds", ".rdata", ".loom", ".txt", ".txt.gz",
@@ -1038,7 +1087,7 @@ def run(
     if llm_api_key:
         cfg.LLM_API_KEY = llm_api_key
 
-    output_dir = output or (Path.cwd() / "output" / gse_id)
+    output_dir = output or get_output_path(gse_id)
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Save full log to output/{gse_id}/run.log
@@ -1070,7 +1119,7 @@ def run(
     click.echo("\n  [1/3] INSPECT — downloading + inspecting...")
     state = PipelineState(gse_id=gse_id, output_dir=output_dir)
     if not no_download:
-        download_dir = Path.cwd() / "output" / gse_id / "download"
+        download_dir = get_download_path(gse_id)
         if not download_dir.exists():
             download_dir = output_dir / "download"
 
@@ -1110,7 +1159,7 @@ def run(
             except Exception as exc:
                 click.echo(f" WARNING: {exc}")
     else:
-        state.download_dir = Path.cwd() / "output" / gse_id / "download"
+        state.download_dir = get_download_path(gse_id)
         if not state.download_dir.exists():
             state.download_dir = output_dir / "download"
         if state.download_dir.exists():
@@ -1138,7 +1187,7 @@ def run(
     reporter = Reporter()
     gse_report = reporter.build_report(
         gse_id=gse_id,
-        download_dir=state.download_dir or (Path.cwd() / "output" / gse_id / "download"),
+        download_dir=state.download_dir or (get_download_path(gse_id)),
         gsm_entries=state.parsed_characteristics,
         gse_metadata=state.raw_metadata,
         file_gsm_map=getattr(state, "file_gsm_map", {}),
@@ -1152,7 +1201,7 @@ def run(
         reporter.generate_and_validate_readers(
             gse_report, output_dir,
             download_dir=state.download_dir or (
-                Path.cwd() / "output" / gse_id / "download"),
+                get_download_path(gse_id)),
         )
         click.echo(" OK")
     except Exception as exc:

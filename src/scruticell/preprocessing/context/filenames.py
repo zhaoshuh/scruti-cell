@@ -12,6 +12,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from scruticell.preprocessing.models import FilenameSignal
+from scruticell.utils.paths import normalize_ancestry
 
 # Filename keywords that hint at data modality or file role
 _KEYWORD_PATTERNS: dict[str, str] = {
@@ -122,7 +123,7 @@ def _detect_10x_companions(file_path: Path) -> tuple[bool, list[str]]:
 
 def _detect_subdirectory_hints(ancestry: str) -> str:
     """Look for modality hints in subdirectory names within the ancestry path."""
-    parts = ancestry.replace("\\", "/").split("/")
+    parts = normalize_ancestry(ancestry).split("/")
     hints: list[str] = []
     for part in parts:
         part_lower = part.lower()

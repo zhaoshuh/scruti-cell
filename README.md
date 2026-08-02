@@ -59,6 +59,18 @@ CLI: scruticell preprocess GSE12345
 │      └ content_preview     实际数据样本          │
 │      └ file_meta           深度文件元数据        │
 │    • file_summaries        原始文件指纹          │
+│    • experiment_flowchart  Mermaid 实验设计图     │
+│      (LLM 从 SOFT 摘要/协议推断)                  │
+└────────────────────────────────────────────────┘
+              │
+              ▼
+┌────────────────────────────────────────────────┐
+│  1.5 Metadata Extraction (inline LLM call)     │
+│  LLM reads compact context → generates:        │
+│    • experiment_flowchart (Mermaid)            │
+│    • extract_metadata() Python code            │
+│  Sandbox executes code per GSM →               │
+│    enriched field_value_maps                   │
 └────────────────────────────────────────────────┘
               │ (only if metadata signals conflict)
               ▼
@@ -114,7 +126,11 @@ CLI: scruticell preprocess GSE12345
 | **Skill-based modalities** | Modality definitions live in `skills/modality_knowledge/SKILL.md`. Adding a new modality requires editing only this file. No Python code changes needed. |
 | **1:1 file-to-sample mapping** | Every file belongs to exactly one sample key. Key ↔ sample group is a bijection. Priority: ancestry path → SOFT ref → token signals → inferred composite key. |
 | **Signal collection, not decision** | Python code in `attribution.py` only collects L0 (ancestry path) + L1 (SOFT references) signals. All judgment (token matching, shared/demux detection, key inference) is deferred to the LLM classifier via prompt. |
-| **Cache by content fingerprint** | SQLite cache (`modality_cache.py`) stores classification decisions keyed by MD5 fingerprint of `gse_id + field_values + signal_patterns`. Identical datasets skip the LLM call entirely. |
+| **LLM Code-Generation + Sandbox** | LLM produces executable Python code (`extract_metadata()`, `split_demux_file()`) which runs deterministically in a restricted sandbox (curated `__builtins__`, timeout, forbidden-pattern check). One-time code generation, verified execution across all samples. |
+| **Rubric Self-Evaluation** | `RubricMiddleware` automatically evaluates classifier output against quality criteria after each run. Failed checks inject feedback, triggering the agent to re-classify before producing the final output. |
+| **Verification + Repair Loop** | `verification.py` performs post-hoc structural checks. `repair.py::run_with_repair()` wraps the code-gen→execute→verify→retry→fallback cycle. |
+| **Checkpoint & Memory** | `MemorySaver` checkpointer preserves agent conversation state within an invocation. `modality_cache.py` (SQLite) caches classification decisions + generated extraction code by content fingerprint for cross-GSE reuse. |
+| **Cache by content fingerprint** | SQLite cache (`modality_cache.py`) stores classification decisions + generated extraction code keyed by MD5 fingerprint of `gse_id + field_values + signal_patterns`. Identical datasets skip the LLM call entirely. |
 
 ---
 
@@ -175,9 +191,15 @@ No downstream analysis — pure data organization.
 **All judgment deferred to LLM (via classifier prompt):**
 - File→sample ownership (1:1, trust ancestry > SOFT > tokens > inferred key)
 - Shared file detection (same file used by multiple GSM)
-- Demux file detection (merged files requiring column/row/pre-per_sample_key splitting)
+- Demux file detection (merged files requiring column/row/barcode splitting)
 - Sample group formation (from `field_value_maps`)
-- Modality classification (from `SKILL.md` + `content_preview`)
+- Modality classification (from `SKILL.md` + `content_preview` + `experiment_flowchart`)
+
+**Quality Assurance:**
+- **RubricMiddleware**: real-time LLM grader evaluates classifier output against quality criteria; injects feedback for re-classification
+- **Verification**: post-hoc structural checks (GSM coverage, modality completeness, demux_rule integrity)
+- **Repair**: `run_with_repair()` retry loop with LLM error-context for code generation failures
+- **Checkpoint**: `MemorySaver` preserves agent state for recovery on interruption
 
 **Output:**
 ```

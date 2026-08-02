@@ -120,35 +120,46 @@ class TestFieldResolution:
 
 
 class TestLicense:
-    def test_default_is_oss(self):
+    def test_default_is_oss(self, monkeypatch):
+        monkeypatch.delenv("SCRUTICELL_LICENSE_KEY", raising=False)
         lm = LicenseManager()
         assert lm.tier == "oss"
 
-    def test_oss_features(self):
+    def test_oss_features(self, monkeypatch):
+        monkeypatch.delenv("SCRUTICELL_LICENSE_KEY", raising=False)
         lm = LicenseManager()
         assert not lm.neo4j_enabled
         assert not lm.llm_enabled
         assert not lm.mcts_enabled
         assert lm.reflexion_enabled
 
-    def test_invalid_key_detected(self):
+    def test_invalid_key_detected(self, monkeypatch):
+        monkeypatch.delenv("SCRUTICELL_LICENSE_KEY", raising=False)
         lm = LicenseManager()
         assert not lm._validate_key("invalid")
         assert not lm._validate_key("")
         assert not lm._validate_key("a-b-c")
 
-    def test_license_generation(self):
+    def test_license_generation(self, monkeypatch):
+        monkeypatch.delenv("SCRUTICELL_LICENSE_KEY", raising=False)
         lm = LicenseManager()
         key = lm.generate_license_key("test_client")
         assert len(key) > 20
         assert "test_client" in key
 
-    def test_get_license_singleton(self):
+    def test_get_license_singleton(self, monkeypatch):
+        monkeypatch.delenv("SCRUTICELL_LICENSE_KEY", raising=False)
+        # Reset singleton to avoid cached enterprise state
+        import scruticell.license as lic
+        lic._license_manager = None
         lm1 = get_license()
         lm2 = get_license()
         assert lm1 is lm2
 
-    def test_is_enterprise_default_false(self):
+    def test_is_enterprise_default_false(self, monkeypatch):
+        monkeypatch.delenv("SCRUTICELL_LICENSE_KEY", raising=False)
+        import scruticell.license as lic
+        lic._license_manager = None
         assert not is_enterprise()
 
 
