@@ -113,7 +113,8 @@ def verify_classification(
 
     Args:
         classification: the classification JSON from classifier
-        total_gsm_count: expected total GSM count
+        total_gsm_count: expected total GSM count (falls back to
+                         classification.get("total_gsm_count", 0))
 
     Returns:
         VerificationReport
@@ -133,6 +134,8 @@ def verify_classification(
             continue
         assigned_gsms.update(group.get("gsm_ids", []))
 
+    if total_gsm_count <= 0:
+        total_gsm_count = int(classification.get("total_gsm_count", 0) or 0)
     if total_gsm_count > 0 and len(assigned_gsms) < total_gsm_count:
         missing = total_gsm_count - len(assigned_gsms)
         checks.append(VerificationCheck(
@@ -174,4 +177,8 @@ def verify_classification(
                     ))
 
     passed = not any(c.severity == "error" for c in checks)
-    return VerificationReport(passed=passed, checks=checks, extra={"assigned_gsms": list(assigned_gsms)})
+    return VerificationReport(
+        passed=passed,
+        checks=checks,
+        assigned_gsms=sorted(assigned_gsms),
+    )

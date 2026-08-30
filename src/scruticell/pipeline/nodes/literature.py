@@ -116,38 +116,3 @@ def _search_by_title(
         logger.warning("PubMed title search failed: %s", exc)
 
     return ""
-
-
-def _supplement_obs_metadata(
-    state: PipelineState, supplement: dict[str, Any]
-) -> None:
-    """Apply literature-extracted metadata to obs when GSM metadata is sparse."""
-    if state.obs is None or len(state.obs) == 0:
-        return
-
-    obs = state.obs
-
-    field_map = {
-        "organism_from_text": "organism",
-        "disease_context": "disease",
-        "tissue_context": "tissue",
-        "sequencing_platform": "platform",
-        "normalization_method": "normalization",
-        "reference_genome": "reference_genome",
-    }
-
-    for source_key, target_col in field_map.items():
-        if source_key in supplement and target_col not in obs.columns:
-            value = supplement[source_key]
-            if isinstance(value, list):
-                value = "; ".join(str(v) for v in value)
-            obs[target_col] = value
-
-    if "n_batches_described" in supplement:
-        state.literature_metadata_supplement["n_batches"] = supplement["n_batches_described"]
-
-    if "n_cells_described" in supplement:
-        state.literature_metadata_supplement["n_cells"] = supplement["n_cells_described"]
-
-    logger.info("Supplemented obs with %d literature-derived metadata fields",
-                len([k for k in field_map if k in supplement]))

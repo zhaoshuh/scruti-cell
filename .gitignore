@@ -37,6 +37,7 @@ Thumbs.db
 # Environment / secrets
 .env
 .env.*
+scruticell.yaml
 
 # OpenCode sessions
 .opencode/sessions/

@@ -12,7 +12,7 @@ import json
 import logging
 import re
 import time
-import traceback
+
 from typing import Any
 
 logger = logging.getLogger(__name__)
@@ -59,54 +59,24 @@ def _sanitize_code(code: str) -> tuple[bool, str]:
 
 
 def _execute_sandbox(code: str, filepath: str, role: str) -> tuple[bool, dict, str]:
-    """Execute generated reader code in restricted sandbox.
+    """Execute generated reader code in an isolated subprocess sandbox.
 
     Returns (success, result_dict, error_message).
     """
-    import signal
-
-    namespace: dict[str, Any] = {}
-
-    try:
-        exec(code, namespace)
-    except Exception as e:
-        return False, {}, f"Code compilation failed: {e}"
+    from scruticell.preprocessing.sandbox import run_code_in_subprocess
 
     func_name = f"read_{role}"
-    func = namespace.get(func_name)
-    if func is None:
-        return False, {}, f"Function '{func_name}' not found in generated code"
-
-    if not callable(func):
-        return False, {}, f"'{func_name}' is not callable"
-
-    # Execute with timeout
-    result: dict = {}
-    error: str = ""
-
-    def _run():
-        nonlocal result, error
-        try:
-            output = func(filepath)
-            if not isinstance(output, dict):
-                error = f"Function returned {type(output).__name__}, expected dict"
-            else:
-                result = output
-        except Exception as e:
-            error = f"Execution failed: {e}\n{traceback.format_exc()[-500:]}"
-
-    import threading
-    thread = threading.Thread(target=_run)
-    thread.daemon = True
-    thread.start()
-    thread.join(timeout=_SANDBOX_TIMEOUT)
-
-    if thread.is_alive():
-        return False, {}, f"Execution timed out ({_SANDBOX_TIMEOUT}s)"
-
-    if error:
-        return False, {}, error
-
+    out = run_code_in_subprocess(
+        code,
+        func_name,
+        args=(filepath,),
+        timeout=_SANDBOX_TIMEOUT,
+    )
+    if not out.get("ok"):
+        return False, {}, str(out.get("error", "sandbox failed"))
+    result = out.get("result")
+    if not isinstance(result, dict):
+        return False, {}, f"Function returned {type(result).__name__}, expected dict"
     return True, result, ""
 
 
@@ -167,7 +137,7 @@ def generate_reader_code(
     filepath: str,
     skill_path: str = "",
     kb: Any = None,
-    model: str = "deepseek-chat",
+    model: str | None = None,
 ) -> tuple[str, dict | None, str]:
     """Generate a reader function for a specific file.
 

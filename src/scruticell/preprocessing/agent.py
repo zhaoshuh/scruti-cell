@@ -32,7 +32,7 @@ def verify_classification_tool(classification_json_str: str) -> str:
 
 
 def create_preprocessing_agent(
-    model: str = "deepseek-chat",
+    model: str | None = None,
     api_key: str | None = None,
     base_url: str | None = None,
     enable_evidence: bool = False,
@@ -46,12 +46,20 @@ def create_preprocessing_agent(
     from deepagents.middleware.rubric import RubricMiddleware
     from langchain_openai import ChatOpenAI
 
+    from scruticell.config import LLM_API_KEY, LLM_BASE_URL, LLM_MODEL
     from scruticell.preprocessing.prompts import MAIN_AGENT_SYSTEM_PROMPT, CLASSIFIER_RUBRIC
     from scruticell.preprocessing.subagents import (
         create_classifier_subagent,
         create_file_prep_subagent,
     )
     from scruticell.preprocessing.tools import organize_output
+
+    if model is None:
+        model = LLM_MODEL
+    if api_key is None:
+        api_key = LLM_API_KEY
+    if base_url is None:
+        base_url = LLM_BASE_URL
 
     # Build LLM kwargs
     llm_kwargs: dict = {"model": model, "temperature": 0.0}
@@ -69,12 +77,12 @@ def create_preprocessing_agent(
     checkpointer = MemorySaver()
 
     subagents: list = [
-        create_file_prep_subagent(model=model),
-        create_classifier_subagent(model=model),
+        create_file_prep_subagent(model=llm),
+        create_classifier_subagent(model=llm),
     ]
     if enable_evidence:
         from scruticell.preprocessing.subagents.evidence import create_evidence_subagent
-        subagents.append(create_evidence_subagent(model=model))
+        subagents.append(create_evidence_subagent(model=llm))
 
     agent = create_deep_agent(
         model=llm,
@@ -99,7 +107,7 @@ def create_preprocessing_agent(
 def preprocess_gse(
     gse_id: str,
     output_dir: str | None = None,
-    model: str = "deepseek-chat",
+    model: str | None = None,
     api_key: str | None = None,
     base_url: str | None = None,
     enable_evidence: bool = True,
@@ -109,8 +117,10 @@ def preprocess_gse(
     if verbose:
         logging.basicConfig(level=logging.DEBUG)
 
-    from scruticell.config import LLM_API_KEY, LLM_BASE_URL, get_output_path
+    from scruticell.config import LLM_API_KEY, LLM_BASE_URL, LLM_MODEL, get_output_path
     from scruticell.preprocessing.prompts import CLASSIFIER_RUBRIC
+    if model is None:
+        model = LLM_MODEL
     if api_key is None:
         api_key = LLM_API_KEY
     if base_url is None:

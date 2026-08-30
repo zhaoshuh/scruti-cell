@@ -1,10 +1,17 @@
 """CLI entry point for Scrut-Cell.
 
+All settings are loaded from the YAML config file (see scruticell.example.yaml),
+the global ~/.config/scruticell/config.yaml, or environment variables.
+Commands take a single positional GSE accession.
+
 Usage:
     scruticell parse GSE12345
-    scruticell parse GSE12345 --output ./results
-    scruticell parse GSE12345 --llm-model gpt-4o-mini
-    scruticell config show
+    scruticell inspect GSE12345
+    scruticell plan GSE12345
+    scruticell execute GSE12345
+    scruticell run GSE12345
+    scruticell preprocess GSE12345
+    scruticell config
     scruticell --help
 """
 
@@ -67,7 +74,7 @@ def _get_knowledge_base():
         from scruticell.knowledge.graph import KnowledgeGraph
         kg = KnowledgeGraph(NEO4J_URI, NEO4J_USER, NEO4J_PASSWORD)
         kg.initialize_schema()
-        return kg, kg  # returned as context manager replacement
+        return kg, None
     else:
         from scruticell.knowledge.graph import LocalKnowledgeBase
         return LocalKnowledgeBase(), None
@@ -87,11 +94,7 @@ def main() -> None:
 
 @main.command()
 @click.argument("gse_id")
-@click.option("--output", "-o", type=click.Path(path_type=Path), default=None,
-              help="Output directory (default: output/<GSE_ID>)")
-@click.option("--keep-data", is_flag=True, help="Keep downloaded raw files")
-@click.option("-v", "--verbose", is_flag=True, help="Verbose output")
-def preprocess(gse_id: str, output: Path | None, keep_data: bool, verbose: bool) -> None:
+def preprocess(gse_id: str) -> None:
     """Preprocess GSE data: separate files by sample and modality.
 
     Downloads, decompresses, and inspects files, then classifies them into
@@ -105,17 +108,14 @@ def preprocess(gse_id: str, output: Path | None, keep_data: bool, verbose: bool)
                 scatac_seq/
                 ...
     """
+    from scruticell.config import KEEP_DATA
     from scruticell.preprocessing import preprocess_gse as run_preprocess
 
     click.echo(f"\n{'='*60}")
     click.echo(f"  Omics Preprocessing: {gse_id}")
     click.echo(f"{'='*60}\n")
 
-    result = run_preprocess(
-        gse_id=gse_id,
-        output_dir=str(output) if output else None,
-        verbose=verbose,
-    )
+    result = run_preprocess(gse_id=gse_id)
 
     click.echo(f"\n{'='*60}")
     click.echo(f"  Preprocessing complete: {gse_id}")
@@ -129,81 +129,22 @@ def preprocess(gse_id: str, output: Path | None, keep_data: bool, verbose: bool)
         for err in result["errors"]:
             click.echo(f"  - {err}")
 
-    if not keep_data:
+    if not KEEP_DATA:
         _cleanup_gse_output(gse_id, keep_data=False)
 
 
 @main.command()
 @click.argument("gse_id")
-@click.option(
-    "--output", "-o",
-    type=click.Path(path_type=Path),
-    default=None,
-    help="Output directory for processed AnnData file.",
-)
-@click.option(
-    "--llm-model",
-    default=None,
-    help="LLM model to use (default: deepseek-v4-pro).",
-)
-@click.option(
-    "--llm-api-key",
-    default=None,
-    help="API key for LLM provider (env: DEEPSEEK_API_KEY or OPENAI_API_KEY).",
-)
-@click.option(
-    "--llm-base-url",
-    default=None,
-    help="Base URL for LLM API (default: https://api.deepseek.com).",
-)
-@click.option(
-    "--no-literature",
-    is_flag=True,
-    help="Skip PubMed literature search.",
-)
-@click.option(
-    "--max-retries",
-    type=int,
-    default=3,
-    help="Maximum reflexion retries on low confidence (default: 3).",
-)
-@click.option(
-    "--verbose", "-v",
-    is_flag=True,
-    help="Enable verbose output.",
-)
-@click.option(
-    "--keep-data",
-    is_flag=True,
-    help="Keep downloaded files and output .h5ad (default: clean up).",
-)
-def parse(
-    gse_id: str,
-    output: Optional[Path],
-    llm_model: Optional[str],
-    llm_api_key: Optional[str],
-    llm_base_url: Optional[str],
-    no_literature: bool,
-    max_retries: int,
-    verbose: bool,
-    keep_data: bool,
-) -> None:
+def parse(gse_id: str) -> None:
     """Parse a GSE accession into an AnnData object.
 
     GSE_ID: NCBI GEO Series accession (e.g., GSE12345).
     """
-    if verbose:
+    from scruticell.config import KEEP_DATA, LITERATURE_ENABLED, MAX_RETRIES, VERBOSE
+    if VERBOSE:
         logging.getLogger("scruticell").setLevel(logging.DEBUG)
 
-    import scruticell.config as cfg
-    if llm_model:
-        cfg.LLM_MODEL = llm_model
-    if llm_api_key:
-        cfg.LLM_API_KEY = llm_api_key
-    if llm_base_url:
-        cfg.LLM_BASE_URL = llm_base_url
-
-    output_dir = output or Path.cwd()
+    output_dir = Path.cwd()
 
     click.echo(f"\n{'='*60}")
     click.echo(f"  Scrut-Cell Pipeline")
@@ -227,15 +168,15 @@ def parse(
     set_knowledge_base(kb)
 
     audit = AuditLogger(output_dir, gse_id)
-    audit.log_step("pipeline", "started", {"gse_id": gse_id, "max_retries": max_retries})
+    audit.log_step("pipeline", "started", {"gse_id": gse_id, "max_retries": MAX_RETRIES})
 
-    state = PipelineState(gse_id=gse_id, output_dir=output_dir, max_retries=max_retries)
+    state = PipelineState(gse_id=gse_id, output_dir=output_dir, max_retries=MAX_RETRIES)
 
     download_stages = [
         ("Download", download_node),
         ("Parse SOFT", parse_soft_node),
     ]
-    if not no_literature:
+    if LITERATURE_ENABLED:
         download_stages.append(("Literature", literature_node))
 
     align_stages = [
@@ -266,9 +207,9 @@ def parse(
 
     run_stages(download_stages, state)
 
-    for retry in range(max_retries + 1):
+    for retry in range(MAX_RETRIES + 1):
         if retry > 0:
-            click.echo(f"\n  --- Reflexion retry {retry}/{max_retries} ---")
+            click.echo(f"\n  --- Reflexion retry {retry}/{MAX_RETRIES} ---")
             click.echo(f"  [Reflexion]...", nl=False)
             result = reflexion_node(state)
             for key, value in result.items():
@@ -337,8 +278,8 @@ def parse(
     audit_path = audit.write()
     click.echo(f"  Audit log: {audit_path}\n")
 
-    _cleanup_gse_output(gse_id, keep_data)
-    if not keep_data:
+    _cleanup_gse_output(gse_id, KEEP_DATA)
+    if not KEEP_DATA:
         click.echo(f"  Preserved: audit log, KB strategies")
 
 
@@ -349,21 +290,41 @@ def config() -> None:
         CONFIDENCE_THRESHOLD_AUTO,
         CONFIDENCE_THRESHOLD_WARN,
         DATA_DIR,
+        DOWNLOAD_ENABLED,
+        DOWNLOAD_MODE,
         DOWNLOAD_RETRIES,
         DOWNLOAD_TIMEOUT,
+        KB_STRATEGY_REUSE,
+        KEEP_DATA,
+        LITERATURE_ENABLED,
+        LLM_API_KEY,
+        LLM_BASE_URL,
+        LLM_ENABLED,
         LLM_MODEL,
         LLM_TEMPERATURE,
-        LLM_BASE_URL,
-        LLM_API_KEY,
+        MAX_RETRIES,
         NEO4J_URI,
+        OUTPUT_DIR,
+        REFLECTION_ENABLED,
+        VERBOSE,
     )
 
     click.echo("Scrut-Cell Configuration:")
     click.echo(f"  Data directory:     {DATA_DIR}")
+    click.echo(f"  Output directory:   {OUTPUT_DIR}")
     click.echo(f"  LLM model:          {LLM_MODEL}")
     click.echo(f"  LLM temperature:    {LLM_TEMPERATURE}")
     click.echo(f"  LLM base URL:       {LLM_BASE_URL}")
     click.echo(f"  LLM API key:        {'***' if LLM_API_KEY else '(not set)'}")
+    click.echo(f"  LLM enabled:        {LLM_ENABLED}")
+    click.echo(f"  KB strategy reuse:  {KB_STRATEGY_REUSE}")
+    click.echo(f"  Literature:         {LITERATURE_ENABLED}")
+    click.echo(f"  Max retries:        {MAX_RETRIES}")
+    click.echo(f"  Reflection:         {REFLECTION_ENABLED}")
+    click.echo(f"  Keep data:          {KEEP_DATA}")
+    click.echo(f"  Download:           {DOWNLOAD_ENABLED}")
+    click.echo(f"  Download mode:      {DOWNLOAD_MODE}")
+    click.echo(f"  Verbose:            {VERBOSE}")
     click.echo(f"  Neo4j URI:          {NEO4J_URI}")
     click.echo(f"  Download timeout:   {DOWNLOAD_TIMEOUT}s")
     click.echo(f"  Download retries:   {DOWNLOAD_RETRIES}")
@@ -393,28 +354,7 @@ def db_clear() -> None:
 
 @main.command()
 @click.argument("gse_id")
-@click.option(
-    "--output", "-o",
-    type=click.Path(path_type=Path),
-    default=None,
-    help="Output path for the inspection report JSON.",
-)
-@click.option(
-    "--no-download",
-    is_flag=True,
-    help="Use existing download directory (skip download).",
-)
-@click.option(
-    "--keep-data",
-    is_flag=True,
-    help="Keep downloaded files (default: delete after completion).",
-)
-def inspect(
-    gse_id: str,
-    output: Optional[Path],
-    no_download: bool,
-    keep_data: bool,
-) -> None:
+def inspect(gse_id: str) -> None:
     """Inspect a GSE dataset and generate a structured diagnostic report.
 
     Produces a JSON report containing:
@@ -435,7 +375,9 @@ def inspect(
 
     state = PipelineState(gse_id=gse_id, output_dir=get_output_path(gse_id))
 
-    if not no_download:
+    from scruticell.config import DOWNLOAD_ENABLED, KEEP_DATA
+
+    if DOWNLOAD_ENABLED:
         click.echo("Downloading...")
         result = download_node(state)
         for k, v in result.items():
@@ -489,13 +431,8 @@ def inspect(
 
     json_str = report.to_json()
 
-    if output:
-        output_path = Path(output)
-        if output_path.is_dir():
-            output_path = output_path / f"{gse_id}_report.json"
-    else:
-        output_path = get_output_path(gse_id) / "inspect.json"
-        output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path = get_output_path(gse_id) / "inspect.json"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json_str, encoding="utf-8")
     click.echo(f"\nReport written to: {output_path}")
 
@@ -508,47 +445,13 @@ def inspect(
         click.echo(f"  Errors:            {len(report.errors)}")
         for err in report.errors:
             click.echo(f"    - {err}")
-    _cleanup_gse_output(gse_id, keep_data)
+    _cleanup_gse_output(gse_id, KEEP_DATA)
     click.echo(f"{'='*60}")
 
 
 @main.command()
 @click.argument("gse_id")
-@click.option(
-    "--output", "-o",
-    type=click.Path(path_type=Path),
-    default=None,
-    help="Output path for the processing plan JSON.",
-)
-@click.option(
-    "--report",
-    type=click.Path(exists=True, path_type=Path),
-    default=None,
-    help="Path to an existing inspection report JSON (skip download+inspect).",
-)
-@click.option(
-    "--llm-model",
-    default=None,
-    help="LLM model for plan generation (default: from config).",
-)
-@click.option(
-    "--no-llm",
-    is_flag=True,
-    help="Skip LLM plan generation; only show KB matches.",
-)
-@click.option(
-    "--keep-data",
-    is_flag=True,
-    help="Keep downloaded files (default: delete after completion).",
-)
-def plan(
-    gse_id: str,
-    output: Optional[Path],
-    report: Optional[Path],
-    llm_model: Optional[str],
-    no_llm: bool,
-    keep_data: bool,
-) -> None:
+def plan(gse_id: str) -> None:
     """Generate a batch-matrix-metadata processing plan using LLM.
 
     First inspects the dataset (or loads an existing report), queries
@@ -571,46 +474,39 @@ def plan(
     from scruticell.pipeline.state import PipelineState
 
     # Load or generate report
-    if report:
-        click.echo(f"Loading report: {report}")
-        report_json = report.read_text(encoding="utf-8")
-        report_data = json.loads(report_json)
+    default_report = get_output_path(gse_id) / "inspect.json"
+    if default_report.exists():
+        click.echo(f"Found existing report: {default_report}")
+        report_data = json.loads(default_report.read_text(encoding="utf-8"))
         gse_report = GseReport.from_dict(report_data)
     else:
-        # Try default output path first (from prior 'inspect' run)
-        default_report = get_output_path(gse_id) / "inspect.json"
-        if default_report.exists():
-            click.echo(f"Found existing report: {default_report}")
-            report_data = json.loads(default_report.read_text(encoding="utf-8"))
-            gse_report = GseReport.from_dict(report_data)
-        else:
-            click.echo(f"No report found at {default_report}, generating...")
-            click.echo("Downloading...")
-            state = PipelineState(gse_id=gse_id, output_dir=get_output_path(gse_id))
-            result = download_node(state)
+        click.echo(f"No report found at {default_report}, generating...")
+        click.echo("Downloading...")
+        state = PipelineState(gse_id=gse_id, output_dir=get_output_path(gse_id))
+        result = download_node(state)
+        for k, v in result.items():
+            setattr(state, k, v)
+        if state.download_errors:
+            for err in state.download_errors:
+                click.echo(f"  {err}")
+
+        click.echo("Parsing SOFT metadata...")
+        try:
+            result = parse_soft_node(state)
             for k, v in result.items():
                 setattr(state, k, v)
-            if state.download_errors:
-                for err in state.download_errors:
-                    click.echo(f"  {err}")
+        except Exception as exc:
+            click.echo(f"  Parse warning: {exc}")
 
-            click.echo("Parsing SOFT metadata...")
-            try:
-                result = parse_soft_node(state)
-                for k, v in result.items():
-                    setattr(state, k, v)
-            except Exception as exc:
-                click.echo(f"  Parse warning: {exc}")
-
-            click.echo("Building inspection report...")
-            reporter = Reporter()
-            gse_report = reporter.build_report(
-                gse_id=gse_id,
-                download_dir=state.download_dir or (get_download_path(gse_id)),
-                gsm_entries=state.parsed_characteristics,
-                gse_metadata=state.raw_metadata,
-                raw_gsm_entries=getattr(state, "raw_gsm_entries", {}),
-            )
+        click.echo("Building inspection report...")
+        reporter = Reporter()
+        gse_report = reporter.build_report(
+            gse_id=gse_id,
+            download_dir=state.download_dir or (get_download_path(gse_id)),
+            gsm_entries=state.parsed_characteristics,
+            gse_metadata=state.raw_metadata,
+            raw_gsm_entries=getattr(state, "raw_gsm_entries", {}),
+        )
 
     click.echo(f"\n{'='*60}")
     click.echo(f"  Plan Generation: {gse_id}")
@@ -630,8 +526,10 @@ def plan(
     else:
         click.echo("\n  KB Matches: 0 (no similar cases found)")
 
-    if no_llm:
-        click.echo("\n  Skipping LLM plan generation (--no-llm)")
+    from scruticell.config import KEEP_DATA, LLM_ENABLED
+
+    if not LLM_ENABLED:
+        click.echo("\n  Skipping LLM plan generation (LLM disabled in config)")
         return
 
     click.echo("\n  Generating plan via LLM...")
@@ -651,13 +549,8 @@ def plan(
         for line in plan.strategy_notes.split("\n"):
             click.echo(f"    {line}")
 
-    if output:
-        output_path = Path(output)
-        if output_path.is_dir():
-            output_path = output_path / f"{gse_id}_plan.json"
-    else:
-        output_path = get_output_path(gse_id) / "plan.json"
-        output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path = get_output_path(gse_id) / "plan.json"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(plan_json, encoding="utf-8")
     click.echo(f"\n  Plan written to: {output_path}")
 
@@ -705,67 +598,26 @@ def plan(
             fm_list = plan_data.get("field_mappings", [])
             if fm_list:
                 kb_plan.store_field_mappings(f"{gse_id}_{ts}", fm_list)
-    except Exception:
-        pass  # KB write is best-effort, don't fail the command
+    except Exception as exc:
+        logger.warning("KB write failed (best-effort): %s", exc)  # don't fail the command
 
-    _cleanup_gse_output(gse_id, keep_data)
+    _cleanup_gse_output(gse_id, KEEP_DATA)
 
     click.echo(f"\n{'='*60}")
 
 
 @main.command()
 @click.argument("gse_id")
-@click.option(
-    "--output", "-o",
-    type=click.Path(path_type=Path),
-    default=None,
-    help="Output directory for AnnData file.",
-)
-@click.option(
-    "--plan-file",
-    type=click.Path(exists=True, path_type=Path),
-    default=None,
-    help="Path to processing plan JSON (default: output/<GSE_ID>/plan.json).",
-)
-@click.option(
-    "--report-file",
-    type=click.Path(exists=True, path_type=Path),
-    default=None,
-    help="Path to inspection report JSON (default: output/<GSE_ID>/inspect.json).",
-)
-@click.option(
-    "--no-download",
-    is_flag=True,
-    help="Use existing download directory (skip download).",
-)
-@click.option(
-    "--reflect/--no-reflect",
-    default=True,
-    help="Enable LLM reflection on execution failure (default: on).",
-)
-@click.option(
-    "--keep-data",
-    is_flag=True,
-    help="Keep downloaded files and output .h5ad (default: delete, keep only strategies and logs).",
-)
-def execute(
-    gse_id: str,
-    output: Optional[Path],
-    plan_file: Optional[Path],
-    report_file: Optional[Path],
-    no_download: bool,
-    reflect: bool,
-    keep_data: bool,
-) -> None:
+def execute(gse_id: str) -> None:
     """Execute a processing plan to produce an AnnData file.
 
     Takes a processing plan and inspection report (from the 'plan'
     and 'inspect' commands), reads the specified matrices, applies
     batch and field mappings, and writes the output .h5ad.
 
-    By default, downloaded files and .h5ad are deleted after execution,
-    keeping only strategies (plan.json, provenance.json). Use --keep-data
-    to preserve everything.
+    Downloaded files and .h5ad are deleted after execution by default,
+    keeping only strategies (plan.json, provenance.json). Set
+    pipeline.keep_data in the config to preserve everything.
     """
     import json
     from scruticell.intelligence import (
@@ -779,16 +631,16 @@ def execute(
     from scruticell.pipeline.nodes.parse import parse_soft_node
     from scruticell.pipeline.state import PipelineState
 
+    from scruticell.config import DOWNLOAD_ENABLED, KEEP_DATA, REFLECTION_ENABLED
+
     click.echo(f"\n{'='*60}")
     click.echo(f"  Plan Execution: {gse_id}")
     click.echo(f"{'='*60}")
 
-    # Resolve plan and report files to default paths if not specified
+    # Resolve plan and report files to default paths
     default_base = get_output_path(gse_id)
-    if plan_file is None:
-        plan_file = default_base / "plan.json"
-    if report_file is None:
-        report_file = default_base / "inspect.json"
+    plan_file = default_base / "plan.json"
+    report_file = default_base / "inspect.json"
 
     if not plan_file.exists():
         click.echo(f"Error: plan file not found: {plan_file}")
@@ -811,12 +663,12 @@ def execute(
     report_data = json.loads(report_json)
     report = GseReport.from_dict(report_data)
 
-    output_dir = output or get_output_path(gse_id)
+    output_dir = get_output_path(gse_id)
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Setup state
     state = PipelineState(gse_id=gse_id, output_dir=output_dir)
-    if not no_download:
+    if DOWNLOAD_ENABLED:
         download_dir = get_download_path(gse_id)
         if download_dir.exists() and any(download_dir.iterdir()):
             # Already downloaded (e.g. by prior 'inspect'), reuse
@@ -888,7 +740,7 @@ def execute(
                     click.echo(f" WARNING: {exc}")
 
     # Execute
-    if reflect:
+    if REFLECTION_ENABLED:
         click.echo("\nExecuting with LLM reflection...")
         monitor = ExecutionMonitor()
         result = monitor.execute_with_reflection(report, plan, output_dir, state)
@@ -1008,8 +860,8 @@ def execute(
     if trace_text:
         click.echo(trace_text)
 
-    _cleanup_gse_output(gse_id, keep_data)
-    if not keep_data:
+    _cleanup_gse_output(gse_id, KEEP_DATA)
+    if not KEEP_DATA:
         click.echo(f"  Preserved: inspect.json, plan.json, execute.json, metadata.md")
 
     from scruticell.utils.tokens import TokenTracker
@@ -1019,52 +871,7 @@ def execute(
 
 @main.command()
 @click.argument("gse_id")
-@click.option(
-    "--output", "-o",
-    type=click.Path(path_type=Path),
-    default=None,
-    help="Output directory (default: output/<GSE_ID>/).",
-)
-@click.option(
-    "--llm-model",
-    default=None,
-    help="LLM model (default: from config).",
-)
-@click.option(
-    "--llm-api-key",
-    default=None,
-    help="API key for LLM provider (env: DEEPSEEK_API_KEY).",
-)
-@click.option(
-    "--no-download",
-    is_flag=True,
-    help="Skip download, use cached data.",
-)
-@click.option(
-    "--no-llm",
-    is_flag=True,
-    help="Skip LLM plan generation; only show KB matches.",
-)
-@click.option(
-    "--keep-data",
-    is_flag=True,
-    help="Keep downloaded files and output .h5ad.",
-)
-@click.option(
-    "--verbose", "-v",
-    is_flag=True,
-    help="Enable verbose output.",
-)
-def run(
-    gse_id: str,
-    output: Optional[Path],
-    llm_model: Optional[str],
-    llm_api_key: Optional[str],
-    no_download: bool,
-    no_llm: bool,
-    keep_data: bool,
-    verbose: bool,
-) -> None:
+def run(gse_id: str) -> None:
     """One-command GSE → AnnData pipeline: inspect + plan + execute.
 
     Equivalent to running:
@@ -1072,22 +879,23 @@ def run(
         scruticell plan <GSE>
         scruticell execute <GSE>
 
-    If --no-llm is set, stops after KB matching (plan generation skipped).
-    Use the step-by-step commands if you need to inspect intermediate results.
+    If llm.enabled is false in the config, stops after KB matching
+    (plan generation skipped). Use the step-by-step commands if you need
+    to inspect intermediate results.
     """
     import json
     import time
 
-    if verbose:
+    from scruticell.config import (
+        DOWNLOAD_ENABLED,
+        KEEP_DATA,
+        LLM_ENABLED,
+        VERBOSE,
+    )
+    if VERBOSE:
         logging.getLogger("scruticell").setLevel(logging.DEBUG)
 
-    import scruticell.config as cfg
-    if llm_model:
-        cfg.LLM_MODEL = llm_model
-    if llm_api_key:
-        cfg.LLM_API_KEY = llm_api_key
-
-    output_dir = output or get_output_path(gse_id)
+    output_dir = get_output_path(gse_id)
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Save full log to output/{gse_id}/run.log
@@ -1118,7 +926,7 @@ def run(
     # ========== STEP 1: INSPECT ==========
     click.echo("\n  [1/3] INSPECT — downloading + inspecting...")
     state = PipelineState(gse_id=gse_id, output_dir=output_dir)
-    if not no_download:
+    if DOWNLOAD_ENABLED:
         download_dir = get_download_path(gse_id)
         if not download_dir.exists():
             download_dir = output_dir / "download"
@@ -1180,8 +988,8 @@ def run(
                     result = parse_soft_node(state)
                     for k, v in result.items():
                         setattr(state, k, v)
-                except Exception:
-                    pass
+                except Exception as exc:
+                    logger.warning("Parse SOFT failed: %s", exc)
 
     click.echo("    Building report...", nl=False)
     reporter = Reporter()
@@ -1226,8 +1034,8 @@ def run(
     else:
         click.echo(f"    KB Matches: 0")
 
-    if no_llm:
-        click.echo("    Skipping LLM plan generation (--no-llm). Pipeline stops here.")
+    if not LLM_ENABLED:
+        click.echo("    Skipping LLM plan generation (LLM disabled in config). Pipeline stops here.")
         return
 
     click.echo("    Generating plan via LLM...", nl=False)
@@ -1323,8 +1131,8 @@ def run(
         }
         plan_json = json.dumps(plan_data, indent=2, ensure_ascii=False)
         plan_path.write_text(plan_json, encoding="utf-8")
-    except Exception:
-        pass
+    except Exception as exc:
+        logger.warning("Failed to append batch verification to plan.json: %s", exc)
 
     # Write execute.json
     execute_path = output_dir / "execute.json"
@@ -1422,16 +1230,16 @@ def run(
             matcher_ex = StrategyMatcher(kb_u)
             matcher_ex.update_strategy_stats(gse_report, True)
             matcher_ex.store_strategy(gse_report, plan_json, success=True)
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.warning("KB store failed (best-effort): %s", exc)
     else:
         try:
             kb_fail, _ = _get_knowledge_base()
             StrategyMatcher(kb_fail).update_strategy_stats(gse_report, False)
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.warning("KB failure stats failed (best-effort): %s", exc)
 
-    _cleanup_gse_output(gse_id, keep_data)
+    _cleanup_gse_output(gse_id, KEEP_DATA)
 
     from scruticell.utils.tokens import TokenTracker
     click.echo(TokenTracker().report())

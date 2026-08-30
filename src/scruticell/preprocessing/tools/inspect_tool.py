@@ -287,22 +287,60 @@ def inspect_files(
                 # Sandbox: execute extraction code against each GSM
                 from scruticell.preprocessing.models import FieldValueMap, ValueGroup
                 from scruticell.preprocessing.verification import verify_extraction_results
-                extracted_fields: dict[str, dict[str, list[str]]] = {}
-                per_gsm_results: dict[str, dict] = {}
-                for gsm_id, raw_entry in serialized_gsm.items():
-                    try:
-                        meta = run_extraction_metadata(extraction_code, raw_entry)
-                        if meta:
-                            per_gsm_results[gsm_id] = meta
-                            for field, value in meta.items():
-                                extracted_fields.setdefault(field, {}).setdefault(value, []).append(gsm_id)
-                    except Exception as e:
-                        logger.debug("Extraction failed for %s: %s", gsm_id, e)
+                from scruticell.preprocessing.prompts import EXTRACTION_REPAIR_PROMPT
 
-                # Verify extraction quality
-                verif = verify_extraction_results(per_gsm_results, len(raw_gsm))
+                # ── Extract + verify + repair loop (up to 2 repairs) ──
+                per_gsm_results: dict[str, dict] = {}
+                extracted_fields: dict[str, dict[str, list[str]]] = {}
+                verif = None
+                code_to_run = extraction_code
+                for attempt in range(3):
+                    per_gsm_results = {}
+                    extracted_fields = {}
+                    for gsm_id, raw_entry in serialized_gsm.items():
+                        try:
+                            meta = run_extraction_metadata(code_to_run, raw_entry)
+                            if meta:
+                                per_gsm_results[gsm_id] = meta
+                                for field, value in meta.items():
+                                    extracted_fields.setdefault(field, {}).setdefault(value, []).append(gsm_id)
+                        except Exception as e:
+                            logger.debug("Extraction failed for %s: %s", gsm_id, e)
+
+                    verif = verify_extraction_results(per_gsm_results, len(serialized_gsm))
+                    if verif.passed or attempt >= 2:
+                        break
+
+                    # Regenerate with repair prompt
+                    logger.warning("Metadata extraction verify failed (attempt %d): %s",
+                                   attempt + 1, verif.failure_summary()[:300])
+                    try:
+                        sample_gsm_json = _json.dumps(
+                            next(iter(serialized_gsm.values()), {}), ensure_ascii=False)
+                        repair_prompt = EXTRACTION_REPAIR_PROMPT.format(
+                            FAILED_CODE=code_to_run,
+                            ERROR_CONTEXT=verif.failure_summary(),
+                            SAMPLE_GSM=sample_gsm_json,
+                        )
+                        response = llm.invoke(repair_prompt)
+                        new_code = str(response.content) if hasattr(response, "content") else str(response)
+                        if new_code.startswith("```"):
+                            lines = new_code.split("\n")
+                            new_code = "\n".join(lines[1:-1] if lines[-1].strip() == "```" else lines[1:])
+                        if not new_code.strip() or "extract_metadata" not in new_code:
+                            break
+                        code_to_run = new_code
+                    except Exception as exc:
+                        logger.warning("Extraction repair failed: %s", exc)
+                        break
+
                 if not verif.passed:
-                    logger.warning("Metadata extraction verification failed: %s", verif.failure_summary())
+                    logger.warning("Metadata extraction verification failed: %s",
+                                   verif.failure_summary()[:300])
+                elif code_to_run != extraction_code:
+                    # Keep the repaired code in cache for next time
+                    store_code_cache(gse_id, field_value_maps_raw, data_file_signals,
+                                     "extraction_code", code_to_run)
 
                 # Merge extracted fields into field_value_maps (even if partially failed)
                 for field_name, value_map in extracted_fields.items():

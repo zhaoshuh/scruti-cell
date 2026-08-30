@@ -8,10 +8,8 @@ Returns matched strategies or None if no match found.
 from __future__ import annotations
 
 import hashlib
-import json
 import logging
 from dataclasses import dataclass, field
-from pathlib import Path
 from typing import Any
 
 from scruticell.intelligence.reporter import GseReport
@@ -84,8 +82,12 @@ class StrategyMatcher:
             plan = ProcessingPlan.from_llm_response(gse_id, matches[0].plan_json)
     """
 
-    def __init__(self, kb: Any = None):
+    def __init__(self, kb: Any = None, enabled: bool | None = None):
         self._kb = kb
+        if enabled is None:
+            from scruticell.config import KB_STRATEGY_REUSE
+            enabled = KB_STRATEGY_REUSE
+        self.enabled = bool(enabled)
 
     def fingerprint(self, report: GseReport) -> GseFingerprint:
         """Extract a feature fingerprint from a GseReport."""
@@ -127,7 +129,11 @@ class StrategyMatcher:
         """Find similar past cases in the knowledge graph.
 
         Returns strategies sorted by similarity score (highest first).
+        Returns [] when strategy reuse is disabled in the config.
         """
+        if not self.enabled:
+            return []
+
         fp = self.fingerprint(report)
 
         if self._kb is None:
@@ -159,7 +165,7 @@ class StrategyMatcher:
         self, report: GseReport, plan_json: str, success: bool = True
     ) -> None:
         """Store a generated plan as a reusable strategy in the knowledge base."""
-        if self._kb is None:
+        if not self.enabled or self._kb is None:
             return
 
         fp = self.fingerprint(report)
@@ -181,7 +187,7 @@ class StrategyMatcher:
         self, report: GseReport, success: bool,
     ) -> None:
         """Increment success or failure counter for a known strategy."""
-        if self._kb is None:
+        if not self.enabled or self._kb is None:
             return
 
         fp = self.fingerprint(report)
@@ -208,10 +214,12 @@ class StrategyMatcher:
             if results:
                 return [
                     {
-                        "gse_id": "",
+                        "gse_id": r.get("gse_id", ""),
                         "fix_strategy": r.get("plan_json", "{}"),
                         "success_count": r.get("success_count", 0),
                         "fail_count": r.get("fail_count", 0),
+                        "strategy_id": r.get("strategy_id", ""),
+                        "avg_confidence": r.get("avg_confidence", 0.0),
                     }
                     for r in results
                 ]
@@ -221,37 +229,20 @@ class StrategyMatcher:
         return []
 
     def _compute_similarity(self, fp: GseFingerprint, record: dict[str, Any]) -> float:
-        """Compute similarity score between fingerprint and a KB record."""
-        score = 0.0
-        record_org = record.get("error_message", "")
-        try:
-            record_data = json.loads(record_org) if isinstance(record_org, str) else record_org
-        except (json.JSONDecodeError, TypeError):
-            return 0.0
+        """Compute similarity score between fingerprint and a KB record.
 
-        if not isinstance(record_data, dict):
-            return 0.0
-
-        # Same organism → +0.3
-        if record_data.get("organism") == fp.organism:
-            score += 0.3
-
-        # Same GSM count → +0.2
-        if record_data.get("gsm_count") == fp.gsm_count:
-            score += 0.2
-
-        # Matrix format overlap → +0.2
-        record_formats = set(record_data.get("matrix_formats", []))
-        fp_formats = set(fp.matrix_formats)
-        if record_formats and fp_formats:
-            overlap = len(record_formats & fp_formats) / len(fp_formats)
-            score += 0.2 * overlap
-
-        # Field name overlap → +0.3
-        record_fields = set(record_data.get("field_names", []))
-        fp_fields = set(fp.field_names)
-        if record_fields and fp_fields:
-            overlap = len(record_fields & fp_fields) / max(len(fp_fields), 1)
-            score += 0.3 * overlap
-
-        return min(score, 1.0)
+        Strategies returned by ``find_similar_strategies`` were already matched
+        on the fingerprint signature (organism + matrix formats + GSM count), so
+        their stored ``strategy_id`` (the signature) drives the score.
+        Failure-case records carry no fingerprint and score 0 (they are meant
+        for reflexion, not plan reuse).
+        """
+        sid = str(record.get("strategy_id", "") or "")
+        if sid:
+            current = fp.to_signature()
+            if sid == current:
+                return 1.0
+            if current.startswith(sid[:8]) or sid.startswith(current[:8]):
+                return 0.7
+            return 0.5
+        return 0.0

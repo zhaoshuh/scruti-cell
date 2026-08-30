@@ -7,6 +7,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from unittest.mock import patch
+
 from scruticell.knowledge.graph import LocalKnowledgeBase
 from scruticell.pipeline.nodes.reflexion import (
     _generate_error_signature,
@@ -140,7 +142,8 @@ class TestReflexionNode:
             validation_errors=["Matrix columns (10) != obs rows (20)"],
             max_retries=3,
         )
-        result = reflexion_node(state)
+        with patch("scruticell.pipeline.nodes.reflexion._try_llm_strategy", return_value=None):
+            result = reflexion_node(state)
         assert result["retry_count"] == 1
         assert result["current_strategy"]["action"] == "retry"
         assert len(result["reflexion_notes"]) >= 1
@@ -188,13 +191,15 @@ class TestReflexionNode:
             validation_errors=["Error 1"],
             max_retries=3,
         )
-        r1 = reflexion_node(state)
+        with patch("scruticell.pipeline.nodes.reflexion._try_llm_strategy", return_value=None):
+            r1 = reflexion_node(state)
         state.retry_count = r1["retry_count"]
         state.strategy_history = r1["strategy_history"]
         state.reflexion_notes = r1["reflexion_notes"]
         state.validation_errors = ["Error 2"]
 
-        r2 = reflexion_node(state)
+        with patch("scruticell.pipeline.nodes.reflexion._try_llm_strategy", return_value=None):
+            r2 = reflexion_node(state)
         assert len(r2["strategy_history"]) >= 2
 
     def test_abort_strategy_respected(self, kb):

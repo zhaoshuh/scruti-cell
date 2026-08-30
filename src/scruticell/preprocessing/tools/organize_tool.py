@@ -2,6 +2,9 @@
 
 Creates the preprocessed/ output tree organized by sample (GSM or inferred key)
 and modality. Groups sample-level info in manifest.json under sample_groups.
+
+File-to-sample attribution is LLM-driven (see preprocessing.attribution); no
+rule-based filename matching is used.
 """
 
 from __future__ import annotations
@@ -9,51 +12,19 @@ from __future__ import annotations
 import json
 import logging
 import os
-import re
+import threading
 from pathlib import Path
-
-from scruticell.utils.paths import normalize_ancestry
 
 logger = logging.getLogger(__name__)
 
-# Module-level cache — walk download_dir once, reuse for all scans
+# Module-level cache — walk download_dir once, reuse for all scans.
 _all_file_cache: dict[str, list[Path]] = {}
-
-# Filename patterns → file role (auto-detection)
-_ROLE_PATTERNS: list[tuple[str, str]] = [
-    ("barcodes", "barcodes"),
-    ("features", "features"),
-    ("genes", "features"),
-    ("matrix", "matrix"),
-    ("counts", "matrix"),
-    ("peaks", "peaks"),
-    ("fragments", "fragments"),
-    ("tissue_positions", "spatial_positions"),
-    ("scalefactors", "spatial_coords"),
-    ("tissue_hires", "spatial_image"),
-    ("tissue_lowres", "spatial_image"),
-    ("filtered_contig", "contigs"),
-    ("airr", "contigs"),
-    ("clonotypes", "clonotypes"),
-    ("consensus", "contigs"),
-    ("guide", "guide_info"),
-    ("sgrna", "guide_info"),
-    ("crispr", "guide_info"),
-    ("protein", "matrix"),
-    ("adt", "features"),
-    ("antibody", "features"),
-    ("metadata", "metadata"),
-    ("obs", "metadata"),
-    ("var", "metadata"),
-]
-
-_NOISE_PATTERNS = [re.compile(p) for p in [
-    r"_family\.soft", r"series_matrix", r"GPL\d+", r"\.RData$", r"\.rda$",
-]]
+_all_file_cache_lock = threading.Lock()
 
 
 def _safe_name(name: str) -> str:
     """Sanitize a name for use as a filesystem directory."""
+    import re
     safe = re.sub(r'[<>:\"/\\|?*]', '_', name).strip(' .')
     # Prevent path-traversal tricks
     safe = safe.replace("..", "__")
@@ -85,94 +56,18 @@ def _format_from_role(file_path: Path, role: str) -> str:
     return "other"
 
 
-def _is_noise(ancestry: str, modality: str = "") -> bool:
-    name_lower = ancestry.lower()
-    # Image files are data for spatial modalities, not noise
-    _img_exts = {".png", ".jpg", ".jpeg", ".tiff", ".tif", ".bmp", ".svg"}
-    _others = {".soft", ".soft.gz", ".tar", ".tar.gz", ".zip",
-               ".pdf", ".docx", ".doc", ".xlsx", ".xls",
-               ".md", ".txt", ".rtf", ".xml", ".html", ".htm"}
-    if modality == "spatial_transcriptomics":
-        exts = _others
-    else:
-        exts = _others | _img_exts
-    if any(name_lower.endswith(ext) for ext in exts):
-        return True
-    return any(p.search(name_lower) for p in _NOISE_PATTERNS)
-
-
-def _assign_role(ancestry: str, file_path: Path, modality: str) -> str:
-    name_lower = ancestry.lower()
-    for keyword, role in _ROLE_PATTERNS:
-        if keyword in name_lower:
-            return role
-    if file_path.suffix in (".mtx",):
-        return "matrix"
-    if file_path.suffix in (".h5ad", ".h5") and modality not in ("tcr_seq", "bcr_seq"):
-        return "matrix"
-    if file_path.suffix in (".png", ".jpg", ".jpeg", ".tiff", ".tif"):
-        if modality == "spatial_transcriptomics":
-            return "spatial_image"
-    return "other"
-
-
-def _scan_gsm_files(
-    download_root: Path,
-    gsm_ids: list[str],
-    modality: str,
-    file_prefix: str = "",
-) -> list[dict]:
-    """Auto-scan download directory for files belonging to given GSM IDs.
-
-    Args:
-        download_root: root of decompressed files
-        gsm_ids: GSM IDs to filter by (if empty, uses file_prefix only)
-        modality: modality name for role hints
-        file_prefix: for inferred-key scenarios where filenames don't contain GSM IDs
-
-    Returns:
-        list of {ancestry, source_path, role} dicts
-    """
+def _list_all_files(download_root: Path) -> list[Path]:
+    """List files under download_root, cached per root."""
     cache_key = str(download_root)
-    if cache_key not in _all_file_cache:
-        _all_file_cache[cache_key] = []
+    with _all_file_cache_lock:
+        if cache_key in _all_file_cache:
+            return _all_file_cache[cache_key]
+        files: list[Path] = []
         for fp in sorted(download_root.rglob("*")):
             if fp.is_file() and not fp.name.startswith("."):
-                _all_file_cache[cache_key].append(fp)
-
-    entries: list[dict] = []
-    seen: set[str] = set()
-
-    for fp in _all_file_cache[cache_key]:
-        ancestry = normalize_ancestry(str(fp.relative_to(download_root)))
-
-        if _is_noise(ancestry, modality):
-            continue
-
-        # Match logic: GSM ID in path > file_prefix in path
-        matches = False
-        if gsm_ids:
-            matches = any(gsm_id in ancestry for gsm_id in gsm_ids)
-        if not matches and file_prefix:
-            matches = file_prefix.lower() in ancestry.lower()
-        if not gsm_ids and not file_prefix:
-            matches = True  # scan all (fallback)
-
-        if not matches:
-            continue
-
-        source_path = str(fp)
-        if source_path in seen:
-            continue
-        seen.add(source_path)
-
-        entries.append({
-            "ancestry": ancestry,
-            "source_path": source_path,
-            "role": _assign_role(ancestry, fp, modality),
-        })
-
-    return entries
+                files.append(fp)
+        _all_file_cache[cache_key] = files
+        return files
 
 
 def _hardlink_or_copy(src: Path, dst: Path) -> bool:
@@ -224,16 +119,66 @@ def _link_file_entry(
     return mod_files, source_files, linked
 
 
+def _attribution_entries(
+    attribution: dict,
+    resolved_group: dict,
+    modality_name: str,
+) -> list[dict]:
+    """Build link entries for a resolved group + modality from LLM attribution."""
+    entries: list[dict] = []
+    sample_key = resolved_group.get("sample_key", "")
+    seen: set[str] = set()
+    for f in attribution.get("files", []) or []:
+        if not isinstance(f, dict):
+            continue
+        if f.get("modality") != modality_name:
+            continue
+        if f.get("sample_key") != sample_key:
+            continue
+        ancestry = str(f.get("ancestry", "") or "")
+        if not ancestry or ancestry in seen:
+            continue
+        seen.add(ancestry)
+        entries.append({
+            "source_path": ancestry,
+            "ancestry": ancestry,
+            "role": str(f.get("role", "other")),
+        })
+    for s in attribution.get("shared", []) or []:
+        if not isinstance(s, dict):
+            continue
+        if s.get("modality") != modality_name:
+            continue
+        if sample_key not in (s.get("sample_keys", []) or []):
+            continue
+        ancestry = str(s.get("ancestry", "") or "")
+        if not ancestry or ancestry in seen:
+            continue
+        seen.add(ancestry)
+        entries.append({
+            "source_path": ancestry,
+            "ancestry": ancestry,
+            "role": str(s.get("role", "other")),
+        })
+    return entries
+
+
+def _files_complete(file_entries: list) -> bool:
+    """True if every entry has a source and a role (no LLM re-attribution needed)."""
+    if not file_entries:
+        return False
+    return all(isinstance(e, dict) and e.get("source_path") and e.get("role") for e in file_entries)
+
+
 def _handle_demux(entry: dict, demux_rule: dict, modality_name: str,
                   preprocessed_dir: Path, download_root: Path,
                   content_preview: dict | None = None) -> list[dict]:
     """Split a demux file and link sub-files to sample directories.
-    
+
     Returns list of {sample_id, output_path, role, format} for updating metadata.
     """
     from scruticell.preprocessing.tools.demux_splitter import handle_demux_split
     from scruticell.preprocessing.verification import verify_demux_results
-    import shutil
 
     source_path = entry.get("source_path", "")
     if not source_path:
@@ -262,21 +207,12 @@ def _handle_demux(entry: dict, demux_rule: dict, modality_name: str,
         out_path = Path(sf.get("output_file", ""))
         if not out_path.exists():
             continue
-        role = _assign_role(str(out_path), out_path, modality_name)
-        fmt = _format_from_role(out_path, role)
         results.append({
             "sample_id": sid,
-            "output_file": str(out_path),
-            "role": role,
-            "format": fmt,
+            "output_path": out_path,
+            "role": sf.get("role", "other"),
+            "format": sf.get("format", "other"),
         })
-
-    # Cleanup temp dir
-    try:
-        shutil.rmtree(tmp_dir, ignore_errors=True)
-    except Exception:
-        pass
-
     return results
 
 
@@ -298,8 +234,9 @@ def organize_output(
         │       └── ... (hard links)
         └── unclassified/
     """
+    from scruticell.config import LLM_ATTRIBUTION_ENABLED, get_output_path
+
     if not output_dir:
-        from scruticell.config import get_output_path
         base_dir = get_output_path(gse_id)
     else:
         base_dir = Path(output_dir)
@@ -309,8 +246,8 @@ def organize_output(
     download_root = Path(download_dir)
 
     # Clear module-level cache for fresh run
-    global _all_file_cache
-    _all_file_cache.clear()
+    with _all_file_cache_lock:
+        _all_file_cache.clear()
 
     errors: list[str] = []
     total_files_linked = 0
@@ -372,6 +309,32 @@ def organize_output(
             for gsm_id in rg["gsm_ids"]:
                 gsm_to_dir[gsm_id] = rg["dir_name"]
 
+        # Decide whether LLM attribution is needed (missing/incomplete files or roles)
+        needs_attribution = False
+        for rg in resolved_groups:
+            for modality_data in rg["modalities"].values():
+                if not _files_complete(modality_data.get("files", [])):
+                    needs_attribution = True
+                    break
+            if needs_attribution:
+                break
+
+        attribution: dict | None = None
+        if needs_attribution and LLM_ATTRIBUTION_ENABLED:
+            from scruticell.preprocessing.attribution import llm_attribution
+            attribution = llm_attribution(download_root, sample_groups, gse_id)
+            if not attribution.get("ok"):
+                logger.warning("LLM attribution failed for %s: %s",
+                               gse_id, attribution.get("error"))
+                attribution = None
+            else:
+                attribution_uncl = attribution.get("unclassified", []) or []
+                if attribution_uncl:
+                    unclassified_files = list(unclassified_files or []) + [
+                        str(u) for u in attribution_uncl
+                        if str(u) not in (unclassified_files or [])
+                    ]
+
         # ── Phase 1: per-sample normal files (collect demux tasks) ──
         demux_tasks: list[dict] = []
         seen_demux_sources: set[str] = set()
@@ -399,13 +362,19 @@ def organize_output(
                 mod_files: list[dict] = []
                 source_files: list[dict] = []
 
-                file_entries = modality_data.get("files", [])
-                if not file_entries:
-                    scan_gsm = rg["gsm_ids"]
-                    scan_prefix = rg.get("file_prefix", "")
-                    file_entries = _scan_gsm_files(
-                        download_root, scan_gsm, modality_name, file_prefix=scan_prefix,
+                provided = modality_data.get("files", [])
+                file_entries: list[dict] = []
+                if attribution is not None:
+                    file_entries = _attribution_entries(
+                        attribution, rg, modality_name,
                     )
+                elif _files_complete(provided):
+                    file_entries = [
+                        {"source_path": e.get("source_path", ""),
+                         "ancestry": e.get("ancestry", ""),
+                         "role": e.get("role", "other")}
+                        for e in provided
+                    ]
 
                 for entry in file_entries:
                     if modality_data.get("has_demux"):
@@ -450,13 +419,10 @@ def organize_output(
 
         # Shared files — hard link into every referencing sample directory
         for sfg in shared_file_groups:
-            if isinstance(sfg, str):
-                continue
             if not isinstance(sfg, dict):
                 continue
             ancestry = sfg.get("ancestry", "") or sfg.get("source_path", "")
             source_path = sfg.get("source_path", "") or ancestry
-            role = sfg.get("role", "other")
             modality_name = sfg.get("modality", "other")
             ref_gsm = sfg.get("ref_by_gsm", [])
             if isinstance(ref_gsm, str):
@@ -489,7 +455,7 @@ def organize_output(
                 dir_name = gsm_to_dir.get(sid) or _safe_name(sid)
                 dst_dir = preprocessed_dir / dir_name / task["modality"]
                 dst_dir.mkdir(parents=True, exist_ok=True)
-                src = Path(sf["output_file"])
+                src = Path(sf["output_path"])
                 if _hardlink_or_copy(src, dst_dir / src.name):
                     total_files_linked += 1
 

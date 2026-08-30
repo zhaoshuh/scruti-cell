@@ -2,13 +2,14 @@
 
 Operates on plain dict GSM entries (not GsmInfo objects).
 Independent of the intelligence pipeline's executor sandbox.
+Execution runs in a subprocess with a restricted import whitelist.
 """
 
 from __future__ import annotations
 
 import logging
-import re as _re
-from typing import Any
+
+from scruticell.preprocessing.sandbox import run_code_in_subprocess
 
 logger = logging.getLogger(__name__)
 
@@ -39,11 +40,40 @@ def _get_char_from_dict(entry: dict, key: str, default: str = "") -> str:
     return default
 
 
+def _wrap_extraction_code(extraction_code: str) -> str:
+    """Wrap user code so the sandbox also sees `re` and a `get_char` helper."""
+    return (
+        "import re\n"
+        "\n"
+        "def get_char(entry, key, default=''):\n"
+        "    chars = entry.get('characteristics_ch1', '')\n"
+        "    if not chars:\n"
+        "        return default\n"
+        "    items = chars.split('; ') if '; ' in chars else [chars]\n"
+        "    key_lower = key.lower().strip()\n"
+        "    for item in items:\n"
+        "        item = str(item).strip()\n"
+        "        if not item:\n"
+        "            continue\n"
+        "        if ': ' in item:\n"
+        "            k, v = item.split(': ', 1)\n"
+        "        elif ':' in item:\n"
+        "            k, v = item.split(':', 1)\n"
+        "        else:\n"
+        "            continue\n"
+        "        if k.strip().lower() == key_lower:\n"
+        "            return v.strip()\n"
+        "    return default\n"
+        "\n"
+        + extraction_code
+    )
+
+
 def run_extraction_metadata(
     extraction_code: str,
     gsm_raw_entry: dict,
 ) -> dict[str, str]:
-    """Execute LLM-generated def extract_metadata(gsm_raw_entry) in sandbox.
+    """Execute LLM-generated def extract_metadata(gsm_raw_entry) in a subprocess.
 
     Args:
         extraction_code: Python source string defining extract_metadata()
@@ -53,52 +83,31 @@ def run_extraction_metadata(
     Returns:
         Dict of extracted field_name → value, with empty/null values filtered
     """
-    sandbox: dict[str, Any] = {
-        "re": _re,
-        "get_char": lambda entry, key, default="": _get_char_from_dict(entry, key, default),
-        "__builtins__": {
-            "True": True, "False": False, "None": None,
-            "int": int, "float": float, "str": str, "bool": bool,
-            "list": list, "dict": dict, "set": set, "tuple": tuple,
-            "len": len, "range": range, "enumerate": enumerate,
-            "zip": zip, "map": map, "filter": filter,
-            "print": print, "isinstance": isinstance,
-            "Exception": Exception, "ValueError": ValueError,
-            "TypeError": TypeError, "KeyError": KeyError,
-            "__import__": __import__,
-        },
-    }
-
     code = extraction_code.strip()
     if code.startswith("```"):
         lines = code.split("\n")
         code = "\n".join(lines[1:-1] if lines[-1].strip() == "```" else lines[1:])
 
-    local_ns: dict = {}
-    try:
-        exec(code, sandbox, local_ns)
-    except SyntaxError as exc:
-        logger.warning("extraction_code syntax error: %s", exc)
-        return {}
-    except Exception as exc:
-        logger.warning("extraction_code exec error: %s", exc)
-        return {}
-
-    extract_fn = local_ns.get("extract_metadata")
-    if extract_fn is None:
-        logger.warning("No extract_metadata() function found in code")
+    code = _wrap_extraction_code(code)
+    out = run_code_in_subprocess(
+        code,
+        "extract_metadata",
+        args=(gsm_raw_entry,),
+        timeout=30,
+    )
+    if not out.get("ok"):
+        logger.warning("extraction_code sandbox error: %s", out.get("error", "unknown")[:300])
         return {}
 
-    try:
-        result = extract_fn(gsm_raw_entry)
-        if isinstance(result, dict):
-            filtered: dict[str, str] = {}
-            for k, v in result.items():
-                sv = str(v).strip()
-                if sv and sv.lower() not in ("", "na", "n/a", "none", "null"):
-                    filtered[str(k)] = sv
-            return filtered
-    except Exception as exc:
-        logger.warning("extract_metadata() runtime error: %s", exc)
+    result = out.get("result")
+    if not isinstance(result, dict):
+        logger.warning("extract_metadata() returned %s, expected dict",
+                       type(result).__name__)
+        return {}
 
-    return {}
+    filtered: dict[str, str] = {}
+    for k, v in result.items():
+        sv = str(v).strip()
+        if sv and sv.lower() not in ("", "na", "n/a", "none", "null"):
+            filtered[str(k)] = sv
+    return filtered

@@ -8,7 +8,7 @@ experimental methods extraction.
 from __future__ import annotations
 
 
-def create_evidence_subagent(model: str = "deepseek-chat"):
+def create_evidence_subagent(model=None):
     """Create the Evidence Gathering sub-agent.
 
     Uses literature/pubmed.py and literature/pdf_agent.py for
@@ -21,10 +21,13 @@ def create_evidence_subagent(model: str = "deepseek-chat"):
         A CompiledSubAgent for evidence gathering.
     """
     from deepagents import CompiledSubAgent
+    from scruticell.config import LLM_MODEL
     from scruticell.preprocessing.evidence.tools import (
         read_paper_methods,
         search_gse_papers,
     )
+    if model is None:
+        model = LLM_MODEL
 
     return CompiledSubAgent(
         name="evidence",

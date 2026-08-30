@@ -312,6 +312,7 @@ class VerificationReport(BaseModel):
     checks: list[VerificationCheck] = Field(default_factory=list)
     repair_attempts: int = 0
     fallback: bool = False
+    assigned_gsms: list[str] = Field(default_factory=list)
 
     def failure_summary(self) -> str:
         errors = [c for c in self.checks if c.severity == "error"]

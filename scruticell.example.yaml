@@ -1,0 +1,77 @@
+# Scrut-Cell configuration example.
+#
+# Copy to `scruticell.yaml` (project root) or `~/.config/scruticell/config.yaml`
+# (global override) and edit. A project-level `scruticell.yaml` is git-ignored
+# because it may hold secrets (llm.api_key).
+#
+# Precedence: environment variables > YAML config > built-in defaults.
+# See `scruticell config` for the effective configuration.
+
+llm:
+  # LLM provider (OpenAI-compatible ChatOpenAI endpoint)
+  model: deepseek-v4-pro
+  api_key: ""              # or set DEEPSEEK_API_KEY / OPENAI_API_KEY
+  base_url: https://api.deepseek.com
+  temperature: 0.0
+  # false = skip LLM plan generation; knowledge-base matching only
+  enabled: true
+
+pipeline:
+  literature_enabled: true
+  max_retries: 3
+  reflection_enabled: true
+  keep_data: false
+  download_enabled: true
+
+kb:
+  # Reuse of stored strategies from the knowledge base (learn/apply)
+  strategy_reuse: true
+
+preprocess:
+  # LLM-driven file->sample attribution (no rule-based matching)
+  llm_attribution_enabled: true
+
+paths:
+  data_dir: ~/.scruticell/data
+  output_dir: output
+
+logging:
+  verbose: false
+
+download:
+  timeout: 600
+  retries: 3
+  chunk_size: 8192
+  connect_timeout: 30
+  startup_timeout: 120
+  max_suppl_size_gb: 10
+  mode: range            # "range" (HTTP 206) or "aria2c"
+  range_enabled: true
+  range_chunk_size_mb: 16
+  range_max_connections: 3
+  aria2c_max_connections: 8
+  aria2c_split: 8
+  aria2c_min_split_size: 10M
+  aria2c_browser_mode: true
+  aspera_enabled: false
+  aspera_host: ftp-private.ncbi.nlm.nih.gov
+  aspera_user: anonftp
+  aspera_key_path: ~/.aspera/connect/etc/asperaweb_id_dsa.openssh
+  aspera_binary: ascp
+  aspera_speed_limit: 100m
+  aspera_timeout: 300
+
+neo4j:
+  uri: bolt://localhost:7687
+  user: neo4j
+  password: scruticell
+
+ncbi_api_key: ""
+
+validation:
+  confidence_auto: 0.85
+  confidence_warn: 0.60
+
+matrices:
+  max_dense_cells: 100000
+  max_dense_genes: 30000

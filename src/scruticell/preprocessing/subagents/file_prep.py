@@ -9,12 +9,15 @@ from scruticell.preprocessing.prompts import FILE_PREP_SYSTEM_PROMPT
 from scruticell.preprocessing.tools import download_gse, decompress_files, inspect_files
 
 
-def create_file_prep_subagent(model: str = "deepseek-chat"):
+def create_file_prep_subagent(model=None):
     """Create the File Prep sub-agent with compact report output.
 
     Uses L1/L2/L3 optimized context format: field_value_maps +
     file_signal_groups + file_summary_groups instead of per-entry listings.
     """
+    from scruticell.config import LLM_MODEL
+    if model is None:
+        model = LLM_MODEL
     from deepagents import CompiledSubAgent
 
     return CompiledSubAgent(

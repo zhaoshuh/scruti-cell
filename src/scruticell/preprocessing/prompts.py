@@ -259,6 +259,7 @@ Return ONLY this JSON (no markdown, no code fences):
 
 ```json
 {{
+  "total_gsm_count": <total number of GSM in the dataset, from the report>,
   "sample_groups": [
     {{
       "gsm_ids": ["GSM001", "GSM002"],

@@ -9,12 +9,15 @@ from __future__ import annotations
 from scruticell.preprocessing.prompts import CLASSIFIER_SYSTEM_PROMPT
 
 
-def create_classifier_subagent(model: str = "deepseek-chat"):
+def create_classifier_subagent(model=None):
     """Create the Classifier sub-agent with compact input/output.
 
     Input: Compact FileContextReport (field_value_maps + file_signal_groups)
     Output: Compact classification with GSM-deduplicated groups.
     """
+    from scruticell.config import LLM_MODEL
+    if model is None:
+        model = LLM_MODEL
     from deepagents import CompiledSubAgent
 
     return CompiledSubAgent(

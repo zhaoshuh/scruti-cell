@@ -47,7 +47,6 @@ _SKIP_FIELD_PATTERNS = [
 ]
 
 # L7: Global representative kept for protocol fields (one copy for all GSM)
-_GLOBAL_REPRESENTATIVES: dict[str, str] = {}
 
 # Fields with all-unique values that should be skipped from dedup
 _UNIQUE_ONLY_FIELDS = {
@@ -131,7 +130,6 @@ def build_field_value_maps(
         for raw_field, raw_value in metadata.items():
             name = raw_field.lower().strip()
             if _should_skip_field(name):
-                _GLOBAL_REPRESENTATIVES[name] = _normalize_value(raw_value)
                 continue
             if name in _UNIQUE_ONLY_FIELDS:
                 continue
