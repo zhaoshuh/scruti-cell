@@ -17,16 +17,13 @@ Usage:
 
 from __future__ import annotations
 
-import asyncio
 import logging
-import sys
 from pathlib import Path
-from typing import Optional
 
 import click
 
 from scruticell import __version__
-from scruticell.config import get_output_path, get_download_path
+from scruticell.config import get_download_path, get_output_path
 
 logging.basicConfig(
     level=logging.INFO,
@@ -147,21 +144,23 @@ def parse(gse_id: str) -> None:
     output_dir = Path.cwd()
 
     click.echo(f"\n{'='*60}")
-    click.echo(f"  Scrut-Cell Pipeline")
+    click.echo("  Scrut-Cell Pipeline")
     click.echo(f"  GSE: {gse_id}")
     click.echo(f"  Output: {output_dir}")
     click.echo(f"{'='*60}")
 
-    from scruticell.pipeline.state import PipelineState
+    from scruticell.pipeline.nodes.alignment import align_cells_node, output_node, unify_genes_node
     from scruticell.pipeline.nodes.download import download_node
-    from scruticell.pipeline.nodes.parse import parse_soft_node
-    from scruticell.pipeline.nodes.matrix import discover_matrix_node, read_matrix_node
     from scruticell.pipeline.nodes.literature import literature_node
-    from scruticell.pipeline.nodes.alignment import align_cells_node, unify_genes_node, output_node
-    from scruticell.pipeline.nodes.validation import validate_node
+    from scruticell.pipeline.nodes.matrix import discover_matrix_node, read_matrix_node
+    from scruticell.pipeline.nodes.parse import parse_soft_node
     from scruticell.pipeline.nodes.reflexion import (
-        reflexion_node, apply_strategy_to_state, set_knowledge_base,
+        apply_strategy_to_state,
+        reflexion_node,
+        set_knowledge_base,
     )
+    from scruticell.pipeline.nodes.validation import validate_node
+    from scruticell.pipeline.state import PipelineState
     from scruticell.utils.audit import AuditLogger
 
     kb, _ = _get_knowledge_base()
@@ -210,7 +209,7 @@ def parse(gse_id: str) -> None:
     for retry in range(MAX_RETRIES + 1):
         if retry > 0:
             click.echo(f"\n  --- Reflexion retry {retry}/{MAX_RETRIES} ---")
-            click.echo(f"  [Reflexion]...", nl=False)
+            click.echo("  [Reflexion]...", nl=False)
             result = reflexion_node(state)
             for key, value in result.items():
                 setattr(state, key, value)
@@ -221,7 +220,7 @@ def parse(gse_id: str) -> None:
                 click.echo(f"  Strategy suggests abort: {strategy.get('notes', '')}")
                 break
             if not strategy or strategy.get("action") != "retry":
-                click.echo(f"  No actionable strategy, stopping retries")
+                click.echo("  No actionable strategy, stopping retries")
                 break
             apply_strategy_to_state(state, strategy)
             click.echo(f"  Strategy: {strategy.get('notes', 'retry')}")
@@ -232,7 +231,7 @@ def parse(gse_id: str) -> None:
             break
 
     if state.validation_passed:
-        click.echo(f"\n  [Output]...", nl=False)
+        click.echo("\n  [Output]...", nl=False)
         try:
             result = output_node(state)
             for key, value in result.items():
@@ -247,7 +246,7 @@ def parse(gse_id: str) -> None:
 
     scores = state.confidence_scores
     click.echo(f"\n{'='*60}")
-    click.echo(f"  Pipeline complete")
+    click.echo("  Pipeline complete")
     click.echo(f"  Output: {state.output_path}")
     click.echo(f"  Cells: {state.obs.shape[0] if state.obs is not None else 0}")
     click.echo(f"  Genes: {state.var.shape[0] if state.var is not None else 0}")
@@ -258,7 +257,7 @@ def parse(gse_id: str) -> None:
         for k, v in scores.items():
             click.echo(f"    {k}: {v:.0%}")
     if state.reflexion_notes:
-        click.echo(f"  Reflexion:")
+        click.echo("  Reflexion:")
         for n in state.reflexion_notes[-3:]:
             click.echo(f"    - {n}")
     if state.alignment_warnings:
@@ -280,7 +279,7 @@ def parse(gse_id: str) -> None:
 
     _cleanup_gse_output(gse_id, KEEP_DATA)
     if not KEEP_DATA:
-        click.echo(f"  Preserved: audit log, KB strategies")
+        click.echo("  Preserved: audit log, KB strategies")
 
 
 @main.command()
@@ -367,7 +366,6 @@ def inspect(gse_id: str) -> None:
     is structured for LLM consumption to plan batch-matrix-metadata
     processing.
     """
-    import json
     from scruticell.intelligence import Reporter
     from scruticell.pipeline.nodes.download import download_node
     from scruticell.pipeline.nodes.parse import parse_soft_node
@@ -463,6 +461,7 @@ def plan(gse_id: str) -> None:
     (M3) to execute the processing.
     """
     import json
+
     from scruticell.intelligence import (
         GseReport,
         PlanOrchestrator,
@@ -545,7 +544,7 @@ def plan(gse_id: str) -> None:
                f"matrices={len(plan.matrices)}, batches={len(plan.batches)}")
 
     if plan.strategy_notes:
-        click.echo(f"\n  Strategy notes:")
+        click.echo("\n  Strategy notes:")
         for line in plan.strategy_notes.split("\n"):
             click.echo(f"    {line}")
 
@@ -556,8 +555,9 @@ def plan(gse_id: str) -> None:
 
     # Store inspect report + plan + field mappings in knowledge base
     try:
-        from scruticell.intelligence.matcher import StrategyMatcher
         import time
+
+        from scruticell.intelligence.matcher import StrategyMatcher
         kb_plan, _ = _get_knowledge_base()
         sm = StrategyMatcher(kb_plan)
         fp = sm.fingerprint(gse_report)
@@ -594,7 +594,6 @@ def plan(gse_id: str) -> None:
             )
         # Field mappings
         if hasattr(kb_plan, "store_field_mappings"):
-            from scruticell.config import DATA_DIR
             fm_list = plan_data.get("field_mappings", [])
             if fm_list:
                 kb_plan.store_field_mappings(f"{gse_id}_{ts}", fm_list)
@@ -620,6 +619,8 @@ def execute(gse_id: str) -> None:
     pipeline.keep_data in the config to preserve everything.
     """
     import json
+
+    from scruticell.config import DOWNLOAD_ENABLED, KEEP_DATA, REFLECTION_ENABLED
     from scruticell.intelligence import (
         ExecutionMonitor,
         GseReport,
@@ -630,8 +631,6 @@ def execute(gse_id: str) -> None:
     from scruticell.pipeline.nodes.download import download_node
     from scruticell.pipeline.nodes.parse import parse_soft_node
     from scruticell.pipeline.state import PipelineState
-
-    from scruticell.config import DOWNLOAD_ENABLED, KEEP_DATA, REFLECTION_ENABLED
 
     click.echo(f"\n{'='*60}")
     click.echo(f"  Plan Execution: {gse_id}")
@@ -862,7 +861,7 @@ def execute(gse_id: str) -> None:
 
     _cleanup_gse_output(gse_id, KEEP_DATA)
     if not KEEP_DATA:
-        click.echo(f"  Preserved: inspect.json, plan.json, execute.json, metadata.md")
+        click.echo("  Preserved: inspect.json, plan.json, execute.json, metadata.md")
 
     from scruticell.utils.tokens import TokenTracker
     click.echo(TokenTracker().report())
@@ -884,7 +883,6 @@ def run(gse_id: str) -> None:
     to inspect intermediate results.
     """
     import json
-    import time
 
     from scruticell.config import (
         DOWNLOAD_ENABLED,
@@ -910,13 +908,15 @@ def run(gse_id: str) -> None:
     root_logger.addHandler(file_handler)
     logger.info("Run log started for %s -> %s", gse_id, run_log_path)
 
-    from scruticell.config import DATA_DIR
-    from scruticell.pipeline.state import PipelineState
+    from scruticell.intelligence import (
+        PlanExecutor,
+        PlanOrchestrator,
+        Reporter,
+        StrategyMatcher,
+    )
     from scruticell.pipeline.nodes.download import download_node
     from scruticell.pipeline.nodes.parse import parse_soft_node
-    from scruticell.intelligence import (
-        Reporter, PlanOrchestrator, StrategyMatcher, PlanExecutor,
-    )
+    from scruticell.pipeline.state import PipelineState
 
     click.echo(f"\n{'='*60}")
     click.echo(f"  Scrut-Cell Full Pipeline: {gse_id}")
@@ -1022,7 +1022,7 @@ def run(gse_id: str) -> None:
     click.echo(f"    Files: {gse_report.total_files} | GSM entries: {len(gse_report.gsm_entries)}")
 
     # ========== STEP 2: PLAN ==========
-    click.echo(f"\n  [2/3] PLAN — knowledge base matching + LLM plan generation...")
+    click.echo("\n  [2/3] PLAN — knowledge base matching + LLM plan generation...")
     kb, _ = _get_knowledge_base()
     matcher = StrategyMatcher(kb)
     matches = matcher.find_similar(gse_report)
@@ -1032,7 +1032,7 @@ def run(gse_id: str) -> None:
             click.echo(f"      - {m.source_gse_id} (score: {m.similarity_score:.2f}, "
                        f"success: {m.success_count}, fail: {m.fail_count})")
     else:
-        click.echo(f"    KB Matches: 0")
+        click.echo("    KB Matches: 0")
 
     if not LLM_ENABLED:
         click.echo("    Skipping LLM plan generation (LLM disabled in config). Pipeline stops here.")
@@ -1056,8 +1056,8 @@ def run(gse_id: str) -> None:
         click.echo(f"    Batch strategy: {plan.batch_separation_strategy}")
 
     # ========== STEP 3: EXECUTE + VERIFY (unified loop) ==========
-    click.echo(f"\n  [3/3] EXECUTE — reading matrices + building AnnData...")
-    from scruticell.intelligence.verifier import BatchVerifier, VerificationReport, BatchMismatch
+    click.echo("\n  [3/3] EXECUTE — reading matrices + building AnnData...")
+    from scruticell.intelligence.verifier import BatchMismatch, BatchVerifier, VerificationReport
     executor = PlanExecutor()
     verifier = BatchVerifier()
     vreport = None
@@ -1197,6 +1197,7 @@ def run(gse_id: str) -> None:
     if result.success and vreport.passed:
         try:
             import time as _time
+
             from scruticell.intelligence.matcher import StrategyMatcher as SM
             kb_u, _ = _get_knowledge_base()
             sm_u = SM(kb_u)
@@ -1257,6 +1258,17 @@ def run(gse_id: str) -> None:
     root_logger.removeHandler(file_handler)
     file_handler.close()
     click.echo(f"  Log:      {run_log_path}")
+
+
+def _register_client() -> None:
+    try:
+        from scruticell.client.cli import client_cmd
+        main.add_command(client_cmd)
+    except Exception as exc:  # noqa: BLE001
+        logger.debug("client command not registered: %s", exc)
+
+
+_register_client()
 
 
 if __name__ == "__main__":

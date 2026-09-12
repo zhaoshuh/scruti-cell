@@ -46,6 +46,7 @@ dependencies = [
     "PyMuPDF>=1.23",
     "sentence-transformers>=3.0",
     "deepagents>=0.6.0",
+    "mcp>=1.0.0",
 ]
 
 [project.optional-dependencies]
@@ -62,6 +63,7 @@ tracing = [
 
 [project.scripts]
 scruticell = "scruticell.cli:main"
+scruticell-client = "scruticell.client.cli:client_cmd"
 
 [project.urls]
 Homepage = "https://github.com/scruti-cell/scruticell"
