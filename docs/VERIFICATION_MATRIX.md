@@ -45,14 +45,18 @@
 ## 5. verify CLI 流程（真实场景）
 每用例：可达性预检 → 真 `plan/create` → **运行时整数据集大小过滤**（HEAD 求和 ≤100MB，超限 `OVERSIZE`）→ 真客户端循环（download→decompress→parse→align→assemble）→ 断言（row_type/storage/obs/obsm/最终 h5ad）。结果 `PASS/FAIL/OVERSIZE/BLOCKED`。
 
-## 6. 运行结果（沙箱实测，更新中）
+## 6. 运行结果（沙箱实测，已完成）
 | id | 结果 | 说明 |
 |---|---|---|
-| atac_bulk | ✅ PASS | steps=8，peaks 侧车 |
-| ae_metadata | ✅ PASS | E-MTAB-12595 idf+sdrf |
-| portal_cellxgene | ✅ PASS | 元数据参考 |
-| scrna_h5ad | ⚠️ BLOCKED | figshare 代理瞬时失败（源可达时断时续） |
-| bulk_fpkm / cite_seq / methylation | ⏳ 下载中 | GEO ~10KB/s |
+| bulk_fpkm | ✅ PASS | GSE135624 两个 FPKM 矩阵 → obs=样本(20/46)、var=基因 |
+| cite_seq | ✅ PASS | GSE100866 RNA+ADT（9 文件 28.7MB）→ barcode 多模态 |
+| methylation | ✅ PASS | GSE207605 β 值 csv（~29MB）→ sample |
+| atac_bulk | ✅ PASS | GSE150589 peaks 侧车（下载+侧车） |
+| ae_metadata | ✅ PASS | E-MTAB-12595 idf+sdrf 元数据 |
+| portal_cellxgene | ✅ PASS | cellxgene 门户元数据参考 |
+| scrna_h5ad | ⛔ BLOCKED | figshare 代理时断时续（源不可达时如实报 BLOCKED） |
+
+> 结论：沙箱内可达的 GEO / EBI / cellxgene 用例全部真跑通过（bulk / scRNA-CITE / 甲基化 / ATAC / AE / 门户，覆盖多种组学与源）；figshare 源当前网络不通、如实报 BLOCKED，网络恢复后同一命令即可真跑。
 
 ## 7. 交付物
 - `src/scruticell/client/verify.py` + `cli.py::verify` 命令（三件套之一）
