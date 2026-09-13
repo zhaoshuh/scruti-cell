@@ -135,7 +135,8 @@ def _load_dense_matrix(
         gene_names = row_names if has_row_names else [f"gene_{i}" for i in range(matrix.shape[0])]
         cell_barcodes = col_headers
     else:
-        cell_barcodes = row_names if has_row_names else [f"cell_{i}" for i in range(matrix.shape[0])]
+        cell_barcodes = (row_names if has_row_names
+                         else [f"cell_{i}" for i in range(matrix.shape[0])])
         gene_names = col_headers
 
     return matrix, gene_names, cell_barcodes
@@ -180,53 +181,117 @@ def _load_dense_matrix_fallback(
     return matrix, gene_names, cell_barcodes
 
 
+def _is_numeric(series) -> bool:
+    """Column is (mostly) numeric — coerces object columns that are actually
+    numeric (GEO expression matrices often carry a few stray non-numeric
+    values that force pandas to infer ``object`` dtype)."""
+    import pandas as pd
+
+    try:
+        if pd.api.types.is_numeric_dtype(series):
+            return float(series.notna().mean()) > 0.5
+        coerced = pd.to_numeric(series, errors="coerce")
+        return float(coerced.notna().mean()) > 0.5
+    except Exception:  # noqa: BLE001
+        return False
+
+
+def _pick_gene_col(non_numeric: list, df) -> str | None:
+    """Best gene-id annotation column among the non-numeric columns."""
+    for c in non_numeric:
+        if any(k in str(c).lower() for k in ("geneid", "gene_id", "gene symbol",
+                                             "gene_name", "symbol", "ensembl")):
+            return c
+    for c in non_numeric:
+        vals = df[c].astype(str).head(200)
+        if sum(1 for v in vals if _looks_like_gene_name(v)) / max(1, len(vals)) >= 0.3:
+            return c
+    return None
+
+
+def _num_frame(df, cols: list[str]):
+    """Float DataFrame for the given columns, coercing stray non-numeric values."""
+    import pandas as pd
+
+    return pd.DataFrame({c: pd.to_numeric(df[c], errors="coerce").fillna(0.0)
+                         for c in cols})
+
+
+def _empty_result() -> dict[str, Any]:
+    return {"matrix": None, "cell_barcodes": [], "gene_names": [],
+            "is_sparse": False, "shape": (0, 0)}
+
+
 def read_csv_matrix(filepath: str | Path) -> dict[str, Any]:
     """Read an expression matrix from a CSV/TSV file.
 
-    Auto-detects:
-    - Delimiter (comma, tab, semicolon)
-    - Whether the first column contains row names (gene/cell identifiers)
-    - Matrix orientation (gene x cell vs cell x gene)
+    Robustly handles the formats GEO/expression studies actually use:
 
-    Args:
-        filepath: Path to .csv, .tsv, .csv.gz, or .tsv.gz file.
+    - plain ``cell × gene`` matrices (header = gene ids, rows = cells);
+    - ``gene × sample`` (bulk) matrices with one or more leading annotation
+      columns (e.g. ``UniqueID,GeneID,<samples...>`` or Cufflinks FPKM);
+    - tab/comma/semicolon delimiters, optional ``.gz``.
 
-    Returns:
-        Dict with keys: matrix (np.ndarray), cell_barcodes (list[str]),
-        gene_names (list[str]), is_sparse (bool), shape (tuple).
+    Always returns the matrix in the AnnData orientation (obs × var): for bulk
+    input the ``gene × sample`` matrix is transposed so observations = samples.
     """
+    import pandas as pd
+
     filepath = Path(filepath)
     logger.info("Reading CSV matrix: %s", filepath)
-
     delimiter = _detect_delimiter(filepath)
     logger.debug("Detected delimiter: %r", delimiter)
 
-    has_row_names = _has_row_names(filepath, delimiter)
-    logger.debug("Has row names column: %s", has_row_names)
+    try:
+        df = pd.read_csv(filepath, sep=delimiter, header=0, index_col=False,
+                         low_memory=False, on_bad_lines="skip")
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("pandas read failed %s: %s", filepath, exc)
+        return _empty_result()
+    if df is None or df.shape[1] == 0:
+        return _empty_result()
+    df = df.dropna(axis=1, how="all")
 
-    orientation = _detect_orientation(filepath, delimiter, has_row_names)
-    logger.debug("Detected orientation: %s", orientation)
+    numeric_cols = [str(c) for c in df.columns if _is_numeric(df[c])]
+    if not numeric_cols:
+        return _empty_result()
+    non_numeric = [str(c) for c in df.columns if c not in numeric_cols]
+    gene_col = _pick_gene_col(non_numeric, df)
 
-    matrix, gene_names, cell_barcodes = _load_dense_matrix(
-        filepath, delimiter, has_row_names, orientation
-    )
+    n_rows = int(df.shape[0])
+    header_gene_like = sum(
+        1 for c in numeric_cols[:8] if _looks_like_gene_name(str(c))) / \
+        max(1, len(numeric_cols[:8]))
 
-    # Standardize to cell×gene (AnnData convention)
-    if orientation == "gene_x_cell":
-        matrix = matrix.T
+    if gene_col is not None and len(numeric_cols) >= 1:
+        # gene × sample (bulk) — observations = sample columns
+        matrix = _num_frame(df, numeric_cols).to_numpy(dtype=np.float32).T  # samples × genes
+        gene_names = df[gene_col].astype(str).tolist()
+        cell_barcodes = list(numeric_cols)
+    elif header_gene_like >= 0.5:
+        # cell × gene — observations = rows
+        matrix = _num_frame(df, numeric_cols).to_numpy(dtype=np.float32)
+        gene_names = list(numeric_cols)
+        cell_barcodes = (df[non_numeric[0]].astype(str).tolist()
+                         if non_numeric else df.index.astype(str).tolist())
+    else:
+        # ambiguous → pick by shape: more numeric columns → bulk (genes×samples)
+        if len(numeric_cols) > n_rows:
+            matrix = _num_frame(df, numeric_cols).to_numpy(dtype=np.float32).T
+            gene_names = (df[non_numeric[0]].astype(str).tolist()
+                          if non_numeric else df.index.astype(str).tolist())
+            cell_barcodes = list(numeric_cols)
+        else:
+            matrix = _num_frame(df, numeric_cols).to_numpy(dtype=np.float32)
+            gene_names = list(numeric_cols)
+            cell_barcodes = (df[non_numeric[0]].astype(str).tolist()
+                             if non_numeric else df.index.astype(str).tolist())
 
+    if matrix is None or matrix.ndim != 2:
+        return _empty_result()
     shape = matrix.shape
     is_sparse = False
-
-    logger.info(
-        "Loaded CSV matrix: shape=%s, cells=%d, genes=%d",
-        shape, len(cell_barcodes), len(gene_names),
-    )
-
-    return {
-        "matrix": matrix,
-        "cell_barcodes": cell_barcodes,
-        "gene_names": gene_names,
-        "is_sparse": is_sparse,
-        "shape": shape,
-    }
+    logger.info("Loaded CSV matrix: shape=%s, cells=%d, genes=%d",
+                shape, len(cell_barcodes), len(gene_names))
+    return {"matrix": matrix, "cell_barcodes": cell_barcodes,
+            "gene_names": gene_names, "is_sparse": is_sparse, "shape": shape}

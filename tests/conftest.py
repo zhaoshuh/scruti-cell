@@ -97,3 +97,17 @@ def temp_data_dir(tmp_path: Path) -> Path:
     data_dir = tmp_path / "scruticell_test_data"
     data_dir.mkdir()
     return data_dir
+
+
+def pytest_addoption(parser):
+    parser.addoption("--run-live", action="store_true", default=False,
+                     help="run live E2E tests (network + real server)")
+
+
+def pytest_collection_modifyitems(config, items):
+    if config.getoption("--run-live"):
+        return
+    skip_live = pytest.mark.skip(reason="live test; run with --run-live")
+    for item in items:
+        if "live" in item.keywords:
+            item.add_marker(skip_live)
