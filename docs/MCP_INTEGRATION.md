@@ -63,7 +63,23 @@ SCRUTICELL_API_KEY=<omics-discovery keygen 生成的 key>
 DataCite…文件端点）把任何源的 accession 变成通用方案；客户端只按方案执行，不认识源。
 仅元数据源（cellxgene/HCA/GDC/SCXA/ENA/PRIDE/NGDC）作参考入口，不预处理。
 
+## 跨源元数据发现（每次 plan 必做）
+一个数据集的元数据**不一定在它被找到的那个源**（可能在镜像、其他仓库、门户）。
+服务端 `locate_dataset_metadata` 每个 plan 都会做：
+- **镜像**：E-GEOD ↔ GSE 互查，取权威文件清单；
+- **标题跨源检索**：Zenodo/Dryad/OSF/HF/figshare/DataCite/ArrayExpress（并发 + 全局时限，网络差也能快速降级），找同研究的其它沉积；
+- **门户**：已注册门户作为参考。
+结果进 plan 的 `metadata_manifest`（`primary` / `mirror` / `related`）；与主清单重复的文件自动去重。
+
+## 观测轴感知对齐 + 经验化存储
+每种组学/实验设计**适合的存储表示**保存在服务端经验知识（`knowledge/experience/*.md`，
+调研自 Scanpy/Seurat/Signac/ArchR/DESeq2/Squidpy 等科研惯例），不硬编码：
+- **row_type**：scrna/snrna/scatac/multiome → `barcode`；bulk/芯片/甲基化 → `sample`；空间 → `spot`；
+- **storage 规范**：容器（v1 统一 h5ad + 侧车）、obs 字段、obsm/uns、侧车清单（fragments/peaks/图像/tissue_positions）；
+- **plan 步骤**：`download` → `metadata_download`(跨源) → `decompress` → `map_samples`(真实分组+row_type) → `classify` → `parse_matrix`(按行定义文件设 obs_names/var) → **`align`**(样本/GSM 元数据并入 `.obs`：bulk 按行匹配、barcode/spot 上卷为 `sample.*` 常量列；空间坐标入 `obsm["spatial"]`) → `assemble` → `report`。
+客户端只执行 plan 里的存储/对齐规范，仍不认识源、不内置经验。
+
 ## 典型用法
 1. `search_datasets("2026 Virtual Cell Challenge 的 CRISPRi Perturb-seq", top_n=10)`
 2. `plan_run("GSE308682")` → 本机下载/处理，逐步反馈，直到 `done`
-3. 查看本机 `output/client/preprocessed/<GSE>.scruticell.h5ad`
+3. 查看本机 `output/client/preprocessed/<GSE>.scruticell.h5ad`（obs 已带 `sample.*` 元数据；空间数据带 `obsm["spatial"]`）
