@@ -38,6 +38,18 @@ def _build_mcp():
         """查询服务端 plan 进度。"""
         return api.plan_status(plan_id)
 
+    @mcp.tool()
+    def research(question: str, session_id: str = "") -> dict:
+        """与研究助手多轮对话：提出科学问题 → 服务端嗅探数据并给出候选/澄清/处理方案。
+
+        无 session_id 时开启新会话；续聊时把上次返回的 session_id 传回。返回
+        {session_id, reply, done, result}；result 含数据集候选与推荐（及 plan 引导），
+        数据实际下载/解析用 plan_run 在客户机执行。
+        """
+        sid = session_id.strip() or api.create_session().get("session_id", "")
+        out = api.ask_session(sid, question)
+        return {"session_id": sid, **out}
+
     return mcp
 
 

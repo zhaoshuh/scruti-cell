@@ -53,10 +53,31 @@ SCRUTICELL_API_KEY=<omics-discovery keygen 生成的 key>
 ## 工具
 | 工具 | 作用 |
 |---|---|
-| `search_datasets(question, task?, top_n?)` | 远程检索（用户 key） |
+| `research(question, session_id?)` | **对话式研究**：提出科学问题 → 服务端 agent 嗅探数据（检索/核验/可行性/方案），多轮（传回 session_id）双向指导 |
+| `search_datasets(question, task?, top_n?)` | 远程快速检索（用户 key） |
 | `dataset_report(accession, deep?)` | 远程核验明细 |
 | `plan_run(accession, source?, workdir?)` | 服务端出方案 → **本机执行** → 逐步反馈 |
 | `plan_status(plan_id)` | 查询服务端 plan 进度 |
+
+## 对话式「嗅探 → 引导处理」
+```txt
+用户: 研究XX的单细胞表达
+opencode → research("研究XX…")            # 开启会话，服务端 agent 嗅探
+服务端: 澄清提问 / 候选数据集+处理方案（调 plan_dataset 评估可行性：整数据集 ≤100MB、含可解析矩阵）
+用户: 回答/改选/纠偏 → research(ans, session_id)
+opencode: 对 agent 推荐的可处理数据集 → plan_run(accession)  → 本机 h5ad
+用户: 后续 → research(...) 继续
+```
+- **服务端只规划+嗅探**；数据实际下载/解析/对齐全在客户机（opencode 调 `plan_run`）。
+- agent 的 `plan_dataset` 工具返回 `row_type / storage / 文件数 / 总大小 / 是否可行 / 步骤`，
+  并给出处理命令；不可行会说明原因（超大小上限/无矩阵/无文件清单）。
+
+## 代码不泄露（重要）
+- 服务端（omics-discovery）的代码、知识（`knowledge/*.md`）、源适配器、API key **只存在于服务器**；
+  新会话唯一入口是远程 HTTP API（Bearer key），只见结构化输入输出，不回显任何内部资产。
+- **新 opencode 会话请跑在干净工作区**（不挂载 omics-discovery / scruti-cell 仓库源码），仅通过
+  `SCRUTICELL_SERVER_URL`/`SCRUTICELL_API_KEY` 访问服务——否则 agent 有文件访问权时可读源码。
+- 客户端（scruti-cell）是通用执行器（下载/解压/解析/对齐），不含知识/适配器/密钥，本机可见可接受。
 
 ## 源无关
 服务端规划 Agent 用 omics-discovery 的访问知识（GEO/AE/Zenodo/HF/Dryad/OSF/figshare/

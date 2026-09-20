@@ -61,3 +61,52 @@ def plan_step(plan_id: str, ok: bool, result: dict | None = None,
 
 def plan_status(plan_id: str) -> dict:
     return _get(f"/api/plan/status/{plan_id}")
+
+
+def create_session() -> dict:
+    """Create a conversational session on the server (returns session_id)."""
+    return _post("/api/sessions", {}, timeout=30)
+
+
+def ask_session(session_id: str, message: str) -> dict:
+    """Send one message to a conversational session (SSE stream, aggregated).
+
+    Returns {reply, done, result} where ``result`` is the structured discovery
+    payload (datasets / recommendation / plan guidance) when the turn produced
+    one. The conversation continues by passing the same ``session_id`` back.
+    """
+    import httpx
+
+    resp = httpx.post(
+        f"{server_url()}/api/sessions/{session_id}/message",
+        json={"message": message}, headers=_headers(),
+        timeout=600, follow_redirects=True)
+    resp.raise_for_status()
+    return _parse_sse(resp.text)
+
+
+def _parse_sse(body: str) -> dict:
+    """Aggregate an SSE stream into {reply, done, result}."""
+    reply_parts: list[str] = []
+    done = False
+    result: dict | None = None
+    for line in body.splitlines():
+        if not line.startswith("data: "):
+            continue
+        try:
+            import json as _json
+
+            ev = _json.loads(line[6:])
+        except Exception:  # noqa: BLE001
+            continue
+        t = ev.get("type")
+        if t == "token":
+            reply_parts.append(ev.get("text", ""))
+        elif t == "finalize":
+            reply_parts.append(ev.get("text", ""))
+        elif t == "result":
+            result = ev.get("result") or {}
+        elif t == "done":
+            done = True
+    return {"reply": "".join(reply_parts).strip(), "done": done,
+            "result": result or None}
