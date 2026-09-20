@@ -80,7 +80,7 @@ def ask_session(session_id: str, message: str) -> dict:
     resp = httpx.post(
         f"{server_url()}/api/sessions/{session_id}/message",
         json={"message": message}, headers=_headers(),
-        timeout=600, follow_redirects=True)
+        timeout=120, follow_redirects=True)
     resp.raise_for_status()
     return _parse_sse(resp.text)
 
