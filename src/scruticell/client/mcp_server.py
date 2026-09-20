@@ -40,15 +40,18 @@ def _build_mcp():
 
     @mcp.tool()
     def research(question: str, session_id: str = "") -> dict:
-        """与研究助手多轮对话：提出科学问题 → 服务端嗅探数据并给出候选/澄清/处理方案。
+        """与研究助手对话：提出科学问题 → 服务端嗅探数据并给出候选/澄清/处理方案。
 
         无 session_id 时开启新会话；续聊时把上次返回的 session_id 传回。返回
-        {session_id, reply, done, result}；result 含数据集候选与推荐（及 plan 引导），
-        数据实际下载/解析用 plan_run 在客户机执行。
+        {session_id, reply, status, done, result}；status 为 clarify（需补充
+        信息）/ ready（result 含候选）／ timeout（本轮超预算，可重试）。数据实际
+        下载/解析用 plan_run 在客户机执行。
         """
-        sid = session_id.strip() or api.create_session().get("session_id", "")
-        out = api.ask_session(sid, question)
-        return {"session_id": sid, **out}
+        sid = session_id.strip()
+        out = api.research(question, sid)
+        if not sid and out.get("session_id"):
+            sid = out["session_id"]
+        return {"session_id": sid, **{k: v for k, v in out.items() if k != "session_id"}}
 
     return mcp
 

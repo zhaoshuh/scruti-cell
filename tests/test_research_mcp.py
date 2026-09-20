@@ -1,36 +1,20 @@
-"""Tests for the conversational research tool (api.ask_session + mcp.research)."""
+"""Tests for the fast research tool (api.research + mcp.research via /api/ask)."""
 
 from __future__ import annotations
 
 from scruticell.client import api
 
-SSE_BODY = (
-    'data: {"type": "status", "text": "正在检索…"}\n\n'
-    'data: {"type": "token", "id": "final", "text": "为您推荐 2 个数据集。"}\n\n'
-    'data: {"type": "result", "result": {"recommendations": [{"candidate": '
-    '{"accession": "GSE135624", "source": "geo_ncbi"}}]}}\n\n'
-    'data: {"type": "done"}\n\n'
-)
 
-
-def test_parse_sse_aggregates():
-    out = api._parse_sse(SSE_BODY)
-    assert out["reply"] == "为您推荐 2 个数据集。"
-    assert out["done"] is True
-    assert out["result"]["recommendations"][0]["candidate"]["accession"] == \
-        "GSE135624"
-
-
-def test_ask_session_posts_and_parses(monkeypatch):
+def test_api_research_posts_ask(monkeypatch):
     import httpx
 
     class FakeResp:
         def raise_for_status(self):
             pass
 
-        @property
-        def text(self):
-            return SSE_BODY
+        def json(self):
+            return {"session_id": "s1", "reply": "请补充物种",
+                    "status": "clarify", "done": False, "result": None}
 
     seen = {}
 
@@ -38,17 +22,21 @@ def test_ask_session_posts_and_parses(monkeypatch):
                   follow_redirects=True):
         seen["url"] = url
         seen["json"] = json
+        seen["timeout"] = timeout
         return FakeResp()
 
     monkeypatch.setattr(httpx, "post", fake_post)
     monkeypatch.setenv("SCRUTICELL_SERVER_URL", "http://srv")
-    out = api.ask_session("s1", "研究肺癌铁死亡")
-    assert seen["url"] == "http://srv/api/sessions/s1/message"
-    assert seen["json"] == {"message": "研究肺癌铁死亡"}
-    assert out["done"] is True
+    out = api.research("研究肺癌铁死亡", "")
+    assert seen["url"] == "http://srv/api/ask"
+    assert seen["json"] == {"question": "研究肺癌铁死亡", "session_id": ""}
+    assert out["status"] == "clarify"
+    # session_id must be echoed back for multi-turn
+    api.research("人源", "s1")
+    assert seen["json"]["session_id"] == "s1"
 
 
-def test_research_creates_session_then_continues(monkeypatch):
+def test_research_mcp_roundtrip(monkeypatch):
     import asyncio
 
     import httpx
@@ -60,17 +48,15 @@ def test_research_creates_session_then_continues(monkeypatch):
             pass
 
         def json(self):
-            return {"session_id": "sx"}
-
-        @property
-        def text(self):
-            return SSE_BODY
+            return {"session_id": "sx", "reply": "为您找到候选数据集",
+                    "status": "ready", "done": False,
+                    "result": {"recommendations": []}}
 
     calls = []
 
     def fake_post(url, json=None, headers=None, timeout=None,
                   follow_redirects=True):
-        calls.append(url)
+        calls.append((url, json))
         return FakeResp()
 
     monkeypatch.setattr(httpx, "post", fake_post)
@@ -81,15 +67,10 @@ def test_research_creates_session_then_continues(monkeypatch):
         return await mcp.call_tool("research",
                                    {"question": "研究肺癌", "session_id": ""})
 
-    def _json(r):
-        import json as _json
+    import json as _json
 
-        return _json.loads(r.content[0].text)
-
-    first = _json(asyncio.run(_go()))
-    assert first["session_id"] == "sx"
-    assert calls[0] == "http://srv/api/sessions"
-    asyncio.run(mcp.call_tool(
-        "research", {"question": "用人源 RNA-seq",
-                     "session_id": first["session_id"]}))
-    assert calls[1] == f"http://srv/api/sessions/{first['session_id']}/message"
+    r = _json.loads(asyncio.run(_go()).content[0].text)
+    assert r["session_id"] == "sx"
+    assert r["status"] == "ready"
+    assert calls[0][0] == "http://srv/api/ask"
+    assert calls[0][1]["question"] == "研究肺癌"

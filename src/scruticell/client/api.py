@@ -85,6 +85,18 @@ def ask_session(session_id: str, message: str) -> dict:
     return _parse_sse(resp.text)
 
 
+def research(question: str, session_id: str = "") -> dict:
+    """Fast deterministic research turn (multi-turn via session_id).
+
+    Returns {session_id, reply, status, done, result} — status is one of
+    ``clarify`` (asks missing fields) / ``ready`` (recommendations in result) /
+    ``timeout`` (turn exceeded the server budget; retry). Depth is available via
+    dataset_report / plan_run on the recommended accessions.
+    """
+    return _post("/api/ask", {"question": question,
+                              "session_id": session_id or ""}, timeout=60)
+
+
 def _parse_sse(body: str) -> dict:
     """Aggregate an SSE stream into {reply, done, result}."""
     reply_parts: list[str] = []
